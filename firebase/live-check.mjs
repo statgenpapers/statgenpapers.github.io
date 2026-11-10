@@ -1,9 +1,10 @@
 // End-to-end check of the live Firebase project: `node live-check.mjs` in firebase/.
-// Signs in two anonymous users, votes, checks that tampering is rejected, removes the
-// votes again. Leaves a document at months/2020-01/papers/_selftest (a month the site never shows).
+// Signs in two anonymous users, votes, adds a paper, checks that tampering is rejected, and
+// removes the votes and the paper again. Leaves a document at months/2020-01/papers/_selftest
+// (a month the site never shows).
 import { initializeApp } from "firebase/app";
 import { getAuth, signInAnonymously } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, onSnapshot, collection, addDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { readFileSync } from "node:fs";
 
 // site/ is served as browser ES modules without a package.json, so read the object literal directly
@@ -40,6 +41,21 @@ await updateDoc(ref(a), { [`votes.${a.uid}`]: deleteField() });
 await updateDoc(ref(b), { [`votes.${b.uid}`]: deleteField() });
 const left = (await getDoc(ref(a))).data().votes;
 check("own votes removed again", !(a.uid in left) && !(b.uid in left));
-const rest = await fetch(`https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/months/2020-01/papers`);
-check(`unauthenticated REST read works (HTTP ${rest.status}), as the monthly job needs`, rest.ok);
+
+const submissions = (c) => collection(c.db, "months/2020-01/submissions");
+const paper = (c, extra = {}) => ({ journal: "Selftest", title: "Self-test paper", url: "https://example.org/selftest",
+  short_name: "Selftest_2020_SelfTestPaper", uid: c.uid, created: serverTimestamp(), ...extra });
+const added = await addDoc(submissions(a), paper(a));
+check("a visitor adds a paper", (await getDoc(doc(b.db, added.path))).data()?.title === "Self-test paper");
+check("adding a paper under another uid is rejected", await denied(addDoc(submissions(b), paper(a))));
+check("adding a paper with a non-http URL is rejected", await denied(addDoc(submissions(b), paper(b, { url: "javascript:alert(1)" }))));
+check("editing someone else's paper is rejected", await denied(updateDoc(doc(b.db, added.path), { title: "Changed" })));
+check("removing someone else's paper is rejected", await denied(deleteDoc(doc(b.db, added.path))));
+await deleteDoc(added);
+check("the submitter removes the paper again", !(await getDoc(doc(b.db, added.path))).exists());
+
+for (const name of ["papers", "submissions"]) {
+  const rest = await fetch(`https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/months/2020-01/${name}`);
+  check(`unauthenticated REST read of ${name} works (HTTP ${rest.status}), as the monthly job needs`, rest.ok);
+}
 process.exit();

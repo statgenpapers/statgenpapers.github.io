@@ -1,0 +1,476 @@
+{
+ "generated": "2026-11-10",
+ "months": [
+  "2026-03",
+  "2026-04",
+  "2026-05",
+  "2026-06",
+  "2026-07",
+  "2026-08",
+  "2026-09",
+  "2026-10"
+ ],
+ "picks": 210,
+ "pool_per_month": 2119,
+ "scorers": [
+  {
+   "label": "potion-32M + venue one-hot",
+   "chosen": true,
+   "auc": 0.963,
+   "top25": 90,
+   "picks": 210,
+   "auc_by_month": [
+    0.925,
+    0.977,
+    0.958,
+    0.982,
+    0.991,
+    0.947,
+    0.943,
+    0.98
+   ],
+   "top25_by_month": [
+    7,
+    14,
+    10,
+    8,
+    13,
+    11,
+    15,
+    12
+   ]
+  },
+  {
+   "label": "MiniLM-L6 + venue one-hot",
+   "chosen": false,
+   "auc": 0.965,
+   "top25": 87,
+   "picks": 210,
+   "auc_by_month": [
+    0.914,
+    0.979,
+    0.957,
+    0.981,
+    0.995,
+    0.958,
+    0.948,
+    0.987
+   ],
+   "top25_by_month": [
+    7,
+    16,
+    10,
+    9,
+    13,
+    9,
+    11,
+    12
+   ]
+  },
+  {
+   "label": "static-retrieval-mrl + venue one-hot",
+   "chosen": false,
+   "auc": 0.962,
+   "top25": 86,
+   "picks": 210,
+   "auc_by_month": [
+    0.932,
+    0.966,
+    0.955,
+    0.984,
+    0.992,
+    0.948,
+    0.937,
+    0.984
+   ],
+   "top25_by_month": [
+    7,
+    14,
+    8,
+    8,
+    13,
+    11,
+    13,
+    12
+   ]
+  },
+  {
+   "label": "TF-IDF words + venue one-hot (not an embedding)",
+   "chosen": false,
+   "auc": 0.96,
+   "top25": 87,
+   "picks": 210,
+   "auc_by_month": [
+    0.923,
+    0.976,
+    0.959,
+    0.991,
+    0.994,
+    0.936,
+    0.923,
+    0.979
+   ],
+   "top25_by_month": [
+    7,
+    14,
+    10,
+    9,
+    13,
+    9,
+    14,
+    11
+   ]
+  },
+  {
+   "label": "potion-32M, text only",
+   "chosen": false,
+   "auc": 0.931,
+   "top25": 45,
+   "picks": 210,
+   "auc_by_month": [
+    0.915,
+    0.928,
+    0.911,
+    0.938,
+    0.922,
+    0.939,
+    0.927,
+    0.969
+   ],
+   "top25_by_month": [
+    3,
+    8,
+    6,
+    2,
+    4,
+    9,
+    8,
+    5
+   ]
+  },
+  {
+   "label": "potion-32M, similarity to centroid of picks",
+   "chosen": false,
+   "auc": 0.847,
+   "top25": 33,
+   "picks": 210,
+   "auc_by_month": [
+    0.864,
+    0.871,
+    0.843,
+    0.872,
+    0.781,
+    0.905,
+    0.812,
+    0.827
+   ],
+   "top25_by_month": [
+    6,
+    3,
+    3,
+    3,
+    2,
+    5,
+    9,
+    2
+   ]
+  },
+  {
+   "label": "Venue only",
+   "chosen": false,
+   "auc": 0.851,
+   "top25": 36,
+   "picks": 210,
+   "auc_by_month": [
+    0.856,
+    0.909,
+    0.868,
+    0.951,
+    0.96,
+    0.71,
+    0.72,
+    0.836
+   ],
+   "top25_by_month": [
+    5,
+    7,
+    6,
+    0,
+    3,
+    3,
+    4,
+    8
+   ]
+  }
+ ],
+ "haiku": {
+  "months": [
+   "2026-08",
+   "2026-09",
+   "2026-10"
+  ],
+  "papers_per_month": 344,
+  "rows": [
+   {
+    "label": "Claude Haiku (prompt v7)",
+    "auc_by_month": [
+     0.87,
+     0.893,
+     0.882
+    ],
+    "top25_by_month": [
+     13,
+     17,
+     13
+    ],
+    "top25": 43
+   },
+   {
+    "label": "potion-32M + venue one-hot",
+    "auc": 0.836,
+    "top25": 38,
+    "picks": 91,
+    "auc_by_month": [
+     0.783,
+     0.815,
+     0.911
+    ],
+    "top25_by_month": [
+     11,
+     15,
+     12
+    ]
+   }
+  ]
+ },
+ "frozen": {
+  "months": [
+   "2026-06",
+   "2026-10"
+  ],
+  "trained_through": "2026-05",
+  "frozen": {
+   "auc": 0.963,
+   "top25": 58,
+   "picks": 132,
+   "auc_by_month": [
+    0.982,
+    0.989,
+    0.947,
+    0.93,
+    0.967
+   ],
+   "top25_by_month": [
+    8,
+    12,
+    11,
+    15,
+    12
+   ]
+  },
+  "retrained": {
+   "auc": 0.969,
+   "top25": 59,
+   "picks": 132,
+   "auc_by_month": [
+    0.982,
+    0.991,
+    0.947,
+    0.943,
+    0.98
+   ],
+   "top25_by_month": [
+    8,
+    13,
+    11,
+    15,
+    12
+   ]
+  }
+ },
+ "regex_shortlist": {
+  "full_pool": {
+   "auc": 0.963,
+   "top25": 90,
+   "picks": 210,
+   "auc_by_month": [
+    0.925,
+    0.977,
+    0.958,
+    0.982,
+    0.991,
+    0.947,
+    0.943,
+    0.98
+   ],
+   "top25_by_month": [
+    7,
+    14,
+    10,
+    8,
+    13,
+    11,
+    15,
+    12
+   ]
+  },
+  "regex_shortlist": {
+   "auc": 0.889,
+   "top25": 91,
+   "picks": 205,
+   "auc_by_month": [
+    0.822,
+    0.923,
+    0.863,
+    0.929,
+    0.963,
+    0.834,
+    0.838,
+    0.94
+   ],
+   "top25_by_month": [
+    7,
+    14,
+    10,
+    9,
+    13,
+    11,
+    15,
+    12
+   ]
+  }
+ },
+ "venue_variants": {
+  "months": [
+   "2026-03",
+   "2026-09"
+  ],
+  "rows": [
+   {
+    "model": "potion-32m",
+    "one_hot": 78,
+    "one_hot_x3": 75,
+    "pick_rate_prior": 57
+   },
+   {
+    "model": "minilm",
+    "one_hot": 75,
+    "one_hot_x3": 76,
+    "pick_rate_prior": 62
+   },
+   {
+    "model": "static-retrieval",
+    "one_hot": 74,
+    "one_hot_x3": 72,
+    "pick_rate_prior": 62
+   }
+  ]
+ },
+ "strategies": [
+  {
+   "strategy": "RBF SVM+venue",
+   "potion_32m_auc": 0.966,
+   "minilm_auc": 0.962,
+   "potion_32m_top25": 96.0,
+   "minilm_top25": 86.0
+  },
+  {
+   "strategy": "lr+venue C=10",
+   "potion_32m_auc": 0.961,
+   "minilm_auc": 0.963,
+   "potion_32m_top25": 92.0,
+   "minilm_top25": 86.0
+  },
+  {
+   "strategy": "linear SVM+venue",
+   "potion_32m_auc": 0.965,
+   "minilm_auc": 0.965,
+   "potion_32m_top25": 91.0,
+   "minilm_top25": 82.0
+  },
+  {
+   "strategy": "lr+venue (baseline)",
+   "potion_32m_auc": 0.963,
+   "minilm_auc": 0.965,
+   "potion_32m_top25": 90.0,
+   "minilm_top25": 87.0
+  },
+  {
+   "strategy": "MLP 128+venue",
+   "potion_32m_auc": 0.96,
+   "minilm_auc": 0.961,
+   "potion_32m_top25": 90.0,
+   "minilm_top25": 88.0
+  },
+  {
+   "strategy": "lr+venue C=3",
+   "potion_32m_auc": 0.961,
+   "minilm_auc": 0.964,
+   "potion_32m_top25": 90.0,
+   "minilm_top25": 86.0
+  },
+  {
+   "strategy": "lr+venue, recency-weighted",
+   "potion_32m_auc": 0.963,
+   "minilm_auc": 0.966,
+   "potion_32m_top25": 89.0,
+   "minilm_top25": 89.0
+  },
+  {
+   "strategy": "kNN similarities + venue",
+   "potion_32m_auc": 0.953,
+   "minilm_auc": 0.965,
+   "potion_32m_top25": 85.0,
+   "minilm_top25": 91.0
+  },
+  {
+   "strategy": "lr+venue C=0.3",
+   "potion_32m_auc": 0.963,
+   "minilm_auc": 0.966,
+   "potion_32m_top25": 84.0,
+   "minilm_top25": 88.0
+  },
+  {
+   "strategy": "lr+venue, title and abstract separate",
+   "potion_32m_auc": 0.96,
+   "minilm_auc": 0.967,
+   "potion_32m_top25": 84.0,
+   "minilm_top25": 83.0
+  },
+  {
+   "strategy": "two-stage: text score + venue",
+   "potion_32m_auc": 0.96,
+   "minilm_auc": 0.962,
+   "potion_32m_top25": 81.0,
+   "minilm_top25": 86.0
+  },
+  {
+   "strategy": "two-stage: text score x venue",
+   "potion_32m_auc": 0.957,
+   "minilm_auc": 0.96,
+   "potion_32m_top25": 81.0,
+   "minilm_top25": 75.0
+  },
+  {
+   "strategy": "centroid difference + lr venue",
+   "potion_32m_auc": 0.941,
+   "minilm_auc": 0.958,
+   "potion_32m_top25": 72.0,
+   "minilm_top25": 85.0
+  },
+  {
+   "strategy": "lr+venue unweighted classes",
+   "potion_32m_auc": 0.927,
+   "minilm_auc": 0.924,
+   "potion_32m_top25": 70.0,
+   "minilm_top25": 82.0
+  },
+  {
+   "strategy": "gradient boosting (PCA64+venue)",
+   "potion_32m_auc": 0.885,
+   "minilm_auc": 0.912,
+   "potion_32m_top25": 69.0,
+   "minilm_top25": 71.0
+  }
+ ]
+}

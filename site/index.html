@@ -4,12 +4,102 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StatGen Papers</title>
-<style>
-  body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.5; }
-</style>
+<meta name="description" content="A monthly shortlist of statistical genetics papers, ranked live by votes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232355d8'/%3E%3Cpath d='M8 21l5-9 4 6 3-4 4 7' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>StatGen Papers</h1>
-<p>A monthly shortlist of statistical genetics papers. Coming soon.</p>
+<header class="top">
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2355d8"/><path d="M8 21l5-9 4 6 3-4 4 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1><a href="./">StatGen Papers</a></h1>
+      <p class="tagline">A monthly shortlist of statistical genetics papers. Upvote, and the list re-orders live.</p>
+    </div>
+  </div>
+  <nav><a href="about.html">About</a></nav>
+</header>
+
+<main>
+  <section class="controls" aria-label="List controls">
+    <div class="group">
+      <button id="prev" class="icon" aria-label="Earlier month" title="Earlier month">‹</button>
+      <select id="month" aria-label="Month"></select>
+      <button id="next" class="icon" aria-label="Later month" title="Later month">›</button>
+    </div>
+    <div class="group segmented" role="group" aria-label="Sort by">
+      <span class="label">Sort</span>
+      <button data-sort="votes" aria-pressed="true">Votes</button>
+      <button data-sort="score" aria-pressed="false">Score</button>
+    </div>
+    <div class="group segmented" role="group" aria-label="Show">
+      <span class="label">Show</span>
+      <button data-filter="all" aria-pressed="true">All</button>
+      <button data-filter="published" aria-pressed="false">Published</button>
+      <button data-filter="preprint" aria-pressed="false">Preprints</button>
+    </div>
+    <label class="group name" title="Shown next to your votes and the papers you add. Leave empty to stay anonymous.">
+      <span class="label">Name</span>
+      <input id="name" type="text" maxlength="40" placeholder="optional" autocomplete="nickname">
+    </label>
+    <div class="group actions">
+      <button id="copy" title="Copy the list as shown: Journal, Short Name, Title, URL (tab-separated, pastes into a spreadsheet)">Copy table</button>
+      <button id="add-open" class="primary">Add a paper</button>
+    </div>
+  </section>
+
+  <form id="add" class="panel" hidden autocomplete="off">
+    <h2>Add a paper to this month</h2>
+    <label>URL <input id="add-url" type="url" required maxlength="500" placeholder="https://doi.org/… or the paper's page"></label>
+    <label>Journal <input id="add-journal" type="text" required maxlength="60" placeholder="NG, AJHG, Biorxiv, PNAS, …" list="journals"></label>
+    <label class="wide">Title <input id="add-title" type="text" required maxlength="400"></label>
+    <label class="wide">Short name <span class="hint">generated as Journal_FirstAuthor_Year_Keyword; edit it if you like</span>
+      <input id="add-short" type="text" required maxlength="150" spellcheck="false"></label>
+    <datalist id="journals"></datalist>
+    <p id="add-note" class="hint" role="status"></p>
+    <div class="buttons">
+      <button type="submit" class="primary">Add</button>
+      <button type="button" id="add-cancel">Cancel</button>
+    </div>
+  </form>
+
+  <p id="status" class="status" role="status">Loading…</p>
+
+  <div class="table">
+    <div class="thead" aria-hidden="true">
+      <span>Votes</span><span>Journal</span><span>Short Name</span><span>Title</span><span>URL</span>
+    </div>
+    <ol id="list" class="list"></ol>
+  </div>
+</main>
+
+<footer>
+  <p>No account needed: each browser gets one upvote per paper, which you can take back.
+  Papers are collected and scored automatically each month; see <a href="about.html">About</a>.</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<template id="row">
+  <li class="paper">
+    <div class="vote">
+      <button class="up" aria-label="Upvote" aria-pressed="false">
+        <svg width="14" height="9" viewBox="0 0 14 9" aria-hidden="true"><path d="M7 0l7 9H0z" fill="currentColor"/></svg>
+        <span class="count">0</span>
+      </button>
+    </div>
+    <div class="journal"><span class="abbr"></span><span class="kind"></span></div>
+    <div class="short"></div>
+    <div class="main">
+      <a class="title" target="_blank" rel="noopener noreferrer"></a>
+      <div class="meta"></div>
+      <button class="toggle" aria-expanded="false"></button>
+      <div class="details" hidden></div>
+    </div>
+    <a class="url" target="_blank" rel="noopener noreferrer"></a>
+  </li>
+</template>
+
+<script type="module" src="app.js"></script>
 </body>
 </html>

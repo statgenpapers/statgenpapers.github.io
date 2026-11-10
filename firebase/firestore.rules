@@ -4,6 +4,11 @@ rules_version = '2';
 // Anyone may read. A signed-in (anonymous) browser may add, change or remove
 // only the map entry keyed by its own uid, so each browser has one vote per
 // paper and cannot touch other votes. Documents are never deleted.
+//
+// Papers added by visitors live in months/{YYYY-MM}/submissions/{id}
+//   { journal, title, url, short_name, uid, created, name? }
+// A signed-in browser may add a paper under its own uid and later delete it; nobody can
+// edit one. Votes on a submitted paper go to months/{YYYY-MM}/papers/{id} as for any paper.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /months/{month}/papers/{paper} {
@@ -18,6 +23,25 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['votes'])
         && request.resource.data.votes.diff(resource.data.votes).affectedKeys().hasOnly([request.auth.uid])
         && validOwnVote();
+    }
+    match /months/{month}/submissions/{id} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && month.matches('^20[0-9]{2}-(0[1-9]|1[0-2])$')
+        && id.matches('^[A-Za-z0-9]{1,40}$')
+        && validSubmission(request.resource.data);
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+    function validSubmission(d) {
+      return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'uid', 'created'])
+        && d.keys().hasOnly(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name'])
+        && d.uid == request.auth.uid
+        && d.created == request.time
+        && d.journal is string && d.journal.size() >= 1 && d.journal.size() <= 60
+        && d.title is string && d.title.size() >= 1 && d.title.size() <= 400
+        && d.url is string && d.url.size() <= 500 && d.url.matches('^https?://[^ ]+$')
+        && d.short_name is string && d.short_name.size() >= 1 && d.short_name.size() <= 150
+        && (!('name' in d) || (d.name is string && d.name.size() <= 40));
     }
     function validOwnVote() {
       let votes = request.resource.data.votes;
