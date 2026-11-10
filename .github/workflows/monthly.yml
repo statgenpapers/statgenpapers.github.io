@@ -1,0 +1,68 @@
+name: Monthly list and deploy
+
+# Scheduled and manual runs build a month's list, commit it, and deploy the site.
+# A push that touches site/ only deploys. A commit made here with GITHUB_TOKEN does not
+# start another run, which is why the deploy is part of this workflow.
+on:
+  schedule:
+    - cron: "23 9 3 * *"  # the 3rd of each month, 09:23 UTC: the list for the previous month
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month to build, YYYY-MM (empty: the previous month)"
+        required: false
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/monthly.yml"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - if: github.event_name != 'push'
+        uses: astral-sh/setup-uv@v10
+      - if: github.event_name != 'push'
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/huggingface
+          key: embedding-model-${{ hashFiles('model/weights.json') }}
+      - name: Build the list
+        if: github.event_name != 'push'
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          MONTH: ${{ inputs.month }}
+        run: |
+          uv sync --locked
+          uv run pytest -q
+          uv run python -m pipeline ${MONTH:+--month "$MONTH"}
+      - name: Commit the list and the vote snapshot
+        if: github.event_name != 'push'
+        env:
+          MONTH: ${{ inputs.month }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data data/votes
+          git diff --cached --quiet || git commit -m "List for ${MONTH:-$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)}"
+          git pull --rebase
+          git push
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v5

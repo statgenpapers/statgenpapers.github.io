@@ -3,7 +3,9 @@
 For the agent that builds the project. `README.md` is the spec; this file records the
 decisions already made and verified (2026-11-10) and the work that remains. Read
 `handoff/HANDOFF.md` too (local only). Sections marked **Decided** are settled with the
-owner; do not reopen them. Section 9 lists what is still open.
+owner; do not reopen them. Section 9 lists what is still open. Section 10 records the state
+after the build of 2026-11-10 and what the owner changed during it; where it differs from an
+earlier section, section 10 holds.
 
 ## 1. Hard constraints
 
@@ -21,11 +23,11 @@ owner; do not reopen them. Section 9 lists what is still open.
 
 | Path | State |
 |---|---|
-| `firebase/firestore.rules` | Final. 16 emulator tests pass (`cd firebase && npm install && npm test`). Already published in the live project. |
-| `firebase/live-check.mjs` | End-to-end check against the live project; 9/9 pass (`node live-check.mjs`). |
+| `firebase/firestore.rules` | 28 emulator tests pass (`cd firebase && npm install && npm test`). Published in the live project, including the submissions block of section 10. |
+| `firebase/live-check.mjs` | End-to-end check against the live project; 16/16 pass (`node live-check.mjs`). |
 | `site/config.js` | Live Firebase web config (public by design). |
 | `dev/backtest/` | Backtest harness and README. Results in `handoff/data/bt/results/`. |
-| `.github/workflows/pages.yml` | Deploys `site/` on push. Replace per section 6. |
+| `.github/workflows/monthly.yml` | Monthly run, manual run, and deploy (section 6). Replaced `pages.yml`. |
 | Firebase project `statgenpapers` | Spark plan, Anonymous sign-in on (auto clean-up off), Firestore in production mode, `statgenpapers.github.io` authorized. |
 | Actions secret `OPENALEX_API_KEY` | Set. |
 
@@ -156,7 +158,7 @@ Entry point: `uv run python -m pipeline --month YYYY-MM` (default: previous cale
    of section 3 with their caveats, and a pointer to `dev/backtest/`. Numbers come from
    `site/data/backtest.json`, written by `dev/backtest/summary.py` (extend it to export).
 
-## 6. Automation (proposed; owner has not confirmed the shape)
+## 6. Automation (built as proposed)
 
 One workflow `monthly.yml` replacing `pages.yml`:
 
@@ -190,9 +192,55 @@ dropped the public seeds file. Keep the spec as `docs/spec.md`. Record project t
 Build order agreed with the owner: site and pipeline first with the scorer of section 3;
 revisit the model when the remaining backtests are in.
 
-1. Workflow shape (section 6): owner to confirm.
+1. Workflow shape (section 6): built as proposed when the owner asked for sections 3 to 8.
 2. Backtest of the larger models (section 3, finding 8). Embeddings land in
    `handoff/data/bt/emb/<key>.{ta,vta,t}.npy` (Slurm jobs 59240570–59240578, IDs in
    `handoff/data/bt/jobids.txt`). Run `backtest.py <key>` and `strategies.py <key>` on each
    and update the tables; switch model only for a clear gain, since the owner prioritizes speed.
 3. One stale test vote sits at `months/2020-01/papers/_selftest`; harmless, deletable in the console.
+
+## 10. Built (2026-11-10)
+
+Sections 3 to 8 are built as written, with the owner's changes below. Acceptance results are in
+the commit that added this section.
+
+### Changes the owner asked for during the build
+
+1. **Table.** Every list is also the lab Sheet's four columns, `Journal`, `Short Name`, `Title`,
+   `URL`: `site/data/YYYY-MM.tsv`, the site's columns, and its "Copy table" button. Short names
+   (`Journal_FirstAuthor_Year_Keyword`) are generated.
+2. **Submissions.** Visitors add a paper by typing journal, title and URL. It is stored in
+   `months/{m}/submissions/{id}` under a new block of `firebase/firestore.rules` (create and
+   delete by the submitter only). The monthly run snapshots submissions with the votes and does
+   not list a DOI that was submitted to another month.
+3. **Upvotes only.** The site has no downvote. This changes "Learning from votes" in section 3:
+   the training rows are the listed papers of every month that got votes, a paper with an
+   upvote is a positive and the other listed papers are negatives, and the fit has a free
+   intercept next to the fixed lab-score offset. The correction starts at 30 upvoted papers
+   (`min_upvoted`). Not yet confirmed by the owner; see open item 4.
+4. **Look.** Arial, one upvote button per paper.
+
+### Details worth knowing
+
+1. `model2vec` takes no revision, so `pipeline/score.py` downloads the pinned revision with
+   `huggingface_hub` and loads it from disk. `encode(..., max_length=None)` reproduces the
+   backtest embeddings (cosine at least 0.9998); the default truncation at 512 tokens does not.
+2. Text is embedded as fetched, with only entities, inline tags and whitespace cleaned. Removing
+   the "Abstract" heading that OpenAlex keeps cost 2 of the 90 top-25 hits, so the heading stays
+   in the data and the site hides it.
+3. Papers without an abstract stay in the pool: 50 of the 330 picks have none.
+4. The weights were fitted on all twelve months, so the lists for months up to 2026-10 are
+   in-sample. The About page says so.
+5. Vote snapshots are `data/votes/YYYY-MM.json`, one per listed month, rewritten each run.
+6. The workflow is built as section 6 proposes.
+
+### Open
+
+1. Section 9, item 2: backtests of the larger models.
+2. Section 9, item 3: the stale test document.
+3. Submissions feed dedupe but not learning. A submission is a strong signal that the scorer
+   missed a paper; it has a title but no abstract.
+4. The upvote-only learning rule above, and its penalty (`penalty = 1.0`), have no data behind
+   them yet. Revisit when the first few hundred votes exist.
+5. Anyone can add a paper, so spam is possible. The rules limit field sizes and URL schemes;
+   removal is by hand in the Firebase console.
