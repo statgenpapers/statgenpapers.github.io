@@ -12,3 +12,7 @@ __pycache__/
 *.sqlite-journal
 .env
 *.key
+
+# Node (Firestore rule tests)
+node_modules/
+*-debug.log

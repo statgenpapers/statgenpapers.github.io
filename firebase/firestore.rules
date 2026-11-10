@@ -1,0 +1,31 @@
+rules_version = '2';
+// Votes live in one document per paper: months/{YYYY-MM}/papers/{paperId}
+//   { votes: { <uid>: { v: 1 | -1, name: "<optional, <= 40 chars>" } } }
+// Anyone may read. A signed-in (anonymous) browser may add, change or remove
+// only the map entry keyed by its own uid, so each browser has one vote per
+// paper and cannot touch other votes. Documents are never deleted.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /months/{month}/papers/{paper} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && month.matches('^20[0-9]{2}-(0[1-9]|1[0-2])$')
+        && paper.matches('^[A-Za-z0-9._-]{1,150}$')
+        && request.resource.data.keys().hasOnly(['votes'])
+        && request.resource.data.votes.keys().hasOnly([request.auth.uid])
+        && validOwnVote();
+      allow update: if request.auth != null
+        && request.resource.data.keys().hasOnly(['votes'])
+        && request.resource.data.votes.diff(resource.data.votes).affectedKeys().hasOnly([request.auth.uid])
+        && validOwnVote();
+    }
+    function validOwnVote() {
+      let votes = request.resource.data.votes;
+      let uid = request.auth.uid;
+      return votes is map && (!(uid in votes) || (
+        votes[uid].keys().hasAll(['v']) && votes[uid].keys().hasOnly(['v', 'name'])
+        && votes[uid].v in [1, -1]
+        && (!('name' in votes[uid]) || (votes[uid].name is string && votes[uid].name.size() <= 40))));
+    }
+  }
+}
