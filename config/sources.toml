@@ -1,0 +1,89 @@
+# Sources and list size for the monthly run. Edit, commit and push; no code changes needed.
+# A venue that is new here scores on text alone (venue weight 0) until the weights are retrained.
+
+shortlist_size = 25
+
+# OpenAlex work types kept from journals.
+work_types = ["article", "review", "letter", "preprint"]
+
+# Papers are dropped when the title starts with one of these (regular expressions, case-insensitive) ...
+junk_title = [
+  "author correction", "publisher correction", "correction", "erratum", "retraction",
+  "expression of concern", "this month in", "in this issue", "news", "editorial",
+]
+# ... or the DOI matches one of these. 10.1038/d… is Nature-family news, comment and careers.
+junk_doi = ['^10\.1038/d\d']
+
+# Journals, fetched from OpenAlex by ISSN. `key` is the venue key in model/weights.json: keep it stable.
+[[journals]]
+key = "Nature"
+name = "Nature"
+issn = "0028-0836"
+
+[[journals]]
+key = "NG"
+name = "Nature Genetics"
+issn = "1061-4036"
+
+[[journals]]
+key = "NatCommun"
+name = "Nature Communications"
+issn = "2041-1723"
+
+[[journals]]
+key = "NRG"
+name = "Nature Reviews Genetics"
+issn = "1471-0056"
+
+[[journals]]
+key = "NatMed"
+name = "Nature Medicine"
+issn = "1078-8956"
+
+[[journals]]
+key = "NatHumBehav"
+name = "Nature Human Behaviour"
+issn = "2397-3374"
+
+[[journals]]
+key = "Science"
+name = "Science"
+issn = "0036-8075"
+
+[[journals]]
+key = "SciTranslMed"
+name = "Science Translational Medicine"
+issn = "1946-6234"
+
+[[journals]]
+key = "Cell"
+name = "Cell"
+issn = "0092-8674"
+
+[[journals]]
+key = "CG"
+name = "Cell Genomics"
+issn = "2666-979X"
+
+[[journals]]
+key = "AJHG"
+name = "American Journal of Human Genetics"
+issn = "0002-9297"
+
+# Preprint servers (biorxiv or medrxiv) and their categories, as the server names them.
+# The venue key is "Biorxiv:genetics", "Medrxiv:health informatics", and so on.
+[[preprints]]
+server = "biorxiv"
+name = "bioRxiv"
+categories = ["genetics", "genomics"]
+
+[[preprints]]
+server = "medrxiv"
+name = "medRxiv"
+categories = ["genetic and genomic medicine", "health informatics"]
+
+# Learning from votes (docs/PLAN.md, section 3).
+[votes]
+firestore_project = "statgenpapers"
+min_upvoted = 30  # no vote correction until this many listed papers have an upvote
+penalty = 1.0     # L2 penalty on the correction; larger keeps the scorer closer to the lab weights
