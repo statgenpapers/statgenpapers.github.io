@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - if: github.event_name != 'push'
-        uses: astral-sh/setup-uv@v10
+        uses: astral-sh/setup-uv@v10.3.3  # this action publishes no moving major tag
       - if: github.event_name != 'push'
         uses: actions/cache@v6
         with:
