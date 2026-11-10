@@ -95,14 +95,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
     check("votes add up, and ties are ordered by score", seen(count(a, 3), "2") is not None and seen(count(a, 4), "1") is not None and order(a) == list("3412"))
-    a.click("[data-sort=score]")
-    check("sort by score ignores votes", order(a) == list("1234"))
-    a.click("[data-sort=votes]")
-    a.click("[data-filter=preprint]")
-    check("filter to preprints", order(a) == ["2"])
-    a.click("[data-filter=published]")
-    check("filter to published papers", order(a) == list("341"))
-    a.click("[data-filter=all]")
+    check("each paper is marked published or preprint", a.locator("li.paper .kind").all_inner_texts() == ["published", "published", "published", "preprint"])
     a.click("#copy")
     rows = [line.split("\t") for line in a.evaluate("navigator.clipboard.readText()").split("\n")]
     check("copy table gives Journal, Short Name, Title, URL in the order shown",

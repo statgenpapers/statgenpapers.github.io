@@ -44,10 +44,6 @@ footer { color: var(--muted); font-size: .85rem; padding-top: 1.25rem; padding-b
 .label { color: var(--muted); font-size: .8rem; font-weight: 600; margin-right: .2rem; }
 .icon { width: 2.25rem; padding: 0; font-size: 1.1rem; line-height: 1; }
 select { font-weight: 600; padding-right: .5rem; }
-.segmented button { border-radius: 0; margin-left: -1px; font-weight: 500; }
-.segmented button:first-of-type { border-radius: 8px 0 0 8px; margin-left: 0; }
-.segmented button:last-of-type { border-radius: 0 8px 8px 0; }
-.segmented button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 700; position: relative; z-index: 1; }
 .name input { width: 9.5rem; }
 .actions { margin-left: auto; gap: .5rem; }
 .status { color: var(--muted); font-size: .85rem; margin: 0 0 .75rem; }

@@ -219,6 +219,8 @@ the commit that added this section.
    intercept next to the fixed lab-score offset. The correction starts at 30 upvoted papers
    (`min_upvoted`). Not yet confirmed by the owner; see open item 4.
 4. **Look.** Arial, one upvote button per paper.
+5. **No sort or filter controls.** The list is always ordered by votes, equal votes by score.
+   Each paper still shows whether it is published or a preprint.
 
 ### Details worth knowing
 

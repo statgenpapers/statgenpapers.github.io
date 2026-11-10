@@ -12,7 +12,7 @@ const state = {
   months: [], month: null, data: null,
   votes: new Map(),  // paper id -> { uid: { v: 1, name? } }
   subs: [],          // papers added by visitors
-  sort: "votes", filter: "all", uid: null, live: false,
+  uid: null, live: false,
 };
 const rows = new Map();  // paper id -> <li>
 let fb = null, db = null, unsubscribe = [];
@@ -56,18 +56,13 @@ const mine = (id) => state.votes.get(id)?.[state.uid]?.v === 1;
 function items() {
   const listed = (state.data?.papers || []).map((p) => ({ ...p, journal: p.venue.split(":")[0] }));
   const dois = new Set(listed.map((p) => p.doi));
-  const added = state.subs.filter((s) => !dois.has(urlDoi(s.url))).map((s) => ({
-    ...s, added: true, type: /rxiv|preprint|research square|zenodo/i.test(s.journal) ? "preprint" : "published",
-  }));
-  return [...listed, ...added];
+  return [...listed, ...state.subs.filter((s) => !dois.has(urlDoi(s.url))).map((s) => ({ ...s, added: true }))];
 }
 
+// By votes; equal votes by score. Added papers have no score: after the scored ones, oldest first.
 function visible() {
   const votes = (p) => upvotes(p.id).length, score = (p) => p.score ?? -Infinity, age = (p) => p.created ?? 0;
-  const byScore = (a, b) => (score(a) === score(b) ? age(a) - age(b) : score(b) - score(a));  // added papers have no score: last, oldest first
-  return items()
-    .filter((p) => state.filter === "all" || p.type === state.filter)
-    .sort(state.sort === "votes" ? (a, b) => votes(b) - votes(a) || byScore(a, b) : (a, b) => byScore(a, b) || votes(b) - votes(a));
+  return items().sort((a, b) => votes(b) - votes(a) || (score(a) === score(b) ? age(a) - age(b) : score(b) - score(a)));
 }
 
 // ---------------------------------------------------------------- rendering
@@ -130,7 +125,7 @@ function render() {
     return rows.get(p.id);
   });
   if (!nodes.length) {
-    list.replaceChildren(el("li", "empty", state.data ? "No papers match this filter." : "No list for this month yet."));
+    list.replaceChildren(el("li", "empty", "No list for this month yet."));
   } else if (nodes.length !== list.children.length || nodes.some((n, i) => n !== list.children[i])) {
     const focused = document.activeElement;
     list.replaceChildren(...nodes);
@@ -314,17 +309,9 @@ async function copyTable() {
   }
 }
 
-function press(control, value) {  // control: "sort" or "filter"
-  for (const b of document.querySelectorAll(`[data-${control}]`)) b.setAttribute("aria-pressed", b.dataset[control] === value);
-  state[control] = value;
-  render();
-}
-
 async function init() {
   $("name").value = localStorage.getItem("name") || "";
   $("name").addEventListener("input", () => localStorage.setItem("name", myName()));
-  for (const b of document.querySelectorAll("[data-sort]")) b.addEventListener("click", () => press("sort", b.dataset.sort));
-  for (const b of document.querySelectorAll("[data-filter]")) b.addEventListener("click", () => press("filter", b.dataset.filter));
   $("copy").addEventListener("click", copyTable);
   $("add-open").addEventListener("click", () => { $("add").hidden = !$("add").hidden; if (!$("add").hidden) field("url").focus(); });
   $("add-cancel").addEventListener("click", closeForm);
