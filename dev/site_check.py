@@ -4,6 +4,11 @@ Two headless browsers open a copy of site/ that lists one made-up month (2020-01
 site never shows). Each must see the other's votes and the re-ordering within seconds; adding and
 removing a paper is checked too. All test votes and papers are removed again.
 
+The browsers keep their profiles in .cache/site-check/ and the copy is always served on the
+same port, so every run votes as the same two anonymous users. Firebase refuses new anonymous
+sign-ups from an IP address that makes too many (about 100 an hour); fresh profiles on every
+run would use that up.
+
   uv run --with playwright python -m playwright install chromium   # once
   uv run --with playwright python dev/site_check.py
 """
@@ -20,13 +25,16 @@ from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
 
-SITE = Path(__file__).parents[1] / "site"
+ROOT = Path(__file__).parents[1]
+SITE = ROOT / "site"
 MONTH = "2020-01"
+PORT = 8731  # fixed: a browser profile keeps its sign-in per origin
 PAPERS = [{"id": f"sitecheck-{i}", "doi": f"10.0000/sitecheck-{i}", "url": f"https://example.org/paper-{i}",
-           "title": f"Test paper {i}", "authors": ["Ada Tester", "Bo Checker"], "date": f"2020-01-0{i}",
+           "title": f"Test paper {i}", "authors": [f"Author {k}" for k in range(1, 2 * i)], "date": f"2020-01-0{i}",
            "venue": "Biorxiv:genetics" if i == 2 else "NG", "venue_name": "bioRxiv · genetics" if i == 2 else "Nature Genetics",
+           "journal": "bioRxiv" if i == 2 else "Nat Genet",
            "type": "preprint" if i == 2 else "published", "abstract": f"Abstract Body of abstract {i}.",
-           "short_name": f"NG_Tester_2020_TestPaper{i}", "score": 5.0 - i, "rank": i} for i in range(1, 5)]
+           "short_name": f"NatGenet_Tester_2020_TestPaper{i}", "score": 5.0 - i, "rank": i} for i in range(1, 5)]
 ADD_URL = "https://doi.org/10.1038/s41586-020-2308-7"  # a real DOI, for the Crossref lookup (gnomAD, Karczewski 2020)
 failed = False
 
@@ -57,20 +65,22 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     (Path(tmp) / "data").mkdir()
     (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH]}))
     (Path(tmp) / "data" / f"{MONTH}.json").write_text(json.dumps({"month": MONTH, "pool": 99, "papers": PAPERS}))
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=tmp))
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), functools.partial(Quiet, directory=tmp))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     url = f"http://127.0.0.1:{server.server_port}/"
 
-    browser, prompts, errors = pw.chromium.launch(), [], []
-    pages = []
-    for _ in range(2):  # two separate browser profiles: two anonymous users
-        context = browser.new_context(permissions=["clipboard-read", "clipboard-write"])
-        page = context.new_page()
+    prompts, errors, pages = [], [], []
+    for profile in "ab":  # two separate browser profiles: two anonymous users
+        context = pw.chromium.launch_persistent_context(ROOT / ".cache" / "site-check" / profile, permissions=["clipboard-read", "clipboard-write"])
+        page = context.pages[0]
         page.on("dialog", lambda d: (prompts.append(d.message), d.accept()))
         page.on("popup", lambda p: prompts.append("popup"))
         page.on("pageerror", lambda e: errors.append(str(e)))
         page.goto(url)
-        expect(page.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=30000)
+        try:
+            expect(page.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=30000)
+        except AssertionError:
+            sys.exit("voting did not become available: is Firebase refusing new anonymous sign-ups from this address? Try again later.")
         pages.append(page)
     a, b = pages
     row = lambda page, n: page.locator("li.paper", has_text=f"Test paper {n}")
@@ -95,12 +105,15 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
     check("votes add up, and ties are ordered by score", seen(count(a, 3), "2") is not None and seen(count(a, 4), "1") is not None and order(a) == list("3412"))
-    check("each paper is marked published or preprint", a.locator("li.paper .kind").all_inner_texts() == ["published", "published", "published", "preprint"])
+    check("journals show their official abbreviations", a.locator("li.paper .abbr").all_inner_texts() == ["Nat Genet", "Nat Genet", "Nat Genet", "bioRxiv"])
+    check("authors show as first two … last two; the journal is not repeated next to the title",
+          row(a, 4).locator(".meta").inner_text() == "Author 1, Author 2, …, Author 6, Author 7 · 2020-01-04 · score 1.00"
+          and row(a, 2).locator(".meta").inner_text() == "Author 1, Author 2, Author 3 · 2020-01-02 · score 3.00")
     a.click("#copy")
     rows = [line.split("\t") for line in a.evaluate("navigator.clipboard.readText()").split("\n")]
     check("copy table gives Journal, Short Name, Title, URL in the order shown",
-          rows[0] == ["Journal", "Short Name", "Title", "URL"] and rows[1] == ["NG", "NG_Tester_2020_TestPaper3", "Test paper 3", "https://example.org/paper-3"]
-          and rows[4][0] == "Biorxiv" and len(rows) == 5)
+          rows[0] == ["Journal", "Short Name", "Title", "URL"] and rows[1] == ["Nat Genet", "NatGenet_Tester_2020_TestPaper3", "Test paper 3", "https://example.org/paper-3"]
+          and rows[4][0] == "bioRxiv" and len(rows) == 5)
 
     row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()
@@ -125,7 +138,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
         dt = seen(added(b).locator(".count"), "1")
         check(f"a paper added in one browser shows in the other, upvoted by its submitter ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
-        check("it shows journal, short name and who added it", added(b).locator(".abbr").inner_text() == "Nature"
+        check("it shows journal, short name and who added it", added(b).locator(".journal").inner_text().split() == ["Nature", "added"]
               and added(b).locator(".short").inner_text() == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified"
               and "Added by Site Check" in added(b).locator(".meta").inner_text())
         a.click("#add-open")
@@ -150,6 +163,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         prompts = prompts[:n]
 
     check(f"no prompt, popup or page error {prompts + errors}", not prompts and not errors)
-    browser.close()
+    for page in pages:
+        page.context.close()
     server.shutdown()
 sys.exit(failed)

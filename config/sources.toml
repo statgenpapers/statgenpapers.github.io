@@ -14,64 +14,76 @@ junk_title = [
 # ... or the DOI matches one of these. 10.1038/d… is Nature-family news, comment and careers.
 junk_doi = ['^10\.1038/d\d']
 
-# Journals, fetched from OpenAlex by ISSN. `key` is the venue key in model/weights.json: keep it stable.
+# Journals, fetched from OpenAlex by ISSN. `abbr` is the official title abbreviation shown in the
+# Journal column and in short names. `key` is the venue key in model/weights.json: keep it stable.
 [[journals]]
 key = "Nature"
 name = "Nature"
+abbr = "Nature"
 issn = "0028-0836"
 
 [[journals]]
 key = "NG"
 name = "Nature Genetics"
+abbr = "Nat Genet"
 issn = "1061-4036"
 
 [[journals]]
 key = "NatCommun"
 name = "Nature Communications"
+abbr = "Nat Commun"
 issn = "2041-1723"
 
 [[journals]]
 key = "NRG"
 name = "Nature Reviews Genetics"
+abbr = "Nat Rev Genet"
 issn = "1471-0056"
 
 [[journals]]
 key = "NatMed"
 name = "Nature Medicine"
+abbr = "Nat Med"
 issn = "1078-8956"
 
 [[journals]]
 key = "NatHumBehav"
 name = "Nature Human Behaviour"
+abbr = "Nat Hum Behav"
 issn = "2397-3374"
 
 [[journals]]
 key = "Science"
 name = "Science"
+abbr = "Science"
 issn = "0036-8075"
 
 [[journals]]
 key = "SciTranslMed"
 name = "Science Translational Medicine"
+abbr = "Sci Transl Med"
 issn = "1946-6234"
 
 [[journals]]
 key = "Cell"
 name = "Cell"
+abbr = "Cell"
 issn = "0092-8674"
 
 [[journals]]
 key = "CG"
 name = "Cell Genomics"
+abbr = "Cell Genom"
 issn = "2666-979X"
 
 [[journals]]
 key = "AJHG"
 name = "American Journal of Human Genetics"
+abbr = "Am J Hum Genet"
 issn = "0002-9297"
 
 # Preprint servers (biorxiv or medrxiv) and their categories, as the server names them.
-# The venue key is "Biorxiv:genetics", "Medrxiv:health informatics", and so on.
+# `name` is shown in the Journal column. The venue key is "Biorxiv:genetics", and so on.
 [[preprints]]
 server = "biorxiv"
 name = "bioRxiv"

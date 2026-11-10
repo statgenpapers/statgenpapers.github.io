@@ -10,13 +10,17 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 3. Push workflow files over SSH; the local `gh` token lacks the `workflow` scope.
 4. A change to `firebase/firestore.rules` takes effect only when the owner publishes it in the
    Firebase console (no CLI login exists on this machine).
+5. Do not open the site in fresh browser profiles in a loop: every new profile creates an
+   anonymous Firebase user, and Firebase refuses sign-ups from an IP address after about 100 an
+   hour. `dev/site_check.py` reuses two saved profiles for this reason.
 
 ## Terminology
 
 - *Pool:* all candidates fetched for one month from the configured sources, after the junk filter and dedupe (about 2,000).
 - *Pick:* a paper the lab listed in its monthly reading list. The positive label for training and backtests; private.
 - *Shortlist:* the top 25 of a month's pool by score; what the site lists.
-- *Venue:* a journal key (`NG`) or a preprint `Server:category` (`Biorxiv:genetics`). One indicator feature each.
+- *Venue:* the internal key of a journal (`NG`) or of a preprint `Server:category` (`Biorxiv:genetics`). One indicator feature each; never shown.
+- *Journal:* the official title abbreviation shown in the table and in short names (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`).
 - *Lab weights:* `model/weights.json`, the logistic-regression weights fitted to picks.
 - *Vote correction:* the adjustment Δ to the lab weights fitted to upvotes. Final score = lab score + Δ·x.
 - *Table:* the four columns `Journal`, `Short Name`, `Title`, `URL`, as in the lab Sheet.

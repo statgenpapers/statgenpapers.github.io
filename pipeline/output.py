@@ -11,7 +11,7 @@ def paper_id(doi):
 
 
 def short_name(p):
-    """Sheet-style label Journal_Surname_Year_Keyword, such as NG_Smith_2026_FineMappingRareVariants.
+    """Sheet-style label Journal_Surname_Year_Keyword, such as NatGenet_Smith_2026_FineMappingRareVariants.
 
     Keyword: the name before a colon when the title starts with one ("SuSiE: ..."), else the
     first four title words that are not stopwords; CamelCase, existing capitals kept.
@@ -21,9 +21,9 @@ def short_name(p):
     words = [w for w in re.findall(r"[^\W_]+", head if colon and len(head.split()) <= 3 else title)
              if w.lower() not in STOPWORDS][:4]
     surname = re.sub(r"[\W_]", "", p.authors[0].split()[-1]) if p.authors else "NA"
-    return "_".join([p.venue.split(":")[0], surname, p.date[:4],
+    return "_".join([re.sub(r"[\W_]", "", p.journal), surname, p.date[:4],
                      "".join(w if w != w.lower() else w.capitalize() for w in words)])
 
 
 def table_row(p):
-    return [p.venue.split(":")[0], short_name(p), p.title, p.url]
+    return [p.journal, short_name(p), p.title, p.url]

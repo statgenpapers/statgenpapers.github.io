@@ -218,9 +218,11 @@ the commit that added this section.
    upvote is a positive and the other listed papers are negatives, and the fit has a free
    intercept next to the fixed lab-score offset. The correction starts at 30 upvoted papers
    (`min_upvoted`). Not yet confirmed by the owner; see open item 4.
-4. **Look.** Arial, one upvote button per paper.
-5. **No sort or filter controls.** The list is always ordered by votes, equal votes by score.
-   Each paper still shows whether it is published or a preprint.
+4. **Look.** Arial, one upvote button per paper, authors as first two … last two, the journal
+   only in its own column.
+5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
+   votes, equal votes by score. The Journal column shows official title abbreviations
+   (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).
 
 ### Details worth knowing
 
@@ -234,7 +236,16 @@ the commit that added this section.
 4. The weights were fitted on all twelve months, so the lists for months up to 2026-10 are
    in-sample. The About page says so.
 5. Vote snapshots are `data/votes/YYYY-MM.json`, one per listed month, rewritten each run.
-6. The workflow is built as section 6 proposes.
+6. The workflow is built as section 6 proposes. `astral-sh/setup-uv` has no moving major tag, so
+   it is pinned to a full version.
+7. The site signs in before it opens its Firestore listeners and uses long-polling
+   (`experimentalForceLongPolling`). With the SDK default, 2 of 90 page loads in a two-browser
+   test showed the other browser's vote more than 25 s late, although the server had it within
+   a second; with long-polling, 0 of 60 (median 0.5 s).
+8. Firebase refuses new anonymous sign-ups from one IP address after about 100 an hour
+   (`auth/too-many-requests`). Tests that open fresh browser profiles hit this;
+   `dev/site_check.py` therefore reuses two saved profiles on a fixed port. When a sign-in is
+   refused, the site stays readable and live, and says that voting is unavailable.
 
 ### Open
 

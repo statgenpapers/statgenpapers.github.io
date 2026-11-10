@@ -1,7 +1,7 @@
 :root {
   --bg: #f4f5f7; --surface: #fff; --subtle: #f8f9fb; --text: #15171c; --body: #333843; --muted: #667085; --border: #e3e6ec;
   --accent: #2355d8; --accent-hover: #1c46b6; --accent-soft: #e9effd; --on-accent: #fff;
-  --amber: #935f00; --amber-soft: #fdf2d8; --green: #176b43;
+  --green: #176b43;
   --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 2px 8px rgba(16, 24, 40, .04);
   --font: Arial, Helvetica, sans-serif;
   color-scheme: light dark;
@@ -10,7 +10,7 @@
   :root {
     --bg: #0f1115; --surface: #181b21; --subtle: #1d2129; --text: #eceef2; --body: #c9cdd6; --muted: #98a0af; --border: #2a2f3a;
     --accent: #86a6ff; --accent-hover: #a3bbff; --accent-soft: #1d2947; --on-accent: #0c1222;
-    --amber: #e6b65c; --amber-soft: #37290d; --green: #63d09a;
+    --green: #63d09a;
     --shadow: none;
   }
 }
@@ -62,7 +62,7 @@ select { font-weight: 600; padding-right: .5rem; }
 .hint { color: var(--muted); font-size: .78rem; font-weight: 400; }
 
 .table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
-.thead, .paper { display: grid; grid-template-columns: 3.1rem 5.6rem minmax(9rem, 16rem) minmax(0, 1fr) minmax(7rem, 11rem); column-gap: 1.1rem; padding: 0 1.1rem; }
+.thead, .paper { display: grid; grid-template-columns: 3.1rem 6.8rem minmax(9rem, 16rem) minmax(0, 1fr) minmax(7rem, 11rem); column-gap: 1.1rem; padding: 0 1.1rem; }
 .thead { background: var(--subtle); color: var(--muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; line-height: 2.5rem; border-bottom: 1px solid var(--border); }
 .thead span:first-child { text-align: center; }
 .list { list-style: none; margin: 0; padding: 0; }
@@ -84,9 +84,7 @@ select { font-weight: 600; padding-right: .5rem; }
 
 .journal { display: flex; flex-direction: column; align-items: flex-start; gap: .3rem; padding-top: .1rem; }
 .abbr { font-weight: 700; overflow-wrap: anywhere; }
-.kind { font-size: .68rem; font-weight: 700; letter-spacing: .02em; padding: .1rem .45rem; border-radius: 99px; white-space: nowrap; background: var(--subtle); color: var(--muted); border: 1px solid var(--border); }
-.kind.preprint { background: var(--amber-soft); color: var(--amber); border-color: transparent; }
-.kind.added { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.kind { font-size: .68rem; font-weight: 700; letter-spacing: .02em; padding: .1rem .45rem; border-radius: 99px; white-space: nowrap; background: var(--accent-soft); color: var(--accent); }
 .short { font-size: .8rem; color: var(--muted); overflow-wrap: anywhere; padding-top: .2rem; }
 .title { font-size: 1rem; line-height: 1.35; font-weight: 700; color: var(--text); }
 .title:hover { color: var(--accent); text-decoration: none; }

@@ -29,6 +29,7 @@ class Paper:
     authors: list[str]
     venue: str  # key of the venue weight: a journal key, or "Server:category" for preprints
     venue_name: str
+    journal: str  # official title abbreviation, as shown in the Journal column
     date: str
     type: str  # "published" or "preprint"
     abstract: str
@@ -137,6 +138,7 @@ def fetch_journals(cfg, start, end):
                 authors=[a["author"]["display_name"] for a in w.get("authorships") or [] if a["author"].get("display_name")],
                 venue=journal["key"],
                 venue_name=journal["name"],
+                journal=journal["abbr"],
                 date=w["publication_date"],
                 type="published",
                 abstract=clean(" ".join(position[i] for i in sorted(position))),
@@ -169,6 +171,7 @@ def fetch_preprints(cfg, start, end):
                         authors=[" ".join(reversed(a.split(",", 1))).strip() for a in p["authors"].split(";") if a.strip()],
                         venue=f"{src['server'].capitalize()}:{category}",
                         venue_name=f"{src['name']} · {category}",
+                        journal=src["name"],
                         date=p["date"],
                         type="preprint",
                         abstract=clean(p["abstract"]),

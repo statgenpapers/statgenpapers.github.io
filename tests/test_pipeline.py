@@ -6,9 +6,9 @@ from pipeline.output import paper_id, short_name, table_row
 from pipeline.score import linear, vote_correction
 
 
-def paper(doi, title, type="published", venue="NG", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
-    return Paper(doi=doi, url=f"https://doi.org/{doi}", title=title, authors=list(authors), venue=venue,
-                 venue_name=venue, date=date, type=type, abstract="", published_doi=published_doi)
+def paper(doi, title, type="published", journal="Nat Genet", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
+    return Paper(doi=doi, url=f"https://doi.org/{doi}", title=title, authors=list(authors), venue="NG", venue_name="",
+                 journal=journal, date=date, type=type, abstract="", published_doi=published_doi)
 
 
 def test_dedupe_keeps_published_version_within_month():
@@ -32,12 +32,12 @@ def test_paper_id_uses_the_firestore_alphabet():
 
 
 def test_short_name_and_table_row():
-    assert short_name(paper("10.1/a", "Fine-mapping of rare variants in a biobank")) == "NG_Smith_2026_FineMappingRareVariants"
-    assert short_name(paper("10.1/b", "SuSiE-x: a method for the cross-ancestry case", venue="Biorxiv:genetics",
-                            authors=["J. van der Müller-O'Neil"])) == "Biorxiv_MüllerONeil_2026_SuSiEX"
-    assert short_name(paper("10.1/c", "Alzheimer’s disease genetics", authors=[])) == "NG_NA_2026_AlzheimerDiseaseGenetics"
-    assert table_row(paper("10.1/d", "A cell atlas", venue="Medrxiv:health informatics")) == [
-        "Medrxiv", "Medrxiv_Smith_2026_CellAtlas", "A cell atlas", "https://doi.org/10.1/d"]
+    assert short_name(paper("10.1/a", "Fine-mapping of rare variants in a biobank")) == "NatGenet_Smith_2026_FineMappingRareVariants"
+    assert short_name(paper("10.1/b", "SuSiE-x: a method for the cross-ancestry case", journal="bioRxiv",
+                            authors=["J. van der Müller-O'Neil"])) == "bioRxiv_MüllerONeil_2026_SuSiEX"
+    assert short_name(paper("10.1/c", "Alzheimer’s disease genetics", authors=[])) == "NatGenet_NA_2026_AlzheimerDiseaseGenetics"
+    assert table_row(paper("10.1/d", "A cell atlas", journal="Am J Hum Genet")) == [
+        "Am J Hum Genet", "AmJHumGenet_Smith_2026_CellAtlas", "A cell atlas", "https://doi.org/10.1/d"]
 
 
 def test_clean_and_url_doi():

@@ -44,7 +44,7 @@ export function shortName(journal, surname, year, title) {
   const head = colon > 0 && t.slice(0, colon).trim().split(/\s+/).length <= 3 ? t.slice(0, colon) : t;
   const words = (head.match(/[\p{L}\p{N}]+/gu) || []).filter((w) => !STOPWORDS.has(w.toLowerCase())).slice(0, 4);
   const alnum = (s) => String(s || "").replace(/[^\p{L}\p{N}]/gu, "");
-  return [alnum(journal.split(":")[0]), alnum(surname), year, words.map((w) => (w !== w.toLowerCase() ? w : w[0].toUpperCase() + w.slice(1))).join("")]
+  return [alnum(journal), alnum(surname), year, words.map((w) => (w !== w.toLowerCase() ? w : w[0].toUpperCase() + w.slice(1))).join("")]
     .filter(Boolean).join("_");
 }
 
@@ -54,8 +54,7 @@ const mine = (id) => state.votes.get(id)?.[state.uid]?.v === 1;
 
 // Listed papers and visitor-added papers in one shape
 function items() {
-  const listed = (state.data?.papers || []).map((p) => ({ ...p, journal: p.venue.split(":")[0] }));
-  const dois = new Set(listed.map((p) => p.doi));
+  const listed = state.data?.papers || [], dois = new Set(listed.map((p) => p.doi));
   return [...listed, ...state.subs.filter((s) => !dois.has(urlDoi(s.url))).map((s) => ({ ...s, added: true }))];
 }
 
@@ -72,16 +71,17 @@ function createRow(p) {
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
   q(".abbr").textContent = p.journal;
-  q(".kind").textContent = p.added ? "added" : p.type;
-  q(".kind").classList.add(p.added ? "added" : p.type);
+  q(".abbr").title = p.venue_name || "";
+  if (p.added) q(".journal").append(el("span", "kind", "added"));
   q(".short").append(...p.short_name.split("_").flatMap((part, i) => (i ? ["_", document.createElement("wbr"), part] : [part])));  // wrap after underscores first
   q(".title").textContent = p.title;
   q(".url").textContent = (p.url || "").replace(/^https?:\/\/(www\.)?/i, "");
   q(".url").title = p.url || "";
   for (const a of [q(".title"), q(".url")]) url ? (a.href = url) : a.removeAttribute("href");
-  const authors = p.added ? "" : p.authors.length <= 4 ? p.authors.join(", ") : `${p.authors.slice(0, 3).join(", ")} et al.`;
-  const meta = p.added ? [`Added by ${p.name || "a visitor"}`] : [authors, p.venue_name, p.date, `score ${p.score.toFixed(2)}`];
-  q(".meta").append(...meta.filter(Boolean).flatMap((text, i) => [i ? " · " : "", el("span", i > 1 ? "nowrap" : "", text)]));
+  const a = p.authors || [], cut = a.length === 100;  // OpenAlex lists at most 100 authors, so the last ones are unknown
+  const authors = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
+  const meta = p.added ? [`Added by ${p.name || "a visitor"}`] : [authors, p.date, `score ${p.score.toFixed(2)}`];
+  q(".meta").append(...meta.filter(Boolean).flatMap((text, i) => [i ? " · " : "", el("span", i ? "nowrap" : "", text)]));
   q(".toggle").textContent = p.added ? "Details" : "Abstract";
   q(".toggle").addEventListener("click", () => {
     const open = q(".details").hidden;
@@ -93,7 +93,7 @@ function createRow(p) {
   const details = q(".details");
   if (!p.added) {
     details.append(el("p", "", (p.abstract || "").replace(/^abstract[\s:.]+(?=[A-Z])/i, "") || "No abstract available."));
-    if (p.authors.length > 4) details.append(el("p", "who", `Authors: ${p.authors.join(", ")}${p.authors.length === 100 ? ", …" : ""}`));
+    if (a.length > 4) details.append(el("p", "who", `Authors: ${a.join(", ")}${cut ? ", …" : ""}`));
   }
   details.append(el("p", "who voters"));
   if (p.added) {
@@ -190,11 +190,17 @@ async function connect() {
   try {
     const [app, auth, firestore] = await Promise.all(["app", "auth", "firestore"].map((m) => import(`${SDK}/firebase-${m}.js`)));
     fb = { ...auth, ...firestore };
-    const instance = app.initializeApp(firebaseConfig);
-    db = fb.getFirestore(instance);
+    const instance = app.initializeApp(firebaseConfig), user = fb.getAuth(instance);
+    // Sign in before the first listener, so the connection opens once, as this visitor.
+    await user.authStateReady();
+    if (!user.currentUser) {  // silent: no prompt, the id stays in this browser
+      await fb.signInAnonymously(user).catch((e) => { console.warn(e); toast("Voting is unavailable right now; the list is still live."); });
+    }
+    fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
+    // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
+    // another browser's vote more than half a minute late after about 1 page load in 50.
+    db = fb.initializeFirestore(instance, { experimentalForceLongPolling: true });
     listen();
-    fb.onAuthStateChanged(fb.getAuth(instance), (user) => { state.uid = user?.uid || null; render(); });
-    await fb.signInAnonymously(fb.getAuth(instance));  // silent: no prompt, the id stays in this browser
   } catch (e) {
     console.warn(e);
     toast("Voting is unavailable right now; the list is still readable.");

@@ -65,7 +65,7 @@ def main():
         sys.exit("the pool is smaller than the shortlist; nothing written")
     if args.pool_out:
         Path(args.pool_out).write_text("".join(json.dumps({
-            "journal": p.venue.split(":")[0], "category": p.venue.partition(":")[2] or "article", "doi": p.doi,
+            "journal": p.venue.split(":")[0], "category": p.venue.partition(":")[2] or "article", "doi": p.doi,  # the lab's journal keys
             "url": p.url, "title": p.title, "date": p.date, "abstract": p.abstract}) + "\n" for p in papers))
 
     model = load_model(weights)
