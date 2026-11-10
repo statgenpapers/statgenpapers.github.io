@@ -1,0 +1,14 @@
+# Local-only handoff material: lab-internal data, Sheet ID, local paths
+handoff/
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.cache/
+
+# Local data and secrets
+*.sqlite
+*.sqlite-journal
+.env
+*.key
