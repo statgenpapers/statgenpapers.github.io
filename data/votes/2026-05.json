@@ -1,13 +1,6 @@
 {
  "month": "2026-05",
  "submissions": {
-  "1C2mR3PNrYT3pFGd8s2u": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Cudic_2026_ContextForPRS",
-   "title": "Putting polygenic scores in context: How intersectional factors affect relative and absolute genetic risk",
-   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00123-0"
-  },
   "1UsVgWwuoOQq8lxNUow2": {
    "abstract": "Abstract Mapping the genetic basis of inter-individual heterogeneity in multifactorial diseases opens the door to mechanistic insights and opportunities for targeted intervention. In Alzheimer’s disease (AD), clinical and pathological heterogeneity is well recognized, but genetic dissection is limited by a lack of well-powered cohorts with deep phenotypic characterization. Here, we introduce a polygenic score (PGS) analysis strategy to address these limitations by leveraging the inherent pleiotropy in complex trait genetics. We perform a cross-cohort, cross-trait application of pre-trained PGS, integrating 713 UK Biobank-derived PGS with 36 deep AD phenotypes across 1678 ROSMAP participants. We identify 268 statistically significant (FDR<0.1) associations between 12 prioritized PGS and 36 AD phenotypes. Prioritized PGS include blood lipid measurements, inflammatory biomarkers, and cancer traits; observed AD phenotypes include cognition, amyloid, and tangles. Of the 268 associations, 49 persist with APOE -excluded PGS. Predictive models trained on multiple prioritized PGS outperform the AD PGS or APOE alone for predicting amyloid and cognition. Lastly, our approach identifies six individual-level AD polygenic subtypes supported by distinct pathological patterns. Overall, we combine large-scale biobank resources and deeply-phenotyped cohorts using PGS, reveal genetic features underlying AD heterogeneity, and provide a general model for stratifying heterogeneous disease-focused cohorts using genomics.",
    "journal": "Preprint",
@@ -15,12 +8,12 @@
    "title": "Dissecting Alzheimer’s disease heterogeneity by cross-trait polygenic prediction",
    "url": "https://www.biorxiv.org/content/10.64898/2026.05.15.725551v1"
   },
-  "2b8Gq358b0Pn1Gqcpx6T": {
-   "abstract": "",
+  "3VuoVeV6ANL0szxOLiGH": {
+   "abstract": "LD Score Regression (LDSC) is a prominent method, which estimates whole-genome SNP heritability from summary statistics via the slope of a linear regression of GWAS test statistics corresponding to a trait of interest against LD scores. It was claimed by the LDSC authors that the free intercept in the regression accounts for confounding bias such as population stratification. In this study, we argue that the intercept in LDSC must be fixed to 1 for accurate SNP heritability estimation. We show both theoretically and with simulations that the estimated intercept does not accurately capture population stratification effects, and that it adversely affects the accuracy of the heritability estimate introducing bias and increasing variance. Fixing the intercept to 1 eliminates bias and reduces variance when no population stratification is present. On the other hand, under population stratification, LDSC is biased with both the free and the fixed intercept. Additionally, we show that estimated standard errors in LDSC are underestimated, potentially leading to false-positives in downstream GWAS analyses.",
    "journal": "Preprint",
    "short_name": "Biorxiv_Pham_2026_ConsiderationsForLDSC",
    "title": "When can whole-genome SNP heritability be reliably estimated from summary statistics?",
-   "url": "https://www.biorxiv.org/content/biorxiv/early/2026/05/16/2026.05.13.724972.full.pdf"
+   "url": "https://doi.org/10.64898/2026.05.13.724972"
   },
   "4tjUym5fNtjyclrS69EV": {
    "abstract": "Cancer-causing mutations have been identified primarily from positive selection signals in cancer genomes. However, positive selection is also a ubiquitous feature of normal tissue aging. Here we develop a statistical framework to disentangle selection in normal tissue and causation of carcinogenesis. By comparing cancer and normal tissue genomes, we estimate the effects of mutations on cancer risk in the blood, esophagus and colon. We determine that stronger cancer-causing mutations are enriched at younger patient ages. This enables cancer-causing mutations to be identified from patient age distributions, even without normal tissue data. Moreover, we show for acute myeloid leukemia that the age-dependence of purported causal mutations can be explained largely by normal blood evolution, challenging the long-standing notion that childhood cancers require distinct mutations. Broadly, our framework delineates carcinogenesis from normal tissue aging, improving the assessment of cancer risk conferred by mutations. Mutations may be enriched in tumor samples because they promote carcinogenesis or because they promote clonal expansions in healthy tissue. This study mathematically disentangles these two possibilities by analyzing tumor and normal tissue sequencing datasets.",
@@ -50,19 +43,19 @@
    "title": "A multi-agent system for automating scientific discovery",
    "url": "https://www.nature.com/articles/s41586-026-10652-y"
   },
+  "AVB9gCGw1Puh9Sl86mRR": {
+   "abstract": ", yet the underlying molecular mechanisms of this modulation remain unclear. Here we integrate more than 11,000 transcriptomes from more than 25 tissues across 4 mammals (mouse, rat, macaque and human) to develop accurate, interpretable rodent and multi-species biomarkers of chronological age and expected mortality, predicting lifespan-modulating interventions, time to death, chronic diseases and rejuvenation. Ageing-related changes were conserved across species and cell types, revealing universal transcriptomic signatures of mammalian ageing and mortality, including CDKN1A and LGALS3, whose protein levels were also associated with mortality and multimorbidity in UK Biobank. Mortality-associated features were recapitulated across in vivo and in vitro damage-accumulation models, including inflammation, replicative senescence, metabolic inhibition and γ-irradiation, and were attenuated or reversed by cell immortalization, reprogramming, heterochronic parabiosis and early embryogenesis. Network analysis uncovered a modular architecture of ageing- and mortality-associated hallmarks, encompassing inflammation, interferon signalling, mitochondrial function, chromatin modification and extracellular matrix organization. To quantify ageing of individual cellular components, we developed module-specific clocks, which revealed pathway-specific effects of interventions: chronic diseases primarily accelerated inflammatory-module ageing, whereas caloric restriction and Klotho (also known as Kl) deficiency targeted mitochondrial and metabolic modules. Transcriptomic and DNA methylation clocks showed correlated age acceleration in human blood, which was strongest for the chromatin-associated module clock, highlighting mechanistic links between molecular ageing modalities. This study reveals conserved signatures and a modular architecture of mortality regulation, providing a framework for quantifying and targeting ageing of cellular subsystems across species and tissues.",
+   "journal": "Nature",
+   "short_name": "Nature_Tyshkovskiy_2026_UniversalTranscriptomicPatternsAgeing",
+   "title": "Universal transcriptomic hallmarks of mammalian ageing and mortality",
+   "url": "https://www.nature.com/articles/s41586-026-10542-3"
+  },
   "BYLsJWlzULu9LEzeqYlv": {
    "abstract": "Large-scale biobanks have enabled increasingly complicated genetic analyses across thousands of phenotypes. However, studies rarely consider the appropriate phenotype measurement scale, a problem that can drastically affect inferences on genetic architecture. Here, we introduce SIQReg, a practical solution to this classical problem, which learns a data-driven phenotype scale by minimizing heterogeneity across phenotype quantiles. Applied to complex traits in UK Biobank, SIQReg rejects the default scale for 24/25 traits. Generally, SIQReg scales lie between default and logarithmic, indicating that default-scale traits are neither purely additive nor purely multiplicative. We show that SIQReg improves both non-additive and additive genetic analyses. SIQReg eliminates most non-additive genetic signals (such as 97% of vQTL and 76% of quantile-dependent TWAS genes), indicating they may be statistical artifacts, while preserving biologically plausible non-additive signals. Simultaneously, SIQReg improves power to detect additive signals, increasing GWAS loci, TWAS genes, and PGS prediction accuracy by 11%, 13%, and 10%, respectively, and identifies 50% more high-risk individuals. These gains replicate across ancestry groups. Our results establish SIQReg as a principled approach to phenotype scale transformation that improves genetic analyses of complex traits.",
    "journal": "Preprint",
    "short_name": "Biorxiv_Huang_2026_OptimizingPhenotypeScale",
    "title": "Optimizing phenotype scale improves genetic analyses in large-scale biobanks",
    "url": "https://www.biorxiv.org/content/10.64898/2026.05.04.722531v1"
-  },
-  "CSjttLm44QlJ4mzsM2Z5": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Kang_2026_FusioMR",
-   "title": "A flexible and unified framework for single- and multi-outcome Mendelian randomization using summary statistics",
-   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00147-3"
   },
   "HqXPr5Q9f0hrVp1azcUX": {
    "abstract": "Genetic support for drug targets substantially increases clinical success rates, establishing genomewide association studies (GWAS) as central to therapeutic hypothesis generation. However, the same genetic evidence that reveals causal gene-disease relationships simultaneously exposes organismlevel safety liabilities-a dimension requiring principled, genome-wide quantification. Here we systematically analyse 100,526 GWAS to yield 789,453 credible sets and gene prioritisations for 15,641 genes, with discovery showing no saturation as GWAS expand and increase diversity. We find that 64% of GWAS-implicated genes are pleiotropic, associated with traits across multiple diseases and showing a non-linear relationship between the degree of pleiotropy and clinical success. Highly pleiotropic genes-concentrated in immune, inflammatory, and oncogenic signalling programmes-are enriched in safety-terminated clinical programmes, mouse lethal knockouts, and cancer driver genes, establishing gene-level pleiotropy as a potential measure of genetically-informed organism-level safety liability. Protein-altering variant (PAV) support amplifies therapeutic signal (OR = 6.0), yet PAV targets show higher average pleiotropy, introducing a competing safety liability. Combining PAV support with intermediate pleiotropy (2-5 therapeutic areas) resolves this tension, yielding OR = 10.3 and relative success = 4.8-a profile already satisfied by 52 approved therapies. As GWAS continue to expand in scale and resolution, these findings lay the groundwork for increasingly sophisticated target discovery strategies that yield safer and more effective therapeutic hypotheses.",
@@ -92,6 +85,13 @@
    "title": "Expanding the human proteome with microproteins and peptideins",
    "url": "https://www.nature.com/articles/s41586-026-10459-x"
   },
+  "WAt3wiI3uWZgBO3TXnD9": {
+   "abstract": "Breast cancer (BRCA) affects one in eight women, and while past studies have identified susceptibility genes and variants, those driving early-onset disease remain opaque. We introduce EA-Pathways, a control-free association method that aggregates ultra-rare germline coding variants weighted by Evolutionary Action to detect functional impact distribution biases in genes and pathways. In UK Biobank women with BRCA, EA-Pathways prioritized candidate risk genes across pathways enriched in known familial genes. Ultra-rare, high-impact variants in these genes were BRCA specific, and variants from eight pathways were associated with 2-year-earlier disease, including homology-directed DNA repair, TP53, and pexophagy pathways. The early-onset effect replicated in All of Us with diagnoses up to 6, 9, and 3 years earlier in European, admixed American, and African genetic ancestries, highlighting risk alleles with differing frequencies between ancestry groups. These findings demonstrate EA-Pathways as a sensitive pathway association method capable of identifying cancer-predisposing genes and ancestry-informed BRCA screening opportunities.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Asmussen_2026_EA-PathwayForUltraRareVariants",
+   "title": "Ultra-rare functional variants reveal early-onset breast cancer risk genes and pathways in the UK Biobank and All of Us Research Program",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.03.005"
+  },
   "WL6WmVlQfAmbJ6N8C7Rz": {
    "abstract": "Abstract Perturbations of genes with functional importance in T cells could be used to change the distribution of CD8 T cell states to enhance anti-tumor functions for cancer immunotherapies. We launched a world-wide computational challenge to predict the effects of gene perturbations and to devise objective functions for prioritizing gene perturbations that lead to desired T-cell state distributions. We supported the challenge by generating a single-cell Perturb-seq dataset profiling the effect of knocking out 73 individual expert-defined genes in T cells transferred into a mouse melanoma model. We compared the top algorithms developed by participants, and found that performance was primarily determined by the prior data used for gene feature representation, with perturbational data derived features, proving most effective. Experimental validation of the top 61 genes nominated by the algorithms revealed that perturbation of Ndufv2 and Dimt1 reached the defined objective and biased T cell differentiation toward desired states.",
    "journal": "Preprint",
@@ -100,7 +100,7 @@
    "url": "https://www.biorxiv.org/content/10.64898/2026.05.21.726863v1"
   },
   "X8Zf99BVvB47vYK0BENY": {
-   "abstract": "",
+   "abstract": "The pleiotropic effects of cis-regulatory mutations are generally assumed to be limited by the modularity of enhancers. However, the discovery of cis-regulatory sequences that affect multiple tissues, multiple genes or genome structure suggests that they may be subject to greater evolutionary constraint than often considered. In this Comment, Patricia Wittkopp revisits assumptions that cis-regulatory mutations are weakly pleiotropic, ultimately calling for more data to assess the extent to which they are less pleiotropic and deleterious than trans-regulatory mutations.",
    "journal": "Nat Rev Genet",
    "short_name": "NRG_Wittkopp_2026_PleiotropicCisEffects",
    "title": "Pleiotropic effects of cis-regulatory mutations",
@@ -127,6 +127,13 @@
    "title": "Genetic architecture of high-dimensional liver radiomic phenotypes and their role in common metabolic diseases",
    "url": "https://www.medrxiv.org/content/10.64898/2026.05.19.26353617v1"
   },
+  "h3txsLXrsFpBHy2lQVvn": {
+   "abstract": "Abstract The cycle of scientific discovery is frequently bottlenecked by the slow, manual creation of software to support computational experiments 1 . To address this, we present Empirical Research Assistance (ERA), an artificial intelligence (AI) system that creates expert-level scientific software whose goal is to maximize a quality metric. The system uses a large language model (LLM) and tree search 2 to systematically improve the quality metric and intelligently navigate the large space of possible solutions. ERA achieves expert-level results when it explores and integrates complex research ideas from external sources. The effectiveness of tree search is demonstrated across a diverse range of tasks. In bioinformatics, ERA discovered 40 new methods for single-cell data analysis that outperformed the top human-developed methods on a public leaderboard. In epidemiology, ERA generated 14 models that outperformed the Centers for Disease Control and Prevention (CDC) ensemble and all other individual models for forecasting COVID-19 hospitalizations. ERA also produced expert-level software for geospatial analysis, neural activity prediction in zebrafish and numerical solution of integrals, as well as a new rule-based construction for time-series forecasting. By devising and implementing new solutions to diverse tasks, ERA represents a notable step towards accelerating scientific progress.",
+   "journal": "Nature",
+   "short_name": "Nature_Aygün_2026_SoftwareWritingAI",
+   "title": "An AI system to help scientists write expert-level empirical software",
+   "url": "https://www.nature.com/articles/s41586-026-10658-6"
+  },
   "iZEaDKklX16nyWugAMW9": {
    "abstract": "Rare coding variants can have large effects on disease risk and provide direct routes from human genetics to disease mechanisms and therapeutic targets, but their discovery is constrained by sample size, particularly for low-prevalence diseases. Here we establish the Biobank Rare Variant Analysis (BRaVa) consortium, a global rare variant association resource that integrates sequencing and linked health-record data from ten biobanks and cohorts comprising over 1.2 million individuals across diverse ancestries. We performed gene-based meta-analyses of rare coding variation across 33 clinical endpoints and 11 quantitative traits. Aggregating evidence across biobanks and ancestries identified 514 gene-trait associations, including 31 not previously reported in prior studies or curated association resources following systematic literature review. Notably, 36.1% of gene-level associations were undetectable in any individual biobank, and 91 emerged only through cross-ancestry meta-analysis, demonstrating that federated integration enables discovery beyond the reach of single cohorts. Similar gains were observed at the variant level, where 25.0% of phenotype-locus associations were detectable only through meta-analysis. Effect size estimates were correlated across ancestries with concordant directions of effect, supporting the generalizability of rare variant associations. The identified signals implicate pathways involved in transcriptional and epigenetic regulation, metabolism, vascular and epithelial biology, and immune function, highlighting rare coding variation as an engine for biological discovery across medical record phenotypes. For example, damaging variation in ANKRD12 implicates inflammatory transcriptional dysregulation in asthma and chronic obstructive pulmonary disease, and ultra-rare predicted loss-of-function variants in NAA15 link protein acetylation processes to type 2 diabetes risk. BRaVa establishes a scalable framework and freely available community resource for rare variant meta-analysis across global biobanks. Public release of gene- and variant-level association summary statistics provides a reference map of rare coding variant associations to support disease gene discovery, biological interpretation, and therapeutic target prioritization as sequencing-linked health-record resources continue to expand.",
    "journal": "Preprint",
@@ -148,6 +155,13 @@
    "title": "Patterns and drivers of 43,617 mosaic chromosomal alterations in blood",
    "url": "https://www.nature.com/articles/s41588-026-02592-0"
   },
+  "scizRxD0XbqKpwZ1XbKD": {
+   "abstract": "The clinical utility of polygenic scores (PGSs) is known to vary when training and test samples differ in ancestry, with recent work suggesting that sociodemographic differences can also impact PGS performance. However, the impact of belonging to multiple intersecting contexts on genetic risk remains understudied. We analyzed lifetime disease odds ratio (OR) and absolute risk (AR) estimates in high-PGS individuals across 106 two-way intersections of sociodemographic factors (sex, age, alcohol intake, smoking, income, and deprivation). Seven diseases were assessed: atrial fibrillation, coronary artery disease, type 2 diabetes, hypercholesterolemia, asthma, obesity, and major depression. Primary analyses were performed in the UK Biobank (UKB; n = 375,054, British-European-like ancestry), with replication in All of Us (AoU; n = 36,552, African-like ancestry and n = 99,477, European-like ancestry). ORs varied significantly across contexts, with greater variation observed across intersectional contexts. On average, the maximal OR varied across two-way contexts by 56%. AR deviations were more moderate after adjusting for context prevalence but still showed intersectional effects. For example, high-PGS, low-income individuals had an average 1.0 percentage-point drop in estimated AR across phenotypes using a context-aware vs. context-unaware PGS, while those additionally reporting low alcohol intake had a 3.1-point lower AR estimate for major depression in the UKB. Results were generally consistent across datasets, with strongest replication in European-like AoU samples. Our findings show that intersectional contexts can have a sizable impact on genetic risk effect estimates. Future clinical applications may need to incorporate these contextual effects to improve accuracy and fairness for individual-specific genetic risk assessment.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Cudic_2026_ContextForPRS",
+   "title": "Putting polygenic scores in context: How intersectional factors affect relative and absolute genetic risk",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.03.013"
+  },
   "tdt7o5ELeWWxwKTQEpMy": {
    "abstract": "Abstract Immune dysfunction has been increasingly implicated in bipolar disorder, but the underlying mechanisms remain unclear. To address this, we profile 833 genome-wide chromatin immunoprecipitation sequencing datasets spanning five histone marks in peripheral blood immune cells from 88 Type I bipolar disorder patients and 92 controls, integrating them with whole-genome sequencing and clinical data. We identify disease-associated cis -regulatory elements and genetically influenced regulatory elements, revealing immune signatures and pathways involving calcium signaling and endoplasmic reticulum transport. By integrating genetic risk variants, differential and genetically influenced regulatory elements, and regulatory element—gene links, we prioritize 39 driver genes, 28 of which are exclusively supported by blood evidence. We further stratify patients into five epigenomic subtypes with distinct clinical features and genetic risk profiles and identify compounds that reverse disease-associated epigenomic signatures. Here, we combine immune epigenomics with genetics and clinical traits to identify driver genes, patient subtypes, and therapeutic candidates, highlighting immune contributions to type I bipolar disorder pathogenesis.",
    "journal": "Nat Commun",
@@ -156,18 +170,11 @@
    "url": "https://www.nature.com/articles/s41467-026-72543-0?utm_source=Active+Broad+Users&utm_campaign=ee3e9475f1-EMAIL_CAMPAIGN_2026_05_12_03_10&utm_medium=email&utm_term=0_-ee3e9475f1-483412034&mc_cid=ee3e9475f1&mc_eid=8210b24b38"
   },
   "thdLOe4ifOm2fdYWlyjB": {
-   "abstract": "",
+   "abstract": "Polygenic risk scores (PRSs) hold promise for precision medicine, yet their clinical translation is hindered by substantial uncertainty in individual risk estimates and often limited agreement in risk stratification across multiple PRSs for the same disease. We develop a unified inferential framework to calibrate PRS point estimates and uncertainties for both quantitative traits and binary phenotypes, and to characterize how PRS accuracy, uncertainty, pairwise correlation jointly determine misclassification and classification inconsistency. We show, both theoretically and empirically, that individual- and population-level misclassification and inconsistency rates are highly predictable in independent datasets. We further evaluate PRS integration and uncertainty-aware probabilistic thresholding strategies that reduce misclassification and improve concordance in risk stratification. Together, these results demonstrate that instability in PRS-based classification is a predictable statistical consequence of uncertainty and establish a principled foundation for incorporating uncertainty into PRS-based risk interpretation, communication, and clinical decision-making.",
    "journal": "Preprint",
    "short_name": "Medrxiv_Zhang_2026_PolygenicPrediction",
    "title": "Characterizing the Uncertainty, Misclassification and Inconsistency of Polygenic Prediction",
    "url": "https://www.medrxiv.org/content/10.64898/2026.05.11.26352897v1"
-  },
-  "uj1gn4xNNjcm0DRAn7ck": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Asmussen_2026_EA-PathwayForUltraRareVariants",
-   "title": "Ultra-rare functional variants reveal early-onset breast cancer risk genes and pathways in the UK Biobank and All of Us Research Program",
-   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00114-X"
   },
   "v6Dpp3UNrsRmW1YIbWxf": {
    "abstract": "We introduce a novel approach, Genomic-Relatedness-Matched Association (GRMA) studies, as an alternative to genome-wide association studies (GWAS). GWAS are typically restricted to samples of mostly unrelated individuals with a single, shared continental ancestry and nevertheless can still be biased by gene-environment correlation and assortative mating. In contrast, GRMA can be implemented in ancestrally diverse samples-retaining individuals of mixed or underrepresented ancestries and eliminating the need to assign labels to ancestry groups-and can reduce bias relative to standard GWAS. GRMA matches each individual to a group of controls whose pairwise relatedness with the individual exceeds a user-specified threshold. It generates SNP-level summary statistics based on within-group associations. In applications using the UK Biobank and All of Us data, we find that GRMA compares favorably to GWAS methods in terms of bias, precision, and population coverage. GRMA enables several novel findings; for example, we find that \"genetic nurture\" is unlikely to be an important source of genome-wide bias in population GWAS of body mass index, height, and educational attainment. The method is computationally efficient and supported by open-source software, facilitating its application in large-scale scientific and health-related studies.",
@@ -195,7 +202,19 @@
   "10.1016_j.ajhg.2026.04.003": {
    "8c6976e5b5410415": 1
   },
+  "10.1016_j.ajhg.2026.04.005": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.04.009": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.04.013": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.xgen.2026.101221": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2026.101250": {
    "8c6976e5b5410415": 1
   },
   "10.1038_s41586-026-10516-5": {
@@ -222,13 +241,10 @@
   "10.1038_s41588-026-02613-y": {
    "8c6976e5b5410415": 1
   },
-  "1C2mR3PNrYT3pFGd8s2u": {
-   "8c6976e5b5410415": 1
-  },
   "1UsVgWwuoOQq8lxNUow2": {
    "8c6976e5b5410415": 1
   },
-  "2b8Gq358b0Pn1Gqcpx6T": {
+  "3VuoVeV6ANL0szxOLiGH": {
    "8c6976e5b5410415": 1
   },
   "4tjUym5fNtjyclrS69EV": {
@@ -243,10 +259,10 @@
   "90WloFfyyj2oCxd8iWkm": {
    "8c6976e5b5410415": 1
   },
-  "BYLsJWlzULu9LEzeqYlv": {
+  "AVB9gCGw1Puh9Sl86mRR": {
    "8c6976e5b5410415": 1
   },
-  "CSjttLm44QlJ4mzsM2Z5": {
+  "BYLsJWlzULu9LEzeqYlv": {
    "8c6976e5b5410415": 1
   },
   "HqXPr5Q9f0hrVp1azcUX": {
@@ -259,6 +275,9 @@
    "8c6976e5b5410415": 1
   },
   "UT0jt7R7Qf7k0G2EmmA6": {
+   "8c6976e5b5410415": 1
+  },
+  "WAt3wiI3uWZgBO3TXnD9": {
    "8c6976e5b5410415": 1
   },
   "WL6WmVlQfAmbJ6N8C7Rz": {
@@ -276,6 +295,9 @@
   "fBHKezGsUyL9ZehkfDkv": {
    "8c6976e5b5410415": 1
   },
+  "h3txsLXrsFpBHy2lQVvn": {
+   "8c6976e5b5410415": 1
+  },
   "iZEaDKklX16nyWugAMW9": {
    "8c6976e5b5410415": 1
   },
@@ -285,13 +307,13 @@
   "qzQ9ZiGyCR7XUlnnu2oG": {
    "8c6976e5b5410415": 1
   },
+  "scizRxD0XbqKpwZ1XbKD": {
+   "8c6976e5b5410415": 1
+  },
   "tdt7o5ELeWWxwKTQEpMy": {
    "8c6976e5b5410415": 1
   },
   "thdLOe4ifOm2fdYWlyjB": {
-   "8c6976e5b5410415": 1
-  },
-  "uj1gn4xNNjcm0DRAn7ck": {
    "8c6976e5b5410415": 1
   },
   "v6Dpp3UNrsRmW1YIbWxf": {

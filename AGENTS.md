@@ -32,7 +32,8 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 - *Shortlist:* the papers of a month's pool that the site lists.
 - *Venue:* internal key of a journal (`NG`) or `Preprint` for every preprint; never shown.
 - *Journal:* the abbreviation shown (`Nat Genet`, `bioRxiv`).
-- *Base weights:* `model/weights.json`, fitted to the cold start. *Vote correction:* Δ fitted to all marks; score = base + Δ·x.
+- *Base weights:* `model/weights.json`, fitted to the cold start: the 12 months before a list, weight halving every 6
+  months (`dev/recency.py`). *Vote correction:* Δ fitted to all marks; score = base + Δ·x.
 - *Table:* the columns `Journal`, `Short Name`, `Title`, `URL`. *Short name:* `Journal_FirstAuthor_Year_Keyword`.
 - *Submission:* a paper a reader added. *Handle:* a password-free login, lower case.
 - *Mark:* a reader's "interested" (▲ and a count); stored as a vote document.

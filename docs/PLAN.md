@@ -225,6 +225,10 @@ the commit that added this section.
    handle `admin`, which only `dev/lab_marks.py` writes, through the API. From 2026-11 every mark, `admin`'s
    included, trains the vote correction. The Score is the calibrated prediction that a paper gets marked.
    "Picks" in the evidence above means those cold-start positives.
+6. **Recency (2026-11-11).** A model for month M is fitted on the 12 months before M, each weighted
+   0.5^(age/6) (`dev/recency.py`), with pools from 2025-01. Leak-free over 2026-01..10 (239 picks), against
+   equal weights from 2025-11: AUC 0.971 vs 0.969, 110 vs 108 picks in the top 25. Equal weights from 2025-01
+   did worse (105); a 6-month half-life without the cutoff did best (112), within noise of the chosen one.
 5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
    votes, equal votes by score. The Journal column shows official title abbreviations
    (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).

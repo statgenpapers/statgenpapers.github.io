@@ -2,29 +2,18 @@ Journal	Short Name	Title	URL
 Nat Genet	NatGenet_Nam_2026_RareVariantEffectEstimation	Rare variant effect estimation and polygenic risk prediction	https://doi.org/10.1038/s41588-026-02705-9
 Nat Genet	NatGenet_Sheth_2026_MappingEnhancerGeneRegulatory	Mapping enhancer–gene regulatory interactions from single-cell data	https://doi.org/10.1038/s41588-026-02695-8
 Nature	Nature_Chen_2026_CellTypeSpecificeQTLs	Cell-type-specific eQTLs underlie the genetic architecture of complex traits	https://doi.org/10.1038/s41586-026-10577-6
-Nat Genet	NatGenet_Kayaalp_2026_PredictionHumanMissenseVariant	Prediction of human missense variant effects from functional evidence	https://doi.org/10.1038/s41588-026-02727-3
 Am J Hum Genet	AmJHumGenet_Hansen_2026_AnthropometricCardioMetabolicTrait	Anthropometric and cardio-metabolic trait variation and genetic associations in sub-Saharan Africa	https://doi.org/10.1016/j.ajhg.2026.07.006
-Nat Genet	NatGenet_Kurniansyah_2026_MultiancestryPolygenicRiskScore	A multiancestry polygenic risk score for Alzheimer’s disease is associated with cognitive decline and neuropathological hallmarks in diverse populations	https://doi.org/10.1038/s41588-026-02722-8
 Cell Genom	CellGenom_Kim_2026_IdentifyingIndependentCausalCell	Identifying independent causal cell types for human diseases and risk variants	https://doi.org/10.1016/j.xgen.2026.101325
+Nat Genet	NatGenet_Kayaalp_2026_PredictionHumanMissenseVariant	Prediction of human missense variant effects from functional evidence	https://doi.org/10.1038/s41588-026-02727-3
+Nat Genet	NatGenet_Kurniansyah_2026_MultiancestryPolygenicRiskScore	A multiancestry polygenic risk score for Alzheimer’s disease is associated with cognitive decline and neuropathological hallmarks in diverse populations	https://doi.org/10.1038/s41588-026-02722-8
 Nat Genet	NatGenet_Woodward_2026_DissectingPleiotropyMajorDepressive	Dissecting pleiotropy between major depressive disorder and physical disease comorbidities	https://doi.org/10.1038/s41588-026-02735-3
-Nat Rev Genet	NatRevGenet_Zhai_2026_ProteogenomicsHumanPopulations	Proteogenomics in human populations	https://doi.org/10.1038/s41576-026-00998-4
 Nat Genet	NatGenet_Zhang_2026_CorrelationsCausalEffectSizes	Correlations between causal effect sizes of proximal SNPs vary with functional annotations and implicate stabilizing selection	https://doi.org/10.1038/s41588-026-02712-w
-Nat Genet	NatGenet_Malysheva_2026_HighResolutionPromoterInteraction	High-resolution promoter interaction analysis implicates genes involved in activation of type 3 innate lymphoid cells in immune disease risk	https://doi.org/10.1038/s41588-026-02681-0
 Cell	Cell_Zhu_2026_GenomeScalePerturbSeq	Genome-scale perturb-seq in primary human CD4+ T cells maps context-specific regulators of T cell programs and human immune traits	https://doi.org/10.1016/j.cell.2026.08.002
-Nat Genet	NatGenet_Lee_2026_PlasticityHumanMicrogliaBrain	Plasticity of human microglia and brain perivascular macrophages in aging and Alzheimer’s disease	https://doi.org/10.1038/s41588-026-02716-6
 Nature	Nature_Corfield_2026_FamilyGeneticDesignsMoBa	Family genetic designs in MoBa provide insights into health and functioning	https://doi.org/10.1038/s41586-026-10926-5
-Am J Hum Genet	AmJHumGenet_Axakova_2026_SystematicProactiveEvaluationAIRE	Systematic and proactive evaluation of AIRE missense variant effects	https://doi.org/10.1016/j.ajhg.2026.07.008
+Nat Genet	NatGenet_Malysheva_2026_HighResolutionPromoterInteraction	High-resolution promoter interaction analysis implicates genes involved in activation of type 3 innate lymphoid cells in immune disease risk	https://doi.org/10.1038/s41588-026-02681-0
 Cell	Cell_Salamone_2026_TransRegulatoryGeneMapping	Trans-regulatory gene mapping prioritizes disease drivers in asthma	https://doi.org/10.1016/j.cell.2026.07.034
-Nat Genet	NatGenet_Benarroch_2026_TowardClinicalApplicationLong	Toward the clinical application of long-read sequencing in repeat-expansion disorders	https://doi.org/10.1038/s41588-026-02694-9
+Nat Genet	NatGenet_Lee_2026_PlasticityHumanMicrogliaBrain	Plasticity of human microglia and brain perivascular macrophages in aging and Alzheimer’s disease	https://doi.org/10.1038/s41588-026-02716-6
 Nature	Nature_Hindy_2026_FNIP1VariantsAssociatedFavourable	FNIP1 variants are associated with favourable metabolism in 1 million humans	https://doi.org/10.1038/s41586-026-10864-2
-Cell	Cell_Adduri_2026_PredictingCellularResponsesPerturbation	Predicting cellular responses to perturbation across diverse contexts with State	https://doi.org/10.1016/j.cell.2026.07.052
-Cell Genom	CellGenom_Padvitski_2026_CellTypeSpecificDamage	Cell-type-specific damage scores reveal kidney and liver disease trajectories in single-cell and spatial transcriptomics	https://doi.org/10.1016/j.xgen.2026.101337
-Nat Rev Genet	NatRevGenet_Venkatesh_2026_AIBasedMultimodalIntegration	AI-based multimodal integration of genomics and electronic health records	https://doi.org/10.1038/s41576-026-00992-w
-Preprint	Preprint_Multerer_2026_AdditiveMultilocusBurdenEpistatic	Additive Multilocus Burden and Epistatic Interactions Improves Genetic Risk Predictions for Complex Diseases	https://www.medrxiv.org/content/10.64898/2026.08.12.26360291v1
+Am J Hum Genet	AmJHumGenet_Axakova_2026_SystematicProactiveEvaluationAIRE	Systematic and proactive evaluation of AIRE missense variant effects	https://doi.org/10.1016/j.ajhg.2026.07.008
 Nat Commun	NatCommun_Zhang_2026_EstimatingGeneticCorrelationJointly	Estimating genetic correlation jointly using individual-level and summary-level GWAS data	https://doi.org/10.1038/s41467-026-76693-z
 Am J Hum Genet	AmJHumGenet_Aponte_2026_SharedGeneticBasisStructure	Shared genetic basis and structure of syndromic and normal facial variation	https://doi.org/10.1016/j.ajhg.2026.07.014
-Am J Hum Genet	AmJHumGenet_Hanson_2026_CellVillagesDirichletModeling	Cell villages and Dirichlet modeling map human cell fitness genetics	https://doi.org/10.1016/j.ajhg.2026.07.005
-Am J Hum Genet	AmJHumGenet_Cheng_2026_LongReadTranscriptomeAnalysis	Long-read transcriptome analysis using IsoRanker for identifying pathogenic variants in Mendelian conditions	https://doi.org/10.1016/j.ajhg.2026.08.002
-Nature	Nature_LeónPeriñán_2026_UltrafastReferenceFreeSequence	Ultrafast and reference-free sequence discovery in single-cell data	https://doi.org/10.1038/s41586-026-10975-w
-Nat Genet	NatGenet_Chen_2026_PredictiveDesignTissueSpecific	Predictive design of tissue-specific mammalian enhancers that function in the mouse embryo	https://doi.org/10.1038/s41588-026-02729-1
-Preprint	Preprint_Liu_2026_ScalableContextDependentSingle	Scalable context-dependent single-cell eQTL mapping reveals disease-relevant regulatory variation beyond static models	https://www.medrxiv.org/content/10.64898/2026.08.13.26360300v1

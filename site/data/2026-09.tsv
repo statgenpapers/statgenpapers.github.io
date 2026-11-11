@@ -1,41 +1,29 @@
 Journal	Short Name	Title	URL
 Nat Genet	NatGenet_Zeng_2026_SingleNucleusAtlasCell	Single-nucleus atlas of cell-type specific genetic regulation in the human brain	https://doi.org/10.1038/s41588-026-02733-5
-Nat Genet	NatGenet_Tsuo_2026_AllUsDiversityScale	All of Us diversity and scale yield context-dependent improvements in polygenic prediction	https://doi.org/10.1038/s41588-026-02734-4
 Nat Genet	NatGenet_Morrison_2026_GeneticFactorAnalysisCharacterizing	Genetic factor analysis for characterizing phenome-wide patterns of genetic pleiotropy	https://doi.org/10.1038/s41588-026-02753-1
+Nat Genet	NatGenet_Tsuo_2026_AllUsDiversityScale	All of Us diversity and scale yield context-dependent improvements in polygenic prediction	https://doi.org/10.1038/s41588-026-02734-4
 Nat Genet	NatGenet_Fujimoto_2026_MultiancestryGenomeWideAssociation	Multiancestry genome-wide association and multiomics analyses elucidate spatiocellular features of multiple sclerosis genetics	https://doi.org/10.1038/s41588-026-02741-5
 Am J Hum Genet	AmJHumGenet_Lu_2026_EffectHeterogeneityRevealsComplex	Effect heterogeneity reveals complex pleiotropic effects of rare coding variants	https://doi.org/10.1016/j.ajhg.2026.09.007
 Nat Genet	NatGenet_Nan_2026_SingleCellProfilingGenetic	Single-cell profiling and genetic regulation of alternative polyadenylation in the human brain	https://doi.org/10.1038/s41588-026-02758-w
-Nat Genet	NatGenet_Erickson_2026_AtlasCellTypesRegulatory	Atlas of cell types and regulatory elements underlying human facial diversity	https://doi.org/10.1038/s41588-026-02748-y
-Nat Genet	NatGenet_Thomassen_2026_APOEStratifiedGenomeWide	APOE-stratified genome-wide association analyses provide insights into the genetic etiology of Alzheimers’s disease	https://doi.org/10.1038/s41588-026-02713-9
-Nat Genet	NatGenet_Iliadou_2026_MechanismsFunctionalImplicationsLong	Mechanisms and functional implications of long-range enhancer-dependent gene regulation	https://doi.org/10.1038/s41588-026-02721-9
-Nat Genet	NatGenet_Long_2026_MechanismsUnderlyingDiseaseCausing	Mechanisms underlying disease-causing variants in promoters and enhancers	https://doi.org/10.1038/s41588-026-02743-3
 Nature	Nature_Venkatesh_2026_SingleNucleusTranscriptomeWide	Single-nucleus transcriptome-wide association study of human brain disorders	https://doi.org/10.1038/s41586-026-10836-6
 Nature	Nature_Wang_2026_WithinFamilyEffectAncestry	Within-family effect of ancestry on complex traits in a Mexican population	https://doi.org/10.1038/s41586-026-11039-9
 Nature	Nature_Schwaba_2026_RobustInferenceCorrelatesGenetic	Robust inference and correlates from genetic associations with personality	https://doi.org/10.1038/s41586-026-10992-9
-Nat Genet	NatGenet_Zhao_2026_SingleCellAnalysisChromatin	Single-cell analysis of chromatin accessibility in the human intestine identifies regulatory programs and clarifies genetic associations in Crohn’s disease	https://doi.org/10.1038/s41588-026-02755-z
-Nature	Nature_Kanai_2026_PopulationScaleImmuneMultiome	Population-scale immune multiome atlas reveals regulatory disease mechanisms	https://doi.org/10.1038/s41586-026-11078-2
-Nat Genet	NatGenet_Besse_2026_GeneticLandscapeVivoProtein	Genetic landscape of an in vivo protein interactome	https://doi.org/10.1038/s41588-026-02747-z
-Am J Hum Genet	AmJHumGenet_Hysong_2026_PhenomeLaboratoryWideMeta	Phenome- and laboratory-wide meta-analyses of sickle cell trait reveal multi-system disease associations	https://doi.org/10.1016/j.ajhg.2026.08.010
-Cell	Cell_Jones_2026_TabulaSapiens20	Tabula Sapiens 2.0: A comprehensive transcriptomic atlas of human cell types	https://doi.org/10.1016/j.cell.2026.08.010
+Nat Genet	NatGenet_Erickson_2026_AtlasCellTypesRegulatory	Atlas of cell types and regulatory elements underlying human facial diversity	https://doi.org/10.1038/s41588-026-02748-y
+Nat Genet	NatGenet_Thomassen_2026_APOEStratifiedGenomeWide	APOE-stratified genome-wide association analyses provide insights into the genetic etiology of Alzheimers’s disease	https://doi.org/10.1038/s41588-026-02713-9
 Am J Hum Genet	AmJHumGenet_Fuhrer_2026_BeyondExons	Beyond exons: Linking noncoding heritability and polygenicity across complex human traits and disorders	https://doi.org/10.1016/j.ajhg.2026.08.012
-Nat Genet	NatGenet_Kentistou_2026_GenomeWideMappingCommon	Genome-wide mapping of common and rare variant effects on adiposity across childhood	https://doi.org/10.1038/s41588-026-02772-y
-Nat Genet	NatGenet_Papachristoforou_2026_HumanSingleCellAtlas	A human single-cell atlas identifies OLR1+ scar-associated macrophages as a potential therapeutic target for chronic liver disease	https://doi.org/10.1038/s41588-026-02774-w
-Nat Genet	NatGenet_Lotfollahi_2026_ArchMapWebBasedPlatform	ArchMap is a web-based platform for reference-based analysis of single-cell datasets	https://doi.org/10.1038/s41588-026-02756-y
+Am J Hum Genet	AmJHumGenet_Hysong_2026_PhenomeLaboratoryWideMeta	Phenome- and laboratory-wide meta-analyses of sickle cell trait reveal multi-system disease associations	https://doi.org/10.1016/j.ajhg.2026.08.010
+Nature	Nature_Kanai_2026_PopulationScaleImmuneMultiome	Population-scale immune multiome atlas reveals regulatory disease mechanisms	https://doi.org/10.1038/s41586-026-11078-2
 Nat Genet	NatGenet_Zeng_2026_GenomeWideAssociationAnalyses	Genome-wide association analyses highlight the neuronal contribution to multiple sclerosis susceptibility	https://doi.org/10.1038/s41588-026-02731-7
-Nat Genet	NatGenet_Kullo_2026_RecommendationsReturnSecondaryGenomic	Recommendations for return of secondary genomic findings in observational cohort studies	https://doi.org/10.1038/s41588-026-02724-6
+Nat Genet	NatGenet_Iliadou_2026_MechanismsFunctionalImplicationsLong	Mechanisms and functional implications of long-range enhancer-dependent gene regulation	https://doi.org/10.1038/s41588-026-02721-9
+Nat Genet	NatGenet_Besse_2026_GeneticLandscapeVivoProtein	Genetic landscape of an in vivo protein interactome	https://doi.org/10.1038/s41588-026-02747-z
+Nat Genet	NatGenet_Kentistou_2026_GenomeWideMappingCommon	Genome-wide mapping of common and rare variant effects on adiposity across childhood	https://doi.org/10.1038/s41588-026-02772-y
+Nat Genet	NatGenet_Zhao_2026_SingleCellAnalysisChromatin	Single-cell analysis of chromatin accessibility in the human intestine identifies regulatory programs and clarifies genetic associations in Crohn’s disease	https://doi.org/10.1038/s41588-026-02755-z
+Nat Genet	NatGenet_Lotfollahi_2026_ArchMapWebBasedPlatform	ArchMap is a web-based platform for reference-based analysis of single-cell datasets	https://doi.org/10.1038/s41588-026-02756-y
+Nat Genet	NatGenet_Long_2026_MechanismsUnderlyingDiseaseCausing	Mechanisms underlying disease-causing variants in promoters and enhancers	https://doi.org/10.1038/s41588-026-02743-3
+Cell	Cell_Jones_2026_TabulaSapiens20	Tabula Sapiens 2.0: A comprehensive transcriptomic atlas of human cell types	https://doi.org/10.1016/j.cell.2026.08.010
 Cell Genom	CellGenom_Lin_2026_DiseaseAssociatedLociShare	Disease-associated loci share properties with response eQTLs under common environmental exposures	https://doi.org/10.1016/j.xgen.2026.101383
-Am J Hum Genet	AmJHumGenet_Li_2026_RobustCisTransEpistasis	Robust cis-by-trans epistasis in the human plasma proteome highlights an ABO-centered interaction network	https://doi.org/10.1016/j.ajhg.2026.09.003
-Preprint	Preprint_Tanigawa_2026_GeneSIS	GeneSIS: enhancing transferability of polygenic scores with variant-level gene-by-sex interaction effects	https://www.biorxiv.org/content/10.64898/2026.09.14.751452v1
-Nature	Nature_Tretyachenko_2026_EncodedNonGeneticProtein	Encoded and non-genetic protein variants expand the human functional proteome	https://doi.org/10.1038/s41586-026-11124-z
+Nat Genet	NatGenet_Papachristoforou_2026_HumanSingleCellAtlas	A human single-cell atlas identifies OLR1+ scar-associated macrophages as a potential therapeutic target for chronic liver disease	https://doi.org/10.1038/s41588-026-02774-w
+Nat Genet	NatGenet_Kullo_2026_RecommendationsReturnSecondaryGenomic	Recommendations for return of secondary genomic findings in observational cohort studies	https://doi.org/10.1038/s41588-026-02724-6
 Nat Genet	NatGenet_Chen_2026_ContributionCopyNumberVariants	Contribution of copy number variants to schizophrenia in East Asian populations	https://doi.org/10.1038/s41588-026-02732-6
-Nat Genet	NatGenet_Zimmermann_2026_InterpretingHumanGeneticVariation	Interpreting human genetic variation at atomic resolution	https://doi.org/10.1038/s41588-026-02763-z
-Nat Genet	NatGenet_Zada_2026_SingleCellAtlasMultiple	A single-cell atlas of multiple myeloma defines malignant archetypes and proliferative states	https://doi.org/10.1038/s41588-026-02725-5
-Am J Hum Genet	AmJHumGenet_Ahmed_2026_DistinctCochlearCellTypes	Distinct cochlear cell types associated with genetic susceptibility to sensory and metabolic hearing loss in older adults	https://doi.org/10.1016/j.ajhg.2026.08.018
-Cell	Cell_Youngblut_2026_scBaseCount	scBaseCount: An AI agent-curated, standardized, auto-updated single-cell data repository	https://doi.org/10.1016/j.cell.2026.08.025
-Nature	Nature_Yan_2026_GeneRegulatoryEvolutionHuman	The gene-regulatory evolution of the human skeleton	https://doi.org/10.1038/s41586-026-11053-x
-Nat Genet	NatGenet_Lama_2026_Type1InterferonPerturbates	Type 1 interferon perturbates clonal competition by reshaping human blood development	https://doi.org/10.1038/s41588-026-02751-3
-Nature	Nature_Ye_2026_PredictingGenomeWideFunctional	Predicting genome-wide functional constraints with GPN-Star	https://doi.org/10.1038/s41586-026-11005-5
-Preprint	Preprint_Blostein_2026_SexDifferencesGeneticArchitecture	Sex differences in the genetic architecture of clinical quantitative traits in the electronic health record	https://www.medrxiv.org/content/10.64898/2026.09.02.26362069v1
-Nat Genet	NatGenet_Paggi_2026_EuchromatinFormsCondensedDomains	Euchromatin forms condensed domains with short active regions on the surface	https://doi.org/10.1038/s41588-026-02775-9
-Nature	Nature_Jones_2026_3DEpigenomeGlialCell	3D epigenome of glial cell types in developing human cortex	https://doi.org/10.1038/s41586-026-10987-6
-Preprint	Preprint_Jang_2026_SingleCellMultiAncestry	Single-cell multi-ancestry regulatory map of systemic lupus erythematosus	https://www.biorxiv.org/content/10.64898/2026.09.18.752560v1
+Nature	Nature_Tretyachenko_2026_EncodedNonGeneticProtein	Encoded and non-genetic protein variants expand the human functional proteome	https://doi.org/10.1038/s41586-026-11124-z
+Am J Hum Genet	AmJHumGenet_Li_2026_RobustCisTransEpistasis	Robust cis-by-trans epistasis in the human plasma proteome highlights an ABO-centered interaction network	https://doi.org/10.1016/j.ajhg.2026.09.003

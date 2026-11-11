@@ -8,7 +8,8 @@ For each month M, in order:
    listed pick is marked, a missed pick is added as a paper and marked. The next month's run then
    sees them, as it would see readers' marks.
 
-Local only: reads the private handoff/data/ files (picks and the labelled pools from 2025-01).
+Local only: reads the private handoff/data/ files (picks and the labelled pools from 2025-01). Months are
+weighted as dev/recency.py says.
 Run from the repository root with: uv run --group train python dev/rollforward.py 2026-01 2026-10
 """
 import csv
@@ -35,6 +36,8 @@ OUT = ROOT / "model" / "rollforward"
 cfg = tomllib.loads((ROOT / "config" / "sources.toml").read_text())
 
 from pipeline.fetch import find_doi  # noqa: E402
+sys.path.insert(0, str(ROOT / "dev"))
+from recency import rows_and_weights  # noqa: E402
 
 
 def features():
@@ -47,8 +50,11 @@ def features():
     X = np.hstack([emb, venue[:, None] == names])
 
 
-fit = lambda before: LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(
-    X[month < before], ((tab != "") & (tab < before))[month < before])
+def fit(before):
+    """The model for month `before`: the picks known before it, on the rows and weights of dev/recency.py."""
+    rows, weight = rows_and_weights(month, before)
+    y = (tab != "") & (tab < before)
+    return LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X[rows], y[rows], sample_weight=weight)
 
 
 def weights(M):
@@ -61,7 +67,8 @@ def weights(M):
     return MODEL | {"text": "title\nabstract", "bias": round(float(lr.intercept_[0]), 6), "embedding": w[:emb.shape[1]],
                     "venue": dict(zip(names.tolist(), w[emb.shape[1]:])),
                     "calibration": {"a": round(float(cal.intercept_[0]), 4), "b": round(float(cal.coef_[0, 0]), 4)},
-                    "trained": date.today().isoformat(), "train_months": sorted(set(month[month < M]))}
+                    "trained": date.today().isoformat(), "train_months": sorted(set(month[rows_and_weights(month, M)[0]])),
+                    "half_life_months": 6}
 
 
 # The Journal column for a pick the model missed: the Sheet's journal key, as the site shows journals

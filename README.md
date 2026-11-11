@@ -12,7 +12,8 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
    `site/data/YYYY-MM.{json,tsv}`, commits and deploys `site/`. Papers readers added to that month are scored too
    and listed with a person icon beside the Score; until then they are not shown. Readers always add to the month in progress.
 2. **Scorer.** A `potion-base-32M` embedding of title and abstract plus the venue, through the logistic
-   regression in `model/weights.json`. Once 30 listed papers have marks, the run also fits a vote correction.
+   regression in `model/weights.json`, fitted to the 12 months before a list with a 6-month half-life
+   (`dev/recency.py`). Once 30 listed papers have marks, the run also fits a vote correction.
    `dev/backtest/` holds the numbers on the About page.
 3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Marks and added papers live in Firestore
    (`months/{m}/votes/{paper}~{handle}`, `months/{m}/submissions`), checked by `firebase/firestore.rules`. A
@@ -30,6 +31,8 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
    the handle `admin` through `dev/lab_marks.py` (`firebase/firestore.rules` reserves it for the one Firebase user in
    `~/.config/statgenpapers/lab.json`, never committed). From 2026-11 the monthly run learns from all marks.
 4. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
+5. **An added paper without an abstract:** `uv run python dev/fill_abstracts.py --write` fills every one it can find
+   (OpenAlex, PubMed, Europe PMC, the publisher's page) in place, as the owner.
 
 ## Checks
 

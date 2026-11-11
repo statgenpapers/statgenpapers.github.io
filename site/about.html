@@ -37,7 +37,9 @@ the model missed: they join the next list, scored like the others, with a person
   <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
   (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
   <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It started from
-  a year of marks made before the site opened: marked papers are the positives, all other candidates the negatives.</li>
+  marks made before the site opened: marked papers are the positives, all other candidates the negatives. It learns
+  from the 12 months before the list, recent months counting more (a month's weight halves every 6 months), so it
+  follows tastes as they change.</li>
   <li>The raw score is calibrated into a probability, the Score. Every paper at 25% or more is listed, so a month
   with more promising papers has a longer list.</li>
   <li>Marks re-order the list at once. Each month's run also learns from them: once 30 listed papers have marks, it
@@ -59,8 +61,8 @@ the months before it.</p>
   <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
   August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
   marked papers in the top 25, at no cost.</li>
-  <li>From 2026/01 to 2026/10, the 25% cutoff listed 15 to 39 papers a month and caught 111 of the 242 marked papers,
-  as many as a fixed 25 a month.</li>
+  <li>From 2026/01 to 2026/10, the 25% cutoff listed 10 to 28 papers a month and caught 111 of the 239 marked papers,
+  as many as a fixed 25 a month, with fewer papers.</li>
 </ol>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Marked papers in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>

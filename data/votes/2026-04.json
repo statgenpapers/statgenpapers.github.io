@@ -8,12 +8,12 @@
    "title": "Sex effects on gene expression across the human cerebral cortex at cell type resolution",
    "url": "https://www.science.org/doi/10.1126/science.aea9063"
   },
-  "6X4P7srVmVfOVF9yjSkI": {
-   "abstract": "",
+  "2xhIgX1K8kJ8X7Ubanht": {
+   "abstract": "The 5' untranslated region (5' UTR) of messenger RNAs (mRNAs) plays a central role in regulating protein synthesis initiation, particularly through the Kozak sequence and upstream open reading frames (uORFs). Genetic variants within these regulatory elements could affect translation, altering gene expression and contributing to clinical phenotypes in humans. We developed a computational method called 5ULTRA (5' Untranslated Region Annotation) for analysis of whole-exome sequencing and whole-genome sequencing data to detect, annotate, and prioritize 5' UTR variants with potential translation impact. 5ULTRA identifies single-nucleotide variants, indels, and splicing variants that affect uORFs by creating or disrupting start/stop codons and that alter Kozak sequence strength of either the uORFs or the main coding sequence. 5ULTRA incorporates recent uORF databases and provides comprehensive annotations. 5ULTRA implements a machine-learning score to prioritize candidate variants with predicted effects on translation and also provides specific mechanistic predictions. The score correlates strongly with experimentally measured protein-level effects of 5' UTR variants. We applied 5ULTRA to multiple genetics datasets across diverse disease contexts, identifying candidate variants including potential cancer-driving somatic mutations predicted to decrease ABI1 level or increase NRAS abundance; common variants associated with traits such as multiple sclerosis, lung function, and cardiovascular function, by altering protein levels of TAGAP, VRTN, and SPAAR, respectively; and rare germline variants in our cohort, including a splicing variant of RPSA leading to 5' UTR sequence alteration that causes congenital asplenia and a variant of TNF that could predispose to tuberculosis.",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Chaldebas_5primeUTRWithProteinImpact",
    "title": "Genome-wide detection of human 5′ UTR variants that impact protein translation",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00106-0"
+   "url": "https://doi.org/10.1016/j.ajhg.2026.02.020"
   },
   "6YOvvS4AiArRjfXbKzP9": {
    "abstract": "High-throughput affinity-based proteomics has advanced biomedical research, yet fundamental, persistent discordance between mainstream platforms (SomaScan and Olink) routinely undermines the replication of findings. This platform-driven non-replication complicates downstream biological validation and biomarker prioritization. Here, we develop a machine learning-based framework for cross-platform protein value imputation to resolve this translational bottleneck. Using paired proteomic data measured by both SomaScan and Olink from 5,325 participants of the Multi-Ethnic Study of Atherosclerosis, we developed models to impute cross-platform measurements and applied them to two independent and demographically distinct cohorts (Cardiovascular Health Study [N=3,171] and UK Biobank [UKB; N=41,405]) for external validation. Our bi-directional model 1) established an imputation performance-based protein fidelity index, validated against gold-standard measurements from Atherosclerosis Risk in Communities study (N=101) and Nurses' Health Study (N=54), 2) enabled imputation of platform-exclusive protein measurements, and 3) facilitated calibration of overlapping proteins. We demonstrate the utility of this framework through three applications: 1) fidelity-informed analyses enhanced the replication of biomarker discovery, 2) recovery of SomaScan signals that were previously inaccessible in UKB's original Olink measurements, and 3) improved replication performance for overlapping proteins. Our study offers a translational roadmap that allows researchers to achieve reliable epidemiological replication, target specific assays for future optimization, and prioritize biological signal over platform noise.",
@@ -36,15 +36,8 @@
    "title": "Early and late RNA eQTL are driven by different genetic mechanisms",
    "url": "https://www.nature.com/articles/s41467-026-72139-8"
   },
-  "F1swD6z4OpsYV9l8L1Ii": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Rodriguez-Algarra_2026_ribosomalDNA",
-   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00075-3"
-  },
   "HVm6JqAReaVyRG1hVIAp": {
-   "abstract": "",
+   "abstract": "Cellular diversity is governed not only by the transcriptome but also by multiple layers of epigenomic regulation, including nucleosome occupancy, chromatin states and genome architecture1-3. Here, to comprehensively understand how these regulatory modalities converge to shape cellular identity, we developed a single-cell four-omics sequencing method that enables parallel profiling of genome conformation, histone modifications, chromatin accessibility and gene expression within the same cell (CHARM). Applying CHARM to mouse embryonic stem cells and cortical tissues, we reconstructed integrated epigenome profiles, uncovering distinct cell-cycle dynamics of chromatin accessibility and histone modification, and spatial clustering of regulatory elements in three-dimensional nuclear space. Leveraging an interpretable machine learning model, we further identified thousands of enhancer-promoter linkages with high accuracy that modulate gene expression in a cell-type- and subtype-specific manner. Together, CHARM enables integrative dissection of the three-dimensional epigenome at single-cell resolution, providing a versatile platform for decoding the regulatory landscape across diverse cells in complex tissues.",
    "journal": "Nature",
    "short_name": "Nature_Chen_2026_single-cellFourOmics",
    "title": "Gene regulatory landscape dissected by single-cell four-omics sequencing",
@@ -57,19 +50,12 @@
    "title": "Mosaic integration of spatial multi-omics with SpaMosaic",
    "url": "https://www.nature.com/articles/s41588-026-02573-3"
   },
-  "M9JvwtdoU4qC4BvhbBFD": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Guo_2026_ProtoCloud",
-   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00079-0"
-  },
-  "O2ZW1ZfQQEH7oTS3owoB": {
-   "abstract": "",
-   "journal": "Cell",
-   "short_name": "Cell_Billmann_2026_PPI",
-   "title": "Global genetic interaction network of a human cell maps conserved principles and informs functional interpretation of gene co-essentiality profiles",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00345-4"
+  "NgAbhcvyuLkLCGQtbpNe": {
+   "abstract": "Internalizing and cardiometabolic multimorbidity (ICM-MM) represents a major clinical challenge, negatively impacting life expectancy and quality of life and resulting in considerable healthcare costs. Individuals with a copy-number variant associated with increased risk of neurodevelopmental conditions (ND-CNV) are more likely to develop mental or physical ill health; however, the effects on ICM-MM remain poorly understood. We used data from the UK Biobank (ND-CNV N = 7,549, 1.62%) to examine the effect of ND-CNVs on ICM-MM. ICM-MM was defined as a combination of any internalizing condition (depression, anxiety, or somatic symptom disorder) with each of five cardiometabolic conditions (hypertension, dyslipidemia, obesity, type 2 diabetes (T2D), and chronic kidney disease). We also studied whether ICM-MM risk in those with ND-CNVs differed by sex or presence of a deletion versus a duplication. We established associations between dosage-sensitive genes within ND-CNVs and ICM-MM and explored the interaction between the presence of ND-CNVs and polygenic risk scores (PRSs) of internalizing and cardiometabolic traits on ICM-MM risk. The presence of ND-CNVs was associated with ICM-MM (odds ratio [OR] range: 1.21-1.57). Female participants with ND-CNVs were more likely to have any internalizing condition and T2D, and those with a deletion were more likely to have any internalizing condition and obesity. The number of deleted haploinsufficient genes, but not duplicated triplosensitive genes, was associated with ICM-MM. No interactions between ND-CNVs and PRSs were found. We find that ND-CNVs increase the likelihood of ICM-MM, with evidence of sex differences and stronger effects for deletions. Increased clinical awareness can help ameliorate this risk.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Katzourou_2026_NeurodevelopmentalConditionsCNVonCardioDisease",
+   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.02.021"
   },
   "OURqrCUnY1xQESkx3hrN": {
    "abstract": "Type 2 diabetes (T2D) is a heterogeneous disease shaped by genetic pathways related to insulin resistance and β-cell dysfunction, but how this heterogeneity is reflected molecularly remains unclear. We integrated partitioned polygenic scores (pPS) with proteomic and metabolomic profiling to define molecular signatures of T2D and their clinical relevance. We analyzed UK Biobank participants with genomic, proteomic, and metabolomic data. In a disease-free training subset, we used LASSO regression to identify multi-omic signatures associated with each pPS by jointly modeling proteins and metabolites. In an independent testing set, we constructed multi-omic scores and examined their associations with clinical traits and diabetes-related outcomes. Mediation analyses were used to investigate putative causal pathways. Key findings were evaluated in the Multi-Ethnic Study of Atherosclerosis (MESA). We identified distinct multi-omic signatures that capture the molecular architecture of T2D genetic risk across physiological subtypes. Compared with genetic scores alone, multi-omic pPS showed larger effect sizes and better disease discrimination. These scores recapitulated subtype-specific physiology and were associated with T2D risk. The Beta-Cell 2 multi-omic score showed marked stratification for insulin use, which was replicated in MESA, where it also predicted future insulin use. Mediation analyses implicated lipoprotein remodeling and fatty acid metabolism in the Lipodystrophy 1 cluster, accounting for 30-45% of the total effect of pPS on T2D risk. Integrating process-specific genetic risk with circulating multi-omic profiles reveals biologically distinct endotypes of T2D and supports a framework for improved patient stratification and risk assessment.",
@@ -134,19 +120,19 @@
    "title": "Development and Validation of a Clinical Polygenic Risk Report in U.S.-Based Health Systems for 8 Cardiovascular Conditions",
    "url": "https://www.jacc.org/doi/10.1016/j.jacc.2026.03.035"
   },
-  "iGPSZtkfdR4nhUYNOcWw": {
-   "abstract": "",
-   "journal": "Cell",
-   "short_name": "Cell_Huang_2026_sSNV-AD",
-   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00341-7"
+  "gwC1bBhixAcecjKlq25W": {
+   "abstract": "Ribosomal RNAs (rRNAs), essential components of the ribosome, are coded by the multi-copy ribosomal DNA (rDNA). Interestingly, rDNA displays substantial variation in all species, both as inter-individual differences in copy number (CN) and inter- and intragenomic sequence variation across copies (single-nucleotide variants [SNVs] and insertions/deletions [indels]). Whether germline rDNA sequence variation associates with human traits remains largely unknown. We here derive a stringently validated list of rDNA-associated SNVs and indels from UK Biobank whole-genome sequencing data, and we show that specific rDNA variants associate with human phenotypes independently of rDNA CN. Notably, variants within the 28S expansion segment 15L associate with body size traits. Variant combinations in the region present in actively translating ribosomes are predicted to alter the rRNA secondary structure. This represents the first large-scale association analysis of human traits with germline rDNA sequence variation, a largely ignored source of trait-relevant genetic variation to date.",
+   "journal": "Cell Genom",
+   "short_name": "CG_Rodriguez-Algarra_2026_ribosomalDNA",
+   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101213"
   },
-  "mZTN9mCoqZqkftEZVlqw": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Katzourou_2026_NeurodevelopmentalConditionsCNVonCardioDisease",
-   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00107-2"
+  "nieZ3NBFmZUuQpB8NVEj": {
+   "abstract": "Chronic systemic inflammation and DNA methylation changes are two major hallmarks of aging, yet their interaction is poorly known. We investigated the relation between circulating inflammatory proteome and epigenetic age acceleration as assessed by DNA methylation in four independent cohorts of different ages and health conditions. Epigenetic age scores known to predict human health span (GrimAge and PhenoAge) were more strongly associated with age-associated inflammatory proteins, frailty, and multimorbidity when compared to epigenetic age scores associated with lifespan (Horvath and Hannum). Mendelian randomization analyses showed that blood concentrations of important inflammatory cytokines associated with the interferon pathway (CXCL9, CXCL10, CCL11, and IL-18) increase with age and are causal drivers of epigenetic age acceleration and age-related diseases. Furthermore, aging was associated with dysregulation of cytokine production capacity in immune cells in response to microbial stimulation. These findings argue that the interferon pathway may represent a target for anti-aging interventions.",
+   "journal": "Cell Genom",
+   "short_name": "CG_Liu_2026_IFNrelatedAging",
+   "title": "Interferon-related inflammaging links epigenetic age acceleration to multimorbidity",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101218"
   },
   "oHrf0unZ8z1aLjqzat0W": {
    "abstract": "An in vivo approach combining high-throughput screening with cell type–specific readouts could enable elucidation of genotype-phenotype relationships in complex tissues. We developed an in vivo gain-of-function Perturb-seq platform, termed iGOF–Perturb-seq, to build a functional atlas of ~1000 transcription factors (TFs) in astrocytes, a cell type essential to many brain functions. We then identified cofunctional modules, annotated uncharacterized TFs, and predicted disease-associated TF clusters. Furthermore, iGOF–Perturb-seq performed in a mouse neuroinflammatory model identified Ferd3l as a therapeutic candidate, and astrocyte-specific overexpression of Ferd3l alleviated Alzheimer’s disease symptoms in mice. This study provides resources for understanding gene regulation and disease mechanisms in vivo and for identifying potential therapeutic targets for different brain diseases.",
@@ -154,6 +140,20 @@
    "short_name": "Science_Zhang_2026_iGOF-PerturbSeq",
    "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
    "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "obySejWq6MC3U9wAncxh": {
+   "abstract": "Deciphering how genes interact within human cells is essential for understanding their functional wiring and for developing targeted therapeutic strategies. In this study, we present a genome-scale map of genetic interactions in the human haploid cell line HAP1, based on CRISPR-based perturbation of ∼4 million gene pairs. The resulting network comprises ∼89,000 high-confidence gene-gene interactions, organizing genes into hierarchical modules corresponding to protein complexes and pathways, biological processes, and cellular compartments, mirroring principles observed in yeast and highlighting the functional architecture of a human cell. This large-scale genetic network complements the DepMap gene co-essentiality network by capturing unique functional information, uncovering roles of previously uncharacterized genes, and identifying molecular determinants of cancer-cell-line-specific genetic dependencies. This study presents a general data-driven strategy for systematically exploring the roles of genes and their functional connections in human cell lines.",
+   "journal": "Cell",
+   "short_name": "Cell_Billmann_2026_PPI",
+   "title": "Global genetic interaction network of a human cell maps conserved principles and informs functional interpretation of gene co-essentiality profiles",
+   "url": "https://doi.org/10.1016/j.cell.2026.03.044"
+  },
+  "qIdqD1E8KO5dlfovtCnI": {
+   "abstract": "Cell type annotation is a fundamental task in single-cell genomics. Although various methods have been developed for automatic annotation, they often function as black-box models lacking explainability, proper uncertainty estimation, and robustness for rare cell types. We introduce ProtoCloud, a self-explanatory deep generative model that embeds cells into a structured, low-dimensional space organized around cell-type-specific prototypes. ProtoCloud matches or outperforms existing methods across 11 large-scale datasets, particularly for rare cell types. Its built-in uncertainty quantification mechanism, based on cell-prototype similarity, identifies and re-annotates misannotated training cells. By backpropagating cell prototype similarities to the gene space, ProtoCloud identifies key genes driving its classifications, facilitating the discovery of both known and novel marker genes. Applied to a time-course dataset of post-injury retinal neurons, ProtoCloud successfully annotates previously unassigned cells; in an esophageal cell atlas, it identifies rare but potentially important cell populations and their marker genes associated with esophageal inflammation.",
+   "journal": "Cell Genom",
+   "short_name": "CG_Guo_2026_ProtoCloud",
+   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101217"
   },
   "rexnBOiihv77kN5QEi8v": {
    "abstract": "Diabetic kidney disease (DKD), the leading cause of kidney failure, is marked by clinical and molecular heterogeneity, making therapeutic development exceedingly difficult1. Here we used Xenium and CosMx single-cell spatial transcriptomics, integrated with single-nucleus RNA sequencing, to build a cross-platform kidney atlas that makes tissue architecture computable for prognosis, non-invasive detection and patient selection. Using this atlas, we defined reproducible tissue niches and injury-linked microenvironments and uncovered a profibrotic context that expands with disease and tracks with worse kidney function. Within this architecture, we identified a B cell-predominant, tertiary lymphoid structure-like immune microenvironment that defines a distinct DKD subset with accelerated progression to renal end-points. We developed tissue biomarkers and a matched plasma protein panel that capture this biology, stratify patients in a population biobank and improve risk prediction beyond clinical models—supporting their potential for biomarker-guided selection in future B cell-targeted DKD trials. A single-cell spatial atlas identifies a B cell-predominant microenvironment within the profibrotic tubular niche that marks a subset of patients with diabetic kidney disease with rapid progression.",
@@ -168,6 +168,13 @@
    "short_name": "Medrxiv_Wang_2026_PheRS",
    "title": "Phenome-derived polygenic scores and social determinants jointly shape context-dependent disease risk",
    "url": "https://www.medrxiv.org/content/10.64898/2026.04.16.26351039v1"
+  },
+  "vflN8teyMt20kzIgYMKd": {
+   "abstract": "Alzheimer's disease (AD) is a neurodegenerative condition characterized by microglia-mediated neuroinflammation. Deep (>1,000×) panel sequencing of 311 brain samples revealed enrichment of somatic single-nucleotide variants (sSNVs) in cancer driver genes in AD brains, especially in genes associated with clonal hematopoiesis (CH). These sSNVs were associated with clonal expansion and carried by both microglia-like brain macrophages (MLBMs) in multiple brain regions as well as paired blood, suggesting a likely hematopoietic origin. Single-nucleus RNA sequencing data from 62 additional AD and control brains revealed increased somatic copy number variants (sCNVs) associated with CH in AD MLBMs, whereas single-cell multi-omic analyses demonstrated that sSNV- and sCNV-carrying MLBMs exhibited inflammatory and proliferative transcriptional signatures characteristic of disease-associated microglia. These signatures were recapitulated in induced pluripotent stem cell-derived microglia-like cells with TET2, ASXL1, and DNMT3A variants. These findings suggest that clonal somatic driver variants in MLBMs are enriched in AD, potentially promoting neuroinflammation and neurodegeneration.",
+   "journal": "Cell",
+   "short_name": "Cell_Huang_2026_sSNV-AD",
+   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
+   "url": "https://doi.org/10.1016/j.cell.2026.03.040"
   },
   "zqL2wYD44mf2CoydNZkk": {
    "abstract": "Recent advances in spatial transcriptomics (ST) have generated an expanding collection of heterogeneous datasets, offering unprecedented opportunities to investigate tissue organizations and functions. However, effective interpretation and integration of data originating from diverse sources and conditions remain a major challenge. We present INSPIRE, a deep-learning method for interpretable, integrative analysis of multiple ST datasets. INSPIRE adopts an adversarial learning strategy with graph neural networks to achieve spatially informed and adaptive data integration. By incorporating non-negative matrix factorization, INSPIRE identifies interpretable spatial factors and associated gene programs that characterize tissue architecture, cell-type organization and biological processes. Across a broad range of applications, INSPIRE demonstrates superior performance in resolving fine-grained biological signals, integrating complementary strengths across technologies, capturing condition-specific variation, uncovering tumor microenvironment heterogeneity, elucidating developmental dynamics and facilitating three-dimensional tissue reconstruction. INSPIRE also scales to extremely large datasets, as demonstrated by applications to Xenium-profiled human breast cancer and Stereo-seq mouse organogenesis datasets. INSPIRE addresses challenges to integrating diverse spatial transcriptomics datasets by combining deep learning with non-negative matrix factorization, revealing shared and context-specific spatial gene programs and tissue organization across scales.",
@@ -185,6 +192,12 @@
    "8c6976e5b5410415": 1
   },
   "10.1016_j.ajhg.2026.03.008": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.03.013": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.03.017": {
    "8c6976e5b5410415": 1
   },
   "10.1016_j.ajhg.2026.04.007": {
@@ -214,7 +227,7 @@
   "10.1038_s41588-026-02582-2": {
    "8c6976e5b5410415": 1
   },
-  "6X4P7srVmVfOVF9yjSkI": {
+  "2xhIgX1K8kJ8X7Ubanht": {
    "8c6976e5b5410415": 1
   },
   "6YOvvS4AiArRjfXbKzP9": {
@@ -226,19 +239,13 @@
   "DLl0mkDEyx6aNH39Opum": {
    "8c6976e5b5410415": 1
   },
-  "F1swD6z4OpsYV9l8L1Ii": {
-   "8c6976e5b5410415": 1
-  },
   "HVm6JqAReaVyRG1hVIAp": {
    "8c6976e5b5410415": 1
   },
   "JJAWgQf4YbUz25Ll0Cea": {
    "8c6976e5b5410415": 1
   },
-  "M9JvwtdoU4qC4BvhbBFD": {
-   "8c6976e5b5410415": 1
-  },
-  "O2ZW1ZfQQEH7oTS3owoB": {
+  "NgAbhcvyuLkLCGQtbpNe": {
    "8c6976e5b5410415": 1
   },
   "OURqrCUnY1xQESkx3hrN": {
@@ -268,19 +275,28 @@
   "gbwUDIH2Gc4iQUgMhHRm": {
    "8c6976e5b5410415": 1
   },
-  "iGPSZtkfdR4nhUYNOcWw": {
+  "gwC1bBhixAcecjKlq25W": {
    "8c6976e5b5410415": 1
   },
-  "mZTN9mCoqZqkftEZVlqw": {
+  "nieZ3NBFmZUuQpB8NVEj": {
    "8c6976e5b5410415": 1
   },
   "oHrf0unZ8z1aLjqzat0W": {
+   "8c6976e5b5410415": 1
+  },
+  "obySejWq6MC3U9wAncxh": {
+   "8c6976e5b5410415": 1
+  },
+  "qIdqD1E8KO5dlfovtCnI": {
    "8c6976e5b5410415": 1
   },
   "rexnBOiihv77kN5QEi8v": {
    "8c6976e5b5410415": 1
   },
   "vWiv61EjNQoBAlyHpzoB": {
+   "8c6976e5b5410415": 1
+  },
+  "vflN8teyMt20kzIgYMKd": {
    "8c6976e5b5410415": 1
   },
   "zqL2wYD44mf2CoydNZkk": {

@@ -15,19 +15,19 @@
    "title": "The functional landscape of coding variation in the familial hypercholesterolemia gene LDLR",
    "url": "https://www.science.org/doi/10.1126/science.ady7186"
   },
-  "G9lnPH5pfvRdk6LmIS0k": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Liang_2026_VarianceControlTWAS",
-   "title": "A gene-specific variance-control approach corrects polygenicity-driven inflation observed in transcriptome-wide association studies",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00485-9"
+  "NvrhFwLzroabZ2gF4nOE": {
+   "abstract": "Cerebrospinal fluid (CSF) is central to neurological diagnostics, yet biomarkers are lacking for many clinical needs. To enable its large-scale proteomic characterization, we developed a high-throughput mass spectrometry workflow quantifying approximately 1,500 proteins per CSF sample across 5,000 individuals, covering a spectrum of neurological disorders. This revealed proteomic alterations associated with blood-CSF barrier impairment, age, and sex, enabling deconvolution of shared and disease-specific signatures. We then focused on multiple sclerosis (MS), using an improved analytical technology that quantified 2,100 proteins per sample. From these data, we derived a 22-protein panel that distinguished MS from related inflammatory diseases and outperformed established markers in challenging cases. A targeted mass spectrometry assay using isotope-labeled standards validated this panel in an independent cohort, offering a clinically compatible format. Additionally, we highlight proteins of therapeutic interest and demonstrate proteome-based staging of individuals along the relapsing-progressive MS spectrum, which correlates with clinical outcomes.",
+   "journal": "Cell",
+   "short_name": "Cell_Bader_2026_ProteomicsPredictsMS",
+   "title": "Large-scale proteomics across neurological disorders uncovers biomarker panel and targets in multiple sclerosis",
+   "url": "https://doi.org/10.1016/j.cell.2026.01.017"
   },
-  "RdyCn1qbrXtOMhFApx5d": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Yan_2026_FattyAcidGWAS",
-   "title": "Genetic regulation of fatty acid content in adipose tissue",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00479-3"
+  "VPFFf1gTRQ4DPBcC0owl": {
+   "abstract": "Polygenic risk score (PRS) models effectively predict breast cancer (BC) risk in European-ancestry women but have limited accuracy for African-ancestry women, particularly for aggressive subtypes. We developed PRS models for overall BC, estrogen receptor (ER)-positive, ER-negative and triple-negative BC (TNBC) in African-ancestry women using data from the African Ancestry Breast Cancer Genetics consortium (17,391 cases and 18,800 controls). We applied several PRS methods and integrated information across ancestries and BC subtypes. The best models for overall, ER-positive, ER-negative and TNBC showed an area under the receiving operating curve of 0.612, 0.621, 0.611 and 0.639, respectively, and maintained predictive accuracy in external validation studies with area under the receiving operating curves of 0.612, 0.640, 0.605 and 0.652. We further introduce a parsimonious 162-variant PRS for TNBC with comparable accuracy (0.626). These findings demonstrate markedly improved PRS accuracy for BC risk prediction in African-ancestry women. Using these PRS models for screening will help promote more equitable cancer prevention efforts.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Li_2026_AfricanBreastCancerPRS",
+   "title": "Improved polygenic risk prediction models for breast cancer subtypes in women of African ancestry",
+   "url": "https://www.nature.com/articles/s41588-026-02501-5"
   },
   "XY5HcblyPnNkKcesVESp": {
    "abstract": "Abstract Biobanks with longitudinal measurements have advanced our understanding of time-to-event (TTE) traits including age-of-onset and disease progression. However, limited work has characterized the heritability of TTE traits, a key parameter for comparisons of total association and predictive power. Here, we present COXMM, a Cox proportional hazard mixed model for estimating TTE heritability. Simulations show our model achieves nearly unbiased results, whereas non-TTE approaches severely underestimate TTE heritability. COXMM estimates also predict the expected accuracy of polygenic scores in survival analyses, informing study design. We analyzed a wide variety of traits and observed heritability patterns reflecting a mixture of TTE and case-control architectures with supporting GWAS and polygenic risk score analyses. Evaluating 18 trait pairs, progression to a severe condition has consistently lower heritability than all-cause incidence, suggesting that cause-specific progression may have stronger environmental influences. COXMM offers a novel framework for analyzing longitudinal disease architecture with implications for disease prediction.",
@@ -35,13 +35,6 @@
    "short_name": "medrxiv_Taraszka_2026_Time-to-eventH2",
    "title": "A time-to-event heritability framework for inferring the genetic architecture of longitudinal traits",
    "url": "https://www.medrxiv.org/content/10.64898/2026.02.16.26346285v1"
-  },
-  "afs0YsMpQpdlmArzPvCS": {
-   "abstract": "",
-   "journal": "Cell",
-   "short_name": "Cell_Bader_2026_ProteomicsPredictsMS",
-   "title": "Large-scale proteomics across neurological disorders uncovers biomarker panel and targets in multiple sclerosis",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00104-2"
   },
   "w8EQmWkvdVtGst2CezAO": {
    "abstract": "Abstract Methods that analyze single-cell RNA-seq+ATAC-seq multiome data have shown promise in linking enhancers to target genes by correlating chromatin accessibility with gene expression across cells. However, correlations among ATAC-seq peaks may induce non-causal tagging peak-gene links (analogous to tagging associations in GWAS); indeed, we confirm that tagging effects induced by peak co-accessibility are pervasive in peak-gene linking. We defined two scores for each ATAC-seq peak: co-accessibility score , the sum of squared correlations with each nearby peak; and co-activity score , the sum of squared correlations with each nearby gene. We compared these scores in 4 multiome data sets (spanning 86k cells and 6 immune/blood cell types) and determined that co-accessibility score and co-activity score were strongly correlated across peaks ( r = 0.57-0.73); these correlations were not explained by read depth, cell subtypes, or measurement noise, but are consistent with tagging. Indeed, non-causal peak-gene correlations were strongly correlated to a peak’s tagging correlation with a causal peak in CRISPRi data ( r = 0.92). We further determined that causal peak-gene associations are concentrated in specific functional categories of peaks, by regressing co-activity scores on stratified co-accessibility scores (S-CASC): e.g. 2.91x (s.e. 0.67) enrichment for peaks closest to a gene’s TSS and 1.41x (s.e. 0.11) enrichment for peaks overlapping H3K27ac marks. Co-accessibility scores were substantially driven by the number of transcription factor binding sites (TFBS) within a peak, and peak-peak correlations were substantially driven by the number of TFBS pairs within the two peaks with a shared TF. These effects were concentrated in a small number of pioneer TFs, which activate repressed chromatin regions. Consistent with widespread tagging, peak-gene links that we fine-mapped using SuSiE significantly outperformed marginal peak-gene links in evaluation sets derived from CRISPRi and eQTL data. We provide examples demonstrating the impact of tagging effects at specific peaks and genes implicated in GWAS of blood cell traits. Our findings underscore the importance of accounting for tagging effects when linking enhancers to target genes.",
@@ -92,16 +85,13 @@
   "6NC3MQvr0WImsqKfhXNY": {
    "8c6976e5b5410415": 1
   },
-  "G9lnPH5pfvRdk6LmIS0k": {
+  "NvrhFwLzroabZ2gF4nOE": {
    "8c6976e5b5410415": 1
   },
-  "RdyCn1qbrXtOMhFApx5d": {
+  "VPFFf1gTRQ4DPBcC0owl": {
    "8c6976e5b5410415": 1
   },
   "XY5HcblyPnNkKcesVESp": {
-   "8c6976e5b5410415": 1
-  },
-  "afs0YsMpQpdlmArzPvCS": {
    "8c6976e5b5410415": 1
   },
   "w8EQmWkvdVtGst2CezAO": {

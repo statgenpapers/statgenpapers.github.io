@@ -22,13 +22,6 @@
    "title": "Multi-population GWAS meta-analysis identifies bladder cancer susceptibility loci and highlights genetic regulation of smoking-related risk",
    "url": "https://www.nature.com/articles/s41467-026-76157-4"
   },
-  "DSJt4WV4lirGHn3OzM9h": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Li_2026_NeonatalBloodCellGWAS",
-   "title": "Genome-wide association study and predictors of neonatal blood cell traits in Hispanic newborns",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00234-X"
-  },
   "DeO8I9XpkqKDTIVKQeea": {
    "abstract": "Abstract Genome-wide association studies (GWAS) have identified thousands of loci associated with cardiometabolic disease, yet translating these associations into regulatory mechanisms, effector genes, and cellular programs remains a major challenge. A key limitation is that genetic effects are often highly context dependent, varying across cell states and environmental conditions that are difficult to model at scale. Here, we leverage CellGenBank , a population-scale biobank of primary human adipose-derived mesenchymal stem cells (AMSCs), to implement a multi-donor cell village in vitro system to map cardiometabolic disease genetic variation across adipocyte differentiation and metabolic stress conditions. We pooled AMSCs from 118 donors into multiplexed villages, differentiated them toward adipocytes, and profiled chromatin accessibility and gene expression using single-nucleus multiome sequencing under four disease-relevant conditions: basal, elevated free fatty acids, low glucose, and hypoxia. By combining with genetic demultiplexing, we quantify how regulatory element activity, gene expression, and higher-order cellular programs are modulated by both genotype and environmental context. Across conditions, we identify widespread context-specific cis-regulatory effects, including expression and chromatin accessibility quantitative trait loci that are masked in baseline states. Genetic effects frequently converge on coordinated transcriptional programs linked to lipid metabolism, insulin responsiveness, and stress adaptation, enabling the identification of cellular program QTLs that bridge variants, genes, and disease-relevant phenotypes. Integration with cardiometabolic GWAS reveals enhanced colocalization in condition- and state-resolved analyses, highlighting the importance of modeling environmental context to resolve disease mechanisms. Together, our study establishes large-scale adipocyte cell villages as a powerful and generalizable framework to map the context-dependent regulatory architecture of cardiometabolic disease and provides a resource linking human genetic variation to adipocyte cellular programs.",
    "journal": "Preprint",
@@ -56,6 +49,13 @@
    "short_name": "NatCommun_Lassen_2026_RareVariantNonAdditivity",
    "title": "Deviations from genetic additivity driven by rare variants at biobank scale",
    "url": "https://www.nature.com/articles/s41467-026-76151-w"
+  },
+  "GURJ9J9VCpuCleC9uPV5": {
+   "abstract": "Abstract Many disease-associated variants are thought to act through gene regulation, yet conventional eQTL mapping explains only a fraction of GWAS loci, potentially because regulatory effects vary across cellular states and environments. We present CASTIE, a scalable Poisson mixed-model framework that directly models sparse single-cell read counts and enables genome-wide testing of genotype-by-context interactions without pre-screening for static effects. Applying CASTIE to 1.2 million peripheral blood mononuclear cells from 982 OneK1K donors identified 3,155 context-dependent eQTL associations, including 2,022 eGenes without detectable static effects. These associations yielded 374 colocalizations across 94 traits, representing 270 unique loci, of which 197 were not recovered using the corresponding static eQTLs. The colocalizations linked trait associations to specific cellular contexts and genes, including GCHFR , RNASET2 and ATP1A3 . In adipose-derived mesenchymal stem cells exposed to metabolic stimulations, CASTIE increased eGene discovery by 36 − 92% across cell populations and identified stimulation-dependent regulatory effects at metabolic trait loci. Thus, modeling cellular context reveals disease-relevant regulatory variation beyond static eQTL mapping.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Liu_2026_ContextDependentSingleCellEQTL",
+   "title": "Scalable context-dependent single-cell eQTL mapping reveals disease-relevant regulatory variation beyond static models",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.13.26360300v1"
   },
   "HRzD9N9cRqK3ChGQX0Ko": {
    "abstract": "Understanding how genetic variation shapes tissue-specific protein expression is fundamental for uncovering disease mechanisms and therapeutic targets. However, the proteomic landscape and its underlying genetic regulation in skin, the largest human organ, remain largely uncharted. Here, we present a population-level skin proteomic dataset, quantifying 5,774 proteins across 248 individuals and revealing substantial inter-individual variation shaped by genetic and non-genetic factors. Genome-wide pQTL analysis identifies 1,765 significant variant-protein associations involving 36 proteins, with 62% unsupported by skin eQTL and 33% not replicated in non-skin pQTL. Integrating skin pQTL with ancestry-matched leprosy GWAS identifies 11 risk proteins through proteome-wide association study (PWAS), with four showing causal evidence from colocalization or Mendelian randomization analyses. Further integration with European GWASs for atopic dermatitis and psoriasis identifies known and novel disease-related proteins, demonstrating the cross-ancestry utility of skin pQTL. Together, this work establishes a valuable resource for skin proteogenomics and disease-gene discovery in dermatology.",
@@ -142,7 +142,7 @@
    "url": "https://www.nature.com/articles/s41467-026-77128-5"
   },
   "ZnC5b0zP5lSpt0NLmE5B": {
-   "abstract": "",
+   "abstract": "Despite great progress on case-control polygenic prediction, an unmet need remains for a method that genetically distinguishes clinically related disorders (e.g., schizophrenia (SCZ) versus bipolar disorder (BIP) versus major depressive disorder (MDD) versus controls). We introduce differential diagnosis-polygenic risk score (DDx-PRS), which jointly estimates the posterior probabilities of each diagnostic category (e.g., SCZ = 50%, BIP = 25%, MDD = 15%, control = 10%) by modeling variance-covariance structure across disorders, leveraging case-control polygenic risk scores and prior clinical probabilities for each diagnostic category. We applied DDx-PRS to Psychiatric Genomics Consortium SCZ, BIP, MDD and control data, including summary-level training data from three case-control genome-wide association studies (n = 41,917-173,140 cases; total n = 1,048,683) and held-out test data from different cohorts with equal numbers for each diagnostic category (total n = 11,460). DDx-PRS was well calibrated and well powered (consistent with simulations) and produced comparable results to methods that require tuning data. True diagnosis probabilities in the top deciles of predicted diagnosis probabilities were considerably larger than prior baseline probabilities, implying appreciable potential for clinical utility in certain settings.",
    "journal": "Nat Genet",
    "short_name": "NG_Peyrot_2026_DifferentialDiagnosisPRS",
    "title": "Distinguishing different psychiatric disorders using DDx-PRS",
@@ -155,12 +155,19 @@
    "title": "Identifying the causal allele in the CD40 autoimmune locus enables discovery of context-specific trans-effects in B cells",
    "url": "https://www.biorxiv.org/content/10.64898/2026.07.29.741564v1"
   },
-  "czFCS8FiQ68duP0Oao1C": {
-   "abstract": "",
+  "cMBc6HDquoMBHXEHxTPc": {
+   "abstract": "Early postzygotic mutations (PZMs) that arise after fertilization but prior to primordial germ cell specification may be present in both somatic and germ cells, causing mosaicism in a parent and constitutive inheritance in their offspring. In clinical family-trio whole-genome sequencing (WGS), such variants are systematically missed because their sub-heterozygous variant allele fraction (VAF) prevents heterozygous calling in the parent, while residual parental allele support disqualifies the variant as a candidate germline de novo mutation (DNM) in the child. Here, we developed a bioinformatic approach to ascertain parental PZMs from unfiltered DNM candidates in standard-depth (∼30×) trio WGS and applied it to 12,015 trios from the Genomics England 100,000 Genomes Project. We identified 1,015 high-confidence early autosomal parental PZMs, a large single-source catalog of this mutation class. These exhibited a monomodal VAF distribution centered around 5% in parental blood, consistent with empirically characterized ascertainment boundaries imposed by standard-depth sequencing and germline variant calling. PZMs showed no parental age or sex bias and displayed a mutational spectrum distinct from that of DNMs, with enrichment for C>A and T>A substitutions and depletion of T>C. Mutational signature analysis revealed that both mutation types are shaped by clock-like signatures SBS1 and SBS5 in similar proportions, suggesting that spectral differences reflect shifts within shared mutagenic processes. Exploratory genomic distribution analysis revealed a negative PZM association with GC content, in contrast to the positive association for DNMs. Among these, we found variants in DYNC1H1 and WT1 with potential clinical relevance that were missed by routine diagnostic pipelines.",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Garcia-Salinas_2026_ParentalPostzygoticMutations",
    "title": "Landscape of parental postzygotic mutations across >11,000 rare disease trios",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00241-7"
+   "url": "https://doi.org/10.1016/j.ajhg.2026.06.015"
+  },
+  "d6xXnxup8hQysJ30gzI9": {
+   "abstract": "The role of heritable genetic variation in hematologic traits in adults is well established, yet the genetic architecture of neonatal blood cell traits is unknown. Leveraging flow cytometry profiling in cord blood samples from 382 Hispanic newborns, we conducted genome-wide association studies (GWASs) of 24 blood cell phenotypes to assess the impact of genetic and birth-related characteristics. We identified six genome-wide significant loci, including a signal at chromosome 2p11.2 spanning CD8A and CD8B that was associated with CD4+CD8+ double-positive T cells (rs35505884-C: p = 6.83 × 10-26). The lead variant showed strongly differentiated allele frequencies between European (22.1%) and admixed American (11.8%) populations and was associated with global (p = 2.51 × 10-6) and local (p = 2.01 × 10-8) Indigenous American ancestry. Colocalization with single-cell expression quantitative trait loci (eQTLs) revealed convergence of GWAS effects with regulation of CD8A expression in natural killer cells and CD4+ effector memory T cells with posterior probability (PPH4) >0.85. A locus at 6p21.33 was associated with CD4-CD8+ cytotoxic T cells (rs2853973-C, p = 3.90 × 10-8) and colocalized with MICA-AS1 expression across multiple immune cell types (PPH4 > 0.85). Additional nominal genome-wide significant loci were detected for total CD45+ lymphocytes, CD19+CD56+CD16+ natural killer cells, and CD4+CD8- helper T cells. C-section delivery and biological sex significantly altered blood cell profiles, with the largest magnitudes of association observed between C-section and total CD3+ T cells (β = 0.39) and CD4+ helper T cells (β = 0.39), and between female sex and CD4+CD8- (β = 0.39) and CD4-CD8+ T cells (β = -0.36). Our study demonstrates that blood cell composition at birth is under strong genetic regulation in Hispanic newborns, highlighting the value of studying complex traits in early life.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Li_2026_NeonatalBloodCellGWAS",
+   "title": "Genome-wide association study and predictors of neonatal blood cell traits in Hispanic newborns",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.06.008"
   },
   "dpfRveKoDafGOqJvyEC6": {
    "abstract": "Sepsis is the leading cause of acute kidney injury in critically ill patients, and this complication carries a high risk of death. The biology underlying it varies between patients, which may explain why treatments have not succeeded. Here we show, using an ensemble method that groups patients by patterns across hundreds of blood proteins in three independent groups of patients, that sepsis-associated acute kidney injury comprises two reproducible subphenotypes. One subphenotype shows widespread activation of inflammation, metabolism, and oxidative stress; the other shows a quieter profile. Patients in the inflammatory subtype have higher mortality, more complications, and fewer days alive and out of the intensive care unit. A simple seven-protein test reproduces these groupings and identifies them accurately in separate cohorts. In a randomized trial, the drug ilofotase alfa appears to benefit the inflammatory subtype but not the other, suggesting that this classification could guide future treatment.",
@@ -175,13 +182,6 @@
    "short_name": "Biorxiv_Lee_2026_ChildhoodLeukemiaMultiomics",
    "title": "Single-cell multiomic mapping of genetic predisposition to childhood B-cell acute lymphoblastic leukemia",
    "url": "https://www.biorxiv.org/content/10.64898/2026.08.06.743308v1"
-  },
-  "hdCeJqXdkhv7q1IqDeYl": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Chen_2026_AgeAlleleFrequencyNaturalSelection",
-   "title": "Allele frequency trajectories across age groups reveal ongoing natural selection shaping disease susceptibility",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00268-5"
   },
   "k3MKrZQtMIcgjni1UeYE": {
    "abstract": "Single-cell transcriptomics technology offers unprecedented insights into molecular heterogeneity. However, capturing sample-level representations that reflect both systemic and cellular states remains challenging, especially when disease annotations are mostly available as coarse sample-level labels. Here, we introduce Phenoverse, an interpretable deep learning framework that learns sample-level disease state representations through cell type-aware residual encoding, prototype learning, and Perceiver-based aggregation. Applied to independent single-cell transcriptomic cohorts of COVID-19, Alzheimer's disease, and systemic lupus erythematosus, totaling over 5 million cells, we demonstrate that learned sample representations enable disease state prediction and encode a continuous spectrum of disease severity on unseen data that correlate with multiple clinical and pathological measures, despite being trained solely on binary phenotype labels. Further, we demonstrate that trajectory-derived genes reveal cross-cohort molecular programs and show consistently higher reproducibility than traditional case-control comparisons. Finally, prototype learning provides intrinsic model interpretability and enables the characterization of cell type-specific disease states. Taken together, Phenoverse offers an interpretable disease-phenotyping approach to dissecting sample heterogeneity, and our results highlight its utility in translating complex single-cell transcriptomic data into patient-level biological insights.",
@@ -211,13 +211,6 @@
    "title": "Sequence-to-function deep learning decodes human cis-regulatory evolution",
    "url": "https://www.biorxiv.org/content/10.64898/2026.08.24.746818v1"
   },
-  "wmCq4uaxOFyAYBpdV7ws": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Naderian_2026_PolygenicRiskFamilyHistoryCHD",
-   "title": "Additive value of polygenic risk and family history for coronary heart disease risk stratification in two diverse US cohorts",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00240-5"
-  },
   "xVj9mNyyxBkQlImL69jE": {
    "abstract": "Splicing is a complex molecular mechanism in eukaryotic cells essential to gene expression and regulation, involving more than 300 protein-coding genes (PCGs) and 43 small nuclear RNA (snRNA) genes. However, fewer than 30 gene-disease relationships have been described as spliceosomopathies to date. This discrepancy suggests the splicing machinery as an underexplored area for human disease gene discovery. For snRNA currently classified as pseudogenes, we prioritized candidates with similar epigenomic, genomic, and hypermutability features as functional snRNA genes. Population-variant-depletion analysis was performed to identify regions under negative selection. We analyzed rare variants in PCGs and snRNA genes and prioritized snRNA pseudogenes across a large heterogeneous rare disease cohort. There was high concordance for prioritizing genes annotated as pseudogenes by the variant-depleted region analysis (9) and by random forest models of hypermutation, genomic and epigenomic features (6). We identified 26 variants of interest across six PCGs with established gene-disease relationships (GDRs) and 14 genes not yet disease-associated, including one pseudogene across 30 individuals. For snRNAs genes, we identified 49 variants of interest located in seven genes with established GDR and 11 genes not yet disease-associated, including two pseudogenes across 80 individuals. This study highlights the importance of splicing-related PCG and snRNA in the genetic etiology of rare diseases. By leveraging specialized approaches for prioritizing pseudogenes, combined with the PCG and snRNA analysis, the genes and variants expand the variant pathogenicity spectrum of spliceosomopathies and suggest variants for follow-up case series and future functional validation.",
    "journal": "Preprint",
@@ -234,7 +227,22 @@
   }
  },
  "votes": {
+  "10.1016_j.ajhg.2026.07.005": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.07.006": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.07.014": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.cell.2026.07.034": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.cell.2026.07.052": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2026.101325": {
    "8c6976e5b5410415": 1
   },
   "10.1038_s41467-026-76693-z": {
@@ -279,9 +287,6 @@
   "CiUT66dcIPlx59YMdbM5": {
    "8c6976e5b5410415": 1
   },
-  "DSJt4WV4lirGHn3OzM9h": {
-   "8c6976e5b5410415": 1
-  },
   "DeO8I9XpkqKDTIVKQeea": {
    "8c6976e5b5410415": 1
   },
@@ -292,6 +297,9 @@
    "8c6976e5b5410415": 1
   },
   "Fyqvpfu7I138dwcwlddc": {
+   "8c6976e5b5410415": 1
+  },
+  "GURJ9J9VCpuCleC9uPV5": {
    "8c6976e5b5410415": 1
   },
   "HRzD9N9cRqK3ChGQX0Ko": {
@@ -336,16 +344,16 @@
   "aiq2ZCto1914wYBGpi3U": {
    "8c6976e5b5410415": 1
   },
-  "czFCS8FiQ68duP0Oao1C": {
+  "cMBc6HDquoMBHXEHxTPc": {
+   "8c6976e5b5410415": 1
+  },
+  "d6xXnxup8hQysJ30gzI9": {
    "8c6976e5b5410415": 1
   },
   "dpfRveKoDafGOqJvyEC6": {
    "8c6976e5b5410415": 1
   },
   "fBwbnOXOtBpVomgSEngw": {
-   "8c6976e5b5410415": 1
-  },
-  "hdCeJqXdkhv7q1IqDeYl": {
    "8c6976e5b5410415": 1
   },
   "k3MKrZQtMIcgjni1UeYE": {
@@ -358,9 +366,6 @@
    "8c6976e5b5410415": 1
   },
   "w9hniqJl7xn1oX6DQjnG": {
-   "8c6976e5b5410415": 1
-  },
-  "wmCq4uaxOFyAYBpdV7ws": {
    "8c6976e5b5410415": 1
   },
   "xVj9mNyyxBkQlImL69jE": {

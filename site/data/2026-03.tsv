@@ -1,22 +1,16 @@
 Journal	Short Name	Title	URL
 Nat Genet	NatGenet_Jang_2026_MetaAnalysisSingleNucleus	A meta-analysis of single-nucleus expression quantitative trait loci linking genetic risk to brain disorders	https://doi.org/10.1038/s41588-026-02541-x
-Am J Hum Genet	AmJHumGenet_Rosen_2026_HighereQTLPowerReveals	Higher eQTL power reveals signals that boost GWAS colocalization	https://doi.org/10.1016/j.ajhg.2026.02.009
-Am J Hum Genet	AmJHumGenet_Bartell_2026_GeneticsSkeletalProportionsTwo	Genetics of skeletal proportions across two different populations	https://doi.org/10.1016/j.ajhg.2026.02.015
 Nat Genet	NatGenet_Kim_2026_ExomeSequencingAnalysis44	Exome sequencing and analysis of 44,028 British South Asians enriched for high autozygosity	https://doi.org/10.1038/s41588-026-02553-7
-Am J Hum Genet	AmJHumGenet_Li_2026_MindGap	Mind the gap: Characterizing bias due to population mismatch in two-sample Mendelian randomization	https://doi.org/10.1016/j.ajhg.2026.02.002
 Nat Genet	NatGenet_Wu_2026_GenomeWideFineMapping	Genome-wide fine-mapping improves identification of causal variants	https://doi.org/10.1038/s41588-026-02549-3
+Am J Hum Genet	AmJHumGenet_Rosen_2026_HighereQTLPowerReveals	Higher eQTL power reveals signals that boost GWAS colocalization	https://doi.org/10.1016/j.ajhg.2026.02.009
 Am J Hum Genet	AmJHumGenet_Lawrence_2026_FocusSingleGeneEffects	Focus on single-gene effects limits discovery and interpretation of complex-trait-associated variants	https://doi.org/10.1016/j.ajhg.2026.02.022
-Nat Genet	NatGenet_Talukdar_2026_InactiveXChromosomeFemale	The inactive X chromosome as a female protector in autism and beyond	https://doi.org/10.1038/s41588-026-02534-w
-Am J Hum Genet	AmJHumGenet_Pimplaskar_2026_InclusionBiasAffectsCommon	Inclusion bias affects common variant discovery and replication in a health-system linked biobank	https://doi.org/10.1016/j.ajhg.2026.02.011
 Nat Genet	NatGenet_Nakao_2026_GenomicPhenomicGeographicAssociations	Genomic, phenomic and geographic associations of leukocyte telomere length in the United States	https://doi.org/10.1038/s41588-026-02567-1
-Nat Genet	NatGenet_Zhang_2026_PangenomeReferencePopulationStudies	A pangenome reference and population studies link structural variants with breeding traits in Gossypium hirsutum	https://doi.org/10.1038/s41588-026-02523-z
-Nat Genet	NatGenet_Hanlon_2026_StrandSeqFuturePersonalized	Strand-seq and the future of personalized genomics	https://doi.org/10.1038/s41588-026-02548-4
-Cell Genom	CellGenom_Huang_2026_FirstPrinciplesQuantitativeFramework	A first-principles quantitative framework for how cohesin regulators shape chromatin loop extrusion	https://doi.org/10.1016/j.xgen.2026.101187
-Nat Genet	NatGenet_Hop_2026_LargeScaleExomeAnalyses	Large-scale exome analyses reveal new rare variant contributions in amyotrophic lateral sclerosis	https://doi.org/10.1038/s41588-026-02535-9
-Am J Hum Genet	AmJHumGenet_Asmussen_2026_UltraRareFunctionalVariants	Ultra-rare functional variants reveal early-onset breast cancer risk genes and pathways in the UK Biobank and All of Us Research Program	https://doi.org/10.1016/j.ajhg.2026.03.005
-Nat Genet	NatGenet_Yao_2026_BreedingIdeotypeMaizeEnhanced	Breeding ideotype maize with enhanced yield through genomics-guided pyramiding of favorable alleles	https://doi.org/10.1038/s41588-026-02522-0
+Am J Hum Genet	AmJHumGenet_Bartell_2026_GeneticsSkeletalProportionsTwo	Genetics of skeletal proportions across two different populations	https://doi.org/10.1016/j.ajhg.2026.02.015
+Am J Hum Genet	AmJHumGenet_Pimplaskar_2026_InclusionBiasAffectsCommon	Inclusion bias affects common variant discovery and replication in a health-system linked biobank	https://doi.org/10.1016/j.ajhg.2026.02.011
 Cell	Cell_Haas_2026_AdvancingPrecisionHealthDiscovery	Advancing precision health discovery in a genetically diverse health system	https://doi.org/10.1016/j.cell.2026.03.007
-Am J Hum Genet	AmJHumGenet_CROMER_2026_IncorporatingPolygenicRiskScores	Incorporating polygenic risk scores and social determinants of health across populations: Considerations and best practices in research	https://doi.org/10.1016/j.ajhg.2026.02.007
-Am J Hum Genet	AmJHumGenet_Oill_2026_BestPracticesImprovingAlignment	Best practices for improving alignment and variant calling on human sex chromosomes	https://doi.org/10.1016/j.ajhg.2026.02.019
-Am J Hum Genet	AmJHumGenet_Chaldebas_2026_GenomeWideDetectionHuman	Genome-wide detection of human 5′ UTR variants that impact protein translation	https://doi.org/10.1016/j.ajhg.2026.02.020
-Nat Genet	NatGenet_Castonguay_2026_SingleCellExpressionQTL	Single-cell expression QTL analyses of the human cerebellum reveal vulnerability of oligodendrocytes in essential tremor	https://doi.org/10.1038/s41588-026-02544-8
+Nat Genet	NatGenet_Hop_2026_LargeScaleExomeAnalyses	Large-scale exome analyses reveal new rare variant contributions in amyotrophic lateral sclerosis	https://doi.org/10.1038/s41588-026-02535-9
+Nature	Nature_Metwally_2026_InsulinResistancePredictionWearables	Insulin resistance prediction from wearables and routine blood biomarkers	https://doi.org/10.1038/s41586-026-10179-2
+Am J Hum Genet	AmJHumGenet_Li_2026_MindGap	Mind the gap: Characterizing bias due to population mismatch in two-sample Mendelian randomization	https://doi.org/10.1016/j.ajhg.2026.02.002
+Nature	Nature_Chen_2026_CellFreeChromatinState	Cell-free chromatin state tracing reveals disease origin and therapy responses	https://doi.org/10.1038/s41586-026-10224-0
+Nat Genet	NatGenet_Talukdar_2026_InactiveXChromosomeFemale	The inactive X chromosome as a female protector in autism and beyond	https://doi.org/10.1038/s41588-026-02534-w
+Nat Genet	NatGenet_Hanlon_2026_StrandSeqFuturePersonalized	Strand-seq and the future of personalized genomics	https://doi.org/10.1038/s41588-026-02548-4

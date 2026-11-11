@@ -1,38 +1,21 @@
 Journal	Short Name	Title	URL
-Nat Genet	NatGenet_Li_2026_ProteinProteinInteractionsShape	Protein–protein interactions shape trans-regulatory impact of genetic variation on protein expression and complex traits	https://doi.org/10.1038/s41588-025-02449-y
 Nat Genet	NatGenet_Soremekun_2026_LinkingPlasmaProteomeGenetics	Linking the plasma proteome to genetics in individuals from continental Africa provides insights into type 2 diabetes pathogenesis	https://doi.org/10.1038/s41588-025-02421-w
-Nat Genet	NatGenet_Cai_2026_PredicamentHeritableConfounders	The predicament of heritable confounders	https://doi.org/10.1038/s41588-025-02465-y
-Cell Genom	CellGenom_Chapel_2026_PolygenicBackgroundsInfluencePhenotypic	Polygenic backgrounds influence phenotypic consequences of variants in cells, individuals, and populations	https://doi.org/10.1016/j.xgen.2025.101131
-Cell Genom	CellGenom_Litman_2026_VariantResolvedPredictionContext	Variant-resolved prediction of context-specific isoform variation with a graph-based attention model	https://doi.org/10.1016/j.xgen.2025.101126
-Nat Genet	NatGenet_GarcíaGonzález_2026_PolygenicOmnigenicStratagenicModels	The polygenic, omnigenic and stratagenic models of complex disease risk	https://doi.org/10.1038/s41588-025-02467-w
+Nat Genet	NatGenet_Li_2026_ProteinProteinInteractionsShape	Protein–protein interactions shape trans-regulatory impact of genetic variation on protein expression and complex traits	https://doi.org/10.1038/s41588-025-02449-y
 Nat Genet	NatGenet_He_2026_MultiTraitMultiAncestry	Multi-trait and multi-ancestry genetic analysis of comorbid lung diseases and traits improves genetic discovery and polygenic risk prediction	https://doi.org/10.1038/s41588-025-02470-1
-Nat Genet	NatGenet_Wang_2026_GeneticsEnvironmentDistinctivelyShape	Genetics and environment distinctively shape the human immune cell epigenome	https://doi.org/10.1038/s41588-025-02479-6
+Nat Genet	NatGenet_Cai_2026_PredicamentHeritableConfounders	The predicament of heritable confounders	https://doi.org/10.1038/s41588-025-02465-y
 Am J Hum Genet	AmJHumGenet_Liang_2026_GeneSpecificVarianceControl	A gene-specific variance-control approach corrects polygenicity-driven inflation observed in transcriptome-wide association studies	https://doi.org/10.1016/j.ajhg.2025.12.014
-Cell Genom	CellGenom_Yu_2026_ChromBERT	ChromBERT: A foundation model for learning interpretable representations for context-specific transcriptional regulatory networks	https://doi.org/10.1016/j.xgen.2025.101130
-Nat Genet	NatGenet_Yang_2026_GraphPanGenomeIlluminates	Graph pan-genome illuminates evolutionary trajectories and agronomic trait architecture in allotetraploid cotton	https://doi.org/10.1038/s41588-025-02462-1
-Cell Genom	CellGenom_Zhao_2026_Hist2Cell	Hist2Cell: Deciphering fine-grained cellular architectures from histology images	https://doi.org/10.1016/j.xgen.2025.101137
-Cell Genom	CellGenom_Kerner_2026_MappingDiseaseLociBiological	Mapping disease loci to biological processes via joint pleiotropic and epigenomic partitioning	https://doi.org/10.1016/j.xgen.2025.101138
-Cell Genom	CellGenom_Sloan_2026_UncoveringSignaturesAgingSenescence	Uncovering the signatures of aging and senescence in the human dorsolateral prefrontal cortex	https://doi.org/10.1016/j.xgen.2025.101127
-Am J Hum Genet	AmJHumGenet_Jeong_2026_FunctionalAnalysisNPR2Variants	Functional analysis of NPR2 variants supports the therapeutic rationale for CNP in short stature	https://doi.org/10.1016/j.ajhg.2025.12.006
-Nat Genet	NatGenet_Li_2026_SingleCellAtlasTranscriptome	Single-cell atlas of the transcriptome and chromatin accessibility in the human retina	https://doi.org/10.1038/s41588-025-02454-1
-Am J Hum Genet	AmJHumGenet_Donato_2026_MolecularGenotypePhenotypeCorrelation	Molecular genotype-phenotype correlation in ACTB- and ACTG1-related non-muscle actinopathies	https://doi.org/10.1016/j.ajhg.2025.12.007
-Cell Genom	CellGenom_Béziat_2026_MonogenicDisordersImmunityCommon	Monogenic disorders of immunity: Common variants are not so rare	https://doi.org/10.1016/j.xgen.2025.101129
-Am J Hum Genet	AmJHumGenet_Lepik_2026_LiMA	LiMA: Robust inference of molecular mediation from summary statistics	https://doi.org/10.1016/j.ajhg.2025.12.005
-Nature	Nature_Latysheva_2026_AdvancingRegulatoryVariantEffect	Advancing regulatory variant effect prediction with AlphaGenome	https://doi.org/10.1038/s41586-025-10014-0
-Nature	Nature_Namba_2026_CrossPopulationCompendiumGene	A cross-population compendium of gene–environment interactions	https://doi.org/10.1038/s41586-025-10054-6
-Nat Genet	NatGenet_Bellavance_2026_ExploringVisualizingStratifiedGWAS	Exploring and visualizing stratified GWAS results with PheWeb2	https://doi.org/10.1038/s41588-025-02469-8
-Nat Genet	NatGenet_Zhang_2026_AberrantCellularCommunitiesUnderlying	Aberrant cellular communities underlying disease heterogeneity in chronic obstructive pulmonary disease	https://doi.org/10.1038/s41588-025-02480-z
-Cell Genom	CellGenom_Huang_2026_SemanticDesign	Semantic design: Programming functional genes from genomic context	https://doi.org/10.1016/j.xgen.2025.101132
-Am J Hum Genet	AmJHumGenet_Brand_2026_AncientProxy	AncientProxy: A catalog of ancient proxies for modern genetic variants	https://doi.org/10.1016/j.ajhg.2026.01.001
-Cell Genom	CellGenom_Allen_2026_DifferentialNeuronalSurvivalDefines	Differential neuronal survival defines a novel axis of sexual dimorphism in the Drosophila brain	https://doi.org/10.1016/j.xgen.2025.101125
-Nature	Nature_Gordon_2026_DevelopmentalConvergenceDivergenceHuman	Developmental convergence and divergence in human stem cell models of autism	https://doi.org/10.1038/s41586-025-10047-5
-Nat Genet	NatGenet_Belloy_2026_QuantitativeTraitLocusReduced	A quantitative trait locus for reduced microglial APOE expression associates with reduced cerebral amyloid angiopathy	https://doi.org/10.1038/s41588-025-02472-z
-Am J Hum Genet	AmJHumGenet_Bertola_2026_DominantRecessiveATOH1Variants	Dominant and recessive ATOH1 variants cause distinct neurodevelopmental disorders with hearing loss	https://doi.org/10.1016/j.ajhg.2025.12.016
-Cell Genom	CellGenom_Hollenbach_2026_UncoveringDiversityImmunoglobulinHeavy	Uncovering diversity in the immunoglobulin heavy chain locus	https://doi.org/10.1016/j.xgen.2025.101134
-Nat Genet	NatGenet_Mitchel_2026_ImpactCorrectionSegmentationErrors	Impact and correction of segmentation errors in spatial transcriptomics	https://doi.org/10.1038/s41588-025-02497-4
-Nature	Nature_Moore_2026_ExpandedRegistryCandidateCis	An expanded registry of candidate cis-regulatory elements	https://doi.org/10.1038/s41586-025-09909-9
-Cell Genom	CellGenom_Jaiswal_2026_SpatialTranscriptomicsRevealsAltered	Spatial transcriptomics reveals altered communities and drivers of aberrant epithelia and pro-fibrotic fibroblasts in interstitial lung diseases	https://doi.org/10.1016/j.xgen.2025.101066
-Am J Hum Genet	AmJHumGenet_Yan_2026_GeneticRegulationFattyAcid	Genetic regulation of fatty acid content in adipose tissue	https://doi.org/10.1016/j.ajhg.2025.12.008
-Nat Genet	NatGenet_Rossen_2026_MultiSuSiEImprovesMultiAncestry	MultiSuSiE improves multi-ancestry fine-mapping in All of Us whole-genome sequencing data	https://doi.org/10.1038/s41588-025-02450-5
-Nat Genet	NatGenet_Frank_2026_CentralRoleGlycosylationProcesses	Central role of glycosylation processes in human genetic susceptibility to SARS-CoV-2 infections with Omicron variants	https://doi.org/10.1038/s41588-025-02484-9
+Nat Genet	NatGenet_GarcíaGonzález_2026_PolygenicOmnigenicStratagenicModels	The polygenic, omnigenic and stratagenic models of complex disease risk	https://doi.org/10.1038/s41588-025-02467-w
+Nat Genet	NatGenet_Wang_2026_GeneticsEnvironmentDistinctivelyShape	Genetics and environment distinctively shape the human immune cell epigenome	https://doi.org/10.1038/s41588-025-02479-6
 Nature	Nature_Bigdeli_2026_BiologicalInsightsSchizophreniaAncestrally	Biological insights into schizophrenia from ancestrally diverse populations	https://doi.org/10.1038/s41586-025-10000-6
+Nature	Nature_Namba_2026_CrossPopulationCompendiumGene	A cross-population compendium of gene–environment interactions	https://doi.org/10.1038/s41586-025-10054-6
+Nature	Nature_Lutsker_2026_FoundationModelContinuousGlucose	A foundation model for continuous glucose monitoring data	https://doi.org/10.1038/s41586-025-09925-9
+Nat Genet	NatGenet_Rossen_2026_MultiSuSiEImprovesMultiAncestry	MultiSuSiE improves multi-ancestry fine-mapping in All of Us whole-genome sequencing data	https://doi.org/10.1038/s41588-025-02450-5
+Nature	Nature_Moore_2026_ExpandedRegistryCandidateCis	An expanded registry of candidate cis-regulatory elements	https://doi.org/10.1038/s41586-025-09909-9
+Nat Genet	NatGenet_Li_2026_SingleCellAtlasTranscriptome	Single-cell atlas of the transcriptome and chromatin accessibility in the human retina	https://doi.org/10.1038/s41588-025-02454-1
+Am J Hum Genet	AmJHumGenet_Lepik_2026_LiMA	LiMA: Robust inference of molecular mediation from summary statistics	https://doi.org/10.1016/j.ajhg.2025.12.005
+Am J Hum Genet	AmJHumGenet_Yan_2026_GeneticRegulationFattyAcid	Genetic regulation of fatty acid content in adipose tissue	https://doi.org/10.1016/j.ajhg.2025.12.008
+Nat Genet	NatGenet_Zhang_2026_AberrantCellularCommunitiesUnderlying	Aberrant cellular communities underlying disease heterogeneity in chronic obstructive pulmonary disease	https://doi.org/10.1038/s41588-025-02480-z
+Nat Genet	NatGenet_Bellavance_2026_ExploringVisualizingStratifiedGWAS	Exploring and visualizing stratified GWAS results with PheWeb2	https://doi.org/10.1038/s41588-025-02469-8
+Cell Genom	CellGenom_Kerner_2026_MappingDiseaseLociBiological	Mapping disease loci to biological processes via joint pleiotropic and epigenomic partitioning	https://doi.org/10.1016/j.xgen.2025.101138
+Nature	Nature_Nyeo_2026_PopulationScaleSequencingResolves	Population-scale sequencing resolves determinants of persistent EBV DNA	https://doi.org/10.1038/s41586-025-10020-2
+Cell Genom	CellGenom_Zhao_2026_Hist2Cell	Hist2Cell: Deciphering fine-grained cellular architectures from histology images	https://doi.org/10.1016/j.xgen.2025.101137

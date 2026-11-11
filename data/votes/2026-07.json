@@ -1,33 +1,12 @@
 {
  "month": "2026-07",
  "submissions": {
-  "1X17CgHua7KbfP2joUZk": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Shi_2026_GWASMeniereDisease",
-   "title": "Genome-wide analysis implicates inner ear development in Ménière disease",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00198-9"
-  },
-  "2hIRbRSeMZabL96LetYk": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Ruan_2026_DiscoDivasPRStransferability",
-   "title": "DiscoDivas: Leveraging genetic-ancestry continuum information to interpolate PRS for admixed populations",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00193-X"
-  },
-  "7r0vc2JtveITMBw6viQz": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Krätschmer_2026_DirectIndirectParentOfOriginGeneticEffects",
-   "title": "Separating direct, indirect, and parent-of-origin genetic effects in the human population",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00139-4"
-  },
-  "B5cAt2bPsrnPW8LX966P": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Signer_2026_BMIGenomeGeneExpressionInteractions",
-   "title": "BMI-genome interactions regulate global gene expression with emphasis in brain and gut",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00142-4"
+  "6PWv7GqEqgmtb6hL2H1o": {
+   "abstract": "Evolution has used cell-cell communication as a strategy to coordinate organ development, enabling the reproducible generation of intricate structures. Classically, these interactions have been studied one at a time in model organisms, limiting our understanding of how cellular interplay coordinates human development. We investigated human kidney development using single-cell RNA sequencing and spatial transcriptomics, analyzing over 700,000 cells. By mapping gene expression and differentiation trajectories in space, we define the spatial organization of kidney development. Our analysis revealed unrecognized plasticity, showing that cell fate established during early patterning can be later revised. This plasticity provides a potential mechanism for how cell fate is robustly established in complex patterned tissues. Additionally, through a genome-wide, spatially aware cell-cell interaction analysis, we link localized ligand signals to cell fate decisions. We also define biologically meaningful cellular neighborhoods based on aggregated extracellular cues, providing a blueprint to understand the coordination of human development at scale.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Levinsohn_2026_SpatialKidneyDevelopment",
+   "title": "Single-cell spatial mapping of human kidney development implicates the microenvironment in guiding cell fate decisions",
+   "url": "https://www.nature.com/articles/s41588-026-02665-0"
   },
   "BHanbu1GAy3RzW2prxgX": {
    "abstract": "Single-cell transcriptomics is revolutionizing our understanding of cellular diversity, yet comparing transcriptional programs across the tree of life remains challenging. We developed TranscriptFormer, a family of generative foundation models trained on up to 112 million cells spanning 1.53 billion years of evolution across 12 species. We demonstrate state-of-the-art performance on cell type classification, even for species separated by over 685 million years of evolution, and zero-shot disease state identification in human cells. Developmental trajectories, phylogenetic relationships, and cellular hierarchies emerge naturally in TranscriptFormer’s representations without any explicit training on these annotations. This work establishes a powerful framework for quantitative single-cell analysis and comparative cellular biology, thus demonstrating that universal principles of cellular organization can be learned and predicted across the tree of life.",
@@ -51,18 +30,11 @@
    "url": "https://www.medrxiv.org/content/10.64898/2026.02.23.26346922v1"
   },
   "HtVdAFNMfrwKAXi9dkF8": {
-   "abstract": "",
+   "abstract": "Long-range competition among promoters within a shared regulatory landscape has been implicated in development and disease, but the determinants of promoter competition remain unclear. Here we introduce diverse promoters into defined genomic sites within the Sox2 locus and measure how these insertions attenuate endogenous Sox2 expression. We find that the level of reduction in endogenous Sox2 transcription is correlated with the strength of the inserted promoter. Transcription from the inserted promoter is required for competition, with longer transcripts resulting in more competition. The inserted active promoter and its associated transcriptional unit function as an insulator, rendering competition position dependent. Competition is counteracted by the HUSH-mediated silencing of the inserted promoters. Together, our work uncovers the rules governing promoter competition, highlights its impact on tuning gene expression levels and genome evolution, and suggests that transcriptional units producing transcripts of sufficient level and length can mediate insulation independently of CTCF and cohesin.",
    "journal": "Nat Genet",
    "short_name": "NG_Koska_2026_PromoterCompetition",
    "title": "Promoter strength and position govern promoter competition through transcript-dependent insulation",
    "url": "https://www.nature.com/articles/s41588-026-02691-y"
-  },
-  "KORLVZ0YOP43m3hxi9bl": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Baya_2026_PolygenicExpectationRareVariants",
-   "title": "Individuals who deviate from polygenic expectation are enriched for damaging variants in genes linked to rare disease",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00200-4"
   },
   "KhvKVDOopzF3UNPX8cZL": {
    "abstract": "Single-cell transcriptomics technology offers unprecedented insights into molecular heterogeneity. However, capturing sample-level representations that reflect both systemic and cellular states remains challenging, especially when disease annotations are mostly available as coarse sample-level labels. Here, we introduce Phenoverse, an interpretable deep learning framework that learns sample-level disease state representations through cell type-aware residual encoding, prototype learning, and Perceiver-based aggregation. Applied to independent single-cell transcriptomic cohorts of COVID-19, Alzheimer's disease, and systemic lupus erythematosus, totaling over 5 million cells, we demonstrate that learned sample representations enable disease state prediction and encode a continuous spectrum of disease severity on unseen data that correlate with multiple clinical and pathological measures, despite being trained solely on binary phenotype labels. Further, we demonstrate that trajectory-derived genes reveal cross-cohort molecular programs and show consistently higher reproducibility than traditional case-control comparisons. Finally, prototype learning provides intrinsic model interpretability and enables the characterization of cell type-specific disease states. Taken together, Phenoverse offers an interpretable disease-phenotyping approach to dissecting sample heterogeneity, and our results highlight its utility in translating complex single-cell transcriptomic data into patient-level biological insights.",
@@ -78,12 +50,12 @@
    "title": "Beyond the mean: genetic control of gene expression fidelity and dispersion",
    "url": "https://www.biorxiv.org/content/10.64898/2026.04.01.715853v2"
   },
-  "gqTC1kop3PGfRZGbJEHN": {
-   "abstract": "",
+  "iqABHQEAWSmdzoHiZkK7": {
+   "abstract": "Studying the genetic basis of human phenotypes involves two primary strategies. Model-system experiments generate interpretable gene networks but do not establish relevance to human disease. In contrast, statistical genetics identifies variant- and gene-level associations but cannot test mechanistic models. Here, we bridge these approaches by introducing NERINE, a hierarchical model-based rare variant association test that incorporates gene network topology while remaining robust to network inaccuracies. NERINE supports analysis of networks from established pathway databases and model-system screens. A comprehensive search across pathway databases reveals associations for breast cancer, cardiovascular diseases, and type 2 diabetes not detected by single-gene tests. Applied to experimental screen-derived networks in Parkinson's disease (PD), NERINE highlights autophagy-, vesicle-trafficking-, and protein-homeostasis-related gene modules. Genome-scale CRISPR interference (CRISPRi) screening in human neurons and NERINE converge on PRL , revealing an intraneuronal α-synuclein / prolactin stress response that may impact resilience to PD.",
    "journal": "Cell Genom",
    "short_name": "CG_Nazeen_2026_NERINERareVariantGeneNetworks",
    "title": "NERINE reveals rare variant associations in gene networks across multiple phenotypes and implicates an SNCA-PRL-LRRK2 subnetwork in Parkinson’s disease",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00146-1"
+   "url": "https://doi.org/10.1016/j.xgen.2026.101284"
   },
   "itbLEgRxKv9oUSibuXqM": {
    "abstract": "An in vivo approach combining high-throughput screening with cell type–specific readouts could enable elucidation of genotype-phenotype relationships in complex tissues. We developed an in vivo gain-of-function Perturb-seq platform, termed iGOF–Perturb-seq, to build a functional atlas of ~1000 transcription factors (TFs) in astrocytes, a cell type essential to many brain functions. We then identified cofunctional modules, annotated uncharacterized TFs, and predicted disease-associated TF clusters. Furthermore, iGOF–Perturb-seq performed in a mouse neuroinflammatory model identified Ferd3l as a therapeutic candidate, and astrocyte-specific overexpression of Ferd3l alleviated Alzheimer’s disease symptoms in mice. This study provides resources for understanding gene regulation and disease mechanisms in vivo and for identifying potential therapeutic targets for different brain diseases.",
@@ -119,13 +91,6 @@
    "short_name": "NG_Baderna_2026_EnhancerActivationFrequency",
    "title": "Cumulative transcription factor binding and p300-mediated histone acetylation drive enhancer activation frequency",
    "url": "https://www.nature.com/articles/s41588-026-02703-x"
-  },
-  "v1zZAAZwsvNI5K5EIyAy": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Milind_2026_GeneDosageTraitBuffering",
-   "title": "Buffering of gene dosage response curves for human complex traits",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00083-2"
   }
  },
  "votes": {
@@ -136,6 +101,12 @@
    "8c6976e5b5410415": 1
   },
   "10.1016_j.ajhg.2026.06.005": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.06.014": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.07.002": {
    "8c6976e5b5410415": 1
   },
   "10.1038_s41586-026-10780-5": {
@@ -174,16 +145,7 @@
   "10.1126_science.adx2989": {
    "8c6976e5b5410415": 1
   },
-  "1X17CgHua7KbfP2joUZk": {
-   "8c6976e5b5410415": 1
-  },
-  "2hIRbRSeMZabL96LetYk": {
-   "8c6976e5b5410415": 1
-  },
-  "7r0vc2JtveITMBw6viQz": {
-   "8c6976e5b5410415": 1
-  },
-  "B5cAt2bPsrnPW8LX966P": {
+  "6PWv7GqEqgmtb6hL2H1o": {
    "8c6976e5b5410415": 1
   },
   "BHanbu1GAy3RzW2prxgX": {
@@ -198,16 +160,13 @@
   "HtVdAFNMfrwKAXi9dkF8": {
    "8c6976e5b5410415": 1
   },
-  "KORLVZ0YOP43m3hxi9bl": {
-   "8c6976e5b5410415": 1
-  },
   "KhvKVDOopzF3UNPX8cZL": {
    "8c6976e5b5410415": 1
   },
   "calTSdoahFVGBhex81Zz": {
    "8c6976e5b5410415": 1
   },
-  "gqTC1kop3PGfRZGbJEHN": {
+  "iqABHQEAWSmdzoHiZkK7": {
    "8c6976e5b5410415": 1
   },
   "itbLEgRxKv9oUSibuXqM": {
@@ -223,9 +182,6 @@
    "8c6976e5b5410415": 1
   },
   "tjHhP8caeQXS8kimvzJR": {
-   "8c6976e5b5410415": 1
-  },
-  "v1zZAAZwsvNI5K5EIyAy": {
    "8c6976e5b5410415": 1
   }
  }

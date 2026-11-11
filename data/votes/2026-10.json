@@ -1,117 +1,110 @@
 {
  "month": "2026-10",
  "submissions": {
-  "7mrptfumwzWPCmVH3hs4": {
-   "abstract": "",
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Viippola_2026_SexRelatedPlasmaProteome",
-   "title": "Sex-related signatures in the plasma proteome not attributable to XX and XY chromosomes and their impact on health and disease",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.10.19.26365875v1"
-  },
-  "9M8no3Vrz1XzLWkezIJy": {
-   "abstract": "",
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Rafi_2026_gRelySequenceToFunctionReliability",
-   "title": "gRely: Relyability for genome-trained sequence-to-function model predictions",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.05.23.727431v2.full"
-  },
-  "B1z51dw7XlRHOeIPvt5v": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Fuhrer_2026_NoncodingHeritabilityPolygenicity",
-   "title": "Beyond exons: Linking noncoding heritability and polygenicity across complex human traits and disorders",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00313-7"
-  },
-  "CY9SQyu0Ih4rpphtLBO9": {
-   "abstract": "",
-   "journal": "bioRxiv",
+  "5Tc4OGvHMn6DArV1h76u": {
+   "abstract": "Abstract Genetic fine-mapping identifies causal variants within trait-associated loci, but linkage disequilibrium (LD) and wide datasets complicate this sparse variable-selection problem. SuSiE is popular for its fast variational inference, posterior inclusion probabilities (PIPs), and credible sets, yet a single fit can fail to resolve LD ambiguity, converge to a poor local optimum, or misrepresent uncertainty over competing configurations. We introduce SuSiNE (Sum of Single Non-central Effects), a SuSiE extension incorporating signed functional annotations through a prior-mean channel, µ 0 = c a , while preserving effect conjugacy, credible sets, and summary-statistic sufficiency. The resulting single-effect Bayes factor self-gates on agreement between annotation sign and association direction, limiting annotation-noise influence. We show that the common final step of purity filtering can discard informative signal, and tends to hurt performance. We also introduce new effect-level diagnostics for concentration, accuracy, and fitted-basis movement, to provide deeper insights into model behavior. To explore and summarize multiple variational basins, we pair the model with grid-based ensembling and cluster-weight aggregation. In oligogenic simulations with annotations calibrated to AlphaGenome eQTL benchmarks, the ensemble raised pooled AUPRC for recovery of the largest-effect causal variants from a SuSiE-equivalent 0.2474 to 0.3130 (0.0656 delta, 95% paired-bootstrap CI [0.0591, 0.0722]). At 75% precision, recall rose from 11.9% to 19.3% (61.7% relative gain). AUPRC gains were robust across varying annotation quality and alternative sparse and diffuse architectures, while sufficiently strong null annotation-association alignment reversed the gains. In a GTEx Lung summary-statistic case study, SuSiNE placed nontrivial weight on annotation-informed fits at 7 of 20 loci and changed which variants received high PIP. ARSA showed the cleanest durable shift, whereas the large YDJC shift coincided with reference-LD discrepancy. An internal diagnostic found little evidence of strong annotation confounding in this panel. These analyses use reference rather than in-cohort LD, demonstrating method behavior rather than definitive variant-level discoveries. Author summary When a genetic study links part of the genome to a disease or to differences in gene expression, the next question is which variants are responsible. Answering this is hard, because nearby variants are usually inherited together and can look almost interchangeable in the data. We studied a widely used method, SuSiE, by asking where it breaks down. We found that a routine final cleanup step often discards real signal for nothing in return. A single run can also settle on one explanation without exploring alternatives that fit the data just as well. We introduce new checks that make both problems visible. We then developed SuSiNE, which lets the method use directional predictions from AI sequence models or other biological evidence. It runs many times across settings that encourage exploration, then combines the results into one summary. In calibrated simulations, SuSiNE found true causal variants substantially more often than the standard method. On real gene-expression data, it changed which variants look responsible at several locations. These results are limited, but they suggest AI sequence models are already good enough to offer competing explanations at well-studied genome locations, if we use them carefully.",
+   "journal": "Preprint",
    "short_name": "Biorxiv_Callahan_2026_SuSiNE",
    "title": "SuSiNE: Genetic fine-mapping with signed functional priors and multi-basin ensembling",
    "url": "https://www.biorxiv.org/content/10.64898/2026.07.31.742084v2"
   },
-  "D9cGsTp55MKGwTi2WOK7": {
-   "abstract": "",
-   "journal": "Zenodo",
-   "short_name": "Zenodo_Dann_2026_TraitCausalModels",
-   "title": "Trait Causal Models: from GWAS, perturbations, and omics to predictive models of human biology",
-   "url": "https://zenodo.org/records/23426258"
-  },
-  "DBMIvFfyHHn3ZYIADfvo": {
-   "abstract": "",
-   "journal": "PNAS",
-   "short_name": "PNAS_Lorch_2026_SingleCellCausalDiffusion",
-   "title": "Latent causal diffusions for single-cell perturbation modeling",
-   "url": "https://www.pnas.org/doi/10.1073/pnas.2602630123"
-  },
-  "E2SX22Y6mSYimbJ7PGzL": {
-   "abstract": "",
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Hou_2026_RareCodingVariantArchitecture",
-   "title": "Functional architecture of rare protein coding variation across 786,871 exomes",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.10.16.26365771v1"
-  },
-  "EpFLqJjsIIM0WyA26e0u": {
-   "abstract": "",
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Wang_2026_MPRASequenceToFunctionModels",
-   "title": "Synthetic MPRA perturbation supervision improves variant-effect prediction in sequence-to-function models",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.11.02.763699v1"
-  },
-  "OF373vcdQkeySMLn0sIU": {
-   "abstract": "",
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Parsa_2026_ProteomicRiskGeneralizability",
-   "title": "Generalizability of proteomic risk prediction across biobanks reveals dependence on phenotype definitions",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.10.01.26364038v1"
-  },
-  "WwusRVCY0MbTKeHc7eqH": {
-   "abstract": "",
+  "83Q7vqSWLFarKuZJ28IL": {
+   "abstract": "Quantification of the direct effect of genetic variation on human behavioural traits is important for understanding between-individual variation in socioeconomic and health outcomes but estimates of their heritability can be biased by between-family indirect genetic effects. By contrast, using within-family variation in DNA sharing is robust to most confounding factors including shared environmental effects and population stratification. Yet, accurate estimates for most traits are not available using this design, and none for non-European ancestry populations. Here we analyse approximately 500,000 sibling pairs with diverse genetic ancestries and obtain within-family heritability estimates for 14 phenotypes, including two well-studied model traits: height (0.70 ± 0.03) and BMI (0.49 ± 0.03). For behaviour, we find significant within-family heritability for smoking initiation (0.34 ± 0.05), alcohol consumption (0.18 ± 0.04), number of children (0.27 ± 0.11) and personality ('talk versus listen', 0.48 ± 0.13). In addition, we estimated large heritability for type 2 diabetes (0.43 ± 0.06) and asthma (0.34 ± 0.06), whose risk factors include behavioural traits. Overall, we show concordant estimates across ancestry groups and highlight a significant contribution of shared environmental effects for behaviour and type 2 diabetes risk, which may have inflated between-family estimates. Altogether, our results provide within-family evidence that genetic variation is associated with variation in complex traits, common disease and exposures. Our heritability estimates are concordant across genetic ancestries, lower than those from twin-based studies, yet larger than has been accounted for by genome-wide association studies so far.",
    "journal": "Nat Hum Behav",
    "short_name": "NatHumBehav_Yengo_2026_WithinFamilyHeritability",
    "title": "Within-family heritability estimates for behavioural and disease phenotypes from 500,000 sibling pairs of diverse ancestries",
    "url": "https://www.nature.com/articles/s41562-026-02599-x"
   },
-  "bNDuvpQ0wcZNGXshBg5H": {
-   "abstract": "",
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Shim_2026_EpigenomicDiseaseHeterogeneity",
-   "title": "Epigenomic regulatory programs reveal the latent heterogeneity of complex diseases",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.05.01.722123v2.full"
+  "9GHBOfA9YrMMMMV1RRs8": {
+   "abstract": "Copy-number variants (CNVs) are major contributors to human disease. In Alzheimer disease (AD), APP duplications cause autosomal-dominant forms, but the role of CNVs in non-monogenic AD remains poorly characterized. We analyzed rare CNVs (frequency <1%) from 22,319 exomes (4,150 early-onset AD [EOAD, ≤65 years], 8,519 late-onset AD [LOAD], 9,650 unaffected control subjects) using harmonized calling and quality control. After identifying 17 individuals with a pathogenic CNV, we performed exome-wide and gene-set burden analyses. EOAD-affected individuals showed increased burdens of rare CNVs affecting coding genes, particularly deletions in AD-related genes. Integrated loss-of-function (LoF) analysis gathering short truncating variants with deletions showed that ABCA1 (odds ratio [OR] = 5.77 [95% confidence interval 2.25; 17.06], p = 0.0002) and ABCA7 deletions contribute to this deletion burden (OR = 2.29 [1.44; 3.65], p = 0.0006), while CTSB LoF alleles appear as candidates (OR = 5.03 [1.50; 20.71], p = 0.0089). We then performed exome-wide gene-level dosage analysis and highlighted 18 genes across five loci with a false discovery rate of <10%, including the 22q11.21 central region, where deletions were restricted to EOAD (including one de novo event) and duplications were enriched in control individuals, with intermediate frequencies in LOAD. We narrowed this locus to the SCARF2 - KLHL22 - MED15 region after integrating short truncating variants. Replication in 33,977 affected individuals and 362,322 control subjects confirmed association for 22q11.21 dosage with exome-wide significance (OR SCARF2 = 0.34 [0.21; 0.53]; mega- p value=5.52 × 10 −7 ). SCARF2 overexpression significantly increased amyloid-β uptake, congruent with duplication-associated decreased AD risk. We conclude that rare coding CNVs in a proportion of AD-associated genes and 22q11.21 deletions, including some found in DiGeorge syndrome, increase AD risk. Conversely, we identify 22q11.21 duplication as a strong AD-risk-decreasing factor.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Quenez_2026_RareCNVAlzheimerRisk",
+   "title": "Exome analysis of 22,319 individuals links extremely rare copy-number variants and 22q11.21 dosage to Alzheimer risk",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.07.013"
   },
-  "lTRjPnuBHxJ46b7gM1jQ": {
-   "abstract": "",
+  "RNPk9lgEjZfHsHZQHrkL": {
+   "abstract": "Abstract Sequence-to-function (S2F) models predict molecular phenotypes from DNA sequence and are increasingly applied to variant effect prediction (VEP), but their accuracy varies across variants, genes, and tissues. Current practice declares predictions as trustworthy by thresholding on predicted effect magnitude, a crude heuristic that discards low-effect variants where most GWAS signal is expected to act. We present gRely, a meta-model that estimates a score that an individual VEP is correct, from 1,161 features derived from the target variant, gene, tissue, and model. Trained on GTEx fine-mapped eQTLs and Borzoi, gRely reaches 97% sign concordance in its top 20% of scores on held-out variants, genes, and tissues. Critically, it remains discriminative among low-magnitude variants, which effect-size filtering discards; SHAP attribution shows that reliability in the low-effect regime is driven by chromatin context and model cross-replicate agreement rather than effect size. Furthermore, the Borzoi trained meta-model generalizes across other architectures, such as AlphaGenome and Enformer. gRely is the first framework to provide per-prediction confidence scores for S2F models and marks a step toward trustworthy deployment of S2F models in genomic research and clinical applications.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Rafi_2026_gRelySequenceToFunctionReliability",
+   "title": "gRely: Relyability for genome-trained sequence-to-function model predictions",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.23.727431v2.full"
+  },
+  "Z7iEeNLflZrDjaDNnh4p": {
+   "abstract": ". Here, to gain deeper insights into the aetiology of different brain diseases, we used specimens from 1,494 unique donors to generate a population-scale single-cell transcriptomic atlas of the human dorsolateral prefrontal cortex, comprising over 6.3 million individual nuclei. The cohort includes neurotypical controls, as well as donors affected by eight common and complex brain disorders: Alzheimer's disease (AD), diffuse Lewy body disease (DLBD), vascular dementia (Vas), Parkinson's disease (PD), tauopathy, frontotemporal dementia, schizophrenia, and bipolar disorder. We show that interindividual variation accounts for a substantial portion of gene expression variation. By comparing transcriptomic variation across diseases, we reveal universal signatures enriched in basic cellular functions such as mRNA processing and protein localization. After discounting these cross-disease signatures, we show stronger genetic and transcriptomic concordance among AD, DLBD, Vas and PD. Furthermore, we characterize transcriptomic variation among different AD phenotypes, distinct from those observed in healthy ageing, revealing a reduction in neuronal abundance in individuals with more severe AD, coupled with an increase in immune and vascular cell populations. Exploring the neuropsychiatric symptoms (NPSs) that frequently accompany AD, we find an increased abundance of deep-layer excitatory neurons associated with a broad range of NPSs. By constructing transcriptome trajectories that capture AD progression, we implicate cell-type-specific responses in the early and late stages of AD. Our disease atlas provides a perspective of the transcriptomic landscape in neurodegenerative and neuropsychiatric disorders, shedding light on shared and distinct processes involving the neurological-immune-vascular systems, and identifying potential targets for therapeutic intervention.",
    "journal": "Nature",
    "short_name": "Nature_Lee_2026_BrainDisorderTranscriptomicVulnerability",
    "title": "Single-cell atlas of transcriptomic vulnerability across brain disorders",
    "url": "https://www.nature.com/articles/s41586-025-09573-z"
   },
-  "nPL21g0mMHZPgKBmBKf1": {
-   "abstract": "",
-   "journal": "medRxiv",
+  "ZIvtU9JCytfSknXrwdiR": {
+   "abstract": "Abstract Deep learning sequence-to-function (S2F) models learn to predict functional readouts, such as gene expression, from genetic sequence. However, these models are trained predominantly on the reference genome and struggle to accurately predict the effect of genetic variation on gene expression. Massively parallel reporter assays (MPRAs) explore the direct impact of genetic variation on gene expression, but saturation-mutagenesis MPRAs that measure variant effects directly remain limited, thereby restricting their use for fine-tuning S2F models. In this work, we investigate fine-tuning Borzoi, a state-of-the-art S2F model, on model-generated synthetic MPRA variant-effect data as a scalable alternative to overcome limits on the availability of supervised training data for genetic variation. First, we trained an ensemble of 16 models on 110,359 K562 MPRA measurements. Then, we distilled their predictions into a single student model using MPRA elements associated with 1,000 genes. The distilled model was subsequently used to generate synthetic variant-effect labels across increasing numbers of genes (50 to 1,000), with 600 variants per gene, to fine-tune Borzoi. Performance improved as we included more genes in training. In data-limited settings, training on more genes with fewer variants per gene performed better than training on fewer genes with more variants per gene, given the same number of total variants. Compared to pre-trained Borzoi, Borzoi fine-tuned on 600,000 synthetic samples across 1,000 genes increased Pearson correlation from 0.28 to 0.54 on CAGI5 promoter variants and from 0.39 to 0.46 on 903 GTEx fine-mapped whole-blood expression quantitative trait loci (eQTLs). Importantly, these improvements were achieved while preserving the pre-trained performance across all 7,611 output tracks. Furthermore, fine-tuned Borzoi recovered regulatory motifs identified by the MPRA model in genes unseen during training, suggesting that learned regulatory features can generalize across loci. Together, these results provide a proof of concept that model-generated synthetic supervision can improve variant effect prediction in S2F models while preserving their original pre-trained capabilities, offering a scalable strategy toward capturing the impact of genetic variation on gene regulation.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Wang_2026_MPRASequenceToFunctionModels",
+   "title": "Synthetic MPRA perturbation supervision improves variant-effect prediction in sequence-to-function models",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.11.02.763699v1"
+  },
+  "bLdBUXkTuDBkE5DYEfop": {
+   "abstract": "Abstract Environmental exposures shape disease risk, but the generalizability of circulating protein-based readouts of exposures across diverse populations remains unknown. Using plasma proteomic profiles of 5,416 proteins in 10,043 participants from the All of Us Research Program, we evaluated associations with and composite scores of 100+ exposures, spanning adiposity, air pollution, ambient temperature, and substance use. We find that proteomic exposure signatures are largely consistent across populations and socioeconomic strata, with <1% of proteins showing significant cross-population heterogeneity, which included BMI as an exception, with leptin being the most heterogeneous association. Population-specific leptin trajectories adiposity, together with residual leptin-type 2 diabetes associations after BMI adjustment, revealed sex-specific metabolic risk not captured by BMI alone. Aggregated protein scores were largely exposure-specific, but substance-use scores showed cross-prediction and SES scores were broadly associated. PM 2.5 protein scores captured within-region exposure variation and outperformed geographic and socioeconomic correlates, but spatial confounders remain embedded within protein-environment associations. Scores trained in UK Biobank transferred to All of Us for biologically proximal exposures, supporting cross-biobank portability. These findings establish plasma proteomics as a scalable framework for exposure measurement across diverse populations, while underscoring that responsible applications require careful consideration of biological context, social patterning, and cohort structure.",
+   "journal": "Preprint",
    "short_name": "Medrxiv_Jee_2026_ProteomicEnvironmentalExposures",
    "title": "Proteomic Signatures Capture Environmental Exposures Across Diverse Populations",
    "url": "https://www.medrxiv.org/content/10.64898/2026.10.06.26364311v1"
   },
-  "y0jSJPuhH2HzyyHEjbVq": {
-   "abstract": "",
-   "journal": "bioRxiv",
+  "ga4GntR6P0cVO5BN3vUW": {
+   "abstract": "Diverse human cell types establish specialized functions through lineage- and context-specific regulatory programs. Interpreting non-coding genetic risk requires integrated multi-omic reference maps that directly connect regulatory DNA to cellular expression across human tissues. Here we present a single-nucleus multiomic atlas comprising 459,856 transcriptomic and chromatin accessibility profiles from 21 adult human tissues across four donors, including paired measurements from 160,688 nuclei. We resolve nine cell lineages, 61 broad cell types and 313 subclusters, and identify 1,085,062 candidate cis-regulatory elements (cCREs), including 161,270 novel elements absent from ENCODE. Regulatory activity was dominated by cell identity but refined by tissue context. Joint profiling enabled 871,177 cCRE-gene associations and revealed lineage-specific regulatory architectures. Cross-tissue analysis of accessibility further identified lineage-restricted and constitutively inaccessible chromatin domains, the latter showing preferential hypomethylation across human cancers. We leveraged this dataset to train sequence-to-function models to predict chromatin-accessibility effects for 548,656 fine-mapped variants, identifying 18,133 high-effect variants, including 1,120 broadly active variants. Models trained for eight endothelial subtypes further resolve predicted variant effects across vascular beds. Together, this study provides a comprehensive cellular and computational framework for interpreting regulatory sequence, context-dependent gene control, and complex trait genetics across the human body.",
+   "journal": "Preprint",
    "short_name": "Biorxiv_Fan_2026_MultiOmicAtlas",
    "title": "Single-Nucleus Multi-Omic Atlas Maps Regulatory Architecture and Non-Coding Variant Effects across Adult Human Tissues",
    "url": "https://www.biorxiv.org/content/10.64898/2026.09.25.754561v2"
   },
-  "yDexMg3wW8D9WQxjiKZB": {
-   "abstract": "",
+  "gjwT21isN0HLAqRwuT72": {
+   "abstract": "Abstract Sex differences in human health are typically modeled as binary comparisons between males (XY) and females (XX). However, sex-linked molecular traits vary continuously and are shaped by environmental factors. Here, we introduce the Proteomic Sex Index (PSI), a continuous, plasma proteomics–based measure that quantifies the degree to which an individual’s proteome aligns with their chromosomal sex, with higher PSI values indicating profiles less typical for their sex. Leveraging data from 51,310 individuals from six demographically heterogeneous cohorts, we show that PSI captures broad, biologically meaningful variation in sex-enriched traits and diseases. Individuals with proteomic profiles shifted away from their chromosomal sex exhibited trait values less characteristic of that sex. For example, males with higher PSI were shorter, had lower grip strength, and showed reduced severity of COVID-19 (OR=0.59, p =3.0×10 −7 ). Analyses of individuals undergoing gender-affirming hormone therapy showed that, although PSI correlated with circulating sex hormones, it also captured additional variation independent of hormone levels. PSI is partially heritable and genetically influenced. Individuals with Klinefelter syndrome (XXY) had markedly elevated PSI (OR=13.7, p =1.1×10 −13 ), and genome-wide association studies of PSI identified sex-biased cis-pQTLs with evidence of causal links to sex-specific disease risk. PSI provides a nuanced, individualized measure of sex-related biology that enables the study of within-sex molecular variation and its links to health and disease.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Viippola_2026_SexRelatedPlasmaProteome",
+   "title": "Sex-related signatures in the plasma proteome not attributable to XX and XY chromosomes and their impact on health and disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.19.26365875v1"
+  },
+  "hw4HsnouKKxTsz0bJT2m": {
+   "abstract": "Abstract Advances in high-throughput proteomics technologies have enabled the assessment of dynamic health states across biobank-scale cohorts. Disease prediction models built on these data have higher accuracy than baseline clinical models for a broad range of diseases, and provide avenues to understand disease pathogenesis. However, the generalizability of these prediction models across cohorts has yet to be established at scale. Here, we train models for 15 diseases in the UK Biobank (UKB; n=53,026) based on Olink proteomics data, and find high accuracy for disease prediction (mean AUC=0.74; range 0.56-0.89). These models have improved accuracy over models using only clinical factors (mean ΔAUC = 0.03), and do not depend on model architecture, with simpler models (e.g. L2) performing as well as complex models (e.g. transformer). We assess generalizability of the UKB-trained models in two external cohorts: FinnGen (FG; n=5,865) and All of Us (AoU; n=7,405), spanning two Olink platforms. We find that proteomics-based prevalent (classification) and incident (prediction over next 5 years) disease models largely generalize across cohorts, but performance varies across diseases. Specifically, 10 of 14 prevalent and 13 of 15 incident disease models show no significant decrease in performance across any biobank. Adjusting for demographic, ancestry, and technical covariates, we demonstrate that differences in phenotyping quality are likely the major drivers of variability across cohorts. These results indicate that proteomic risk models can be powerful and generalizable predictors of disease across multiple cohorts.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Parsa_2026_ProteomicRiskGeneralizability",
+   "title": "Generalizability of proteomic risk prediction across biobanks reveals dependence on phenotype definitions",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.01.26364038v1"
+  },
+  "k6uCTl6YCifD3fUfFoks": {
+   "abstract": "Summary Complex diseases exhibit substantial variation in clinical presentation and outcome despite shared diagnoses. Current genetic models typically represent inherited risk as a single additive liability, obscuring the diverse biological mechanisms through which variants influence disease. Here, we show that disease-associated variants are organized into recurrent regulatory programs that reveal latent disease mechanisms. Using genome-scale epigenomic maps across human tissues and cell states, we identify regulatory programs that partition disease-associated variants without phenotypic or disease-specific priors. Variants assigned to different programs exert distinct biological effects that translate into divergent clinical outcomes. In type 2 diabetes, these programs reveal previously unrecognized disease subtypes with opposing cardiometabolic profiles that stratify future risk of myocardial infarction and non-alcoholic fatty liver disease. Together, our findings establish that inherited disease risk is organized into latent regulatory programs, revealing a fundamental layer of biological heterogeneity underlying complex disease.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Shim_2026_EpigenomicDiseaseHeterogeneity",
+   "title": "Epigenomic regulatory programs reveal the latent heterogeneity of complex diseases",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.01.722123v2.full"
+  },
+  "n9mkBdQ7WITAU8gGUA3U": {
+   "abstract": "Perturbation screens hold the potential to systematically map regulatory processes at single-cell resolution, yet modeling and predicting transcriptome-wide responses to perturbations remains a major computational challenge. Existing methods often underperform simple baselines, fail to disentangle measurement noise from biological signal, and provide limited insight into the causal structure governing cellular responses. Here, we present the latent causal diffusion (LCD), a generative model that frames single-cell gene expression as a stationary diffusion process observed under measurement noise. LCD outperforms established approaches in predicting the distributional shifts of unseen perturbation combinations in single-cell RNA-sequencing screens while simultaneously learning a mechanistic dynamical system of gene regulation. To interpret these learned dynamics, we develop an approach we call causal linearization via perturbation responses (CLIPR), which yields an approximation of the direct causal effects between all genes modeled by the diffusion. CLIPR provably identifies causal effects under a linear drift assumption and recovers causal structure in both simulated systems and a genome-wide perturbation screen, where it clusters genes into coherent functional modules and resolves causal relationships that standard differential expression analysis cannot. The LCD-CLIPR framework bridges generative modeling with causal inference to predict unseen perturbation effects and map the underlying regulatory mechanisms of the transcriptome.",
+   "journal": "PNAS",
+   "short_name": "PNAS_Lorch_2026_SingleCellCausalDiffusion",
+   "title": "Latent causal diffusions for single-cell perturbation modeling",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2602630123"
+  },
+  "rlrzWsWuNU41eE6qwdjl": {
+   "abstract": "Deciphering how DNA sequence encodes gene regulation remains a central challenge in biology. Advances in machine learning and functional genomics have enabled sequence-to-function (seq2func) models that predict molecular regulatory readouts directly from DNA sequence, supporting variant effect prediction, mechanistic interpretation and regulatory sequence design. Despite strong performance on held-out genomic regions, generalization across genetic variation and cellular contexts remains inconsistent. In this Review, we examine how model architectures, training data and prediction tasks shape model behavior. We also synthesize how interpretability methods and evaluation practices have elucidated cis-regulatory organization and highlighted systematic failure modes, clarifying why strong predictive accuracy can fail to translate into robust regulatory understanding. Thus, we suggest that progress requires reframing seq2func models as continually refined systems, in which targeted perturbation experiments, systematic evaluation and iterative model updates are tightly coupled through artificial intelligence-experiment feedback loops, enabling self-improving models that progressively deepen mechanistic understanding and more reliably support biological discovery.",
    "journal": "Nat Genet",
    "short_name": "NG_Nagai_2026_InterpretableAIRegulatoryGenomics",
    "title": "Toward generalizable and interpretable AI in regulatory genomics",
    "url": "https://www.nature.com/articles/s41588-026-02670-3"
   },
-  "z52qUGMqAVCBBU7n7ZV9": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Quenez_2026_RareCNVAlzheimerRisk",
-   "title": "Exome analysis of 22,319 individuals links extremely rare copy-number variants and 22q11.21 dosage to Alzheimer risk",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00279-X"
+  "vCmxH4r9clYYmXhJZaVg": {
+   "abstract": "A central goal of human genetics is to understand the molecular pathways that link genes to functions in cells and tissues, and ultimately to their roles in health and disease. Genome-wide association studies (GWAS) provide a unique — and powerful — tool for finding causal relationships between variants or genes and human traits, yet it remains challenging to gain mechanistic insights from these associations at genome scale. Here, we argue that recent advances in high-throughput perturbation methods and observational “omics” studies provide valuable complementary data that will be crucial for building the next generation of models in human genetics: formal models linking genes to pathways to cell and tissue biology to traits. These models should be mechanistic, causal, and predictive. We refer to such models as Trait Causal Models.",
+   "journal": "Preprint",
+   "short_name": "Zenodo_Dann_2026_TraitCausalModels",
+   "title": "Trait Causal Models: from GWAS, perturbations, and omics to predictive models of human biology",
+   "url": "https://doi.org/10.5281/zenodo.23426257"
+  },
+  "wxRJXtecrtJSrhzlBi4Q": {
+   "abstract": "Abstract Protein coding variants span the gamut of structural and functional effects on proteins, and they have similarly heterogeneous effects on traits. Their functional effects can be predicted and categorized, particularly using machine learning models, and integrating these predictors benefits gene discovery. However, it remains unclear how well known structural features and predicted functional scores explain the heterogeneous effects of protein coding variants on human complex traits. We introduce the Kernel Allelic Series Model (KASM), which integrates multiple functional annotations to form a kernel describing how allelic effects within a gene covary. We apply it to exome data from 26 traits and 786,871 individuals from UK Biobank and All of Us, integrating 35 annotations describing protein structure and predicting allelic effects. We estimate that rare missense heritability is at least 1.27±0.09% on average, 1.83±0.11% under our most flexible model, exceeding pLoF heritability (0.87±0.05%) and far exceeding missense burden heritability as previously estimated (0.54±0.04%). AlphaMissense is the single most enriched missense predictor, but a composite score doubles its enrichment. A series of structural features is enriched for heritability, from amino acid chemical features and structural motifs to residue contacts and protein-protein interaction interfaces. Examining pairs of variants, we find that most missense effects are modestly correlated, but an exception is when residues are close in 3D structure but distant in 1D sequence; such pairs also covary across species. Finally, we analyze individual genes and identify gene-specific enrichments, like a 95-fold enrichment among PIEZO1 hydrogen bond residues, that nominate functional hypotheses.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Hou_2026_RareCodingVariantArchitecture",
+   "title": "Functional architecture of rare protein coding variation across 786,871 exomes",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.16.26365771v1"
   }
  },
  "votes": {
@@ -119,11 +112,9 @@
    "8c6976e5b5410415": 1
   },
   "10.1038_s41586-026-10438-2": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
   "10.1038_s41586-026-10721-2": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
   "10.1038_s41586-026-11173-4": {
@@ -157,56 +148,54 @@
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02827-0": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
-  "7mrptfumwzWPCmVH3hs4": {
+  "5Tc4OGvHMn6DArV1h76u": {
    "8c6976e5b5410415": 1
   },
-  "9M8no3Vrz1XzLWkezIJy": {
+  "83Q7vqSWLFarKuZJ28IL": {
    "8c6976e5b5410415": 1
   },
-  "B1z51dw7XlRHOeIPvt5v": {
-   "8c6976e5b5410415": 1
-  },
-  "CY9SQyu0Ih4rpphtLBO9": {
-   "8c6976e5b5410415": 1
-  },
-  "D9cGsTp55MKGwTi2WOK7": {
-   "8c6976e5b5410415": 1
-  },
-  "DBMIvFfyHHn3ZYIADfvo": {
+  "9GHBOfA9YrMMMMV1RRs8": {
    "8c6976e5b5410415": 1
   },
   "E2SX22Y6mSYimbJ7PGzL": {
-   "5973eb2c7b245313": 1,
+   "5973eb2c7b245313": 1
+  },
+  "RNPk9lgEjZfHsHZQHrkL": {
    "8c6976e5b5410415": 1
   },
-  "EpFLqJjsIIM0WyA26e0u": {
+  "Z7iEeNLflZrDjaDNnh4p": {
    "8c6976e5b5410415": 1
   },
-  "OF373vcdQkeySMLn0sIU": {
+  "ZIvtU9JCytfSknXrwdiR": {
    "8c6976e5b5410415": 1
   },
-  "WwusRVCY0MbTKeHc7eqH": {
+  "bLdBUXkTuDBkE5DYEfop": {
    "8c6976e5b5410415": 1
   },
-  "bNDuvpQ0wcZNGXshBg5H": {
+  "ga4GntR6P0cVO5BN3vUW": {
    "8c6976e5b5410415": 1
   },
-  "lTRjPnuBHxJ46b7gM1jQ": {
+  "gjwT21isN0HLAqRwuT72": {
    "8c6976e5b5410415": 1
   },
-  "nPL21g0mMHZPgKBmBKf1": {
+  "hw4HsnouKKxTsz0bJT2m": {
    "8c6976e5b5410415": 1
   },
-  "y0jSJPuhH2HzyyHEjbVq": {
+  "k6uCTl6YCifD3fUfFoks": {
    "8c6976e5b5410415": 1
   },
-  "yDexMg3wW8D9WQxjiKZB": {
+  "n9mkBdQ7WITAU8gGUA3U": {
    "8c6976e5b5410415": 1
   },
-  "z52qUGMqAVCBBU7n7ZV9": {
+  "rlrzWsWuNU41eE6qwdjl": {
+   "8c6976e5b5410415": 1
+  },
+  "vCmxH4r9clYYmXhJZaVg": {
+   "8c6976e5b5410415": 1
+  },
+  "wxRJXtecrtJSrhzlBi4Q": {
    "8c6976e5b5410415": 1
   }
  }

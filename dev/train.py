@@ -1,4 +1,5 @@
-"""Fit the lab weights on the labelled 12-month pool and write model/weights.json.
+"""Fit the base weights for the next month and write model/weights.json: the 12 months before it, each weighted by
+age with a 6-month half-life (dev/recency.py).
 
 Local only: reads handoff/data/bt/texts.parquet (built by dev/backtest/prep.py), which is never
 committed. Run from the repository root: uv run --group train python dev/train.py
@@ -20,8 +21,10 @@ from sklearn.metrics import roc_auc_score
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "dev"))
 from pipeline.fetch import clean  # noqa: E402
 from pipeline.score import embed, load_model  # noqa: E402
+from recency import rows_and_weights  # noqa: E402
 
 MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928fbbd846f22f816360919f"}
 
@@ -34,18 +37,26 @@ assert set(names) == {j["key"] for j in cfg["journals"]} | {"Preprint"}, "pool v
 
 emb = embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map(clean))
 X = np.hstack([emb, venue[:, None] == names])
-fit = lambda rows, y: LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X[rows], y[rows])
 
+
+def fit(before):
+    """The model for month `before`: the picks known before it, on its rows and weights."""
+    rows, weight = rows_and_weights(month, before)
+    y = (tab != "") & (tab < before)
+    return LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X[rows], y[rows], sample_weight=weight)
+
+
+# Each month after the first is scored by its own model: the rolling check, and the calibration's data
 auc, hits, picks, oos = [], 0, 0, []
-for M in [f"2026-{m:02d}" for m in range(3, 11)]:
-    train, test = month < M, month == M
-    s = fit(train, (tab != "") & (tab < M)).decision_function(X[test])
-    y = tab[test] == M
-    auc.append(roc_auc_score(y, s))
-    hits += y[np.argsort(-s, kind="stable")[:25]].sum()
-    picks += y.sum()
+for M in sorted(set(month))[1:]:
+    s = fit(M).decision_function(X[month == M])
+    y = tab[month == M] == M
     oos.append((s, y))
-print(f"rolling check, Mar-Oct 2026: mean AUC {np.mean(auc):.3f}, picks in top 25: {hits} of {picks}")
+    if M >= "2026-01":
+        auc.append(roc_auc_score(y, s))
+        hits += y[np.argsort(-s, kind="stable")[:25]].sum()
+        picks += y.sum()
+print(f"rolling check, 2026-01..{max(month)}: mean AUC {np.mean(auc):.3f}, picks in top 25: {hits} of {picks}")
 
 # Calibration: P(pick) = sigmoid(a + b·score), fitted (unpenalized) to the out-of-sample scores above.
 # The balanced class weights make sigmoid(score) itself far too high.
@@ -54,7 +65,9 @@ cal = LogisticRegression(penalty=None).fit(s[:, None], y)
 calibration = {"a": round(float(cal.intercept_[0]), 4), "b": round(float(cal.coef_[0, 0]), 4)}
 print(f"calibration: P(pick) = sigmoid({calibration['a']} + {calibration['b']} * score)")
 
-lr = fit(np.ones(len(pool), bool), tab != "")
+last = max(month)
+following = f"{int(last[:4]) + int(last[5:]) // 12}-{int(last[5:]) % 12 + 1:02d}"  # the month these weights score
+lr = fit(following)
 w = lr.coef_[0].round(6).tolist()
 (ROOT / "model").mkdir(exist_ok=True)
 (ROOT / "model" / "weights.json").write_text(json.dumps(MODEL | {
@@ -64,7 +77,7 @@ w = lr.coef_[0].round(6).tolist()
     "venue": dict(zip(names.tolist(), w[emb.shape[1]:])),
     "calibration": calibration,
     "trained": date.today().isoformat(),
-    "train_months": sorted(set(month)),
+    "train_months": sorted(set(month[rows_and_weights(month, following)[0]])), "half_life_months": 6,
 }) + "\n")
-print(f"wrote model/weights.json: {len(pool)} papers, {(tab != '').sum()} picks, {lr.n_iter_[0]} iterations")
+print(f"wrote model/weights.json for {following}: {rows_and_weights(month, following)[0].sum()} papers, {lr.n_iter_[0]} iterations")
 print(pd.Series(dict(zip(names, w[emb.shape[1]:]))).sort_values(ascending=False).round(2).to_string())

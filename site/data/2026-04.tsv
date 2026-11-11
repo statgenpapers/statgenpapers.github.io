@@ -1,21 +1,17 @@
 Journal	Short Name	Title	URL
-Nat Genet	NatGenet_Cheng_2026_MultiAncestryGenomeWide	Multi-ancestry genome-wide association analyses of refractive error augment genetic discovery and polygenic prediction	https://doi.org/10.1038/s41588-026-02576-0
 Am J Hum Genet	AmJHumGenet_Hu_2026_MultiAncestryTranscriptomePrediction	Multi-ancestry transcriptome prediction with functionally informed variants in TOPMed MESA improves performance of transcriptome-wide association studies	https://doi.org/10.1016/j.ajhg.2026.03.008
-Am J Hum Genet	AmJHumGenet_Sun_2026_MultiAncestryTranscriptomeWide	Multi-ancestry transcriptome-wide association study reveals shared and population-specific genetic effects in Alzheimer disease	https://doi.org/10.1016/j.ajhg.2026.04.007
-Am J Hum Genet	AmJHumGenet_Cudic_2026_PuttingPolygenicScoresContext	Putting polygenic scores in context: How intersectional factors affect relative and absolute genetic risk	https://doi.org/10.1016/j.ajhg.2026.03.013
-Am J Hum Genet	AmJHumGenet_Sun_2026_AssociationsGeneticVariantsGene	Associations of genetic variants with gene expression factors reveal biological pathways underlying complex traits	https://doi.org/10.1016/j.ajhg.2026.03.004
-Nat Genet	NatGenet_MCGRAIL_2026_GeneticAssociationMachineLearning	Genetic association and machine learning improve the prediction of type 1 diabetes risk	https://doi.org/10.1038/s41588-026-02578-y
-Am J Hum Genet	AmJHumGenet_Sierant_2026_BenchmarkingGeneticBirthPrevalence	Benchmarking genetic birth prevalence estimates against newborn screening data	https://doi.org/10.1016/j.ajhg.2026.04.002
-Cell Genom	CellGenom_Aguirre_2026_RegulatoryNetworkTopologyGenetic	Regulatory network topology and the genetic architecture of gene expression	https://doi.org/10.1016/j.xgen.2026.101219
 Am J Hum Genet	AmJHumGenet_Kang_2026_FlexibleUnifiedFrameworkSingle	A flexible and unified framework for single- and multi-outcome Mendelian randomization using summary statistics	https://doi.org/10.1016/j.ajhg.2026.03.017
+Nat Genet	NatGenet_Cheng_2026_MultiAncestryGenomeWide	Multi-ancestry genome-wide association analyses of refractive error augment genetic discovery and polygenic prediction	https://doi.org/10.1038/s41588-026-02576-0
+Am J Hum Genet	AmJHumGenet_Sun_2026_AssociationsGeneticVariantsGene	Associations of genetic variants with gene expression factors reveal biological pathways underlying complex traits	https://doi.org/10.1016/j.ajhg.2026.03.004
+Am J Hum Genet	AmJHumGenet_Sun_2026_MultiAncestryTranscriptomeWide	Multi-ancestry transcriptome-wide association study reveals shared and population-specific genetic effects in Alzheimer disease	https://doi.org/10.1016/j.ajhg.2026.04.007
+Nat Genet	NatGenet_MCGRAIL_2026_GeneticAssociationMachineLearning	Genetic association and machine learning improve the prediction of type 1 diabetes risk	https://doi.org/10.1038/s41588-026-02578-y
 Nat Genet	NatGenet_Moolhuijsen_2026_GenomicAnalysesImplicateHormonal	Genomic analyses implicate hormonal and metabolic dysregulation in polycystic ovary syndrome	https://doi.org/10.1038/s41588-026-02543-9
-Cell Genom	CellGenom_Dubuc_2026_LinkingRareVariantsCell	Linking rare variants to cell-type function in profound autism with brain transcriptomics and foundation models	https://doi.org/10.1016/j.xgen.2026.101192
-Nature	Nature_Pounraja_2026_PopulationScaleRepeatExpansions	Population-scale repeat expansions elucidate disease risk and brain atrophy	https://doi.org/10.1038/s41586-026-10345-6
-Cell Genom	CellGenom_Panja_2026_PartitioningGeneticPleiotropyWithin	Partitioning genetic pleiotropy within tissue-specific regulatory patterns	https://doi.org/10.1016/j.xgen.2026.101212
 Nat Genet	NatGenet_Fejzo_2026_MultiAncestryGenomeWide	Multi-ancestry genome-wide association study of severe pregnancy nausea and vomiting	https://doi.org/10.1038/s41588-026-02564-4
 Nat Genet	NatGenet_Koller_2026_MultiAncestryGenomeWide	Multi-ancestry genome-wide association and integrated multi-omics analyses of endometriosis and its clinical manifestations	https://doi.org/10.1038/s41588-026-02582-2
-Nat Genet	NatGenet_Backhaus_2026_KMerBasedApproaches	k-mer-based approaches to unlock genebank genomics for targeted crop improvement	https://doi.org/10.1038/s41588-026-02568-0
 Nature	Nature_Liu_2026_MultiomicsDeepLearningDissect	Multiomics and deep learning dissect regulatory syntax in human development	https://doi.org/10.1038/s41586-026-10326-9
-Cell Genom	CellGenom_Liu_2026_InterferonRelatedInflammagingLinks	Interferon-related inflammaging links epigenetic age acceleration to multimorbidity	https://doi.org/10.1016/j.xgen.2026.101218
-Nat Genet	NatGenet_Zhou_2026_SomaticMosaicismALSFTD	Somatic mosaicism in ALS and FTD identifies focal mutations associated with widespread degeneration	https://doi.org/10.1038/s41588-026-02570-6
-Am J Hum Genet	AmJHumGenet_Karhunen_2026_IntegratingGeneticDataBiological	Integrating genetic data with biological insight: A practical guide to cis-Mendelian randomization	https://doi.org/10.1016/j.ajhg.2026.03.011
+Cell Genom	CellGenom_Panja_2026_PartitioningGeneticPleiotropyWithin	Partitioning genetic pleiotropy within tissue-specific regulatory patterns	https://doi.org/10.1016/j.xgen.2026.101212
+Am J Hum Genet	AmJHumGenet_Sierant_2026_BenchmarkingGeneticBirthPrevalence	Benchmarking genetic birth prevalence estimates against newborn screening data	https://doi.org/10.1016/j.ajhg.2026.04.002
+Cell Genom	CellGenom_Aguirre_2026_RegulatoryNetworkTopologyGenetic	Regulatory network topology and the genetic architecture of gene expression	https://doi.org/10.1016/j.xgen.2026.101219
+Nature	Nature_Pounraja_2026_PopulationScaleRepeatExpansions	Population-scale repeat expansions elucidate disease risk and brain atrophy	https://doi.org/10.1038/s41586-026-10345-6
+Cell Genom	CellGenom_Dubuc_2026_LinkingRareVariantsCell	Linking rare variants to cell-type function in profound autism with brain transcriptomics and foundation models	https://doi.org/10.1016/j.xgen.2026.101192
+Nature	Nature_Alexandrov_2026_MetabolomicsScales	Metabolomics across scales: from single cells to population studies	https://doi.org/10.1038/s41586-026-10277-1

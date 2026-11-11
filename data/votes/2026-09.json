@@ -1,13 +1,6 @@
 {
  "month": "2026-09",
  "submissions": {
-  "1hFw0ngDL2rDn5KWsWvG": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Hansen_2026_SubSaharanAfricanTraits",
-   "title": "Anthropometric and cardio-metabolic trait variation and genetic associations in sub-Saharan Africa",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00272-7"
-  },
   "3CahI4B2wiNWRFYOmJCy": {
    "abstract": "Organ-level investigations provide insights into inter-individual heterogeneity in health and disease, yet aging across organs and systems remains incompletely understood. Leveraging plasma proteomic data from 53,014 UK Biobank participants, we construct 16 organ- and system-specific aging clocks that show 5436 significant associations with 1059 diseases (i.e., 655 incident and 404 prevalent diseases) and widespread responses to 841 diverse environmental factors, highlighting organ-specific and pan-organ patterns. These clocks are benchmarked against two existing models and then externally validated in the China Kadoorie Biobank (n = 3977), supporting their robustness and generalizability. Genetic analyses identify 261 genomic loci associated with these clocks, revealing organ-specific and pleiotropic genetic architectures. Notably, the immune system and liver exhibit the strongest genetic connectivity with other organ systems, closely mirroring their phenotypic correlations. Using longitudinal data from 1006 participants, we apply a multitask Bayesian framework to explore potential temporal interaction networks across organs and systems, identifying temporal precedence of the immune system, liver and stomach, with sex-specific patterns characterized by stronger arterial precedence in females and stomach precedence in males. Together, this study provides a comprehensive atlas integrating genetic, environmental, and interactive insights into multiple plasma protein-based organ and system aging, informing future research on targeted anti-aging strategies.",
    "journal": "Nat Commun",
@@ -22,36 +15,29 @@
    "title": "Evaluating the consequences of childhood adiposity on the human plasma proteome at four timepoints across the lifecourse",
    "url": "https://www.nature.com/articles/s41467-026-77097-9"
   },
-  "57rpsCHkoOoJkgoRJmbe": {
-   "abstract": "",
-   "journal": "Cell",
-   "short_name": "Cell_Zhang_2026_Tahoe100MDrugPerturbationAtlas",
-   "title": "Tahoe-100M: Mapping drug-induced molecular phenotypes at single-cell resolution",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)01008-1"
+  "5y3Dr8C6Vk47QGE5OlLa": {
+   "abstract": "The capacity of cells to proliferate and survive is central to development and disease. Assays that measure cell fitness are therefore a cornerstone of biology, but traditional techniques lack donor diversity and have high technical variability that impedes scale and reproducibility. To overcome these barriers, we designed and validated a \"cell village\"-based fitness screening approach using pooled cultures of 12-39 genetically distinct human neural progenitor cell (NPC) lines. We also developed Townlet to establish a foundational statistical framework based on Dirichlet regression for analyzing proportional data from cell villages. Applying these systems, we identified hyperproliferation in NPCs harboring the autism risk factor chromosome 16p11.2 deletion, mapped common genetic variants near ZFHX3 associated with NPC proliferation rate, and discovered genetic modifiers of lead (Pb) sensitivity implicating ARNT2. Together, these experimental and analytical tools advance a scalable, genetically diverse in vitro platform for dissecting human variation in cell fitness and gene-environment interactions.",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Hanson_2026_CellFitnessGenetics",
+   "title": "Cell villages and Dirichlet modeling map human cell fitness genetics",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.07.005"
   },
   "64abPVQgeDahoOzXuvuF": {
-   "abstract": "",
+   "abstract": "For over a century, scientists have debated the extent to which genetic and phenotypic variation among present-day humans is the result of natural selection - in which heritable traits influence survival or reproduction - versus neutral processes such as genetic drift or population history. The initial sequencing of the human genome and subsequent population resequencing studies enabled genome-scale searches for signatures of selection in present-day genomes. This first generation of genome-wide selection scans identified many targets but left open questions about the timing and nature of selection, making it challenging to identify environmental and biological drivers. Recent methodological advances based on reconstructing ancestral recombination graphs have increased the potential power and resolution of selection scans based on present-day genomes, while the availability of new data on ancient DNA has facilitated the direct reconstruction of genetic change through time. However, there is little consensus on how to use these data to detect and interpret signatures of selection, while avoiding confounders. Here, we review the current state of knowledge about the impact of selection on human genomic diversity and highlight conceptual advances in our understanding of human evolution over the past 10,000 years.",
    "journal": "Nat Rev Genet",
    "short_name": "NatRevGenet_Skoglund_2026_NaturalSelectionHumanHistory",
    "title": "Genomic insights into natural selection in recent human history",
    "url": "https://www.nature.com/articles/s41576-026-01010-9"
   },
-  "7kjlxYLv96YOomyRHLi9": {
-   "abstract": "",
+  "Cfc3E7gbVcXeK5YBWTi5": {
+   "abstract": "Structural variation causes some human haplotypes to align poorly with the linear reference genome, and this leads to \"reference bias.\" A pangenome reference graph could ameliorate this bias by relating a sample to multiple reference assemblies. However, this approach requires a new definition of a \"genetic variant.\" We define pangenome variants against a reference tree that includes all nodes (sequences) of the pangenome graph but only a subset of its edges; non-reference edges are variant edges. Analyzing the Minigraph-Cactus draft human pangenome reference graph, we identified 29.6 million genetic variants. 3.5 million variants (11.7%) have a reference allele that is not on GRCh38; these variants are difficult to detect without a pangenome reference and are found within tangled, multiallelic regions. We analyze the HLA-A and RHD gene regions and identify thousands of small variants entangled with several structural variants. We release the open-source pantree and a variant call format (VCF) variant catalog.",
    "journal": "Cell Genom",
    "short_name": "CG_SalehiNowbandegani_2026_PangenomeGraphVariants",
    "title": "Defining and cataloging variants in pangenome graphs",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00189-8"
-  },
-  "9wvJ9VerC2tADDL7pywF": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Aponte_2026_SyndromicFacialVariation",
-   "title": "Shared genetic basis and structure of syndromic and normal facial variation",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00280-6"
+   "url": "https://doi.org/10.1016/j.xgen.2026.101327"
   },
   "DqN0pIxEVDVWnTuZgYp7": {
-   "abstract": "",
+   "abstract": "An important goal of biology is to understand how genetic variation translates into molecular and then broader phenotypic variation. Quantitative trait locus (QTL) mapping studies are designed to statistically test the relationship between genetic and phenotypic variation, with molecular QTLs (molQTLs) capturing genetic effects on molecular traits, such as gene expression or chromatin accessibility, as the variable phenotypes of interest. Technological advances have provided molQTL mapping methods with increased molecular phenotypes to test, as well as larger cohorts, the latter of which provides greater statistical power to associate genetic variants with these phenotypes. With these advances, statistical models - and, increasingly, machine learning methods - are being developed to improve standard molQTL mapping approaches, downstream analyses and other aspects of molQTL studies to gain additional insights into the mechanisms connecting genetic and phenotypic variation, especially in a gene regulatory context.",
    "journal": "Nat Rev Genet",
    "short_name": "NatRevGenet_Engelhardt_2026_MolecularQTLMethods",
    "title": "Machine learning and statistical methods for molecular quantitative trait loci",
@@ -63,6 +49,13 @@
    "short_name": "NatCommun_Woollard_2026_SpatialTranscriptomicsDimensionalityReduction",
    "title": "Weighted sliced inverse regression for scalable supervised dimensionality reduction of spatial transcriptomics data",
    "url": "https://www.nature.com/articles/s41467-026-76871-z"
+  },
+  "F6Xkswi1q9U5S8Iz9njz": {
+   "abstract": "Inflammation accelerates evolutionary dynamics of hematopoietic stem cells (HSCs) in clonal hematopoiesis and myeloid neoplasms. We studied HSCs, progenitors and immune cells from patients with myeloproliferative neoplasms at baseline and following interferon-α (IFNα) treatment, the only therapy to deplete mutated stem cells. We deployed single-cell multiomics methods that distinguish the IFNα effects on mutated stem cells from the admixed wild-type HSCs, with respect to their differentiation, transcriptomes, immunophenotypes and chromatin accessibility. IFNα simultaneously activated HSCs into two polarized states: a lymphoid progenitor expansion associated with an anti-inflammatory state and an inflammatory myeloid progenitor state derived from HSCs. The augmented lymphoid differentiation balanced the typical myeloproliferative-neoplasm-induced myeloid bias, associated with normalized blood counts. Somatic mutations modified the effects of IFNα on HSC differentiation and cell cycle entry rates. Clonal fitness upon IFNα exposure was due to resistance of CALR- or JAK2-mutated stem cells to differentiate into inflammatory myeloid progenitors. Single-cell multiomics of blood stem cells from patients with myeloproliferative neoplasms revealed that interferon-α normalizes blood counts by augmenting lymphoid differentiation and modulates clonal dynamics via inflammatory myeloid differentiation",
+   "journal": "Nat Genet",
+   "short_name": "NG_Lama_2026_InterferonClonalHematopoiesis",
+   "title": "Type 1 interferon perturbates clonal competition by reshaping human blood development",
+   "url": "https://www.nature.com/articles/s41588-026-02751-3"
   },
   "HV213aAtbVNA6VWa7W9e": {
    "abstract": "Protein language models (pLMs) learn sequence patterns at evolutionary scale, but these patterns remain inaccessible within these “black box” models. To discover them, we developed MotifAE, an unsupervised framework based on the sparse autoencoder (SAE) architecture that projects pLM embeddings into an interpretable, sparse latent space. MotifAE introduces an additional smoothness loss to encourage coherent feature activation, which markedly improves the identification of known functional motifs compared to the standard SAE. The sequence patterns captured by MotifAE exhibit rich diversity, align with known functional motifs, and are reflected in the model’s weight space. Beyond short motifs, MotifAE also captures some structural domains, with latent feature activation scores correlating with residue importance for diverse domain functions. By aligning MotifAE features with experimental data, we further identified features associated with domain folding stability. These features enable the prediction of a stability-specific fitness landscape. Overall, MotifAE provides a general framework for systematic sequence pattern discovery and interpretation, with the potential to advance protein function analysis, mutation effect interpretation, and rational protein engineering. Protein language models (pLMs) capture biologically meaningful sequence patterns, but the features learned by these models remain largely opaque. Here the authors present MotifAE, an interpretable sparse autoencoder framework that reveals diverse sequence motifs and structural domains from pLM embeddings, improves recovery of known functional motifs and identifies features linked to domain function and folding stability, enabling stability-specific fitness landscape prediction.",
@@ -85,13 +78,6 @@
    "title": "Analysis of Rare Coding Variation Identifies New Genetic Contributors to Schizophrenia",
    "url": "https://www.biorxiv.org/content/10.64898/2026.09.18.752670v1"
   },
-  "N7W8aTMkQTwyY3CRKnAs": {
-   "abstract": "",
-   "journal": "Cell",
-   "short_name": "Cell_Adduri_2026_StatePerturbationPrediction",
-   "title": "Predicting cellular responses to perturbation across diverse contexts with State",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00921-9"
-  },
   "O3ADc6e8Ew0DjotC5j6i": {
    "abstract": "The human brain undergoes profound changes from early development through late adulthood, shaping cognition, behaviour and vulnerability to disease1,2. Understanding how these changes are organized within specific brain regions and cell types is essential for interpreting normal ageing and its relationship to psychiatric and neurodegenerative disorders. The dorsolateral prefrontal cortex has a central role in higher cognitive functions and is particularly sensitive to age-related decline3, yet its cellular and molecular programs across the human lifespan remain poorly defined. Most existing studies4–7 have focused on restricted age ranges or disease-affected brains, limiting the ability to distinguish normative developmental and ageing trajectories from pathological processes. Consequently, a comprehensive, lifespan-resolved reference of cellular states in the human prefrontal cortex has been lacking. Here, using a single-nucleus transcriptomic atlas spanning the human lifespan, we show that the dorsolateral prefrontal cortex exhibits non-linear, cell-type-specific transcriptional trajectories characterized by dynamic remodelling during development, relative stability in midlife and selective molecular reactivation in late adulthood. We identify distinct neuronal and glial programs, including early-life neuronal resilience pathways and late-life glial programs associated with immune activation, stress responses and circadian reorganization. These programs are anatomically organized across cortical layers and grey–white matter domains, revealing coordinated spatial and molecular changes. Together, these findings provide a framework for understanding how cellular programs transition from resilience to vulnerability in the human cortex and establish a foundation for interpreting age-related cognitive decline and disease risk. The dorsolateral prefrontal cortex exhibits non-linear, cell-type-specific transcriptional trajectories characterized by dynamic remodelling during development, relative stability in midlife and selective molecular reactivation in late adulthood.",
    "journal": "Nature",
@@ -106,12 +92,12 @@
    "title": "End-to-end deep learning methods for genetic risk prediction of schizophrenia",
    "url": "https://www.nature.com/articles/s41467-026-76663-5"
   },
-  "OqpE7RKOysk2Z7nKbzxk": {
-   "abstract": "",
-   "journal": "Cell Genom",
-   "short_name": "CG_Dutta_2026_CancerPRSPlasmaProteomics",
-   "title": "Polygenic risk scores and plasma proteomics identify cancer-related proteins and trans-regulated protein networks",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00184-9"
+  "PQ822l0gVDa6vuqt82I5": {
+   "abstract": "Multiple myeloma (MM) is a plasma-cell malignancy with extensive genomic and transcriptional heterogeneity, limiting disease classification and precision therapy. Here we generated a clinically annotated, population-scale, single-cell atlas of MM from 341 individuals spanning the disease and treatment continuum. We identified five recurrent malignant transcriptional archetypes and an orthogonal proliferative program associated with genomic features, therapeutic resistance and clinical outcomes. Validation in the independent CoMMpass cohort demonstrated robustness, prognostic relevance and portability across platforms. We developed a single-cell, target-discovery pipeline prioritizing malignant enrichment, cell-type specificity and tissue restriction, identifying FCRL2 as a plasma-restricted or B cell-lineage-restricted surface target expressed by malignant plasma cells. FCRL2-targeted chimeric antigen receptor T cells demonstrated antigen-specific activity in vitro and survival benefit in vivo. Together, these data provide a clinically actionable blueprint for patient stratification and precision target nomination in plasma-cell malignancies.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Zada_2026_MyelomaSingleCellAtlas",
+   "title": "A single-cell atlas of multiple myeloma defines malignant archetypes and proliferative states",
+   "url": "https://www.nature.com/articles/s41588-026-02725-5"
   },
   "PTGgaESWU2W38tXLGkbu": {
    "abstract": "Gene expression varies substantially across cells, even within seemingly homogeneous populations. Understanding how genetic variation influences this variability is critical for elucidating mechanisms of genome regulation, yet the genetic control of cell-to-cell expression variability remains poorly characterised. Here, we introduce MEOTIVE (Mapping genetic Effects On inTra-Individual Variability of gene Expression), a statistical framework that identifies genetic effects on gene expression variability (sc-veQTLs) while modelling mean-variance dependence. Applying MEOTIVE to single-cell RNA-seq data from 1.2 million peripheral blood mononuclear cells across 980 donors in the OneK1K cohort, we identify 14–3,488 genes with significant sc-veQTLs across blood cell types, including 2,103 shared across multiple cell types. We further detect 55 SNP-gene pairs (34 genes) associated with gene expression dispersion (sc-deQTLs), enriched for immune and viral response pathways; 32 of these associations remain significant after additional adjustment for mean expression. Notably, rs1131017 in the 5′UTR of RPS26 is associated with widespread expression dispersion across cell types and reduced autoimmune disease risk. We also identify a monocyte-specific deQTL in LYZ (rs1384), which replicates in an independent cohort. MEOTIVE provides a robust framework for mapping the genetic regulation of gene-expression variability at single-cell resolution and reveals pathways linking cellular heterogeneity to autoimmune disease risk. Using over 1.2 million single immune cells, the authors identify genetic variants that influence cell-to-cell variation in gene expression, revealing a previously hidden layer of genome regulation associated with immune function and autoimmune disease.",
@@ -155,6 +141,13 @@
    "title": "Fast, flexible analysis of differences in cellular composition with crumblr",
    "url": "https://www.nature.com/articles/s41467-026-75681-7"
   },
+  "W4qrtEVu8Y3uK5uGHL2r": {
+   "abstract": "Single-cell RNA sequencing has transformed cell biology by enabling precise transcriptomic measurements of individual cells. The Sequence Read Archive (SRA) is the largest public repository of sequencing reads, yet much of it remains underutilized due to unstandardized metadata. Here, we introduce scBaseCount, a database that leverages an AI agent to automate discovery and metadata extraction and standardize data processing. Built by mining all 10x Genomics datasets, scBaseCount is the largest public repository of single-cell gene expression data, comprising over 502 million cells across 27 organisms and 75 tissues. It offers an unbiased view of the data landscape within the SRA and enables the training of more performant computational models through access to broader phenotypic diversity. Uniform processing enables measurement of both intronic and exonic reads and non-coding gene expression and improves alignment across experiments. Moreover, scBaseCount provides a blueprint for how AI can be leveraged to autonomously curate biological data repositories.",
+   "journal": "Cell",
+   "short_name": "Cell_Youngblut_2026_scBaseCountSingleCellRepository",
+   "title": "scBaseCount: An AI agent-curated, standardized, auto-updated single-cell data repository",
+   "url": "https://doi.org/10.1016/j.cell.2026.08.025"
+  },
   "XqOSmLV8dRYlIeVYU4lD": {
    "abstract": "Our Future Health is a prospective study aiming to recruit 5 million UK-resident adults to enable discovery and translation of disease prevention, detection and treatment approaches. So far, more than 2.5 million have enrolled, and baseline phenotypic data are available for >1.9 million participants. Here we provide an assessment of phenotypes-self-reported health-related behaviors, geolocation, diagnoses and medication, in- and outpatient visits, cancer registry and cause of death-and comparison of disease patterns against national estimates and the UK Biobank cohort. Sociodemographic, lifestyle and health-related characteristics reflected UK population patterns; all but one minority ethnic group and the most socioeconomically deprived groups were underrepresented. The prevalence of several major self-reported conditions, particularly mental health conditions such as depression and anxiety, was higher than national estimates and directionally concordant with the UK Biobank (r = 0.78). Associations with known clinical correlates replicated across both cohorts (r = 0.80). Medication-use patterns and cancer prevalence followed expected age-related gradients, with lower lung cancer rates than national data. As recruitment progresses, electronic health records can help specify disease patterns and systematically assess biases.",
    "journal": "Nat Med",
@@ -197,6 +190,13 @@
    "title": "Genetic architectures of brain-related traits are shaped by strong selective constraints",
    "url": "https://www.pnas.org/doi/10.1073/pnas.2609814123"
   },
+  "gaNzdqsasZhK3MYYobwb": {
+   "abstract": "Abstract Genomic language models have emerged as a powerful approach for learning genome-wide functional constraints directly from DNA sequences 1 . However, standard genomic language models adapted from natural language processing often require large model sizes and computational resources, yet still fall short of classical evolutionary models in predictive tasks 2–4 . Here we introduce a genomic pretrained network with species tree and alignment representations (GPN-Star), which is a biologically grounded genomic language model featuring a phylogeny-aware architecture that leverages whole-genome alignments and species trees to model evolutionary relationships explicitly. Trained on alignments spanning vertebrate, mammal and primate evolutionary timescales, GPN-Star achieves state-of-the-art performance across a wide range of variant effect prediction tasks in both coding and non-coding regions of the human genome. Analyses across timescales show task-dependent advantages of modelling more recent versus deeper evolution. To demonstrate its potential to advance human genetics, we show that GPN-Star substantially outperforms previous methods in prioritizing pathogenic and fine-mapped genome-wide association study variants, yields strong enrichments of complex trait heritability and improves power in rare variant association testing 5 . Extending beyond humans, we train GPN-Star for five model organisms— Mus musculus , Gallus gallus , Drosophila melanogaster , Caenorhabditis elegans and Arabidopsis thaliana —demonstrating the robustness and generalizability of the framework. Taken together, these results position GPN-Star as a scalable, powerful and flexible tool for genome interpretation, well suited to leverage the growing abundance of comparative genomics data.",
+   "journal": "Nature",
+   "short_name": "Nature_Ye_2026_GPNStarFunctionalConstraints",
+   "title": "Predicting genome-wide functional constraints with GPN-Star",
+   "url": "https://www.nature.com/articles/s41586-026-11005-5"
+  },
   "gwdphdukH1h64Zc4UYVn": {
    "abstract": "Protein synthesis is dynamically regulated to control cell growth, differentiation, and stress responses. Recent single-cell sequencing methods can map ribosome positions on individual transcripts 1–4 , but cannot capture the global translational states that coordinate protein synthesis across the transcriptome. In contrast, methods that measure the global translational landscape, such as polysome profiling and cryogenic electron tomography 5 , lack either single-cell resolution or throughput. Here we introduce SCISSOR (Single-Cell Inference of Structural States of Ribosomes), a strategy that infers global translation activity in individual cells from the differential protection of ribosomal RNA (rRNA) against nuclease digestion. By integrating these protection signatures with the structure of the ribosome, SCISSOR resolves multiple ribosomal states and quantifies their abundance across thousands of individual cells. Applying SCISSOR reveals systematic variation in global translation across the cell cycle in human cells, as well as during the differentiation of murine intestinal stem cells into distinct epithelial lineages. These findings uncover principles of global translational regulation that are invisible to transcriptomic or ribosome-profiling assays, establishing a framework for studying global translation control at single-cell resolution.",
    "journal": "Preprint",
@@ -211,8 +211,15 @@
    "title": "Genetic control of local mutation rates",
    "url": "https://www.pnas.org/doi/10.1073/pnas.2625619123"
   },
+  "k9lx7QnM0yXcGx7X5vFY": {
+   "abstract": "We present Tahoe-100M, a giga-scale single-cell perturbation atlas comprising 100 million transcriptomes from 50 diverse cancer cell lines treated with 1,100 drug-dose conditions. This parallel profiling of thousands of perturbations at single-cell resolution with minimal batch effects is enabled by the Mosaic platform, which multiplexes genetically distinct cell models into balanced \"cell villages.\" Beyond cataloging transcriptomic shifts, Tahoe-100M systematically quantifies cellular phenotypes, including proliferation, cytotoxicity, lineage-specific vulnerabilities, and cell-cycle changes. It captures population-level transcriptomic heterogeneity, characterizing whether drug responses drive cells toward divergent fates or convergent states. Pathway-based signatures define drug-induced expression programs, classify mechanisms of action, reveal off-target activities, and expose adaptive stress responses associated with resistance. By unifying cellular and molecular readouts, this broadly applicable perturbation atlas advances our ability to model gene regulation, drug response, and network dynamics. Its public release enables the training of AI frameworks to advance predictive models of cell behavior.",
+   "journal": "Cell",
+   "short_name": "Cell_Zhang_2026_Tahoe100MDrugPerturbationAtlas",
+   "title": "Tahoe-100M: Mapping drug-induced molecular phenotypes at single-cell resolution",
+   "url": "https://doi.org/10.1016/j.cell.2026.08.035"
+  },
   "ldPLerXwhzfPMUP6fbrx": {
-   "abstract": "",
+   "abstract": "Recent advances in spatial omics technologies have enabled simultaneous profiling of transcriptomic, proteomic, epigenomic, metabolomic and imaging data at high spatial resolution, offering unprecedented opportunities to dissect tissue complexity. However, integrating these diverse and large-scale spatial multimodal datasets remains a major computational challenge. We present SCIGMA, a scalable and generalizable deep learning framework for spatial multiomics integration. SCIGMA introduces an uncertainty-aware contrastive learning objective and multiview graph neural networks to preserve modality-specific signals while learning biologically meaningful joint representations. Unlike previous methods, SCIGMA provides spatially resolved uncertainty estimates, interpretably identifying regions of biological or technical heterogeneity. SCIGMA supports integration of up to five modalities, and its modular framework is extensible to future technologies with even more modalities. It also scales to more than 1 million spatial locations, enabling analysis of high-resolution datasets such as Visium HD and Xenium Prime. We evaluated SCIGMA across 19 datasets spanning 8 modalities, 10 tissues and 9 platforms. On benchmarkable datasets, SCIGMA outperformed other methods in spatial domain detection, modality preservation, feature reconstruction and reproducibility. SCIGMA identifies biologically meaningful structures, refined spatial domains and modality-specific regulatory programs, providing a robust, flexible and future-ready solution for scalable spatial multimodal integration.",
    "journal": "Nat Genet",
    "short_name": "NG_Chang_2026_SCIGMASpatialMultiomics",
    "title": "Scalable, generalizable and uncertainty-aware integration of spatial multiomics across diverse modalities and platforms with SCIGMA",
@@ -225,19 +232,19 @@
    "title": "Personalized single-cell transcriptomics reveals molecular diversity in Alzheimer’s disease",
    "url": "https://www.nature.com/articles/s41467-026-72310-1"
   },
-  "ruPT291OKTYy3cVegzGS": {
-   "abstract": "",
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Hanson_2026_CellFitnessGenetics",
-   "title": "Cell villages and Dirichlet modeling map human cell fitness genetics",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00271-5"
+  "uXNAV15ulZIqlAtvvmMX": {
+   "abstract": "While machine learning models offer potential for predicting transcriptomic effects of perturbation, they currently struggle to generalize across cellular contexts. Here, we introduce State, a machine learning model that predicts perturbation effects while accounting for cellular heterogeneity within and across experiments. State is trained using single-cell gene expression data to predict perturbation effects across sets of cells. State improved discrimination of effects on large datasets by more than 30% and identified differentially expressed genes across genetic, signaling, and chemical perturbations with significantly improved accuracy compared with baselines. Its cell embeddings trained on observational data from 167 million cells enable the identification of strong perturbations in cellular contexts where no perturbations were observed during training. We further introduce Cell-Eval, a comprehensive evaluation framework that can be used to evaluate future models. Overall, the performance and flexibility of State set the stage for scaling the development of AI models of cell state.",
+   "journal": "Cell",
+   "short_name": "Cell_Adduri_2026_StatePerturbationPrediction",
+   "title": "Predicting cellular responses to perturbation across diverse contexts with State",
+   "url": "https://doi.org/10.1016/j.cell.2026.07.052"
   },
-  "x0xnIhF6F5Nu3oL3ha39": {
-   "abstract": "",
+  "vnAToTZKF6dGp7LJt99W": {
+   "abstract": "Genome-wide association studies identify cancer susceptibility loci, but downstream protein mechanisms remain incompletely defined. We integrate polygenic risk scores (PRSs) for 21 cancers with 4,955 plasma proteins measured in cancer-free Atherosclerosis Risk in Communities (ARIC) participants to prioritize cancer-related proteins and protein networks. The protein quantitative trait score (pQTS) approach assesses associations between cancer PRS and individual protein levels, while ARCHIE partitions cancer risk variants into trans-regulated protein-network components using sparse canonical correlation analysis. Across cancers, pQTS identifies 90 protein associations, including 53 distal trans associations, and ARCHIE identifies 19 components spanning 433 proteins. Downstream analyses connect prioritized proteins to cancer driver genes, somatic alterations, immune cell populations, CRISPR dependency, and cancer-relevant pathways. Cervical cancer and basal cell carcinoma illustrate immune, human papillomavirus (HPV)-related, pigmentation, and inflammatory mechanisms. These findings show that PRS-proteome integration can reveal circulating protein networks underlying inherited cancer susceptibility.",
    "journal": "Cell Genom",
-   "short_name": "CG_Kim_2026_CausalCellTypeFineMapping",
-   "title": "Identifying independent causal cell types for human diseases and risk variants",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00187-4"
+   "short_name": "CG_Dutta_2026_CancerPRSPlasmaProteomics",
+   "title": "Polygenic risk scores and plasma proteomics identify cancer-related proteins and trans-regulated protein networks",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101322"
   },
   "x8k6TD9Zlkzr1aACHgwI": {
    "abstract": "Despite the introduction of genome sequencing (GS) for rare disease diagnostics, a genetic cause is not identified in most patients. Here, we explored the potential of proteomics to improve the diagnostic yield in 424 patients with rare diseases from the 100,000 Genomes Project (100kGP) without a genetic diagnosis. Serum proteomic profiling was performed using the Olink Explore 1536 assay ( N = 1463 proteins). For 13 patients without genetic diagnoses, detection of lower serum protein “outliers” ( z -score < −2) led to confirmed genetic diagnoses by resolving variants of uncertain significance or prioritizing genes for targeted GS reanalysis. For 23 additional patients without genetic diagnoses (64% of findings), we identified candidate gene-disease links and variants through convergent evidence from lower protein outliers and variants ranked through the variant prioritization tool Exomiser. For example, we identified a candidate heterozygous missense variant [Genome Aggregation Database (gnomAD) minor allele frequency = 0.006%] in tyrosine kinase with immunoglobulin-like and epidermal growth factor homology domains 1 ( TIE1 ) that was only present in a patient with lower TIE1 serum abundance ( z -score = −5.12) and their father, both of whom were affected by the same monogenic cardiac disorder, but in no other individuals from the 100kGP. Missense (52.5%) and splice region (27.5%) variants accounted for most diagnostic or candidate variants prioritized. This proof-of-principle study demonstrated that serum proteomics can support rare disease diagnosis and identify disease-causing genes in patients undiagnosed after GS, although successful implementation will likely depend on tissue specificity of protein expression, detectability in blood, proteomic platform coverage, and sensitivity.",
@@ -248,6 +255,9 @@
   }
  },
  "votes": {
+  "10.1016_j.ajhg.2026.08.012": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.ajhg.2026.09.007": {
    "8c6976e5b5410415": 1
   },
@@ -282,27 +292,21 @@
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02733-5": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02734-4": {
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02741-5": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02747-z": {
    "8c6976e5b5410415": 1
   },
-  "10.1038_s41588-026-02748-y": {
-   "5973eb2c7b245313": 1
-  },
   "10.1038_s41588-026-02751-3": {
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02753-1": {
-   "5973eb2c7b245313": 1,
    "8c6976e5b5410415": 1
   },
   "10.1038_s41588-026-02755-z": {
@@ -320,31 +324,28 @@
   "10.1038_s41588-026-02774-w": {
    "8c6976e5b5410415": 1
   },
-  "1hFw0ngDL2rDn5KWsWvG": {
-   "8c6976e5b5410415": 1
-  },
   "3CahI4B2wiNWRFYOmJCy": {
    "8c6976e5b5410415": 1
   },
   "3dld03dXYYK7e4l4h5iE": {
    "8c6976e5b5410415": 1
   },
-  "57rpsCHkoOoJkgoRJmbe": {
+  "5y3Dr8C6Vk47QGE5OlLa": {
    "8c6976e5b5410415": 1
   },
   "64abPVQgeDahoOzXuvuF": {
    "8c6976e5b5410415": 1
   },
-  "7kjlxYLv96YOomyRHLi9": {
-   "8c6976e5b5410415": 1
-  },
-  "9wvJ9VerC2tADDL7pywF": {
+  "Cfc3E7gbVcXeK5YBWTi5": {
    "8c6976e5b5410415": 1
   },
   "DqN0pIxEVDVWnTuZgYp7": {
    "8c6976e5b5410415": 1
   },
   "E7uM0jOTRNIeR72RlUDq": {
+   "8c6976e5b5410415": 1
+  },
+  "F6Xkswi1q9U5S8Iz9njz": {
    "8c6976e5b5410415": 1
   },
   "HV213aAtbVNA6VWa7W9e": {
@@ -356,16 +357,13 @@
   "Khgly7sKBJmCLrdTjfRz": {
    "8c6976e5b5410415": 1
   },
-  "N7W8aTMkQTwyY3CRKnAs": {
-   "8c6976e5b5410415": 1
-  },
   "O3ADc6e8Ew0DjotC5j6i": {
    "8c6976e5b5410415": 1
   },
   "OSRcyFXPkvxEEJCtS6uD": {
    "8c6976e5b5410415": 1
   },
-  "OqpE7RKOysk2Z7nKbzxk": {
+  "PQ822l0gVDa6vuqt82I5": {
    "8c6976e5b5410415": 1
   },
   "PTGgaESWU2W38tXLGkbu": {
@@ -386,6 +384,9 @@
   "VtPrqPbTYU4I9KsBjHND": {
    "8c6976e5b5410415": 1
   },
+  "W4qrtEVu8Y3uK5uGHL2r": {
+   "8c6976e5b5410415": 1
+  },
   "XqOSmLV8dRYlIeVYU4lD": {
    "8c6976e5b5410415": 1
   },
@@ -404,10 +405,16 @@
   "eLUlsGRhZZlq2MEmn69o": {
    "8c6976e5b5410415": 1
   },
+  "gaNzdqsasZhK3MYYobwb": {
+   "8c6976e5b5410415": 1
+  },
   "gwdphdukH1h64Zc4UYVn": {
    "8c6976e5b5410415": 1
   },
   "hOATZAiBBxOO6oxC1Wtu": {
+   "8c6976e5b5410415": 1
+  },
+  "k9lx7QnM0yXcGx7X5vFY": {
    "8c6976e5b5410415": 1
   },
   "ldPLerXwhzfPMUP6fbrx": {
@@ -416,10 +423,10 @@
   "oSeNRy0sZA6ULAgF04Zm": {
    "8c6976e5b5410415": 1
   },
-  "ruPT291OKTYy3cVegzGS": {
+  "uXNAV15ulZIqlAtvvmMX": {
    "8c6976e5b5410415": 1
   },
-  "x0xnIhF6F5Nu3oL3ha39": {
+  "vnAToTZKF6dGp7LJt99W": {
    "8c6976e5b5410415": 1
   },
   "x8k6TD9Zlkzr1aACHgwI": {
