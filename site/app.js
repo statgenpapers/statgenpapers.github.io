@@ -151,17 +151,14 @@ function render() {
       }
     }
   }
-  // the month shown, in the top bar: "this month (October 2026)", or "past (September 2026)" for an earlier one
-  // "this month" is always the latest list; an earlier month's list adds it at the end: "this month | past | add | 2026/09"
-  const latest = state.month === state.months.at(-1), pastMonth = state.view === "list" && state.month && !latest;
-  $("viewing-wrap").hidden = !pastMonth;
-  $("viewing").textContent = pastMonth ? monthName(state.month) : "";
-  const onList = state.view === "list";
-  $("this-month").classList.toggle("current", onList && latest);
+  // a month's list names its month at the end of the top bar, in the darker blue: "this month | past | add | 2026/10"
+  const listed = state.view === "list" && state.month;
+  $("viewing-wrap").hidden = !listed;
+  $("viewing").textContent = listed ? monthName(state.month) : "";
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("interested-wrap").hidden = !state.handle;
-  $("copy-wrap").hidden = !onList;
+  $("copy-wrap").hidden = state.view !== "list";
   $("interested-open").classList.toggle("current", state.view === "interested" && state.page.toLowerCase() === key());
   $("login-open").textContent = state.handle ? "logout" : "login";
 }
