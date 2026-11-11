@@ -1,8 +1,8 @@
 rules_version = '2';
-// Takes effect only when published in the Firebase console.
+// Publish with `npx firebase deploy --only firestore:rules --project statgenpapers` in firebase/, after `npm test`.
 //
 // Upvotes: one document per upvote, months/{YYYY-MM}/votes/{paperId}~{handle, lower case}
-//   { paper: "<paper id>", handle: "<handle as typed>" }
+//   { paper: "<paper id>", handle: "<handle, lower case>", created: <server time of the upvote> }
 // The document existing is the upvote; there are no downvotes. The id fixes one upvote per
 // handle and paper. Handles have no password: any signed-in (anonymous) browser may add or
 // remove the upvote of any handle, which is the accepted trade-off of password-free handles.
@@ -33,13 +33,14 @@ service cloud.firestore {
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
     }
     function validHandle(h) {
-      return h is string && h.matches('^[A-Za-z0-9_]{2,20}$');
+      return h is string && h.matches('^[a-z0-9_]{2,20}$');
     }
     function validVote(d, id) {
-      return d.keys().hasAll(['paper', 'handle']) && d.keys().hasOnly(['paper', 'handle'])
+      return d.keys().hasAll(['paper', 'handle', 'created']) && d.keys().hasOnly(['paper', 'handle', 'created'])
+        && d.created == request.time
         && d.paper is string && d.paper.matches('^[A-Za-z0-9._-]{1,150}$')
         && validHandle(d.handle)
-        && id == d.paper + '~' + d.handle.lower();
+        && id == d.paper + '~' + d.handle;
     }
     function validSubmission(d) {
       return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name'])

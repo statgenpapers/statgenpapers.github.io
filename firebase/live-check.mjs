@@ -27,13 +27,13 @@ const t0 = Date.now();
 const seen = new Promise((resolve) => {
   const stop = onSnapshot(ref(b, "selftest_a"), (s) => { if (s.exists()) { stop(); resolve(Date.now() - t0); } });
 });
-await setDoc(ref(a, "selftest_a"), { paper: PAPER, handle: "SelfTest_A" });
+await setDoc(ref(a, "selftest_a"), { paper: PAPER, handle: "selftest_a", created: serverTimestamp() });
 check(`second client sees the upvote live (${await seen} ms)`, true);
-await setDoc(ref(b, "selftest_b"), { paper: PAPER, handle: "selftest_b" });
+await setDoc(ref(b, "selftest_b"), { paper: PAPER, handle: "selftest_b", created: serverTimestamp() });
 check("each handle's upvote is stored", (await getDoc(ref(a, "selftest_b"))).exists());
-check("a second upvote of the same handle is rejected", await denied(setDoc(ref(b, "selftest_a"), { paper: PAPER, handle: "selftest_a" })));
-check("an upvote whose id does not match its handle is rejected", await denied(setDoc(ref(b, "selftest_c"), { paper: PAPER, handle: "other" })));
-check("a downvote field is rejected", await denied(setDoc(ref(b, "selftest_d"), { paper: PAPER, handle: "selftest_d", v: -1 })));
+check("a second upvote of the same handle is rejected", await denied(setDoc(ref(b, "selftest_a"), { paper: PAPER, handle: "selftest_a", created: serverTimestamp() })));
+check("an upvote whose id does not match its handle is rejected", await denied(setDoc(ref(b, "selftest_c"), { paper: PAPER, handle: "other", created: serverTimestamp() })));
+check("a downvote field is rejected", await denied(setDoc(ref(b, "selftest_d"), { paper: PAPER, handle: "selftest_d", created: serverTimestamp(), v: -1 })));
 check("writing to the old papers collection is rejected", await denied(setDoc(doc(b.db, `${MONTH}/papers/${PAPER}`), { votes: {} })));
 check("writing elsewhere is rejected", await denied(setDoc(doc(b.db, "other/x"), { a: 1 })));
 await deleteDoc(ref(b, "selftest_a"));  // handles have no password: any browser may take a handle's upvote back

@@ -28,10 +28,19 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .links { color: var(--muted); }
 .account { margin-left: auto; color: var(--muted); }
 .account #me { color: var(--text); margin-right: .3rem; }
-.account #me::after { content: " |"; color: var(--muted); }
+.account #me::after { content: "|"; display: inline-block; margin-left: .35em; color: var(--muted); }  /* inline-block: not underlined with the link */
 
 .menu { position: relative; }
 .links a.current, .popover a.current { font-weight: 700; }
+#listview { max-width: 54rem; }  /* keeps Score near the titles on wide screens */
+.page { margin-top: 1rem; }
+.page-head { color: var(--muted); margin: 0 0 .6rem; }
+.user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
+.user .label { color: var(--muted); }
+.page p { margin: .8rem 0 0; }
+.page p a, .page .sub a { text-decoration: underline; }
+.marks .mark { padding: .35rem 0 .45rem; }
+.voters .handle { color: inherit; text-decoration: underline; }
 .links .when { font-size: .85em; }
 .popover { position: absolute; top: calc(100% + .35rem); left: 0; z-index: 5; display: flex; flex-direction: column; min-width: 10rem;
   padding: .3rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); }

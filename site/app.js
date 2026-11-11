@@ -14,10 +14,14 @@ const state = {
   subs: [],          // papers added by visitors
   uid: null,
   handle: "",       // the visitor's handle as typed; "" when logged out
+  view: "list",     // "list" (a month), "user" or "interested" (pages of one handle)
+  page: "",         // the handle the user and interested pages are about
 };
 const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a vote write in flight: a second click must wait for it
 let fb = null, db = null, unsubscribe = [];
+let dbReady;
+const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
 // ---------------------------------------------------------------- helpers
 
@@ -115,7 +119,9 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-label", mine(p.id) ? "Not interested any more" : "Interested");
   q(".up").title = state.handle ? (mine(p.id) ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !state.uid;
-  q(".voters").textContent = ups.length ? `Interested: ${ups.map(([, handle]) => handle).join(", ")}` : "No one interested yet.";
+  q(".voters").replaceChildren(...(ups.length
+    ? ["Interested: ", ...ups.flatMap(([, handle], i) => [i ? ", " : "", handleLink(handle)])]
+    : ["No one interested yet."]));
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
@@ -141,19 +147,26 @@ function render() {
     }
   }
   // the month shown, in the top bar: "this month (October 2026)", or "past (September 2026)" for an earlier one
-  const latest = state.month === state.months.at(-1), viewed = state.month ? [" ", el("span", "when", `(${monthName(state.month)})`)] : [];
+  const latest = state.month === state.months.at(-1), viewed = state.month && state.view === "list" ? [" ", el("span", "when", `(${monthName(state.month)})`)] : [];
   $("this-month").replaceChildren("this month", ...(latest ? viewed : []));
   $("past-open").replaceChildren("past", ...(latest ? [] : viewed));
-  $("this-month").classList.toggle("current", latest);
-  $("past-open").classList.toggle("current", Boolean(state.month) && !latest);
+  const onList = state.view === "list";
+  $("this-month").classList.toggle("current", onList && latest);
+  $("past-open").classList.toggle("current", onList && Boolean(state.month) && !latest);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
+  $("interested-wrap").hidden = !state.handle;
+  $("copy-wrap").hidden = !onList;
+  $("interested-open").classList.toggle("current", state.view === "interested" && state.page.toLowerCase() === key());
   $("login-open").textContent = state.handle ? "logout" : "login";
 }
 
 // ---------------------------------------------------------------- data
 
 async function loadMonth(month) {
+  state.view = "list";
+  $("listview").hidden = false;
+  $("page").hidden = true;
   state.month = month;
   state.data = null;
   state.votes = new Map();
@@ -205,8 +218,10 @@ async function connect() {
     // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
     // another browser's vote more than half a minute late after about 1 page load in 50.
     db = fb.initializeFirestore(instance, { experimentalForceLongPolling: true });
+    dbReady();
     listen();
   } catch (e) {
+    dbReady();
     console.warn(e);
     toast("Voting is unavailable right now; the list is still readable.");
   }
@@ -230,7 +245,7 @@ async function vote(id) {
   const ref = fb.doc(db, "months", state.month, "votes", `${id}~${key()}`);
   try {
     if (mine(id)) await fb.deleteDoc(ref);
-    else await fb.setDoc(ref, { paper: id, handle: state.handle });
+    else await fb.setDoc(ref, { paper: id, handle: state.handle, created: fb.serverTimestamp() });
   } catch (e) {
     console.warn(e);
     toast("Your vote was not saved.");
@@ -259,7 +274,7 @@ function setHandle(handle) {
 
 function login(event) {
   event.preventDefault();
-  const handle = $("login-handle").value.trim();
+  const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one Firestore query
   if (!HANDLE.test(handle)) return toast("A handle is 2–20 letters, digits or _.");
   setHandle(handle);
   $("login").hidden = true;
@@ -282,6 +297,130 @@ function togglePast(open = $("past").hidden) {
   }
   past.hidden = !open;
   $("past-open").setAttribute("aria-expanded", open);
+}
+
+// ---------------------------------------------------------------- pages of one handle
+
+// The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month.
+function route() {
+  const q = new URLSearchParams(location.search), user = q.get("user"), interested = q.get("interested"), month = q.get("month");
+  if (user && HANDLE.test(user)) return showUser(user.toLowerCase());
+  if (interested && HANDLE.test(interested)) return showInterested(interested.toLowerCase());
+  return loadMonth(state.months.includes(month) ? month : state.months.at(-1));
+}
+
+function go(params) {
+  history.pushState(null, "", `?${new URLSearchParams(params)}`);
+  togglePast(false);
+  route();
+}
+
+function handleLink(handle) {
+  const a = Object.assign(el("a", "handle", handle), { href: `?user=${handle}` });
+  a.addEventListener("click", link(() => go({ user: handle })));
+  return a;
+}
+
+function ago(ms) {
+  const s = (Date.now() - ms) / 1000;
+  const [n, unit] = s < 3600 ? [Math.max(1, Math.round(s / 60)), "minute"] : s < 86400 ? [Math.round(s / 3600), "hour"]
+    : s < 86400 * 60 ? [Math.round(s / 86400), "day"] : [0, ""];
+  return unit ? `${n} ${unit}${n === 1 ? "" : "s"} ago` : new Date(ms).toISOString().slice(0, 10);
+}
+
+// Every paper `handle` is interested in, newest mark first: [{ month, paper, created (ms or null) }].
+async function marksOf(handle) {
+  await connected;
+  if (!db) throw new Error("Firestore is unavailable");
+  const k = handle.toLowerCase();
+  const months = await Promise.all(state.months.map(async (m) => {
+    // Only this handle's marks are read (a query costs one read per result, at least one), and the month's added papers.
+    const votes = fb.getDocs(fb.query(fb.collection(db, "months", m, "votes"), fb.where("handle", "==", k)));
+    const [data, mine, subs] = await Promise.all([fetch(`data/${m}.json`, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { papers: [] })),
+      votes, fb.getDocs(fb.collection(db, "months", m, "submissions"))]);
+    const papers = new Map([...subs.docs.map((d) => [d.id, { ...d.data(), id: d.id, added: true }]), ...data.papers.map((p) => [p.id, p])]);
+    return mine.docs.map((d) => d.data()).filter((v) => papers.has(v.paper))
+      .map((v) => ({ month: m, paper: papers.get(v.paper), created: v.created?.toMillis() ?? null }));
+  }));
+  return months.flat().sort((a, b) => (b.created ?? 0) - (a.created ?? 0) || b.month.localeCompare(a.month));
+}
+
+function showPage(handle, view, ...content) {
+  state.view = view;
+  state.page = handle;
+  unsubscribe.forEach((stop) => stop());
+  unsubscribe = [];
+  closeForm();
+  $("listview").hidden = true;
+  $("page").hidden = false;
+  $("page").replaceChildren(...content);
+  render();
+}
+
+async function showUser(handle) {
+  const since = el("span", "", "…"), count = el("span", "", "…");
+  const table = el("div", "user");
+  for (const [label, value] of [["user:", handle], ["active since:", since], ["interested in:", count]]) {
+    const row = el("div", "row");
+    row.append(el("span", "label", label), value instanceof Node ? value : el("span", "", value));
+    table.append(row);
+  }
+  const shown = Object.assign(el("a", "", "interested papers"), { href: `?interested=${handle}` });
+  shown.addEventListener("click", link(() => go({ interested: handle })));
+  const more = el("p");
+  more.append(shown);
+  showPage(handle, "user", table, more);
+  try {
+    const marks = await marksOf(handle);
+    if (state.view !== "user" || state.page !== handle) return;
+    const times = marks.map((x) => x.created).filter(Boolean);
+    count.textContent = `${marks.length} paper${marks.length === 1 ? "" : "s"}`;
+    since.textContent = times.length ? ago(Math.min(...times)) : "—";
+  } catch (e) {
+    console.warn(e);
+    count.textContent = since.textContent = "unavailable";
+  }
+}
+
+async function showInterested(handle) {
+  const list = el("ol", "list marks");
+  list.append(el("li", "empty", "Loading…"));
+  const own = handle.toLowerCase() === key();
+  showPage(handle, "interested", el("p", "page-head", ""), list);
+  $("page").firstChild.append(own ? "Papers you are interested in" : "Papers ", ...(own ? [] : [handleLink(handle), " is interested in"]));
+  let marks;
+  try {
+    marks = await marksOf(handle);
+  } catch (e) {
+    console.warn(e);
+    list.replaceChildren(el("li", "empty", "Unavailable right now; try again later."));
+    return;
+  }
+  if (state.view !== "interested" || state.page !== handle) return;
+  if (!marks.length) return list.replaceChildren(el("li", "empty", own ? "Nothing yet: click the triangle beside a paper." : "Nothing yet."));
+  list.replaceChildren(...marks.map(({ month, paper: p, created }) => {
+    const li = el("li", "mark"), title = el("a", "title", p.title), url = httpUrl(p.url);
+    if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
+    const monthLink = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });
+    monthLink.addEventListener("click", link(() => go({ month })));
+    const sub = el("div", "sub");
+    sub.append(...(created ? [`${ago(created)} · `] : []), "in the list of ", monthLink);
+    if (own) {
+      const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
+      undo.addEventListener("click", link(async () => {
+        try {
+          await fb.deleteDoc(fb.doc(db, "months", month, "votes", `${p.id}~${key()}`));
+          li.remove();
+        } catch (e) {
+          console.warn(e);
+          toast("Could not remove the mark.");
+        }
+      }));
+      sub.append(" · ", undo);
+    }
+    li.append(title, " ", el("span", "source", `(${[p.journal, p.date].filter(Boolean).join(", ")})`), sub);
+    return li;
+  }));
 }
 
 // ---------------------------------------------------------------- add a paper
@@ -373,7 +512,7 @@ async function copyTable() {
 }
 
 async function init() {
-  try { const saved = localStorage.getItem("handle") || ""; if (HANDLE.test(saved)) state.handle = saved; } catch {}
+  try { const saved = (localStorage.getItem("handle") || "").toLowerCase(); if (HANDLE.test(saved)) state.handle = saved; } catch {}
   $("copy").addEventListener("click", link(copyTable));
   $("add-open").addEventListener("click", link(() => openPanel("add")));
   $("add-cancel").addEventListener("click", link(closeForm));
@@ -382,6 +521,8 @@ async function init() {
   $("login-cancel").addEventListener("click", link(() => { $("login").hidden = true; }));
   $("login").addEventListener("submit", login);
   $("past-open").addEventListener("click", link(() => togglePast()));
+  $("me").addEventListener("click", link(() => go({ user: state.handle })));
+  $("interested-open").addEventListener("click", link(() => go({ interested: state.handle })));
   // a click outside a pop-up, or Escape, closes it
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".links .menu")) togglePast(false);
@@ -401,9 +542,9 @@ async function init() {
     $("list").replaceChildren(el("li", "empty", "No lists yet."));
     return;
   }
-  const asked = new URLSearchParams(location.search).get("month");
   connect();
-  await loadMonth(state.months.includes(asked) ? asked : state.months.at(-1));
+  addEventListener("popstate", route);
+  await route();
 }
 
 init();

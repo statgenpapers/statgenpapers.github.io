@@ -2,14 +2,14 @@
 import { test, before, after, beforeEach } from "node:test";
 import { readFileSync } from "node:fs";
 import { initializeTestEnvironment, assertFails, assertSucceeds } from "@firebase/rules-unit-testing";
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where, setDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
 let env;
 const M = "months/2026-10", P = "10.1038_s41588-026-00001-1";
 const db = (uid) => (uid ? env.authenticatedContext(uid) : env.unauthenticatedContext()).firestore();
 // An upvote is the document months/{m}/votes/{paper}~{handle in lower case}.
 const vote = (uid, handle, { paper = P, id = `${paper}~${String(handle).toLowerCase()}`, month = M, ...extra } = {}) =>
-  setDoc(doc(db(uid), `${month}/votes/${id}`), { paper, handle, ...extra });
+  setDoc(doc(db(uid), `${month}/votes/${id}`), { paper, handle, created: serverTimestamp(), ...extra });
 
 before(async () => {
   env = await initializeTestEnvironment({
@@ -20,7 +20,7 @@ before(async () => {
 after(() => env.cleanup());
 beforeEach(async () => {
   await env.clearFirestore();
-  await assertSucceeds(vote("uid-a", "Alice"));
+  await assertSucceeds(vote("uid-a", "alice"));
 });
 
 test("anyone can read votes without signing in", () => assertSucceeds(getDocs(collection(db(null), `${M}/votes`))));
@@ -29,19 +29,24 @@ test("a second handle upvotes the same paper", () => assertSucceeds(vote("uid-b"
 test("one upvote per handle and paper: a second write is an update, which is closed", () =>
   assertFails(vote("uid-b", "alice")));
 test("an upvote cannot be edited", () => assertFails(updateDoc(doc(db("uid-a"), `${M}/votes/${P}~alice`), { handle: "ALICE" })));
-test("the id must be paper~handle in lower case", async () => {
+test("the id must be paper~handle; handles are lower case", async () => {
   await assertFails(vote("uid-b", "bob", { id: `${P}~carol` }));
   await assertFails(vote("uid-b", "Dave", { id: `${P}~Dave` }));
+  await assertFails(vote("uid-b", "Dave"));
   await assertFails(vote("uid-b", "bob", { id: `other~bob` }));
 });
-test("handles are 2-20 letters, digits or _", async () => {
+test("handles are 2-20 lower-case letters, digits or _", async () => {
   await assertFails(vote("uid-b", "e"));
   await assertFails(vote("uid-b", "e.f"));
   await assertFails(vote("uid-b", "a".repeat(21)));
   await assertFails(vote("uid-b", 12, { id: `${P}~12` }));
-  await assertSucceeds(vote("uid-b", "Under_score9"));
+  await assertSucceeds(vote("uid-b", "under_score9"));
 });
 test("no other fields, so no downvote or weight", () => assertFails(vote("uid-b", "bob", { v: -1 })));
+test("an upvote carries the server time, not a client time", async () => {
+  await assertFails(vote("uid-b", "bob", { created: new Date(0) }));
+  await assertFails(setDoc(doc(db("uid-b"), `${M}/votes/${P}~bob`), { paper: P, handle: "bob" }));
+});
 test("paper id must be well formed", () => assertFails(vote("uid-b", "bob", { paper: "a b" })));
 test("month must be well formed", () => assertFails(vote("uid-b", "bob", { month: "months/junk" })));
 test("any signed-in browser may take back a handle's upvote (handles have no password)", () =>
@@ -56,7 +61,7 @@ test("cannot write elsewhere", () => assertFails(setDoc(doc(db("uid-a"), "other/
 // Papers added by visitors
 const SUB = `${M}/submissions/Ab3dEf6hIj9kLmNoPq2r`;
 const paper = (uid, extra = {}) => ({ journal: "PNAS", title: "A paper the pipeline missed", url: "https://doi.org/10.1073/pnas.1",
-  short_name: "PNAS_Smith_2026_PaperPipelineMissed", uid, created: serverTimestamp(), name: "Bob", ...extra });
+  short_name: "PNAS_Smith_2026_PaperPipelineMissed", uid, created: serverTimestamp(), name: "bob", ...extra });
 const submit = (uid, extra, path = SUB) => setDoc(doc(db(uid), path), paper(uid, extra));
 
 test("signed-in visitor submits a paper under a handle", () => assertSucceeds(submit("bob")));
@@ -75,7 +80,7 @@ test("cannot submit an empty or oversized title", async () => {
 });
 test("cannot submit extra or missing fields", async () => {
   await assertFails(submit("bob", { score: 99 }));
-  await assertFails(setDoc(doc(db("bob"), SUB), { journal: "PNAS", title: "t", url: "https://x.org", uid: "bob", created: serverTimestamp(), name: "Bob" }));
+  await assertFails(setDoc(doc(db("bob"), SUB), { journal: "PNAS", title: "t", url: "https://x.org", uid: "bob", created: serverTimestamp(), name: "bob" }));
 });
 test("cannot backdate a submission", () => assertFails(submit("bob", { created: new Date(0) })));
 test("cannot submit under a malformed month or id", async () => {
@@ -94,5 +99,7 @@ test("only the submitter can delete a submission", async () => {
 });
 test("a submitted paper can be upvoted like any other, by its submission id", async () => {
   await assertSucceeds(submit("bob"));
-  await assertSucceeds(vote("uid-a", "Alice", { paper: SUB.split("/").pop() }));
+  await assertSucceeds(vote("uid-a", "alice", { paper: SUB.split("/").pop() }));
 });
+test("a handle's marks can be listed with one query", () =>
+  assertSucceeds(getDocs(query(collection(db(null), `${M}/votes`), where("handle", "==", "alice")))));
