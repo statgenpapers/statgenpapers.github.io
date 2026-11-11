@@ -88,7 +88,7 @@ function createRow(p) {
   q(".source").textContent = `(${[p.journal, p.date].filter(Boolean).join(", ")})`;
   q(".source").title = p.venue_name || "";
   const a = p.authors || [], cut = a.length === 100;  // OpenAlex lists at most 100 authors, so the last ones are unknown
-  q(".meta").textContent = p.added ? `added by ${p.name || "a visitor"}`
+  q(".meta").textContent = p.added ? "added by a reader"
     : a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   if (p.p_pick != null) {
     q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
@@ -104,11 +104,19 @@ function createRow(p) {
 
   const details = q(".details");
   if (!p.added) {
-    details.append(el("p", "", (p.abstract || "").replace(/^abstract[\s:.]+(?=[A-Z])/i, "") || "No abstract available."));
+    details.append(el("p", "", tidyAbstract(p.abstract || "") || "No abstract available."));
     if (a.length > 4) details.append(el("p", "who", `Authors: ${a.join(", ")}${cut ? ", …" : ""}`));
   }
-  details.append(el("p", "who voters"));
   return li;
+}
+
+// OpenAlex abstracts lose their markup: "5×10<sup>−8</sup>)" arrives as "5x10 -8 )". Restore the exponent
+// after a "×10" or "= 10", drop the spaces inside brackets and before punctuation, and drop a leading "Abstract".
+const SUPERSCRIPT = Object.fromEntries([..."0123456789-−–"].map((c, i) => [c, "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁻⁻"[i]]));
+function tidyAbstract(text) {
+  return text.replace(/^abstract[\s:.]+(?=[A-Z])/i, "")
+    .replace(/(?<=\d ?[x×] ?|[=<>≤≥] ?)10 ?([-−–]?\d{1,3})\b/g, (_, e) => `10${[...e].map((c) => SUPERSCRIPT[c]).join("")}`)
+    .replace(/\( /g, "(").replace(/ ([),;.])(?=[\s),;.]|$)/g, "$1");
 }
 
 function updateRow(li, p) {
@@ -119,7 +127,6 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-label", mine(p.id) ? "Not interested any more" : "Interested");
   q(".up").title = state.handle ? (mine(p.id) ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !state.uid;
-  q(".voters").textContent = ups.length ? `Interested: ${ups.map(([, handle]) => handle).join(", ")}` : "No one interested yet.";
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
@@ -145,12 +152,12 @@ function render() {
     }
   }
   // the month shown, in the top bar: "this month (October 2026)", or "past (September 2026)" for an earlier one
-  // "this month" is always the latest list; "past – 2026/09" while an earlier month's list is shown
+  // "this month" is always the latest list; an earlier month's list adds it at the end: "this month | past | add | 2026/09"
   const latest = state.month === state.months.at(-1), pastMonth = state.view === "list" && state.month && !latest;
-  $("past-open").replaceChildren("past", ...(pastMonth ? [" – ", el("span", "when", monthName(state.month))] : []));
+  $("viewing-wrap").hidden = !pastMonth;
+  $("viewing").textContent = pastMonth ? monthName(state.month) : "";
   const onList = state.view === "list";
   $("this-month").classList.toggle("current", onList && latest);
-  $("past-open").classList.toggle("current", onList && Boolean(state.month) && !latest);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("interested-wrap").hidden = !state.handle;
@@ -300,10 +307,11 @@ function togglePast(open = $("past").hidden) {
 // ---------------------------------------------------------------- pages of one handle
 
 // The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month.
+// The handle pages open only for the handle logged in here: nobody browses another reader's marks.
 function route() {
-  const q = new URLSearchParams(location.search), user = q.get("user"), interested = q.get("interested"), month = q.get("month");
-  if (user && HANDLE.test(user)) return showUser(user.toLowerCase());
-  if (interested && HANDLE.test(interested)) return showInterested(interested.toLowerCase());
+  const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
+  if (own(q.get("user"))) return showUser(state.handle);
+  if (own(q.get("interested"))) return showInterested(state.handle);
   return loadMonth(state.months.includes(month) ? month : state.months.at(-1));
 }
 
@@ -311,12 +319,6 @@ function go(params) {
   history.pushState(null, "", `?${new URLSearchParams(params)}`);
   togglePast(false);
   route();
-}
-
-function handleLink(handle) {
-  const a = Object.assign(el("a", "handle", handle), { href: `?user=${handle}` });
-  a.addEventListener("click", link(() => go({ user: handle })));
-  return a;
 }
 
 // Every paper `handle` is interested in, newest month first: [{ month, paper }].
@@ -374,9 +376,7 @@ async function showUser(handle) {
 async function showInterested(handle) {
   const list = el("ol", "list marks");
   list.append(el("li", "empty", "Loading…"));
-  const own = handle.toLowerCase() === key();
-  showPage(handle, "interested", el("p", "page-head", ""), list);
-  $("page").firstChild.append(own ? "Papers you are interested in" : "Papers ", ...(own ? [] : [handleLink(handle), " is interested in"]));
+  showPage(handle, "interested", el("p", "page-head", "Papers you are interested in"), list);
   let marks;
   try {
     marks = await marksOf(handle);
@@ -386,7 +386,7 @@ async function showInterested(handle) {
     return;
   }
   if (state.view !== "interested" || state.page !== handle) return;
-  if (!marks.length) return list.replaceChildren(el("li", "empty", own ? "Nothing yet: click the triangle beside a paper." : "Nothing yet."));
+  if (!marks.length) return list.replaceChildren(el("li", "empty", "Nothing yet: click the triangle beside a paper."));
   list.replaceChildren(...marks.map(({ month, paper: p }) => {
     const li = el("li", "mark"), title = el("a", "title", p.title), url = httpUrl(p.url);
     if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
@@ -394,19 +394,17 @@ async function showInterested(handle) {
     monthLink.addEventListener("click", link(() => go({ month })));
     const sub = el("div", "sub");
     sub.append(monthLink);
-    if (own) {
-      const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
-      undo.addEventListener("click", link(async () => {
-        try {
-          await fb.deleteDoc(fb.doc(db, "months", month, "votes", `${p.id}~${key()}`));
-          li.remove();
-        } catch (e) {
-          console.warn(e);
-          toast("Could not remove the mark.");
-        }
-      }));
-      sub.append(" · ", undo);
-    }
+    const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
+    undo.addEventListener("click", link(async () => {
+      try {
+        await fb.deleteDoc(fb.doc(db, "months", month, "votes", `${p.id}~${key()}`));
+        li.remove();
+      } catch (e) {
+        console.warn(e);
+        toast("Could not remove the mark.");
+      }
+    }));
+    sub.append(" · ", undo);
     li.append(title, " ", el("span", "source", `(${[p.journal, p.date].filter(Boolean).join(", ")})`), sub);
     return li;
   }));

@@ -12,7 +12,7 @@
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 var(--font); }
+body { margin: 0; padding: 0 1rem; background: var(--bg); color: var(--text); font: 14px/1.45 var(--font); }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 button, input { font: inherit; color: inherit; }
@@ -20,7 +20,7 @@ input { background: var(--surface); border: 1px solid var(--border); border-radi
 button { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: .15rem .7rem; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.bar, main, footer { max-width: 56rem; margin: 0 auto; padding: 0 1rem; }  /* one centred column: bar, list and footer share both edges */
+.bar, main, footer { max-width: 54rem; margin: 0 auto; }  /* one centred column: the bar's and footer's rules end where the list does */
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; padding-top: 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--accent); }
 .home { display: flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
@@ -31,7 +31,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .account #me::after { content: "|"; display: inline-block; margin-left: .35em; color: var(--muted); }  /* inline-block: not underlined with the link */
 
 .menu { position: relative; }
-.links a.current, .popover a.current { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
+.links .current, .popover a.current { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
 .page { margin-top: 1rem; }
 .page-head { color: var(--muted); margin: 0 0 .6rem; }
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
@@ -40,7 +40,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .page p a, .page .sub a { text-decoration: underline; }
 .marks .mark { padding: .35rem 0 .45rem; }
 
-.links .when { font-size: .85em; }
+#viewing { font-size: .85em; }
 .popover { position: absolute; top: calc(100% + .35rem); left: 0; z-index: 5; display: flex; flex-direction: column; min-width: 10rem;
   padding: .3rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); }
 .popover a { padding: .25rem .8rem; white-space: nowrap; font-size: .85em; }
@@ -95,7 +95,7 @@ footer p { margin: .6rem 0 0; }
   padding: .5rem 1rem; border-radius: 6px; font-size: .9rem; max-width: calc(100vw - 2rem); z-index: 10; }
 
 @media (max-width: 640px) {
-  .bar, main, footer { padding-left: .6rem; padding-right: .6rem; }
+  body { padding: 0 .6rem; }
   .account { margin-left: 0; }
   .paper { grid-template-columns: 2.2rem minmax(0, 1fr) 2.6rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }

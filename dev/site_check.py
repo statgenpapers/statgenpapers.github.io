@@ -120,8 +120,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("own mark is highlighted (blue) only for the voter", pressed(a, 3) and not pressed(b, 3))
     check("there is no downvote", a.locator("li.paper button").count() == 4)
     row(b, 3).locator(".toggle").click()
-    check("the handle shows next to the vote; the abstract opens without its heading",
-          "sitecheck_a" in row(b, 3).locator(".voters").inner_text() and row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3.")
+    check("the abstract opens without its heading, and no handle shows",
+          row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
 
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
@@ -160,8 +160,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
         dt = seen(added(b).locator(".count"), "1")
         check(f"a paper added in one browser shows in the other, upvoted by its submitter ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
-        check("it shows its journal and who added it", added(b).locator(".source").inner_text() == "(Nature)"
-              and added(b).locator(".meta").inner_text() == "added by sitecheck_a")
+        check("it shows its journal, not who added it", added(b).locator(".source").inner_text() == "(Nature)"
+              and added(b).locator(".meta").inner_text() == "added by a reader")
         a.click("#add-open")
         a.fill("#add-url", ADD_URL + "?again")
         a.fill("#add-journal", "Nature")
