@@ -13,145 +13,85 @@
 </header>
 
 <main class="prose">
-<h2>What this is</h2>
-<p>Each month this site lists about 25 new statistical genetics papers, chosen by a small model from
-roughly 2,000 candidates. Anyone with a handle can mark papers they are interested in and add papers the model missed. Marks show up
-for everyone within seconds, and the list re-orders itself by them. The code and the data are in the
+<h2>About StatGen Papers</h2>
+<p>Each month, StatGen Papers lists ~30 statistical genetics papers, prioritized by a model from about 2,000
+candidates in journals such as Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in
+preprints. Anyone can add papers the model missed, including to earlier months. The code is in the
 <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
 
-<h2>Where the papers come from</h2>
+<h2>Where do the papers come from?</h2>
 <ol>
   <li><strong>Journals</strong> (through <a href="https://openalex.org">OpenAlex</a>): Nature, Nature Genetics, Nature
   Communications, Nature Reviews Genetics, Nature Medicine, Nature Human Behaviour, Science, Science
-  Translational Medicine, Cell, Cell Genomics, American Journal of Human Genetics.</li>
-  <li><strong>Preprints</strong>: bioRxiv genetics and genomics; medRxiv genetic and genomic medicine and health informatics.</li>
-  <li>Corrections, editorials and news items are dropped. A preprint whose published version appears in the
-  same month is dropped in favor of the published one, and a paper listed in an earlier month is not listed
-  again. The journal version of an earlier preprint can be.</li>
+  Translational Medicine, Cell, Cell Genomics, American Journal of Human Genetics. Corrections, editorials and news
+  items are left out.</li>
+  <li><strong>Preprints</strong>: bioRxiv genetics and genomics; medRxiv genetic and genomic medicine and health
+  informatics. A preprint whose published version appears in the same month is left out in favor of the published one.</li>
+  <li>A paper listed in an earlier month is not listed again; the journal version of an earlier preprint can be.</li>
 </ol>
-<p>The list is built on the 3rd of each month for the month before. The sources are a short configuration file,
-<code>config/sources.toml</code>.</p>
+<p>Each month's list is built on the 3rd of the following month.</p>
 
-<h2>How papers are scored</h2>
+<h2>How does the score work?</h2>
 <ol>
-  <li>Title and abstract are turned into a 512-number vector by a static text-embedding model
-  (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>), which needs no GPU and reads
-  about 1,800 abstracts a second on one CPU core (4,200 on four).</li>
-  <li>A logistic regression on that vector, plus one indicator per journal or preprint category, gives the score.
-  Its weights (<code>model/weights.json</code>) were fitted to twelve months of picks from a statistical genetics
-  lab's reading list: the papers the lab chose are the positives, every other candidate a negative.</li>
-  <li>The whole pool is ranked and the top 25 are shown.</li>
-  <li><strong>Score</strong>, the percentage beside each paper, is the model output turned into a probability that the lab lists the paper. The
-  conversion (stored with the weights) was fitted to the scores of the rolling test below, where each month was
-  scored by a model that had not seen it. There, papers given about 50% were picked about half the time, and the
-  top 25 held 0.45 picks per paper against a predicted 0.46.</li>
-  <li><strong>Learning from readers.</strong> Before each monthly run, all interest marks are read. Once 30 listed
-  papers have an interested reader, a correction to the weights is fitted: in every month that got marks, the listed
-  papers someone was interested in count as positives and the other listed papers as negatives. The original score is
-  the starting point, and a penalty keeps the correction small while marks are few. Marks that agree with the score
-  change little; surprising ones change more.</li>
+  <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
+  (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
+  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It was fitted
+  to a year of a statistical genetics lab's monthly reading list: the papers the lab picked are the positives, all
+  other candidates the negatives.</li>
+  <li>The raw score is calibrated into a probability, and the top 25 papers are listed.</li>
+  <li>Readers' marks re-order the list. Once 30 listed papers have marks, they also fit a small monthly correction to
+  the model.</li>
 </ol>
 
-<h2>How well it works</h2>
-<p>The scorer was tested on past months of the reading list: to score a month, the model saw only earlier
-months, and a paper counted as found if it was among the top 25. The test covers
-<span data-v="n_months">8</span> months (March to October 2026), <span data-v="picks">210</span> picks, and about
-2,100 candidates a month. AUC is the chance that a picked paper outranks one
-that was not picked.</p>
+<h2>What is the score?</h2>
+<p>The Score beside each paper is the chance that the lab would pick it for its reading list. In the test below,
+papers scored about 50% were picked about half the time. Marks re-order the list but do not change the score.</p>
+
+<h2>Does the score work?</h2>
+<p>Each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a model trained only on
+the months before it.</p>
+<ol>
+  <li>A picked paper outranks one that was not picked <span data-v="auc_pct">96%</span> of the time (AUC), and the
+  top 25 hold <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> picks: fewer than half.
+  Tastes differ from month to month, and about one pick in ten comes from a source that is not scanned. Adding
+  papers fills that gap.</li>
+  <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
+  August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
+  picks in the top 25, at no cost.</li>
+  <li>The weights in use were fitted on all months up to October 2026, so the lists of those months look better than
+  future ones will.</li>
+</ol>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Picks in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
   <tbody></tbody>
 </table>
-<p>An earlier experiment had a language model (Claude Haiku) read and grade about
-340 pre-filtered papers a month. On those same papers and labels:</p>
-<table id="haiku">
-  <thead><tr><th>Scorer</th><th class="num">AUC Aug / Sep / Oct</th><th class="num">Top-25 Aug / Sep / Oct</th><th class="num">Total</th></tr></thead>
-  <tbody></tbody>
-</table>
-<p>What these numbers do and do not show:</p>
-<ol>
-  <li>The embedding scorer is close to the language model but below it: <span data-v="haiku.rows.1.top25">38</span>
-  against <span data-v="haiku.rows.0.top25">43</span> picks in the top 25, and a lower AUC in two of three months.
-  It costs nothing to run.</li>
-  <li>It finds fewer than half of the picks. Tastes differ from month to month, and about one pick in ten comes
-  from a source that is not scanned at all. Marking and adding papers are there to fill that gap.</li>
-  <li>Venue carries about half the signal: the same model on text alone finds half as many picks.</li>
-  <li>Scoring by similarity to past picks is clearly worse than a classifier.</li>
-  <li>A single learned coefficient on each venue's past pick rate was worse than one indicator per venue
-  (<span data-v="venue_variants.rows.0.pick_rate_prior">57</span> against
-  <span data-v="venue_variants.rows.0.one_hot">78</span> picks over March to September), and a three times stronger
-  indicator made no real difference (<span data-v="venue_variants.rows.0.one_hot_x3">75</span>).</li>
-  <li>Weights fitted once, on data up to May 2026, did as well on June to October as weights refitted every month
-  (<span data-v="frozen.frozen.top25">58</span> against <span data-v="frozen.retrained.top25">59</span> of
-  <span data-v="frozen.retrained.picks">132</span> picks). So the site runs on fixed weights and the correction learned from readers.</li>
-  <li>Ranking the full pool finds as many picks as ranking a keyword-filtered pool
-  (<span data-v="regex_shortlist.full_pool.top25">90</span> and <span data-v="regex_shortlist.regex_shortlist.top25">91</span>),
-  so there is no keyword filter.</li>
-  <li>Other classifiers on the same embeddings did not beat logistic regression consistently (table below): the
-  best on one embedding model is mid-table on the other.</li>
-  <li>Larger transformer embedding models (PubMedBERT, BGE, SciNCL, MedCPT, MPNet, SPECTER2, E5) find at most 6
-  more of the 210 picks (96 at best) and at most one more in the held-out October, and are about a thousand times slower.
-  potion-32M is the fastest model tested.</li>
-  <li>The weights in use were fitted on all twelve months up to October 2026. Lists for those months are therefore
-  scored by a model that has seen their answers, and look better than a future month will.</li>
-</ol>
-<table id="strategies">
-  <thead><tr><th>Classifier on embedding + venue</th><th class="num">potion-32M, top 25</th><th class="num">MiniLM-L6, top 25</th></tr></thead>
-  <tbody></tbody>
-</table>
-<p class="caption">Picks in the top 25, of <span data-v="picks">210</span>. The reading list itself is private; only the
-fitted weights and these totals are published. The backtest code is in <code>dev/backtest/</code> of the repository.
-Numbers generated <span data-v="generated"></span>.</p>
-
-<h2>Marking and adding papers</h2>
-<ol>
-  <li>Log in with a handle (2–20 letters, digits or <code>_</code>, no password) and click the triangle beside a
-  paper to mark that you are interested in it. The number beside the triangle counts interested readers; a handle
-  counts once per paper, on any device. Click the blue triangle again to take the mark back.</li>
-  <li>Without a password, anyone who types your handle can mark papers as you. The site never shows handles:
-  others see only how many readers are interested. The marks themselves are stored openly, though, so someone who
-  reads the database directly can see which handle marked what. Pick a handle you are happy to have seen.</li>
-  <li>While you are logged in, the links at the top right show the papers you are interested in, across all months
-  ("interested"), and your handle with a count. Only you see them, and they close when you log out. Your browser
-  keeps a copy of each month's counts, so the list shows at once on the next visit; logging out removes your handle
-  from that copy.</li>
-  <li>"add" takes a journal, a title and a URL. The short name
-  (<code>Journal_FirstAuthor_Year_Keyword</code>) is generated; the first author and year are looked up at
-  <a href="https://www.crossref.org">Crossref</a> from the DOI in the URL. Adding a paper marks you as interested in it. You can remove a paper you added, from the same browser.</li>
-  <li>The export icon beside "Papers of …" copies the list as shown, or downloads it as a .tsv file: four
-  tab-separated columns (Journal, Short Name, Title, URL) that paste into a spreadsheet.</li>
-  <li>Interest marks are stored in Google Firebase and copied into the repository each month, with the handles hashed.</li>
-</ol>
+<p class="caption">The reading list itself is private; only the fitted weights and these totals are published. The
+backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated <span data-v="generated"></span>.</p>
 </main>
 
-<footer><a href="./">list</a></footer>
+<footer></footer>
 
 <script type="module">
 const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null), () => null);
-if (!data) {  // the text keeps its written-in numbers; the tables say why they are empty
-  for (const body of document.querySelectorAll("table tbody")) {
-    const td = Object.assign(document.createElement("td"), { textContent: "Unavailable right now.", colSpan: 4 });
-    body.append(document.createElement("tr"));
-    body.lastElementChild.append(td);
-  }
+if (!data) {  // the text keeps its written-in numbers; the table says why it is empty
+  const td = Object.assign(document.createElement("td"), { textContent: "Unavailable right now.", colSpan: 3 });
+  document.querySelector("#scorers tbody").append(document.createElement("tr"));
+  document.querySelector("#scorers tbody tr").append(td);
   throw new Error("data/backtest.json did not load");
 }
 data.n_months = data.months.length;
+data.auc_pct = `${Math.round(100 * data.scorers[0].auc)}%`;
+data.generated = data.generated.replaceAll("-", "/");
 const cell = (text, cls) => Object.assign(document.createElement("td"), { textContent: text, className: cls || "" });
-const row = (cells, chosen) => {
+document.querySelector("#scorers tbody").append(...data.scorers.map((s) => {
   const tr = document.createElement("tr");
-  tr.className = chosen ? "chosen" : "";
-  tr.append(...cells.map((c, i) => cell(c, i ? "num" : "")));
+  tr.className = s.chosen ? "chosen" : "";
+  tr.append(...[s.label + (s.chosen ? " (in use)" : ""), s.auc.toFixed(3), s.top25].map((c, i) => cell(c, i ? "num" : "")));
   return tr;
-};
-const auc = (x) => x.toFixed(3);
-document.querySelector("#scorers tbody").append(...data.scorers.map((s) => row([s.label + (s.chosen ? " (in use)" : ""), auc(s.auc), s.top25], s.chosen)));
-document.querySelector("#haiku tbody").append(...data.haiku.rows.map((s) => row([s.label, s.auc_by_month.map(auc).join(" / "), s.top25_by_month.join(" / "), s.top25])));
-document.querySelector("#strategies tbody").append(...data.strategies.map((s) =>
-  row([s.strategy.replace("lr", "logistic regression").replace(" (baseline)", " (in use)"), s.potion_32m_top25, s.minilm_top25], s.strategy.includes("baseline"))));
+}));
 for (const span of document.querySelectorAll("[data-v]")) {
   const value = span.dataset.v.split(".").reduce((o, k) => o?.[k], data);
-  if (value !== undefined) span.textContent = typeof value === "number" ? value.toLocaleString("en") : span.dataset.v === "generated" ? String(value).replaceAll("-", "/") : value;
+  if (value !== undefined) span.textContent = typeof value === "number" ? value.toLocaleString("en") : value;
 }
 </script>
 </body>

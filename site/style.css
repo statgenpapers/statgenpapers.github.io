@@ -126,11 +126,12 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 }
 
 /* About page */
-.prose { padding-top: .5rem; padding-bottom: 3rem; color: var(--body); font-size: 1rem; line-height: 1.6; }
+.prose { padding-top: .5rem; padding-bottom: 0; color: var(--body); font-size: 1rem; line-height: 1.6; }
 .prose > * { max-width: 48rem; }  /* readable lines, starting at the bar's left edge */
 .prose h2 { margin: 2.2rem 0 .6rem; font-size: 1.2rem; color: var(--text); }
 .prose strong { color: var(--text); }
 .prose li { margin: .35rem 0; }
+.prose > :last-child { margin-bottom: 0; }  /* the closing rule follows the text as it does the list */
 .prose table { border-collapse: collapse; margin: 1rem 0; font-size: 14px; display: block; overflow-x: auto; max-width: 100%; width: max-content;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .prose th, .prose td { text-align: left; padding: .5rem .9rem; white-space: nowrap; }
