@@ -1,113 +1,131 @@
 {
  "month": "2026-06",
  "submissions": {
-  "3XBDtToLcB4Sc1mP4hum": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Hu_2026_CellTypeSpecificPRS",
-   "title": "Cell-type-specific polygenic risk scores reveal adipocyte-related interactions with lipids in coronary artery disease",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.07.07.26357510v1"
-  },
-  "5l9s2OGnCSoHRoB5XMYo": {
+  "12zerBo90WmtYE0S72lp": {
+   "abstract": "",
    "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Garg_2026_CNVPhewas",
-   "title": "A phenome-wide association study of CNVs genotyped from genome sequencing read depth in the UK Biobank",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00162-X"
+   "short_name": "AJHG_O'Connor_2026_Polygenicity",
+   "title": "Principled measures and estimates of trait polygenicity",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00159-X"
   },
-  "9pIzFFKFvmWLI9LkWf7C": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Sun_2026_MultiAncestryADTWAS",
-   "title": "Multi-ancestry transcriptome-wide association study reveals shared and population-specific genetic effects in Alzheimer disease",
-   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00157-6"
-  },
-  "HUUEl59DSrqiaqZuFNYY": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Nason_2026_VariantPathogenicity3DProtein",
-   "title": "Systematic identification of disease-associated 3D neighborhoods in protein structures",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.05.29.26354366v1"
-  },
-  "OjFW4Yc7ARjtXb2yn39j": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Aguirre_2026_GeneticArchitectureGeneExpression",
-   "title": "Regulatory network topology and the genetic architecture of gene expression",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00081-9"
-  },
-  "RPChhUOehirrBblS2aCm": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Starr_2025_SelectionFromVariantEffectPrediction",
-   "title": "A framework to detect positive selection using variant effect predictions reveals widespread adaptive evolution of human neurons",
-   "url": "https://www.biorxiv.org/content/10.1101/2025.09.11.675696v1"
-  },
-  "SFS5qvsVlOZxIXMb4YPz": {
-   "journal": "Nature",
-   "short_name": "Nature_Yue_2026_MultiTissueProteomeResource",
-   "title": "Spatial distribution of the proteome in the human body and in cancers",
-   "url": "https://www.nature.com/articles/s41586-026-10660-y"
-  },
-  "d2TmqeZfvwqZCv1KrdcV": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Krockenberger_2026_ContextSpecificeQTL",
-   "title": "FastGxC: Fast and powerful context-specific eQTL mapping in bulk and single-cell data",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00112-6"
-  },
-  "eVUvPfn7HuM34ahYl6Xo": {
-   "journal": "Nat Genet",
-   "short_name": "NG_Liu_2026_CellCellInteractionFromSpatialTranscriptomics",
-   "title": "CytoSignal detects locations and dynamics of ligand–receptor signaling at cellular resolution from spatial transcriptomic data",
-   "url": "https://www.nature.com/articles/s41588-026-02624-9"
-  },
-  "jSQ0i5dXI3CEjERw8ZGc": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Lassen_2026_RecessiveInheritance",
-   "title": "Meta-analysis across six global biobanks identifies recessive coding associations with complex traits and diseases",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00155-2"
-  },
-  "jmOOodLptBm8FzDezU04": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Wang_2026_DishToBiobankProteome",
-   "title": "A dish-to-biobank framework links β-cell nutrient-stress programs to genetic and dietary risk for Type 2 Diabetes",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.06.12.731989v1"
-  },
-  "lSCT80RZSiuL8LWjt264": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Das_2026_BayesianRVAT",
-   "title": "An empirical Bayes framework for burden and dispersion association tests helps prioritize rare variants associated with Alzheimer’s disease",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26354742v1"
-  },
-  "mWBvzVzJhi70rJ14Cbrv": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Zou_2026_scEPS",
-   "title": "scEPS integrates genetic and single-cell disease atlas data to provide granular mechanistic insights into complex human diseases",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.06.26.26356714v1"
-  },
-  "mti8J6ze2skNr4mZXVBP": {
+  "2rzrU4672CVjivmFP00p": {
+   "abstract": "",
    "journal": "Cell Genom",
    "short_name": "CG_Liu_2026_InflammagingEpigeneticAgeing",
    "title": "Interferon-related inflammaging links epigenetic age acceleration to multimorbidity",
    "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00080-7"
   },
-  "nxB04yVL9pU3ERXVV5kW": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Kwon_2026_VariantPathogenicityScoringProteomics",
-   "title": "Human Proteome-wide Mechanistic Interpretation of Missense Variants through Protein Feature Enrichment Score",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.05.26.726248v1.full"
+  "8cxFSTb9RTuZJjYNPq63": {
+   "abstract": "Abstract A detailed, spatially resolved quantitative map of the human proteome is essential for a deeper understanding of human biology and disease 1–4 . Here we present a comprehensive human proteomic landscape, generated by profiling more than 13,000 proteins across 2,856 samples using data-independent acquisition mass spectrometry. The dataset spans 58 major tissue types, 251 specific tissue subtypes and 25 distinct carcinomas. This resource enables the depiction of spatially resolved proteome trajectories across tissue types and physiological states, including fetal, tumour, adjacent non-tumour and healthy adult tissue, thereby providing insight into both developmental processes and oncogenic progression. Furthermore, quantitative proteomics comparisons across diverse tissue types and states facilitate the indication of organ-specific toxicity, the identification of repurposable anticancer drug candidates and the prioritization of therapeutic targets for cancers. This study establishes a quantitative resource for navigating the proteome in the human body and in common cancers.",
+   "journal": "Nature",
+   "short_name": "Nature_Yue_2026_MultiTissueProteomeResource",
+   "title": "Spatial distribution of the proteome in the human body and in cancers",
+   "url": "https://www.nature.com/articles/s41586-026-10660-y"
   },
-  "onQqXWqbchH7xTa4L59A": {
-   "journal": "bioRxiv",
+  "B2lskTY9BDYHE6CNZCS7": {
+   "abstract": "Abstract Type 2 diabetes (T2D) arises from genetic susceptibility and chronic metabolic stress, but whether these converge on shared molecular programs in human populations remains unclear. Here, we develop a dish-to-biobank framework linking controlled β-cell perturbation to population-scale disease genetics through the circulating plasma proteome, and apply it to T2D. scRNA-seq of human stem cell–derived islets under factorial glucose and palmitate exposure identifies their combination (glucolipotoxicity) as the condition eliciting the strongest SC-β cell transcriptional response, with glucolipotoxicity-upregulated genes uniquely enriched for T2D heritability, monogenic diabetes genes, and rare-variant burden signals. CRISPR knockout of β-cell identity regulators PAX6 and PDX1 aligns with this program, establishing convergence of environmental and genetic perturbations on a shared disease-relevant state. We then used the plasma proteome as an accessible population-scale readout of these experimentally defined β-cell stress programs, scoring 45,956 UK Biobank White British participants. We define heritable stress signatures that associate with refined carbohydrate and saturated fat intake, and undergo trans-tissue genetic regulation, with a subset of variants showing diet-dependent effects. Together, these findings establish glucolipotoxicity as a genetically anchored model of β-cell dysfunction and provide a generalizable framework for linking controlled cellular perturbations to human disease genetics at population scale.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Wang_2026_DishToBiobankProteome",
+   "title": "A dish-to-biobank framework links β-cell nutrient-stress programs to genetic and dietary risk for Type 2 Diabetes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.12.731989v1"
+  },
+  "EbjJHWsPbaUsvSA5ioeI": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Krockenberger_2026_ContextSpecificeQTL",
+   "title": "FastGxC: Fast and powerful context-specific eQTL mapping in bulk and single-cell data",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00112-6"
+  },
+  "GldfRggLWJXhYurlmxOd": {
+   "abstract": "Detecting positive selection is essential to understanding evolution. Many methods to detect positive selection use simple classifications of genetic variants (e.g. synonymous/nonsynonymous). Here, we propose that these methods can be considered special cases of a more general framework to detect positive selection with any variant effect prediction method. Using evolutionary conservation and deep learning-based variant effect predictions, we apply this framework genome-wide in the human lineage and identify positive selection on protein sequences of genes involved in brain and heart development, chromatin accessibility in binding sites of dozens of transcription factors, and non-coding substitutions in compact genomic regions with reinforcing cell type-specific effects on cis-regulatory activity. Consistently, the dominant theme was positive selection on genes regulating neuronal connectivity, suggesting that fine-scale changes in brain wiring were essential to the evolution of human cognition. Overall, this framework represents a powerful, versatile tool to investigate adaptive evolution across the tree of life.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Starr_2025_SelectionFromVariantEffectPrediction",
+   "title": "A framework to detect positive selection using variant effect predictions reveals widespread adaptive evolution of human neurons",
+   "url": "https://www.biorxiv.org/content/10.1101/2025.09.11.675696v1"
+  },
+  "MkPBmzsGbGOHJBxHnkgn": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Sun_2026_MultiAncestryADTWAS",
+   "title": "Multi-ancestry transcriptome-wide association study reveals shared and population-specific genetic effects in Alzheimer disease",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00157-6"
+  },
+  "OTGDj1NSoGy2ySKkSa9f": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Aguirre_2026_GeneticArchitectureGeneExpression",
+   "title": "Regulatory network topology and the genetic architecture of gene expression",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00081-9"
+  },
+  "R8kR79gNvQLL5dgQFElV": {
+   "abstract": "Background: Genome-wide polygenic risk scores (PRSs) for coronary artery disease (CAD) aggregate genetic effects across the genome and may obscure biologically distinct mechanisms. We aimed to develop cell-type-specific PRSs (csPRSs) using single-cell RNA sequencing (scRNA-seq) data and investigate their interactions with lipids on CAD risk. Methods: Using publicly available scRNA-seq data from human heart tissue, we identified cell-type-specific genes across 13 major cell types and 64 subpopulations and grouped them into 10 cell clusters. Variants from a CAD genome-wide association study (GWAS) were mapped to cluster-specific genes to construct csPRSs for European-ancestry participants from the UK Biobank (UKB). Interactions between csPRSs and lipid-related phenotypes were evaluated using Cox proportional hazards models and stratified analyses, with significant findings further assessed in an internal validation dataset. Results: Distinct interaction patterns with lipid phenotypes were observed across csPRSs. Low-density lipoprotein (LDL)-related lipid traits, including apolipoprotein B (ApoB), low-density lipoprotein cholesterol (LDL-C), and total cholesterol (cholesterol), primarily interacted with adipocytes (Adip), whereas high-density lipoprotein (HDL) traits interacted with endothelial-mesothelial (EC-Meso), fibroblast (FB), and immune-cell csPRSs. Notably, interactions for Adip csPRSs were replicated in internal validation analyses. Conclusions: Cell-type-specific decomposition of genome-wide PRSs for CAD identified biologically distinct lipid interactions that were not captured by the genome-wide PRS. Adipocyte genetic factors may influence how LDL lipids affect CAD risk. These findings highlight the potential of cell-type-informed PRSs to improve the biological interpretation of PRSs and provide insights into the heterogeneous mechanisms underlying CAD.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Hu_2026_CellTypeSpecificPRS",
+   "title": "Cell-type-specific polygenic risk scores reveal adipocyte-related interactions with lipids in coronary artery disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.07.26357510v1"
+  },
+  "TIs4iduyWCpiumTfuuTI": {
+   "abstract": "Integrating GWAS and single-cell data holds great potential for prioritizing causal disease biology at cellular resolution. Recent integrative approaches typically assess the enrichment of disease genetic signals in cell types or individual cells, without directly modeling disease phenotypes. We develop a new method, single-cell Expression exPlainability Statistics (scEPS), for identifying disease-associated cell neighborhoods, by explicitly testing whether the expression of GWAS-prioritized genes explains more variance in a disease than randomly selected, mean-expression-matched control genes. Crucially, when applied to PRSs of healthy donors, scEPS captures the genetic covariance between gene expression and diseases, mitigating the effect of reverse causation and prioritizing cell populations mediating the effects of GWAS genes. We applied scEPS to clinical diagnoses and PRSs of 4 neurological and 4 respiratory disorders, integrating brain and lung cell atlas data, respectively, with respective GWAS summary statistics data. scEPS recapitulated known and uncovered novel disease-associated cell populations, identifying 1.77x (s.e. 1.21) and 5.13x (s.e. 3.08) more significant associations than a CNA-based approach and scDRS, respectively. Furthermore, scEPS detected different cell populations, contrasting clinical diagnoses vs. their PRSs, revealing distinct biology for the active/symptomatic vs. preclinical/asymptomatic states of the disease. Finally, we observed limited concordance across methods using distinct definitions of disease association, underscoring the need to integrate complementary insights for holistic understanding of disease biology.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Zou_2026_scEPS",
+   "title": "scEPS integrates genetic and single-cell disease atlas data to provide granular mechanistic insights into complex human diseases",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.26.26356714v1"
+  },
+  "ZiByDx3fTEwUgrrtPUzG": {
+   "abstract": "Cells communicate through ligand–receptor (LR) signaling interactions, but identifying when and where these interactions are active remains challenging. We developed CytoSignal to infer the locations and dynamics of cell–cell communication at cellular resolution from spatial transcriptomic data. Here we show that our cellular resolution, spatially resolved signaling scores enable several important analyses—identifying spatial gradients in signaling strength, quantifying the locations of contact-dependent and diffusible interactions, detecting signaling-associated genes and identifying differential signaling across multisample data. Additionally, we can predict the temporal dynamics of a signaling interaction at each spatial location. We experimentally validate our results in situ by proximity ligation assay, confirming that CytoSignal predicts the locations of LR interactions more accurately than previous approaches. This study addresses the field’s current need for a robust and scalable tool to detect cell–cell signaling interactions and their dynamics at cellular resolution from spatial transcriptomic data. CytoSignal models ligand–receptor interactions at cellular resolution using spatial transcriptomic data, inferring interaction scores at each spatial position and predicting temporal dynamics by incorporating RNA velocity.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Liu_2026_CellCellInteractionFromSpatialTranscriptomics",
+   "title": "CytoSignal detects locations and dynamics of ligand–receptor signaling at cellular resolution from spatial transcriptomic data",
+   "url": "https://www.nature.com/articles/s41588-026-02624-9"
+  },
+  "cw1twnGs2doPnWkky7FO": {
+   "abstract": "We present the Encyclopedia of DNA Elements (ENCODE), a reference map of the genomic basis of gene regulation. A product of more than two decades of systematic interrogation of genome function, ENCODE encompasses more than 16,000 genome-wide experiments, predominantly in primary cells and tissues, focused on three core layers of genome function. First, ENCODE now provides a catalog of gene regulatory elements. The catalog is based on a foundation of 5.3 million DNase I hypersensitive sites that delineate essentially all chromatin-accessible regulatory DNA in the human genome, as well as extensive maps of chromatin states, transcription factor occupancy, and nascent transcription, and systematic predictions of the functional consequences of non-coding genetic variants on regulatory element activity. Second, ENCODE expands the catalog of genes and transcripts, which now includes nearly 18,000 novel human long noncoding RNA genes, nearly 150,000 novel transcript isoforms, and genome-wide maps of transcript stability across cell types and time. Third, ENCODE now maps physical and functional interactions among regulatory elements and genes across more than 100 human tissues and cell lines at up to 10 bp resolution. Those studies reveal a vast network of interactions among millions of loop anchors across and links those interactions to gene expression. Through parallel studies in mice, ENCODE also provides extensive maps of gene regulatory elements, transcripts, and their interactions across the mouse postnatal development. Together, the Encyclopedia of DNA Elements provides a foundational framework for genome-focused studies of human and mouse biology.",
+   "journal": "Preprint",
    "short_name": "Biorxiv_ENCODE_2026_EncyclopediaOfDNAElements",
    "title": "The Encyclopedia of DNA Elements",
    "url": "https://www.biorxiv.org/content/10.64898/2026.07.06.731365v1"
   },
-  "wBtVpwGydAeL9qsvS2wM": {
-   "journal": "bioRxiv",
+  "dMW6v1dgS5OXPfhxJyS4": {
+   "abstract": "Abstract Rare variant association studies (RVAS) have identified hundreds of genes contributing to human disease, yet gene-level signals provide limited insight into the molecular mechanisms underlying pathogenicity. Missense variants, which can be mapped onto three-dimensional protein structures, offer an opportunity to gain novel mechanistic insights. Here, we develop a scalable framework for systematically mapping case and control variants onto protein structures and identifying spatially localized regions enriched for case variants. Our framework builds on the 3D Neighborhood Test (3DNT), which we recently introduced in a single-gene analysis of ATP2B2 , and enables the genome-wide analysis of rare coding variation beyond standard gene-level approaches. We applied 3DNT across multiple large-scale datasets, including Mendelian disease variants from ClinVar, de novo mutations from 37,486 autism spectrum disorder (ASD) probands, and case-control exome sequencing cohorts for epilepsy and schizophrenia. We identified significant clusters in 872 genes for Mendelian disease, in 70 genes for autism, in one gene for epilepsy, and in three genes for schizophrenia. These clusters are strongly enriched for known functional sites and provide insight into both known and previously unrecognized disease genes. Our results demonstrate that scalably integrating RVAS data with protein structure predictions localizes disease-associated variation to specific functional regions and reveals a layer of disease biology that is largely invisible to standard analyses.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Nason_2026_VariantPathogenicity3DProtein",
+   "title": "Systematic identification of disease-associated 3D neighborhoods in protein structures",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.29.26354366v1"
+  },
+  "hLqVP71tbIg8lCpVgxLL": {
+   "abstract": "Abstract Missense variant interpretation remains a central challenge in clinical and medical genetics, with most observed variants being variants of uncertain significance (VUS). Computational variant effect predictors can achieve high pathogenicity classification performance, but without revealing the underlying mechanism and a translatable interpretation. Here we present the Protein Feature Enrichment Score (PFES), which quantifies the molecular context of missense variants through statistical enrichment of 103 protein structural, functional, and physicochemical features across 85,321 pathogenic and 130,719 control variants spanning 20 protein functional classes. We show that the protein feature (PF) enrichment patterns of variants are conserved within functional classes and vary substantially across classes, both in magnitude and directions depending on functional context. PFES not only partitions variants into PF-Enriched (pathogenic-like) , PF-Neutral, and PF-Depleted (benign-like) categories but also provides a mechanistic interpretation by decomposing the score into subscores from biologically interpretable protein feature attributes. We demonstrate that PFES shows a high concordance with VUS reclassification and prioritization: across 596 genes, pathogenicity-leaning VUS-high variants were seven-fold enriched in PF-Enriched variants. PFES decomposition further revealed that loss-of-function and gain-of-function variants are distinguished by disproportionate enrichment of protein-protein interaction features in the latter. We computed PFES across 223 million possible missense variants (17.7% PF-Enriched) and built a publicly available resource that addresses not just whether a variant is pathogenic, but which protein characteristics are disrupted. Proteome-wide application across 20,153 genes prioritizes established rare disease genes and nominates therapeutically amenable targets whose pathogenic variation is driven by interpretable structural and functional protein feature disruption. One Sentence Summary PFES is a proteome-wide resource to quantify the protein context of missense variants, enabling mechanistically transparent variant interpretation.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Kwon_2026_VariantPathogenicityScoringProteomics",
+   "title": "Human Proteome-wide Mechanistic Interpretation of Missense Variants through Protein Feature Enrichment Score",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.26.726248v1.full"
+  },
+  "qU1KNIB9pq4FGWFW3nfI": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Garg_2026_CNVPhewas",
+   "title": "A phenome-wide association study of CNVs genotyped from genome sequencing read depth in the UK Biobank",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00162-X"
+  },
+  "uNDXWc6N298XONhIwRYR": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Lassen_2026_RecessiveInheritance",
+   "title": "Meta-analysis across six global biobanks identifies recessive coding associations with complex traits and diseases",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00155-2"
+  },
+  "vhpK7vbHuETyZnWKdgEP": {
+   "abstract": "Abstract Rare genetic variants provide critical insight into the mechanisms underlying complex diseases, yet their study is limited by inherent statistical challenges, particularly in the noncoding genome where functional prioritization remains difficult. Here, we introduce parmigiano , an empirical Bayesian framework that systematically integrates functional annotations into existing rare variant association tests (RVATs), jointly learning annotation weights and a global variant filter threshold to enable trait-informed variant prioritization. We apply parmigiano to Alzheimer’s disease (AD) whole-genome sequencing data (12,900 cases and 23,846 controls) and perform both coding and noncoding RVATs, leveraging AD-relevant cell-type-specific predictions of variant regulatory effect. Integrating parmigiano significantly increases association yield across five existing RVATs, uncovering 23 candidate AD genes – 19 uniquely detected by our framework –including SIGLEC10 and HUNK . Associations detected by parmigiano replicate more reliably in held-out data than those from the original RVATs and show higher overlap with known AD associations. parmigiano offers a unified, computationally efficient approach to variant prioritization, enabling scalable, interpretable rare variant analyses across coding and noncoding regions.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Das_2026_BayesianRVAT",
+   "title": "An empirical Bayes framework for burden and dispersion association tests helps prioritize rare variants associated with Alzheimer’s disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26354742v1"
+  },
+  "wtq0jub6ptEhARbkmRPU": {
+   "abstract": "Abstract Protein language models (PLMs) enable prediction of protein properties by learning residue-level features from sequence, yet most PLM-based approaches to protein-protein interactions aggregate information across entire proteins, limiting resolution and interpretability. Here we present ReCLIP, a transformer-based framework that learns interaction-specific representations at the level of individual residues by combining intra-protein residue neighborhoods with residue-conditioned representations of interaction partners. We show that residue-centered context provides a general framework for modeling protein interactions across diverse biological settings. ReCLIP accurately predicts mutation-induced perturbations (AUROC = 0.973), generalizes to post-translational modifications that do not alter sequence (AUROC = 0.822), and enables zero-shot prediction of peptide-MHC binding across unseen alleles (AUROC up to 0.972). Analysis of learned residue neighborhoods reveals structurally and functionally coherent patterns aligned with known determinants of binding. Applied to clinically annotated genetic variants, ReCLIP identifies disease-associated interaction perturbations that link pathogenic variants to specific molecular interaction contexts. Our results establish a generalizable and interpretable framework for modeling protein interactions and provide insights into how residue-level context shapes interaction specificity and its perturbation.",
+   "journal": "Preprint",
    "short_name": "Biorxiv_Zhang_2026_LLMforPPI",
    "title": "Learning residue-level context for modeling protein-protein interactions",
    "url": "https://www.biorxiv.org/content/10.64898/2026.06.01.729118v1"
-  },
-  "zX5rzZhoYzeG4Se7dv8n": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_O'Connor_2026_Polygenicity",
-   "title": "Principled measures and estimates of trait polygenicity",
-   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00159-X"
   }
  },
  "votes": {
@@ -141,58 +159,58 @@
   "10.1038_s41588-026-02646-3": {
    "8c6976e5b5410415": 1
   },
-  "3XBDtToLcB4Sc1mP4hum": {
+  "12zerBo90WmtYE0S72lp": {
    "8c6976e5b5410415": 1
   },
-  "5l9s2OGnCSoHRoB5XMYo": {
+  "2rzrU4672CVjivmFP00p": {
    "8c6976e5b5410415": 1
   },
-  "9pIzFFKFvmWLI9LkWf7C": {
+  "8cxFSTb9RTuZJjYNPq63": {
    "8c6976e5b5410415": 1
   },
-  "HUUEl59DSrqiaqZuFNYY": {
+  "B2lskTY9BDYHE6CNZCS7": {
    "8c6976e5b5410415": 1
   },
-  "OjFW4Yc7ARjtXb2yn39j": {
+  "EbjJHWsPbaUsvSA5ioeI": {
    "8c6976e5b5410415": 1
   },
-  "RPChhUOehirrBblS2aCm": {
+  "GldfRggLWJXhYurlmxOd": {
    "8c6976e5b5410415": 1
   },
-  "SFS5qvsVlOZxIXMb4YPz": {
+  "MkPBmzsGbGOHJBxHnkgn": {
    "8c6976e5b5410415": 1
   },
-  "d2TmqeZfvwqZCv1KrdcV": {
+  "OTGDj1NSoGy2ySKkSa9f": {
    "8c6976e5b5410415": 1
   },
-  "eVUvPfn7HuM34ahYl6Xo": {
+  "R8kR79gNvQLL5dgQFElV": {
    "8c6976e5b5410415": 1
   },
-  "jSQ0i5dXI3CEjERw8ZGc": {
+  "TIs4iduyWCpiumTfuuTI": {
    "8c6976e5b5410415": 1
   },
-  "jmOOodLptBm8FzDezU04": {
+  "ZiByDx3fTEwUgrrtPUzG": {
    "8c6976e5b5410415": 1
   },
-  "lSCT80RZSiuL8LWjt264": {
+  "cw1twnGs2doPnWkky7FO": {
    "8c6976e5b5410415": 1
   },
-  "mWBvzVzJhi70rJ14Cbrv": {
+  "dMW6v1dgS5OXPfhxJyS4": {
    "8c6976e5b5410415": 1
   },
-  "mti8J6ze2skNr4mZXVBP": {
+  "hLqVP71tbIg8lCpVgxLL": {
    "8c6976e5b5410415": 1
   },
-  "nxB04yVL9pU3ERXVV5kW": {
+  "qU1KNIB9pq4FGWFW3nfI": {
    "8c6976e5b5410415": 1
   },
-  "onQqXWqbchH7xTa4L59A": {
+  "uNDXWc6N298XONhIwRYR": {
    "8c6976e5b5410415": 1
   },
-  "wBtVpwGydAeL9qsvS2wM": {
+  "vhpK7vbHuETyZnWKdgEP": {
    "8c6976e5b5410415": 1
   },
-  "zX5rzZhoYzeG4Se7dv8n": {
+  "wtq0jub6ptEhARbkmRPU": {
    "8c6976e5b5410415": 1
   }
  }

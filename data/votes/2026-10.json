@@ -1,5 +1,213 @@
 {
  "month": "2026-10",
- "submissions": {},
- "votes": {}
+ "submissions": {
+  "7mrptfumwzWPCmVH3hs4": {
+   "abstract": "",
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Viippola_2026_SexRelatedPlasmaProteome",
+   "title": "Sex-related signatures in the plasma proteome not attributable to XX and XY chromosomes and their impact on health and disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.19.26365875v1"
+  },
+  "9M8no3Vrz1XzLWkezIJy": {
+   "abstract": "",
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Rafi_2026_gRelySequenceToFunctionReliability",
+   "title": "gRely: Relyability for genome-trained sequence-to-function model predictions",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.23.727431v2.full"
+  },
+  "B1z51dw7XlRHOeIPvt5v": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Fuhrer_2026_NoncodingHeritabilityPolygenicity",
+   "title": "Beyond exons: Linking noncoding heritability and polygenicity across complex human traits and disorders",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00313-7"
+  },
+  "CY9SQyu0Ih4rpphtLBO9": {
+   "abstract": "",
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Callahan_2026_SuSiNE",
+   "title": "SuSiNE: Genetic fine-mapping with signed functional priors and multi-basin ensembling",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.31.742084v2"
+  },
+  "D9cGsTp55MKGwTi2WOK7": {
+   "abstract": "",
+   "journal": "Zenodo",
+   "short_name": "Zenodo_Dann_2026_TraitCausalModels",
+   "title": "Trait Causal Models: from GWAS, perturbations, and omics to predictive models of human biology",
+   "url": "https://zenodo.org/records/23426258"
+  },
+  "DBMIvFfyHHn3ZYIADfvo": {
+   "abstract": "",
+   "journal": "PNAS",
+   "short_name": "PNAS_Lorch_2026_SingleCellCausalDiffusion",
+   "title": "Latent causal diffusions for single-cell perturbation modeling",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2602630123"
+  },
+  "E2SX22Y6mSYimbJ7PGzL": {
+   "abstract": "",
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Hou_2026_RareCodingVariantArchitecture",
+   "title": "Functional architecture of rare protein coding variation across 786,871 exomes",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.16.26365771v1"
+  },
+  "EpFLqJjsIIM0WyA26e0u": {
+   "abstract": "",
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Wang_2026_MPRASequenceToFunctionModels",
+   "title": "Synthetic MPRA perturbation supervision improves variant-effect prediction in sequence-to-function models",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.11.02.763699v1"
+  },
+  "OF373vcdQkeySMLn0sIU": {
+   "abstract": "",
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Parsa_2026_ProteomicRiskGeneralizability",
+   "title": "Generalizability of proteomic risk prediction across biobanks reveals dependence on phenotype definitions",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.01.26364038v1"
+  },
+  "WwusRVCY0MbTKeHc7eqH": {
+   "abstract": "",
+   "journal": "Nat Hum Behav",
+   "short_name": "NatHumBehav_Yengo_2026_WithinFamilyHeritability",
+   "title": "Within-family heritability estimates for behavioural and disease phenotypes from 500,000 sibling pairs of diverse ancestries",
+   "url": "https://www.nature.com/articles/s41562-026-02599-x"
+  },
+  "bNDuvpQ0wcZNGXshBg5H": {
+   "abstract": "",
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Shim_2026_EpigenomicDiseaseHeterogeneity",
+   "title": "Epigenomic regulatory programs reveal the latent heterogeneity of complex diseases",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.01.722123v2.full"
+  },
+  "lTRjPnuBHxJ46b7gM1jQ": {
+   "abstract": "",
+   "journal": "Nature",
+   "short_name": "Nature_Lee_2026_BrainDisorderTranscriptomicVulnerability",
+   "title": "Single-cell atlas of transcriptomic vulnerability across brain disorders",
+   "url": "https://www.nature.com/articles/s41586-025-09573-z"
+  },
+  "nPL21g0mMHZPgKBmBKf1": {
+   "abstract": "",
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Jee_2026_ProteomicEnvironmentalExposures",
+   "title": "Proteomic Signatures Capture Environmental Exposures Across Diverse Populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.10.06.26364311v1"
+  },
+  "y0jSJPuhH2HzyyHEjbVq": {
+   "abstract": "",
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Fan_2026_MultiOmicAtlas",
+   "title": "Single-Nucleus Multi-Omic Atlas Maps Regulatory Architecture and Non-Coding Variant Effects across Adult Human Tissues",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.09.25.754561v2"
+  },
+  "yDexMg3wW8D9WQxjiKZB": {
+   "abstract": "",
+   "journal": "Nat Genet",
+   "short_name": "NG_Nagai_2026_InterpretableAIRegulatoryGenomics",
+   "title": "Toward generalizable and interpretable AI in regulatory genomics",
+   "url": "https://www.nature.com/articles/s41588-026-02670-3"
+  },
+  "z52qUGMqAVCBBU7n7ZV9": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Quenez_2026_RareCNVAlzheimerRisk",
+   "title": "Exome analysis of 22,319 individuals links extremely rare copy-number variants and 22q11.21 dosage to Alzheimer risk",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00279-X"
+  }
+ },
+ "votes": {
+  "10.1016_j.xgen.2026.101391": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10438-2": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10721-2": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-11173-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-11206-y": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02766-w": {
+   "1b4f0e9851971998": 1
+  },
+  "10.1038_s41588-026-02769-7": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02783-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02794-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02796-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02799-1": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02809-2": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02819-0": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02827-0": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "7mrptfumwzWPCmVH3hs4": {
+   "8c6976e5b5410415": 1
+  },
+  "9M8no3Vrz1XzLWkezIJy": {
+   "8c6976e5b5410415": 1
+  },
+  "B1z51dw7XlRHOeIPvt5v": {
+   "8c6976e5b5410415": 1
+  },
+  "CY9SQyu0Ih4rpphtLBO9": {
+   "8c6976e5b5410415": 1
+  },
+  "D9cGsTp55MKGwTi2WOK7": {
+   "8c6976e5b5410415": 1
+  },
+  "DBMIvFfyHHn3ZYIADfvo": {
+   "8c6976e5b5410415": 1
+  },
+  "E2SX22Y6mSYimbJ7PGzL": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "EpFLqJjsIIM0WyA26e0u": {
+   "8c6976e5b5410415": 1
+  },
+  "OF373vcdQkeySMLn0sIU": {
+   "8c6976e5b5410415": 1
+  },
+  "WwusRVCY0MbTKeHc7eqH": {
+   "8c6976e5b5410415": 1
+  },
+  "bNDuvpQ0wcZNGXshBg5H": {
+   "8c6976e5b5410415": 1
+  },
+  "lTRjPnuBHxJ46b7gM1jQ": {
+   "8c6976e5b5410415": 1
+  },
+  "nPL21g0mMHZPgKBmBKf1": {
+   "8c6976e5b5410415": 1
+  },
+  "y0jSJPuhH2HzyyHEjbVq": {
+   "8c6976e5b5410415": 1
+  },
+  "yDexMg3wW8D9WQxjiKZB": {
+   "8c6976e5b5410415": 1
+  },
+  "z52qUGMqAVCBBU7n7ZV9": {
+   "8c6976e5b5410415": 1
+  }
+ }
 }

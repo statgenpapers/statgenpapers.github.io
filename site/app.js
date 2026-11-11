@@ -48,6 +48,10 @@ function hideToast() {
 }
 
 const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
+const nextMonth = (m) => { const [y, n] = m.split("-").map(Number); return n === 12 ? `${y + 1}-01` : `${y}-${String(n + 1).padStart(2, "0")}`; };
+// Papers are added to the month in progress, the one after the latest list: its monthly run (on the 10th of the month
+// after it) scores them and lists them with the model's papers, so an added paper is never shown without a Score.
+const addMonth = () => nextMonth(state.months.at(-1));
 const httpUrl = (url) => (/^https?:\/\/\S+$/.test(url) ? url : null);
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
@@ -55,8 +59,8 @@ const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boole
 // DOI shown in a paper URL, without a preprint version, a page suffix or trailing punctuation; "" if none.
 // nature.com/articles/X is the paper with DOI 10.1038/X.
 function urlDoi(url) {
-  const nature = url.match(/nature\.com\/articles\/([^\s?#/]+)/i);
-  const doi = nature ? `10.1038/${nature[1]}` : url.match(/10\.\d{4,9}\/[^\s?#]+/)?.[0];
+  const nature = url.match(/nature\.com\/articles\/([^\s?#/]+)/i), arxiv = url.match(/arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})/i);
+  const doi = nature ? `10.1038/${nature[1]}` : arxiv ? `10.48550/arxiv.${arxiv[1]}` : url.match(/10\.\d{4,9}\/[^\s?#]+/)?.[0];
   return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
 }
 const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
@@ -75,21 +79,28 @@ export function shortName(journal, surname, year, title) {
 // A handle is the reader's login: no password, so anyone who types it marks as its owner. Handles are
 // lower case, so one handle has one mark per paper on any device: months/{m}/votes/{paper}~{handle}.
 const HANDLE = /^[A-Za-z0-9_]{2,20}$/;
-const LAB = "admin";  // the handle whose marks are the lab's picks (dev/rollforward.py); its added papers say so
+const RESERVED = "admin";  // the cold start's handle: only dev/lab_marks.py writes as it, through the API
 const count = (id) => state.votes.get(id)?.size ?? 0;
 const mine = (id) => Boolean(state.handle) && (state.votes.get(id)?.has(state.handle) ?? false);
 const voteRef = (month, id, handle = state.handle) => fb.doc(db, "months", month, "votes", `${id}~${handle}`);
 
-// Listed papers and reader-added papers in one shape
+// A preprint is a preprint: any preprint server is shown as "Preprint", by its name or its URL (10.1101: bioRxiv, medRxiv).
+const PREPRINT = /(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|authorea|qeios|10\.1101\/|10\.5281\//i;
+const shownJournal = (journal, url) => (PREPRINT.test(journal) || PREPRINT.test(url) ? "Preprint" : journal);
+
+// Listed papers and added papers in one shape: an added paper shows once the monthly run has scored it (data.added: id → score)
 function items() {
-  const listed = state.data?.papers || [], dois = new Set(listed.map((p) => p.doi));
-  return [...listed, ...state.subs.filter((s) => !dois.has(urlDoi(s.url))).map((s) => ({ ...s, added: true }))];
+  const listed = state.data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = state.data?.added || {};
+  return [...listed, ...state.subs.filter((s) => s.id in scored && !dois.has(urlDoi(s.url)))
+    .map((s) => ({ ...s, journal: shownJournal(s.journal, s.url), authors: Array.isArray(s.authors) ? s.authors : [], added: true,
+      p_pick: scored[s.id] }))];
 }
 
-// By marks; equal marks by score. Added papers have no score: after the scored ones, oldest first.
+// By marks. On equal marks an added paper comes first, oldest first: a reader chose it; then by score.
 function visible() {
-  const score = (p) => p.score ?? -Infinity, age = (p) => p.created ?? 0;
-  return items().sort((a, b) => count(b.id) - count(a.id) || (score(a) === score(b) ? age(a) - age(b) : score(b) - score(a)));
+  const age = (p) => p.created ?? 0;
+  return items().sort((a, b) => count(b.id) - count(a.id) || Number(Boolean(b.added)) - Number(Boolean(a.added))
+    || (a.added ? age(a) - age(b) : b.score - a.score));
 }
 
 // A link that acts in the page. Ctrl, Cmd or Shift on a link to another page opens that page as the browser would.
@@ -119,13 +130,16 @@ function createRow(p) {
   q(".title").textContent = p.title;
   url ? (q(".title").href = url) : q(".title").removeAttribute("href");
   q(".source").textContent = source(p);
-  q(".source").title = p.venue_name || "";
+  q(".source").title = p.type === "preprint" || p.added ? "" : p.venue_name || "";  // a journal's full name; preprints stay "Preprint"
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
-  q(".meta").textContent = p.added ? (p.name === LAB || p.lab ? "added by the lab" : "added by a reader")
-    : a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
+  q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
+  q(".added").hidden = !p.added;
+  q(".added").textContent = "added by a reader";
+  if (!a.length) q(".added").classList.add("alone");  // no authors: no separator before it
   if (p.p_pick != null) {
     q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
-    q(".pick").title = `Calibrated chance the lab picks this paper (raw score ${p.score.toFixed(2)})`;
+    q(".pick").title = p.added ? "Added by a reader, not chosen by the model; the model's prediction of how likely it is to be marked"
+      : `The model's prediction of how likely this paper is to be marked (raw score ${p.score.toFixed(2)})`;
   }
   q(".toggle").addEventListener("click", link(() => {
     const open = q(".details").hidden;
@@ -137,8 +151,8 @@ function createRow(p) {
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
   const details = q(".details");
-  q(".toggle").hidden = Boolean(p.added);  // an added paper has no abstract or authors here
-  if (!p.added) {
+  q(".toggle").hidden = p.added && !p.abstract && a.length <= 4;  // an added paper may have no abstract or authors
+  if (!q(".toggle").hidden) {
     details.append(el("p", "", tidyAbstract(p.abstract || "") || "No abstract available."));
     // a consortium paper can list hundreds: the first 30 and the last 5
     const names = a.length > 35 ? [...a.slice(0, 30), "…", ...a.slice(-5)] : cut ? [...a, "…"] : a;
@@ -309,7 +323,7 @@ function saveMarks() {
   if (state.waiting.size) return;  // not before both snapshots are in
   const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, handles.size]));
   const own = [...state.votes].filter(([, handles]) => handles.has(state.handle)).map(([id]) => id);
-  const subs = state.subs.map(({ name, ...s }) => (name === LAB ? { ...s, lab: true } : s));  // no reader's handle; the lab is no secret
+  const subs = state.subs.map(({ name, ...s }) => s);  // no reader's handle
   try { localStorage.setItem(`marks:${state.month}`, JSON.stringify({ counts, own, handle: state.handle, subs })); } catch {}
 }
 
@@ -454,8 +468,8 @@ function handleChanged(event) {
 function login(event) {
   event.preventDefault();
   const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one Firestore query
-  if (!HANDLE.test(handle) || handle === LAB) {
-    $("login-note").textContent = handle === LAB ? "This handle is reserved." : "A handle is 2–20 letters, digits or _.";
+  if (!HANDLE.test(handle) || handle === RESERVED) {
+    $("login-note").textContent = handle === RESERVED ? "This handle is reserved." : "A handle is 2–20 letters, digits or _.";
     $("login-note").classList.add("error");
     return $("login-handle").focus();
   }
@@ -520,7 +534,7 @@ async function myMarks() {
   await connected;
   if (!db) throw new Error("Firestore is unavailable");
   const handle = state.handle;
-  const months = await Promise.all(state.months.map(async (m) => {
+  const months = await Promise.all([...state.months, addMonth()].map(async (m) => {  // with the papers added to the month in progress
     // Only this handle's marks are read (a query costs one read per result, at least one); a month's data
     // file only if it has a mark, and its added papers only if a marked paper is not in that file.
     const marks = (await fb.getDocs(fb.query(fb.collection(db, "months", m, "votes"), fb.where("handle", "==", handle)))).docs.map((d) => d.data().paper);
@@ -633,45 +647,80 @@ function refreshShortName() {
     : "";
 }
 
-// First author and year from Crossref, for the short name; fills the title if it is still empty.
+// What is known about a DOI, in one shape, or null: Crossref has journals, bioRxiv and medRxiv; DataCite has
+// Zenodo and arXiv. Each answers in well under a second; after 8 s a lookup gives up.
+async function metadata(doi) {
+  const get = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const date = (parts) => parts.filter(Boolean).map((n, i) => (i ? String(n).padStart(2, "0") : n)).join("-");
+  const w = (await get(`https://api.crossref.org/works/${encodeURIComponent(doi)}`))?.message;
+  if (w) {
+    return {
+      title: stripTags(w.title?.[0] || ""), surname: w.author?.[0]?.family, date: date(w.issued?.["date-parts"]?.[0] ?? []),
+      authors: (w.author || []).map((x) => [x.given, x.family].filter(Boolean).join(" ") || x.name).filter(Boolean),
+      abstract: stripTags(w.abstract || "").replace(/^abstract\s*/i, ""),
+      journal: w.type === "posted-content" || PREPRINT.test(doi) ? "Preprint" : w["short-container-title"]?.[0] || w["container-title"]?.[0] || "",
+    };
+  }
+  const a = (await get(`https://api.datacite.org/dois/${encodeURIComponent(doi)}`))?.data?.attributes;
+  if (!a) return null;
+  const publisher = a.publisher?.name ?? a.publisher ?? "";
+  return {
+    title: a.titles?.[0]?.title || "", surname: a.creators?.[0]?.familyName || a.creators?.[0]?.name?.split(",")[0],
+    date: String(a.publicationYear || ""),
+    authors: (a.creators || []).map((c) => [c.givenName, c.familyName].filter(Boolean).join(" ") || c.name).filter(Boolean),
+    abstract: stripTags(a.descriptions?.find((d) => d.descriptionType === "Abstract")?.description || ""),
+    journal: a.types?.resourceTypeGeneral === "Preprint" || PREPRINT.test(`${publisher} ${doi}`) ? "Preprint" : a.container?.title || publisher,
+  };
+}
+
+// On a pasted or changed URL: fill the empty fields from the DOI's record, and say how it went. Whatever is
+// filled can be edited; nothing found leaves the form to be typed by hand.
 async function lookUp() {
-  const doi = urlDoi(field("url").value);
+  const url = field("url").value.trim(), doi = urlDoi(url);
   if (doi === form.lookup.doi) return;
   form.lookup = { doi };
-  if (doi) {
-    try {
-      const response = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}`);
-      const work = response.ok ? (await response.json()).message : {};
-      if (form.lookup.doi !== doi) return;
-      form.lookup = { doi, surname: work.author?.[0]?.family, year: work.issued?.["date-parts"]?.[0]?.[0] };
-      if (!field("title").value.trim() && work.title?.[0]) field("title").value = stripTags(work.title[0]);
-      note(form.lookup.surname ? "" : "Could not find the first author: the short name says NA; replace it if you like.");
-    } catch (e) {
-      console.warn(e);
-    }
+  if (!url || !doi) {
+    note(url ? "No DOI in this URL: type the journal and title; the short name says NA for the author." : "");
+    return refreshShortName();
   }
+  note("Looking up the DOI…");
+  const m = await metadata(doi);
+  if (form.lookup.doi !== doi) return;  // the URL changed meanwhile
+  if (!m) {
+    note("Nothing found for this DOI: type the journal and title.");
+    return refreshShortName();
+  }
+  form.lookup = { doi, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
+  for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
+    if (!field(name).value.trim() && value) field(name).value = value;
+  }
+  note(m.surname ? "" : "Filled what the record has; it names no first author, so the short name says NA.");
   refreshShortName();
 }
 
 async function submitPaper(event) {
   event.preventDefault();
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
+  // optional: authors, abstract and date, so an added paper shows like the others
+  const authors = field("authors").value.split(/\s*[,;]\s*/).filter(Boolean).slice(0, 300), abstract = field("abstract").value.trim();
+  Object.assign(paper, authors.length ? { authors } : {}, abstract ? { abstract: abstract.slice(0, 10000) } : {},
+    form.lookup.date && form.lookup.doi === urlDoi(paper.url) ? { date: form.lookup.date } : {});
   if (needHandle(() => { openPanel("add"); $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
-  const doi = urlDoi(paper.url), title = plainTitle(paper.title);
-  if (items().some((p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title)) {
-    return note("This paper is already on the list.", true);
-  }
+  const doi = urlDoi(paper.url), title = plainTitle(paper.title), month = addMonth(), latest = state.months.at(-1);
+  const same = (p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title;
   try {
-    const month = state.month;
+    if ((await monthData(latest)).papers.some(same)) return note(`This paper is on the ${monthName(latest)} list already.`, true);
+    const added = (await fb.getDocs(fb.collection(db, "months", month, "submissions"))).docs.map((d) => d.data());
+    if (added.some(same)) return note(`Someone has added this paper to ${monthName(month)} already.`, true);
     if (!(await signedIn())) return;
     const ref = await fb.addDoc(fb.collection(db, "months", month, "submissions"),
       { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
     closeForm();
     $("add-open").focus({ preventScroll: true });
-    await vote(ref.id, month);  // adding a paper marks it, and the mark can be taken back like any other
-    rows.get(ref.id)?.classList.add("new");
-    rows.get(ref.id)?.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    // adding a paper marks it (not through vote(), which marks only the month shown); the mark shows on the handle's page
+    await fb.setDoc(voteRef(month, ref.id), { paper: ref.id, handle: state.handle });
+    toast(`Added to ${monthName(month)}: it shows on that list, with a Score, from ${monthName(nextMonth(month))}/10.`);
   } catch (e) {
     console.warn(e);
     note("The paper was not added. Please try again later.", true);
@@ -705,12 +754,6 @@ function tableText(shown) {
     .map((row) => row.map((cell) => String(cell).replace(/\s+/g, " ")).join("\t")).join("\n");
 }
 
-// The export menu beside "Papers of 2026/10": copy the table, or download it as a .tsv file.
-function toggleExport(open = $("export").hidden) {
-  $("export").hidden = !open;
-  $("export-open").setAttribute("aria-expanded", open);
-}
-
 function downloadTable() {
   const a = Object.assign(el("a"), {
     href: URL.createObjectURL(new Blob([`${tableText(visible())}\n`], { type: "text/tab-separated-values" })),
@@ -733,13 +776,12 @@ async function copyTable() {
 async function init() {
   try { const saved = (localStorage.getItem("handle") || "").toLowerCase(); if (HANDLE.test(saved)) state.handle = saved; } catch {}
   connect();  // in parallel with the month index; listening starts once a month is shown
-  $("export-open").addEventListener("click", link(() => toggleExport()));
-  $("copy").addEventListener("click", link(() => { toggleExport(false); copyTable(); }));
-  $("download").addEventListener("click", link(() => { toggleExport(false); downloadTable(); }));
+  $("copy").addEventListener("click", link(copyTable));
+  $("download").addEventListener("click", link(downloadTable));
   $("add-open").addEventListener("click", link(async () => {
     if (!state.months.length) return toast("There is no list to add to yet.");
-    if (state.view !== "list") await go({});  // a paper is added to the month shown
     openPanel("add");
+    $("add-when").textContent = `Papers added now join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
   }));
   $("add-cancel").addEventListener("click", link(() => { closeForm(); $("add-open").focus({ preventScroll: true }); }));
   $("add").addEventListener("submit", submitPaper);
@@ -759,12 +801,11 @@ async function init() {
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".links .menu")) togglePast(false);
     if (!e.target.closest("#score-note, #score-help")) toggleScoreNote(false);
-    if (!e.target.closest("#export, #export-open")) toggleExport(false);
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       // closing a pop-up puts the focus back on its link
-      for (const [pop, opener, close] of [["past", "past-open", togglePast], ["score-note", "score-help", toggleScoreNote], ["export", "export-open", toggleExport]]) {
+      for (const [pop, opener, close] of [["past", "past-open", togglePast], ["score-note", "score-help", toggleScoreNote]]) {
         if ($(pop).hidden) continue;
         const inside = $(pop).contains(document.activeElement);
         close(false);
@@ -778,6 +819,7 @@ async function init() {
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());
   field("url").addEventListener("change", lookUp);
+  field("url").addEventListener("paste", () => setTimeout(lookUp));  // a pasted URL is looked up at once, not on leaving the field
   field("journal").addEventListener("input", refreshShortName);
   field("title").addEventListener("input", refreshShortName);
   field("short").addEventListener("input", () => { form.edited = field("short").value !== ""; });

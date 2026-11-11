@@ -1,74 +1,88 @@
 {
  "month": "2026-01",
  "submissions": {
-  "1Nm0D6KX0IILhw7xP9zK": {
+  "0JxixlpUpx1QU9NcmqVf": {
+   "abstract": "Abstract Our understanding of the dependence of the genetic and environmental architecture of common diseases on age is incomplete. Here, we use longitudinal data to separate age-dependent genetic and environmental variance across complex traits and diseases. When applying our approach to 16 UK Biobank quantitative traits (average N=180K), we found environmental variance accumulates with age, leading to decreasing heritability with age, which follows an exposure accumulation model that is distinct from gene-age interaction model. Heritability decreases with age for 5 traits including systolic blood pressure and lung functon(FEV1/FVC), with an average change of −17.8% with age per 10-years. We demonstrated that majority of the decreasing heritability comes from exposure accumulation, instead of gene-age interaction, using longitudinal phenotypic correlations. For diseases, environmental variance in disease liability also accumulates with age for 5 of 9 diseases, with an average decrease in heritability of −18.1% per 10 years. A liability-threshold model with exposure accumulation explains 86% of decreasing PRS prediction R 2 with age in 9 UK Biobank complex diseases. Finally, we show that both genetic and non-genetic predictors have decreasing prediction accuracy with age in 61 predictor-disease pairs. Taken together, our results demonstrate that the age-dependent liability- threshold model with exposure accumulation is a general disease model, suggesting ascertaining younger cohorts is more powerful for training both genetic and non-genetic risk prediction models.",
+   "journal": "Preprint",
+   "short_name": "medrxiv_Jiang_2026_AgeDependentPRS",
+   "title": "Exposure accumulation drives age-dependent disease architectures and polygenic risk scores",
+   "url": "https://www.medrxiv.org/content/10.1101/2025.08.29.25334745v3"
+  },
+  "5cyFdpNjBWZgFXZTKyJq": {
+   "abstract": "Abstract Many non-coding variants influence complex traits and diseases through gene regulation, yet the mechanisms linking these variants to downstream biology remain poorly understood. Here, we present eQTLGen Phase 2 , a comprehensive genome-wide analysis of gene expression quantitative trait loci (eQTLs) in 43,301 blood samples from 52 datasets. Beyond local cis -effects, this sample size enabled the first systematic mapping of trans -eQTLs at scale. We identify cis -eQTLs for nearly all expressed genes (94.7%) and trans -eQTLs for over half (56.2%). Second, by colocalizing cis -eQTLs with trans -eQTLs, we infer a directed gene regulatory network comprising 47,554 directed gene regulatory relationships. These networks reveal how genetic perturbations in upstream regulators produce dose-dependent downstream effects, supported by Perturb-seq and ChIP-seq data. Third, integrating this network with 87 genome-wide association studies allows us to systematically prioritize trait-relevant pathways and candidate genes. Variants exerting both cis – and trans -effects are markedly more likely to colocalize with trait associations than cis -only variants, delineating a subset of functionally active cis -eQTLs from a large group with limited downstream impact. This distinction provides a conceptual framework for identifying regulatory variants that truly mediate complex trait biology. Together, these results provide a publicly available resource of cis – and trans -eQTLs and an in vivo scaffold for human gene-regulatory networks, elucidating how propagation of cis -effects modulates complex disease.",
+   "journal": "Preprint",
+   "short_name": "biorxiv_Warmerdam_2026_QTLGenPhase2",
+   "title": "Trans-eQTLs reveal the architecture of human gene regulatory networks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.04.26343575v1"
+  },
+  "AZ5CsxI2zUsiGrZRQIqu": {
+   "abstract": "Most human variants identified by genome-wide association studies are believed to affect traits by altering gene expression. This belief is supported by considerable circumstantial evidence, but statistical methods are unable to link most trait-associated variants to gene expression-a problem we refer to as \"missing regulation.\" Many explanations have been proposed, including the possibility that natural selection on gene expression limits power. Here, we take a novel approach to the question of missing regulation, beginning with the observation that the majority of trait-associated variants alter gene expression in two non-human species: cattle and pigs. We explain this discrepancy by comparing the species' evolutionary histories. The observed differences in regulatory variants are consistent with selection on human gene regulation and increased genetic drift due to agricultural breeding. The differences are not limited to specific genes and reflect increased ascertainment of regulatory variants that are distal to genes. Additionally, we show that trait-associated gene regulation in cattle and pigs matches observed patterns from complex-trait genetics in humans, and may reflect currently unobserved trait-associated regulation in humans.",
+   "journal": "Preprint",
+   "short_name": "biorxiv_Connally_2026_FarmAnimalEvolution",
+   "title": "Farm animal evolution demonstrates hidden molecular basis of human traits",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.02.703413v1"
+  },
+  "GPW9ECc6VLsJQRX6t9cl": {
+   "abstract": "",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Krebs_2026_PhenotypevsGenotypeComponentsOfLiabilityInPsy",
    "title": "The relationship between genotype- and phenotype-based estimates of genetic liability to psychiatric disorders, in practice and in theory",
    "url": "https://www.cell.com/ajhg/abstract/S0002-9297(25)00467-7"
   },
-  "7ZJNSJ38dQrGiq638DYM": {
-   "journal": "medRxiv",
-   "short_name": "medrxiv_Jiang_2026_AgeDependentPRS",
-   "title": "Exposure accumulation drives age-dependent disease architectures and polygenic risk scores",
-   "url": "https://www.medrxiv.org/content/10.1101/2025.08.29.25334745v3"
+  "SFIdjpnPjWy4tgOt9mMX": {
+   "abstract": "Understanding genetic architectures of disease is fundamental to partitioning heritability, polygenic risk prediction, and statistical fine-mapping. Genetic architectures of disease in European populations have been shown to depend on European minor allele frequency (MAF): SNPs with lower MAF have larger per-allele effects, due to the action of negative selection. However, we hypothesized that African MAF (defined using African-ancestry segments in African Americans), which is not distorted by the out-of-Africa bottleneck, might better predict per-allele effect sizes of common genetic variation in European populations; we note that common variants explaining most disease heritability are typically much older than the split between African and non-African populations. To demonstrate this, we first analyze the proportion of non-synonymous SNPs, which are strongly impacted by negative selection. The proportion of non-synonymous SNPs is much better predicted by African MAF than European MAF; a mixture of African MAF with weight w=0.95 (95% CI: (0.93, 0.96)) and European MAF with weight (1−w) is a more powerful predictor than either European MAF (P<10-15, 3.65x greater increase in log-likelihood relative to a null model without MAF dependence) or African MAF (P<10-15). Next, we consider the widely used α model, in which per-allele GWAS effect size variance is proportional to [p_E (1-p_E )]^α, where p_E is the European MAF. We propose a different model in which per-allele effect size variance is proportional to [p_mix (1-p_mix )]^(α_mix ), where p_mix=w*p_A+(1−w)*p_E, and p_A is the African MAF. We fit the α_mix model by extending the baseline-LD model used in S-LDSC to include a grid of bivariate African and European MAF bins and identifying values of w and α_mix that best fit mean effect size variance estimates from S-LDSC across bivariate MAF bins. We demonstrate that our approach provides conservative estimates of w in simulations. We applied this approach to summary statistics for 50 diseases/complex traits in European populations (average N=483K) and estimated best-fit parameters of w=0.96 (95% CI: (0.76, 1.16)) and α_mix=−0.34 (95% CI: (-0.67, -0.02)), attaining a far better fit than the standard α model using p_E only (P<10-15, 4.53x greater decrease in mean-squared error relative to a null model without MAF dependence). We conclude that per-allele disease and complex trait effect sizes are predominantly African MAF-dependent in European populations.",
+   "journal": "Preprint",
+   "short_name": "medrxiv_Rossen_2026_AfricanMAFForVariantDeleteriousness",
+   "title": "Per-allele disease and complex trait effect sizes are predominantly African MAF-dependent in European populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2025.12.31.25343290v2"
   },
-  "EkNYg3x7jfaH826WHUge": {
-   "journal": "bioRxiv",
+  "ZponsETifhASaEazo4iV": {
+   "abstract": "A longstanding goal in human genetics is to prioritize noncoding loci that, when disrupted, lead to developmental disorders and other Mendelian traits. In pursuit of this goal, multiple metrics have been developed to distinguish neutrally evolving sequences from those subjected to purifying selection. These metrics are commonly evaluated genome-wide, e.g., by computing a precision-recall curve on windows tiling the entire noncoding genome. Here, we identify parts of the noncoding genome where these metrics significantly underperform relative to their genome-wide performance due to \"bias\" in the underlying models of neutral genetic variation and/or a low \"signal-to-noise ratio\" in the genetic data. The most extreme effects are found for Gnocchi (Chen et al. 2024), the performance of which declines as GC content increases. We suggest annotating constraint scores of noncoding genomic intervals with robust measures of the bias of the corresponding model, allowing users to gauge confidence in those scores.",
+   "journal": "Preprint",
    "short_name": "biorxiv_McHale_2026_ConstraintMeasuresAcrossGenome",
    "title": "The performance of genetic-constraint metrics varies significantly across the human noncoding genome",
    "url": "https://www.biorxiv.org/content/10.64898/2026.01.28.701168v1"
   },
-  "H19eEXQFlhuPFKqTcSMP": {
-   "journal": "Nature",
-   "short_name": "Nature_Kamitaki_2026_HumanGeneticsOnOralMicrobiome",
-   "title": "Human and bacterial genetic variation shape oral microbiomes and health",
-   "url": "https://www.nature.com/articles/s41586-025-10037-7"
-  },
-  "PBKyYEfTUdRXqY8zfUlP": {
+  "fvKRkhj2RiPnAhpS4lEG": {
+   "abstract": "Abstract Expansions and contractions of tandem DNA repeats generate genetic variation in human populations and in human tissues. Some expanded repeats cause inherited disorders and some are also somatically unstable 1,2 . Here we analysed DNA sequencing data from over 900,000 participants in the UK Biobank and the All of Us Research Program using computational approaches to recognize, measure and learn from DNA-repeat instability. Repeats at different loci exhibited widely variable tissue-specific propensities to mutate in the germline and blood. Common alleles of repeats in TCF4 and ADGRE2 exhibited high rates of length mosaicism in the blood, demonstrating that most human genomes contain repeat elements that expand as we age. Genome-wide association analyses of the extent of somatic expansion of unstable repeat alleles identified 29 loci at which inherited variants increased expansion of one or more DNA repeats in blood ( P = 5 × 10 −8 to 2.5 × 10 −1,438 ). These genetic modifiers exhibited strong collective effects on repeat instability: at one repeat, somatic expansion rates varied fourfold between individuals with the highest and lowest 5% of polygenic scores. Modifier alleles at several DNA-repair genes exhibited opposite effects on the blood instability of the TCF4 repeat compared with other DNA repeats. Expanded repeats in the 5′ untranslated region of the glutaminase ( GLS ) gene associated with stage 5 chronic kidney disease (odds ratio (OR) = 14.0 (5.7–34.3, 95% confidence interval (CI))) and liver diseases (OR = 3.0 (1.5–5.9, 95% CI)). These results point to complex dynamics of DNA repeats in human populations and across the human lifespan.",
    "journal": "Nature",
    "short_name": "Nature_Hujoel_2026_SomaticDNARepeatExpansions",
    "title": "Insights into DNA repeat expansions among 900,000 biobank participants",
    "url": "https://www.nature.com/articles/s41586-025-09886-z"
   },
-  "W2lWGNknGKfo1swcVPV3": {
-   "journal": "bioRxiv",
+  "gnWS9IwnJ8DncyVi9Fbs": {
+   "abstract": "The importance of gene-environment interactions (G × E) for complex human traits is heavily debated. Recently, biobank-based genome-wide association studies (GWASs) have revealed many statistically significant G × E signals, though most lack clear evidence of biological significance. Here, we partly explain this discrepancy by showing that many G × E signals simplify to additive effects on a different phenotype scale, a classical concern that is currently underappreciated. Our results clearly distinguish G × sex effects on height, which vanish on the log scale, from G × sex effects on testosterone, where the log scale uncovers biologically meaningful female-specific effects. Across 32 phenotypes in UK Biobank, we find that scaling by a power transformation can explain 45% of polygenic score (PGS) × sex interactions and that simple log transformation can explain 23%, with similar results for other environments. We also show that the phenotype scale can substantially impact GWAS discovery and the construction and evaluation of polygenic scores. Finally, we provide a set of guidelines to consider and choose phenotype scales in modern genetic studies.",
+   "journal": "Preprint",
    "short_name": "biorxiv_Constantino_2026_PhenotypeScaleGxE",
    "title": "Choice of phenotype scale is critical in biobank-based G×E tests",
    "url": "https://www.biorxiv.org/content/10.64898/2026.01.20.694695v1"
   },
-  "XmoRdskyVUrudz4LAdFE": {
-   "journal": "medRxiv",
-   "short_name": "medrxiv_Rossen_2026_AfricanMAFForVariantDeleteriousness",
-   "title": "Per-allele disease and complex trait effect sizes are predominantly African MAF-dependent in European populations",
-   "url": "https://www.medrxiv.org/content/10.64898/2025.12.31.25343290v2"
-  },
-  "aESX1Ut7Ox0T8xMdINmL": {
-   "journal": "bioRxiv",
-   "short_name": "biorxiv_Connally_2026_FarmAnimalEvolution",
-   "title": "Farm animal evolution demonstrates hidden molecular basis of human traits",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.02.02.703413v1"
-  },
-  "cVVIRFMpgXkDekw04u99": {
+  "mSld67wWJvQyuPtpIVQw": {
+   "abstract": "How heritable is human life span? If genetic heritability is high, longevity genes can reveal aging mechanisms and inform medicine and public health. However, current estimates of heritability are low—twin studies show heritability of only 20 to 25%, and recent large pedigree studies suggest it is as low as 6%. Here we show that these estimates are confounded by extrinsic mortality—deaths caused by extrinsic factors such as accidents or infections. We use mathematical modeling and analyses of twin cohorts raised together and apart to correct for this factor, revealing that heritability of human life span due to intrinsic mortality is above 50%. Such high heritability is similar to that of most other complex human traits and to life-span heritability in other species.",
    "journal": "Science",
    "short_name": "Science_Shenhar_2026_HeritabilityOfLongevity",
    "title": "Heritability of intrinsic human life span is about 50% when confounding factors are addressed",
    "url": "https://www.science.org/doi/10.1126/science.adz1187"
   },
-  "eNd99pjheQoYyUQ92cLO": {
-   "journal": "medRxiv",
-   "short_name": "biorxiv_Warmerdam_2026_QTLGenPhase2",
-   "title": "Trans-eQTLs reveal the architecture of human gene regulatory networks",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.02.04.26343575v1"
-  },
-  "m1V0shEnT5CAy9q3FLP0": {
+  "qYbtPfpMhbAQCfHhbJwp": {
+   "abstract": "",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Han_2026_MIRAGE",
    "title": "MIRAGE: A Bayesian statistical method for gene-level rare-variant analysis incorporating functional annotations",
    "url": "https://www.cell.com/ajhg/abstract/S0002-9297(25)00438-0"
+  },
+  "vlEOvEB9hdyQgvO35SF9": {
+   "abstract": "Abstract Human genetic variation influences all aspects of our biology, including the oral cavity 1–3 , through which nutrients and microbes enter the body. Yet it is largely unknown which human genetic variants shape a person’s oral microbiome and potentially promote its dysbiosis 3–5 . We characterized the oral microbiomes of 12,519 people by re-analysing whole-genome sequencing reads from previously sequenced saliva-derived DNA. Human genetic variation at 11 loci (10 new) associated with variation in oral microbiome composition. Several of these related to carbohydrate availability; the strongest association ( P = 3.0 × 10 −188 ) involved the common FUT2 W154X loss-of-function variant, which associated with the abundances of 58 bacterial species. Human host genetics also seemed to powerfully shape genetic variation in oral bacterial species: these 11 host genetic variants also associated with variation of gene dosages in 68 regions of bacterial genomes. Common, multi-allelic copy number variation of AMY1 , which encodes salivary amylase, associated with oral microbiome composition ( P = 1.5 × 10 −53 ) and with dentures use in UK Biobank ( P = 5.9 × 10 −35 , n = 418,039) but not with body mass index ( P = 0.85), suggesting that salivary amylase abundance impacts health by influencing the oral microbiome. Two other microbiome composition-associated loci, FUT2 and PITX1 , also significantly associated with dentures risk, collectively nominating numerous host–microbial interactions that contribute to tooth decay.",
+   "journal": "Nature",
+   "short_name": "Nature_Kamitaki_2026_HumanGeneticsOnOralMicrobiome",
+   "title": "Human and bacterial genetic variation shape oral microbiomes and health",
+   "url": "https://www.nature.com/articles/s41586-025-10037-7"
   }
  },
  "votes": {
+  "0JxixlpUpx1QU9NcmqVf": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.ajhg.2025.12.005": {
    "8c6976e5b5410415": 1
   },
@@ -105,37 +119,34 @@
   "10.1038_s41588-025-02480-z": {
    "8c6976e5b5410415": 1
   },
-  "1Nm0D6KX0IILhw7xP9zK": {
+  "5cyFdpNjBWZgFXZTKyJq": {
    "8c6976e5b5410415": 1
   },
-  "7ZJNSJ38dQrGiq638DYM": {
+  "AZ5CsxI2zUsiGrZRQIqu": {
    "8c6976e5b5410415": 1
   },
-  "EkNYg3x7jfaH826WHUge": {
+  "GPW9ECc6VLsJQRX6t9cl": {
    "8c6976e5b5410415": 1
   },
-  "H19eEXQFlhuPFKqTcSMP": {
+  "SFIdjpnPjWy4tgOt9mMX": {
    "8c6976e5b5410415": 1
   },
-  "PBKyYEfTUdRXqY8zfUlP": {
+  "ZponsETifhASaEazo4iV": {
    "8c6976e5b5410415": 1
   },
-  "W2lWGNknGKfo1swcVPV3": {
+  "fvKRkhj2RiPnAhpS4lEG": {
    "8c6976e5b5410415": 1
   },
-  "XmoRdskyVUrudz4LAdFE": {
+  "gnWS9IwnJ8DncyVi9Fbs": {
    "8c6976e5b5410415": 1
   },
-  "aESX1Ut7Ox0T8xMdINmL": {
+  "mSld67wWJvQyuPtpIVQw": {
    "8c6976e5b5410415": 1
   },
-  "cVVIRFMpgXkDekw04u99": {
+  "qYbtPfpMhbAQCfHhbJwp": {
    "8c6976e5b5410415": 1
   },
-  "eNd99pjheQoYyUQ92cLO": {
-   "8c6976e5b5410415": 1
-  },
-  "m1V0shEnT5CAy9q3FLP0": {
+  "vlEOvEB9hdyQgvO35SF9": {
    "8c6976e5b5410415": 1
   }
  }

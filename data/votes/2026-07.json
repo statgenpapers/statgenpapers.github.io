@@ -1,113 +1,131 @@
 {
  "month": "2026-07",
  "submissions": {
-  "2aN1eW8bFSB6Rr27U4Zc": {
-   "journal": "Nature",
-   "short_name": "Nature_Luquez_2026_AlzheimersCellTypeSignatures",
-   "title": "Cell-type signatures of Alzheimer’s disease shared across population groups",
-   "url": "https://www.nature.com/articles/s41586-026-10793-0"
-  },
-  "6HtvUAm2PtFWF6Ai4oBo": {
-   "journal": "Science",
-   "short_name": "Science_Fei_2026_HormoneCellAtlas",
-   "title": "A Hormone Cell Atlas maps the human endocrine system at cellular resolution",
-   "url": "https://www.science.org/doi/10.1126/science.aeb2672"
-  },
-  "77wZLoopPSKPQNsW3N8f": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Baya_2026_PolygenicExpectationRareVariants",
-   "title": "Individuals who deviate from polygenic expectation are enriched for damaging variants in genes linked to rare disease",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00200-4"
-  },
-  "7ea0Mo1QC7gKkOqaNU4r": {
-   "journal": "Nature",
-   "short_name": "Nature_Rosen_2026_UniversalCellEmbedding",
-   "title": "Universal cell embedding provides a foundation model for cell biology",
-   "url": "https://www.nature.com/articles/s41586-026-10689-z"
-  },
-  "CrXK2CyDlA084s567mpf": {
-   "journal": "Nat Genet",
-   "short_name": "NG_Baderna_2026_EnhancerActivationFrequency",
-   "title": "Cumulative transcription factor binding and p300-mediated histone acetylation drive enhancer activation frequency",
-   "url": "https://www.nature.com/articles/s41588-026-02703-x"
-  },
-  "HCZN5mMz5PTy14uaaYsM": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Hasebe_2026_T2Dsubtypes",
-   "title": "Type 2 Diabetes Partitioned Polygenic Scores Are Differentially Associated with Aging Hallmarks",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.07.06.26357294v1.full"
-  },
-  "JrExn0ZEy7UbREZ7nCfJ": {
-   "journal": "Science",
-   "short_name": "Science_Zhang_2026_invivoPerturbSeqBrain",
-   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
-   "url": "https://www.science.org/doi/10.1126/science.adw2156"
-  },
-  "LSyOIVCbyOr42q6rg1QI": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Wagle_2026_DeepLearningDiseaseState",
-   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1.full"
-  },
-  "MhMBpgjaWWR5Q34pbNUY": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Milind_2026_GeneDosageTraitBuffering",
-   "title": "Buffering of gene dosage response curves for human complex traits",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00083-2"
-  },
-  "Mogudffj5HqQpHYEeSjT": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Brunton_2026_Genome-wideRegulatoryEffectsontheTranscriptome",
-   "title": "Leveraging genome-wide effects on gene expression to identify disease-critical genes with trans -genetic components",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.02.23.26346922v1"
-  },
-  "TU5CuB93NNKH7pi865Lt": {
-   "journal": "Science",
-   "short_name": "Science_Pearce_2026_TranscriptFormerCellAtlas",
-   "title": "TranscriptFormer: A generative cell atlas across 1.5 billion years of evolution",
-   "url": "https://www.science.org/doi/10.1126/science.aec8514"
-  },
-  "WJmxFmWECCjsKRQF6n2M": {
-   "journal": "Nat Genet",
-   "short_name": "NG_Koska_2026_PromoterCompetition",
-   "title": "Promoter strength and position govern promoter competition through transcript-dependent insulation",
-   "url": "https://www.nature.com/articles/s41588-026-02691-y"
-  },
-  "XS0InI40Cm4XasS2XIg4": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Nazeen_2026_NERINERareVariantGeneNetworks",
-   "title": "NERINE reveals rare variant associations in gene networks across multiple phenotypes and implicates an SNCA-PRL-LRRK2 subnetwork in Parkinson’s disease",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00146-1"
-  },
-  "jUr9k5omVCHhK2BGAV8U": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Signer_2026_BMIGenomeGeneExpressionInteractions",
-   "title": "BMI-genome interactions regulate global gene expression with emphasis in brain and gut",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00142-4"
-  },
-  "x1UfsKkgp1KLNrcUmqqL": {
+  "1X17CgHua7KbfP2joUZk": {
+   "abstract": "",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Shi_2026_GWASMeniereDisease",
    "title": "Genome-wide analysis implicates inner ear development in Ménière disease",
    "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00198-9"
   },
-  "xdAQjMRQAeVEaObbHHpn": {
+  "2hIRbRSeMZabL96LetYk": {
+   "abstract": "",
    "journal": "Am J Hum Genet",
    "short_name": "AJHG_Ruan_2026_DiscoDivasPRStransferability",
    "title": "DiscoDivas: Leveraging genetic-ancestry continuum information to interpolate PRS for admixed populations",
    "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00193-X"
   },
-  "yKUVSdcf4sBZpCFnRuuU": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Jamison_2026_GeneExpressionDispersion",
-   "title": "Beyond the mean: genetic control of gene expression fidelity and dispersion",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.04.01.715853v2"
-  },
-  "yzIcX6HtPLd1LnDzxF0h": {
+  "7r0vc2JtveITMBw6viQz": {
+   "abstract": "",
    "journal": "Cell Genom",
    "short_name": "CG_Krätschmer_2026_DirectIndirectParentOfOriginGeneticEffects",
    "title": "Separating direct, indirect, and parent-of-origin genetic effects in the human population",
    "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00139-4"
+  },
+  "B5cAt2bPsrnPW8LX966P": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Signer_2026_BMIGenomeGeneExpressionInteractions",
+   "title": "BMI-genome interactions regulate global gene expression with emphasis in brain and gut",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00142-4"
+  },
+  "BHanbu1GAy3RzW2prxgX": {
+   "abstract": "Single-cell transcriptomics is revolutionizing our understanding of cellular diversity, yet comparing transcriptional programs across the tree of life remains challenging. We developed TranscriptFormer, a family of generative foundation models trained on up to 112 million cells spanning 1.53 billion years of evolution across 12 species. We demonstrate state-of-the-art performance on cell type classification, even for species separated by over 685 million years of evolution, and zero-shot disease state identification in human cells. Developmental trajectories, phylogenetic relationships, and cellular hierarchies emerge naturally in TranscriptFormer’s representations without any explicit training on these annotations. This work establishes a powerful framework for quantitative single-cell analysis and comparative cellular biology, thus demonstrating that universal principles of cellular organization can be learned and predicted across the tree of life.",
+   "journal": "Science",
+   "short_name": "Science_Pearce_2026_TranscriptFormerCellAtlas",
+   "title": "TranscriptFormer: A generative cell atlas across 1.5 billion years of evolution",
+   "url": "https://www.science.org/doi/10.1126/science.aec8514"
+  },
+  "EKonbnIhO6ne3ubfhgK4": {
+   "abstract": "Abstract Type 2 diabetes (T2D) arises from distinct diabetogenic mechanisms, but whether these mechanisms differ in their associations with hallmarks of aging remains unclear. We analyzed 449,505 UK Biobank and 374,973 All of Us participants using an overall T2D polygenic score (oPS) and eight partitioned polygenic scores (pPSs) representing distinct T2D-related mechanisms. Across organ systems, 81 age-related diseases were assigned to nine hallmarks of aging. UK Biobank analyses used Cox regression for incident hallmark-level outcomes, and All of Us analyses used logistic regression for prevalent hallmark-level outcomes. In both cohorts, the oPS was associated with disease burden across hallmarks, whereas pPS associations varied by mechanism. The obesity pPS showed the strongest and most consistent associations, while other insulin-resistance-related pPSs, including the lipodystrophy pPS, showed more modest positive associations. Beta-cell dysfunction pPS associations were close to null across hallmarks. Obesity pPS-hallmark associations were significantly attenuated after adjustment for BMI, and lipodystrophy pPS-hallmark associations after adjustment for triglyceride-to-HDL cholesterol ratio (TG/HDL-C), a marker of insulin resistance. These findings suggest that adiposity and insulin resistance, indexed by BMI and TG/HDL-C, may act as modifiable factors in the T2D genetic burden on aging hallmarks. Graphical Abstract",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Hasebe_2026_T2Dsubtypes",
+   "title": "Type 2 Diabetes Partitioned Polygenic Scores Are Differentially Associated with Aging Hallmarks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.06.26357294v1.full"
+  },
+  "FIZm3rXfiBXy0RyE11qq": {
+   "abstract": "Abstract Genome-wide association studies (GWAS) have implicated tens of thousands of genetic variants associated with complex traits and polygenic diseases. Colocalizing GWAS variants with variants that may regulate gene expression, via expression quantitative trait loci (eQTL) mapping, has successfully led to the identification of disease-critical genes and their cell types of action. Recent studies predominantly colocalize proximal cis -eQTLs, which are estimated to regulate ∼10% of variance in gene expression levels. However, trans -eQTLs have been hypothesized to account for an additional ∼20% of expression levels, although few studies have attempted to quantify the variance explained by empirically associated trans -eQTLs. Here, we introduce EGRET (Estimating Genome-wide Regulatory Effects on the Transcriptome), an ensemble framework that jointly models cis -eQTLs with three distinct trans -eQTL mapping approaches: standard pairwise association testing via Matrix eQTL, and two functionally-informed methods, trans-PCO and GBAT. In real data, EGRET produced 353,408 predictive gene expression models (cross-validation R 2 > 0, p < 0.01) across 49 GTEx tissues, including 12,317 gene-tissue pairs with a significantly nonzero trans -heritable component. For this set of genes, EGRET models explain 33% more gene expression variance than cis -eQTL models (EGRET average R 2 = 0.104, FUSION average R 2 = 0.078). We found that putative trans-regulating variants of EGRET models are enriched for regulatory elements such as enhancers, histone marks, and cis -eQTLs of other genes. We then hypothesized that EGRET models could nominate new disease-critical genes via a transcriptome-wide association study (TWAS) framework that models genome-wide regulatory effects on gene expression. In simulations of theoretically representative gene expression architectures (∼30% heritability, where more than 70% is distal), EGRET increased the power to detect disease-critical genes by 1.2x-3.1x compared to cis -eQTL models. In real data analysis, we identified disease-associated genes via TWAS across GWAS summary statistics for 78 complex traits and polygenic diseases using gene expression prediction models from EGRET, cis -eQTL FUSION, and two state-of-the-art trans -eQTL TWAS methods, MOSTWAS and BGW-TWAS. EGRET identified 450,825 gene-disease associations that were not identified by FUSION models, 2,900 associations not identified by MOSTWAS, and 5,498 associations not identified by BGW-TWAS. Finally, we used EGRET models to construct gene regulatory networks, some of which harbored genes that were jointly associated with complex traits. For example, the gene members of the network defined by ARHGEF3 , whose cis -regulatory variants help predict expression of 10 genes in trans , were concordantly associated with platelet count using EGRET but not FUSION models. Overall, we find that modeling the genome-wide genetic component of gene expression greatly boosts the detection of disease-critical genes and helps define gene regulatory networks while improving the characterization of GWAS variants.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Brunton_2026_Genome-wideRegulatoryEffectsontheTranscriptome",
+   "title": "Leveraging genome-wide effects on gene expression to identify disease-critical genes with trans -genetic components",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.23.26346922v1"
+  },
+  "HtVdAFNMfrwKAXi9dkF8": {
+   "abstract": "",
+   "journal": "Nat Genet",
+   "short_name": "NG_Koska_2026_PromoterCompetition",
+   "title": "Promoter strength and position govern promoter competition through transcript-dependent insulation",
+   "url": "https://www.nature.com/articles/s41588-026-02691-y"
+  },
+  "KORLVZ0YOP43m3hxi9bl": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Baya_2026_PolygenicExpectationRareVariants",
+   "title": "Individuals who deviate from polygenic expectation are enriched for damaging variants in genes linked to rare disease",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00200-4"
+  },
+  "KhvKVDOopzF3UNPX8cZL": {
+   "abstract": "Single-cell transcriptomics technology offers unprecedented insights into molecular heterogeneity. However, capturing sample-level representations that reflect both systemic and cellular states remains challenging, especially when disease annotations are mostly available as coarse sample-level labels. Here, we introduce Phenoverse, an interpretable deep learning framework that learns sample-level disease state representations through cell type-aware residual encoding, prototype learning, and Perceiver-based aggregation. Applied to independent single-cell transcriptomic cohorts of COVID-19, Alzheimer's disease, and systemic lupus erythematosus, totaling over 5 million cells, we demonstrate that learned sample representations enable disease state prediction and encode a continuous spectrum of disease severity on unseen data that correlate with multiple clinical and pathological measures, despite being trained solely on binary phenotype labels. Further, we demonstrate that trajectory-derived genes reveal cross-cohort molecular programs and show consistently higher reproducibility than traditional case-control comparisons. Finally, prototype learning provides intrinsic model interpretability and enables the characterization of cell type-specific disease states. Taken together, Phenoverse offers an interpretable disease-phenotyping approach to dissecting sample heterogeneity, and our results highlight its utility in translating complex single-cell transcriptomic data into patient-level biological insights.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Wagle_2026_DeepLearningDiseaseState",
+   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1.full"
+  },
+  "calTSdoahFVGBhex81Zz": {
+   "abstract": "Abstract For decades, molecular biologists have interpreted gene regulation through measurements of mean gene expression, because they could not resolve regulatory variation among individual cells. The advent of single-cell genomics has now made that variation measurable, revealing pervasive differences in gene expression among apparently similar cells. Whether this variation mainly reflects stochastic noise or an informative regulatory property remains unclear. Here we show that mean-corrected gene expression dispersion is a reproducible and biologically structured feature of gene regulation that reflects regulatory fidelity. In heterogeneous differentiated cardiac cultures, genes with low dispersion are shared across cell types, enriched for housekeeping functions, depleted for expression quantitative trait loci, and more highly connected in transcriptional and protein interaction networks. In a comparative single-cell system spanning human, chimpanzee, and allotetraploid cells, a substantial subset of interspecies differences in regulatory dispersion persists in a shared trans environment, indicating that gene expression fidelity is often regulated in cis . Our findings establish gene expression dispersion as a genetically encoded dimension of gene regulation that is distinct from mean expression, and places dispersion along a fidelity-plasticity axis with implications for development, disease, and threshold-dependent cellular phenotypes.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Jamison_2026_GeneExpressionDispersion",
+   "title": "Beyond the mean: genetic control of gene expression fidelity and dispersion",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.01.715853v2"
+  },
+  "gqTC1kop3PGfRZGbJEHN": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Nazeen_2026_NERINERareVariantGeneNetworks",
+   "title": "NERINE reveals rare variant associations in gene networks across multiple phenotypes and implicates an SNCA-PRL-LRRK2 subnetwork in Parkinson’s disease",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00146-1"
+  },
+  "itbLEgRxKv9oUSibuXqM": {
+   "abstract": "An in vivo approach combining high-throughput screening with cell type–specific readouts could enable elucidation of genotype-phenotype relationships in complex tissues. We developed an in vivo gain-of-function Perturb-seq platform, termed iGOF–Perturb-seq, to build a functional atlas of ~1000 transcription factors (TFs) in astrocytes, a cell type essential to many brain functions. We then identified cofunctional modules, annotated uncharacterized TFs, and predicted disease-associated TF clusters. Furthermore, iGOF–Perturb-seq performed in a mouse neuroinflammatory model identified Ferd3l as a therapeutic candidate, and astrocyte-specific overexpression of Ferd3l alleviated Alzheimer’s disease symptoms in mice. This study provides resources for understanding gene regulation and disease mechanisms in vivo and for identifying potential therapeutic targets for different brain diseases.",
+   "journal": "Science",
+   "short_name": "Science_Zhang_2026_invivoPerturbSeqBrain",
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "qgBOtyMMzpaElc79ru97": {
+   "abstract": "Abstract Genomic studies at single-cell resolution have identified several cell types associated with clinical and pathological traits in Alzheimer’s disease 1–9 , but have not examined associations that are shared across populations. To bridge this gap, here we use single-nucleus RNA sequencing and assay for transposase-accessible chromatin with sequencing to profile cortical and subcortical regions in post-mortem brain-tissue samples from Latin, white (excluding Latin) and African American (excluding Latin) individuals. Using discrete and continuous dissections of molecular programs, we identify cell-type-specific clusters associated with Alzheimer’s disease in a region-specific manner across all three population groups, including microglial ( GPNMB + and CD74 + subgroups), astrocytic ( SERPINH1 + , CD44 + and WIF1 + subgroups) and neuronal ( SST + GABAergic and superficial-layer glutamatergic) signatures. We also report continuous gene-expression factors in astrocytes and oligodendrocytes that are not captured by discrete cluster assignments, but which show strong associations with disease phenotypes; these factors are enriched for genes associated with annotated functions such as lipid processing and neurotransmitter reuptake. Finally, we find that molecular programs reveal six distinct subgroups of individuals with cognitive impairment that span all three populations, are not captured by neuropathology, and are instead distinguished by molecular signatures that are not universally present but are nonetheless associated with ante-mortem impairment. Overall, our study identifies key cell types and gene programs implicated in Alzheimer’s disease that are shared across population groups, and underscores how representative sampling can capture both shared signatures and disease heterogeneity, thereby enabling better prioritization of key cell types for further investigation.",
+   "journal": "Nature",
+   "short_name": "Nature_Luquez_2026_AlzheimersCellTypeSignatures",
+   "title": "Cell-type signatures of Alzheimer’s disease shared across population groups",
+   "url": "https://www.nature.com/articles/s41586-026-10793-0"
+  },
+  "qvI7tEoPcDjz41R6XcWb": {
+   "abstract": "Hormones act across tissues and organs to coordinate physiological functions. Drawing inspiration from the Human Cell Atlas, we analyzed the expression of 379 hormone and receptor genes in a transcriptomic dataset comprising 14 million single cells and nuclei across 47 human tissues. Using hormone2cell, we mapped putative hormone-producing and hormone-receiving cell types, defining tissue-specific and cross-tissue endocrine signatures. We predicted nonclassical sites of hormone expression, including secretin in plasmacytoid dendritic cells, inferred convergent hormone action and endocrine feedback loops, and implicated cell populations in monogenic endocrine disorders. In a cross-tissue integration of adipocyte datasets, we uncovered dynamic endocrine programs across depots, within adipocyte subtypes and through adipogenic differentiation. Cumulatively, the Hormone Cell Atlas (hormonecellatlas.org.uk) provides a comprehensive framework for dissecting hormonal impact on health and disease.",
+   "journal": "Science",
+   "short_name": "Science_Fei_2026_HormoneCellAtlas",
+   "title": "A Hormone Cell Atlas maps the human endocrine system at cellular resolution",
+   "url": "https://www.science.org/doi/10.1126/science.aeb2672"
+  },
+  "rmzdRlSxktsPDR9E5Rw1": {
+   "abstract": "Developing a universal representation space for cells that encompasses the tremendous molecular diversity of cell types across species would be transformative for cell biology. Recent work using single-cell transcriptomic approaches to create molecular definitions of cell types in the form of cell atlases has provided the necessary data for such an endeavour1–3. Here we present the universal cell embedding (UCE) foundation model. UCE was trained on a large corpus of cell data using self-supervision, creating a unified biological latent space that can represent cells across diverse tissues and species. This latent space captures important biological variation despite the presence of experimental noise. UCE’s universality means that new cells can be embedded with no data labelling, model training or fine-tuning. We used UCE to create the Integrated Mega-scale Atlas, embedding 36 million cells, with more than 1,000 uniquely named cell types, from hundreds of experiments, dozens of tissues and eight species. We gain insights into the organization of cell types and tissues within the space. UCE’s embedding space exhibits emergent behaviour, identifying biology that it was never trained for, such as identifying developmental lineages and embedding data from species that were not included in the training set. Overall, by enabling a universal representation for every cell state and type, UCE is a valuable tool for analysis, annotation and hypothesis generation over single-cell data. The universal cell embedding foundation model learns to capture the organization and variation of cells by training on 36 million cells from hundreds of experiments, dozens of tissues and eight species.",
+   "journal": "Nature",
+   "short_name": "Nature_Rosen_2026_UniversalCellEmbedding",
+   "title": "Universal cell embedding provides a foundation model for cell biology",
+   "url": "https://www.nature.com/articles/s41586-026-10689-z"
+  },
+  "tjHhP8caeQXS8kimvzJR": {
+   "abstract": "In eukaryotes, transcription factors (TFs) must continuously compete with nucleosomes to access their binding sites, leading to cell-to-cell variability in chromatin accessibility at regulatory regions. Although critical to understand enhancer function in transcription, the mechanisms that define how frequently an enhancer is active in a cell population remain unclear. Here we used single-molecule footprinting to quantify the frequency at which chromatin is accessible at enhancers in response to TF perturbations and changes in their chromatin environment. We find that, individually, most TFs open chromatin in a small fraction of cells, and that cumulative TF binding controls enhancer activation frequency. Moreover, testing the functionality of hundreds of enhancers when inserted at an ectopic genomic location indicates that p300 activity is required for their full activation. Our data support a model in which enhancer activation frequency depends on the cumulative function of multiple TFs and is modulated by p300 activity.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Baderna_2026_EnhancerActivationFrequency",
+   "title": "Cumulative transcription factor binding and p300-mediated histone acetylation drive enhancer activation frequency",
+   "url": "https://www.nature.com/articles/s41588-026-02703-x"
+  },
+  "v1zZAAZwsvNI5K5EIyAy": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Milind_2026_GeneDosageTraitBuffering",
+   "title": "Buffering of gene dosage response curves for human complex traits",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00083-2"
   }
  },
  "votes": {
@@ -156,58 +174,58 @@
   "10.1126_science.adx2989": {
    "8c6976e5b5410415": 1
   },
-  "2aN1eW8bFSB6Rr27U4Zc": {
+  "1X17CgHua7KbfP2joUZk": {
    "8c6976e5b5410415": 1
   },
-  "6HtvUAm2PtFWF6Ai4oBo": {
+  "2hIRbRSeMZabL96LetYk": {
    "8c6976e5b5410415": 1
   },
-  "77wZLoopPSKPQNsW3N8f": {
+  "7r0vc2JtveITMBw6viQz": {
    "8c6976e5b5410415": 1
   },
-  "7ea0Mo1QC7gKkOqaNU4r": {
+  "B5cAt2bPsrnPW8LX966P": {
    "8c6976e5b5410415": 1
   },
-  "CrXK2CyDlA084s567mpf": {
+  "BHanbu1GAy3RzW2prxgX": {
    "8c6976e5b5410415": 1
   },
-  "HCZN5mMz5PTy14uaaYsM": {
+  "EKonbnIhO6ne3ubfhgK4": {
    "8c6976e5b5410415": 1
   },
-  "JrExn0ZEy7UbREZ7nCfJ": {
+  "FIZm3rXfiBXy0RyE11qq": {
    "8c6976e5b5410415": 1
   },
-  "LSyOIVCbyOr42q6rg1QI": {
+  "HtVdAFNMfrwKAXi9dkF8": {
    "8c6976e5b5410415": 1
   },
-  "MhMBpgjaWWR5Q34pbNUY": {
+  "KORLVZ0YOP43m3hxi9bl": {
    "8c6976e5b5410415": 1
   },
-  "Mogudffj5HqQpHYEeSjT": {
+  "KhvKVDOopzF3UNPX8cZL": {
    "8c6976e5b5410415": 1
   },
-  "TU5CuB93NNKH7pi865Lt": {
+  "calTSdoahFVGBhex81Zz": {
    "8c6976e5b5410415": 1
   },
-  "WJmxFmWECCjsKRQF6n2M": {
+  "gqTC1kop3PGfRZGbJEHN": {
    "8c6976e5b5410415": 1
   },
-  "XS0InI40Cm4XasS2XIg4": {
+  "itbLEgRxKv9oUSibuXqM": {
    "8c6976e5b5410415": 1
   },
-  "jUr9k5omVCHhK2BGAV8U": {
+  "qgBOtyMMzpaElc79ru97": {
    "8c6976e5b5410415": 1
   },
-  "x1UfsKkgp1KLNrcUmqqL": {
+  "qvI7tEoPcDjz41R6XcWb": {
    "8c6976e5b5410415": 1
   },
-  "xdAQjMRQAeVEaObbHHpn": {
+  "rmzdRlSxktsPDR9E5Rw1": {
    "8c6976e5b5410415": 1
   },
-  "yKUVSdcf4sBZpCFnRuuU": {
+  "tjHhP8caeQXS8kimvzJR": {
    "8c6976e5b5410415": 1
   },
-  "yzIcX6HtPLd1LnDzxF0h": {
+  "v1zZAAZwsvNI5K5EIyAy": {
    "8c6976e5b5410415": 1
   }
  }

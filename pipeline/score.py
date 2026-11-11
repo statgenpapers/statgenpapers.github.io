@@ -1,4 +1,4 @@
-"""Scorer: static text embedding plus venue, linear lab weights, and a correction learned from votes."""
+"""Scorer: static text embedding plus venue, linear base weights, and a correction learned from votes."""
 import numpy as np
 from scipy.optimize import minimize
 from scipy.special import expit
@@ -26,18 +26,18 @@ def linear(w, emb, venues):
 
 
 def probability(w, score):
-    """Calibrated chance that the lab picks the paper: sigmoid(a + b·score), a and b from dev/train.py."""
+    """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b from dev/train.py."""
     return expit(w["calibration"]["a"] + w["calibration"]["b"] * np.asarray(score))
 
 
 def vote_correction(emb, venues, upvoted, offset, penalty, min_upvoted):
-    """Correction Δ to the lab weights, learned from votes, in the shape `linear` takes.
+    """Correction Δ to the base weights, learned from votes, in the shape `linear` takes.
 
     Rows are the listed papers of the months that got votes; `upvoted` says which of them have
-    an upvote. Logistic regression of `upvoted` on [embedding, venue one-hot], with the lab
+    an upvote. Logistic regression of `upvoted` on [embedding, venue one-hot], with the base
     score as a fixed `offset`, a free intercept (listed papers are upvoted at another rate than
-    pool papers are picked) and the penalty penalty/2 · |Δ|². Few votes, or votes the lab score
-    already predicts, leave Δ near 0, so the scorer stays at the lab weights. Δ is exactly 0
+    pool papers were marked in the training data) and the penalty penalty/2 · |Δ|². Few votes, or votes the base score
+    already predicts, leave Δ near 0, so the scorer stays at the base weights. Δ is exactly 0
     below `min_upvoted` upvoted papers, and when every paper is upvoted.
     """
     names, k = sorted(set(venues)), emb.shape[1]

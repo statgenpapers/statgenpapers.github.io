@@ -14,10 +14,10 @@
 
 <main class="prose">
 <h2>About StatGen Papers</h2>
-<p>Each month, StatGen Papers lists the statistical genetics papers that a model rates likely to interest a
-lab: every paper with a Score of at least 25%. The model chooses them from about 2,000
-candidates in journals such as Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in
-preprints. Anyone can add papers the model missed, including to earlier months. The code is in the
+<p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will mark: every
+paper with a Score of at least 25%. The model chooses them from about 2,000 candidates in journals such as
+Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in preprints. Anyone can add papers
+the model missed: they join the next list, scored like the others and the tag "added". The code is in the
 <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
 
 <h2>Where do the papers come from?</h2>
@@ -30,51 +30,49 @@ preprints. Anyone can add papers the model missed, including to earlier months. 
   informatics. A preprint whose published version appears in the same month is left out in favor of the published one.</li>
   <li>A paper listed in an earlier month is not listed again; the journal version of an earlier preprint can be.</li>
 </ol>
-<p>Each month's list is built on the 3rd of the following month.</p>
+<p>Each month's list is built on the 10th of the following month.</p>
 
 <h2>How does the score work?</h2>
 <ol>
   <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
   (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
-  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It was fitted
-  to a year of a statistical genetics lab's monthly reading list: the papers the lab picked are the positives, all
-  other candidates the negatives.</li>
+  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It started from
+  a year of marks made before the site opened: marked papers are the positives, all other candidates the negatives.</li>
   <li>The raw score is calibrated into a probability, the Score. Every paper at 25% or more is listed, so a month
   with more promising papers has a longer list.</li>
-  <li>Readers' marks re-order the list. Once 30 listed papers have marks, they also fit a small monthly correction to
-  the model.</li>
+  <li>Marks re-order the list at once. Each month's run also learns from them: once 30 listed papers have marks, it
+  fits a correction to the model, which grows as marks add up.</li>
 </ol>
 
 <h2>What is the score?</h2>
-<p>The Score beside each paper is the chance that the lab would pick it for its reading list. In the test below,
-papers scored about 50% were picked about half the time. Marks re-order the list but do not change the score.</p>
+<p>The model's prediction of how likely a paper is to be marked. In the test below, papers at about 50% were marked about half the
+time. Marks re-order the list but do not change the score.</p>
 
 <h2>Does the score work?</h2>
 <p>Each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a model trained only on
 the months before it.</p>
 <ol>
-  <li>A picked paper outranks one that was not picked <span data-v="auc_pct">96%</span> of the time (AUC), and the
-  top 25 hold <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> picks: fewer than half.
-  Tastes differ from month to month, and about one pick in ten comes from a source that is not scanned. Adding
-  papers fills that gap.</li>
+  <li>A marked paper outranks an unmarked one <span data-v="auc_pct">96%</span> of the time (AUC), and the
+  top 25 hold <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> marked papers: fewer than
+  half. Tastes differ from month to month, and about one marked paper in ten comes from a source that is not
+  scanned. Adding papers fills that gap.</li>
   <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
   August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
-  picks in the top 25, at no cost.</li>
-  <li>From 2026/01 to 2026/10, the 25% cutoff listed 15 to 39 papers a month and caught 111 of the 242 picks, as
-  many as a fixed 25 a month.</li>
+  marked papers in the top 25, at no cost.</li>
+  <li>From 2026/01 to 2026/10, the 25% cutoff listed 15 to 39 papers a month and caught 111 of the 242 marked papers,
+  as many as a fixed 25 a month.</li>
 </ol>
 <table id="scorers">
-  <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Picks in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
+  <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Marked papers in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
   <tbody></tbody>
 </table>
-<p class="caption">The reading list itself is private; only the fitted weights and these totals are published. The
-backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated <span data-v="generated"></span>.</p>
+<p class="caption">The backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated
+<span data-v="generated"></span>.</p>
 
 <h2>Why do the months before 2026/11 already have marks?</h2>
 <p>The lists for 2026/01 to 2026/10 were made as if the site had run then: each month by a model trained only on
-the months before it. The lab's actual picks for each month are shown as marks: a listed pick has one, and a pick
-the model missed was added ("added by the lab"). From 2026/11 the lists are made live, and the weights are refitted
-each month as the lab's picks come in.</p>
+the months before it. Their marks, and the papers added to them, were made before the site opened. From 2026/11 the
+lists are made live.</p>
 
 <h2>How do I give feedback?</h2>
 <p>Open an issue on <a href="https://github.com/statgenpapers/statgenpapers.github.io/issues">GitHub</a>: a bug, a

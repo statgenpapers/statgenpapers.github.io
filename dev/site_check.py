@@ -141,7 +141,6 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("authors show as first two … last two",
           row(a, 4).locator(".meta").inner_text() == "Author 1, Author 2, …, Author 6, Author 7"
           and row(a, 2).locator(".meta").inner_text() == "Author 1, Author 2, Author 3")
-    a.click("#export-open")
     a.click("#copy")
     rows = [line.split("\t") for line in a.evaluate("navigator.clipboard.readText()").split("\n")]
     check("copy table gives Journal, Short Name, Title, URL in the order shown",
@@ -202,17 +201,36 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               seen(a.locator("#add-short"), "") is not None and a.input_value("#add-short") == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
         a.click("#add button[type=submit]")
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
-        dt = seen(added(b).locator(".count"), "1")
-        check(f"a paper added in one browser shows in the other, upvoted by its submitter ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
-        check("it shows its journal, not who added it", added(b).locator(".source").inner_text() == "(Nature)"
-              and added(b).locator(".meta").inner_text() == "added by a reader")
+        check("a paper is added to the month in progress, and not shown before its run scores it",
+              seen(a.locator("#toast"), "Added to 2020/02: it shows on that list, with a Score, from 2020/03/10.") is not None
+              and added(b).count() == 0 and added(a).count() == 0)
         a.click("#add-open")
         a.fill("#add-url", ADD_URL + "?again")
         a.fill("#add-journal", "Nature")
         a.fill("#add-title", "Same paper again")
         a.click("#add button[type=submit]")
-        check("the same paper cannot be added twice", "already on the list" in a.inner_text("#add-note"))
+        check("the same paper cannot be added twice", seen(a.locator("#add-note"), "Someone has added this paper to 2020/02 already.") is not None)
+        a.fill("#add-url", PAPERS[0]["url"])
+        a.fill("#add-title", PAPERS[0]["title"])
+        a.click("#add button[type=submit]")
+        check("nor a paper of the latest list", seen(a.locator("#add-note"), "This paper is on the 2020/01 list already.") is not None)
         a.click("#add-cancel")
+
+        # the run for 2020-02: it lists the month, with the added paper scored
+        base = "http://127.0.0.1:8085" if EMULATOR else "https://firestore.googleapis.com"
+        project = "demo-statgenpapers" if EMULATOR else "statgenpapers"
+        docs = json.load(urllib.request.urlopen(f"{base}/v1/projects/{project}/databases/(default)/documents/months/2020-02/submissions"))
+        sid = docs["documents"][0]["name"].rsplit("/", 1)[1]
+        (Path(tmp) / "data" / "2020-02.json").write_text(json.dumps({"month": "2020-02", "pool": 99, "papers": PAPERS[3:], "added": {sid: 0.42}}))
+        (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH, "2020-02"]}))
+        for page in pages:
+            page.goto(url)
+        dt = seen(added(b).locator(".count"), "1")
+        check("after its run, it is listed in both browsers, marked by its submitter", dt is not None)
+        check("with its journal, the authors found for its DOI, its Score and an added tag, and no handle",
+              added(b).locator(".source").inner_text().startswith("(Nature") and "Karczewski" in added(b).locator(".meta").inner_text()
+              and added(b).locator(".pick").inner_text() == "42%" and added(b).locator(".added").inner_text() == "added by a reader"
+              and "sitecheck" not in added(b).inner_text())
         check("only the submitter can remove it", added(a).locator(".remove").is_visible() and not added(b).locator(".remove").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back, then remove the paper
         seen(added(b).locator(".count"), "0")

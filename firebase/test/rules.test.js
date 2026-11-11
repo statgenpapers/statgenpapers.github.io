@@ -73,6 +73,14 @@ test("only the lab's user adds papers as admin", async () => {
   await assertFails(submit("bob", { name: "admin" }));
   await assertSucceeds(submit("Yo7cchMxl7X4zHq5vOE9VmS2dOp1", { name: "admin" }));
 });
+test("an added paper may carry authors, an abstract and a date", async () => {
+  await assertSucceeds(submit("bob", { authors: ["A. Smith", "B. Jones"], abstract: "We show.", date: "2026-10-05" }));
+  await env.clearFirestore();
+  await assertFails(submit("bob", { authors: "A. Smith" }));
+  await assertFails(submit("bob", { abstract: "x".repeat(10001) }));
+  await assertFails(submit("bob", { date: "October" }));
+  await assertFails(submit("bob", { doi: "10.1/x" }));
+});
 test("anyone can read submissions without signing in", () => assertSucceeds(getDoc(doc(db(null), SUB))));
 test("unauthenticated cannot submit", () => assertFails(setDoc(doc(db(null), SUB), paper("bob"))));
 test("cannot submit under another uid", () => assertFails(setDoc(doc(db("bob"), SUB), paper("alice"))));

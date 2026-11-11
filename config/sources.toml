@@ -11,7 +11,7 @@ work_types = ["article", "review", "letter", "preprint"]
 # Papers are dropped when the title starts with one of these (regular expressions, case-insensitive) ...
 junk_title = [
   "author correction", "publisher correction", "correction", "erratum", "retraction",
-  "expression of concern", "this month in", "in this issue", "news", "editorial",
+  "expression of concern", "this month in", "in this issue", "news", "editorial", "reply to",
 ]
 # ... or the DOI matches one of these. 10.1038/d… is Nature-family news, comment and careers.
 junk_doi = ['^10\.1038/d\d']
@@ -85,7 +85,7 @@ abbr = "Am J Hum Genet"
 issn = "0002-9297"
 
 # Preprint servers (biorxiv or medrxiv) and their categories, as the server names them.
-# `name` is shown in the Journal column. Every preprint has the one venue key "Preprint": a preprint is a preprint.
+# Every preprint has the venue key "Preprint" and is shown as "Preprint": a preprint is a preprint.
 [[preprints]]
 server = "biorxiv"
 name = "bioRxiv"
@@ -100,5 +100,4 @@ categories = ["genetic and genomic medicine", "health informatics"]
 [votes]
 firestore_project = "statgenpapers"
 min_upvoted = 30  # no vote correction until this many listed papers have an upvote
-lab_handle = "admin"  # its marks are the lab's picks, already in the lab weights: left out of the vote correction
-penalty = 1.0     # L2 penalty on the correction; larger keeps the scorer closer to the lab weights
+penalty = 1.0     # L2 penalty on the correction; larger keeps the scorer closer to the base weights

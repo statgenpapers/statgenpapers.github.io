@@ -1,4 +1,24 @@
 {
+ "added": {
+  "12zerBo90WmtYE0S72lp": 0.35,
+  "2rzrU4672CVjivmFP00p": 0.014,
+  "8cxFSTb9RTuZJjYNPq63": 0.055,
+  "B2lskTY9BDYHE6CNZCS7": 0.048,
+  "EbjJHWsPbaUsvSA5ioeI": 0.081,
+  "GldfRggLWJXhYurlmxOd": 0.004,
+  "MkPBmzsGbGOHJBxHnkgn": 0.788,
+  "OTGDj1NSoGy2ySKkSa9f": 0.109,
+  "R8kR79gNvQLL5dgQFElV": 0.042,
+  "TIs4iduyWCpiumTfuuTI": 0.062,
+  "ZiByDx3fTEwUgrrtPUzG": 0.14,
+  "cw1twnGs2doPnWkky7FO": 0.035,
+  "dMW6v1dgS5OXPfhxJyS4": 0.097,
+  "hLqVP71tbIg8lCpVgxLL": 0.017,
+  "qU1KNIB9pq4FGWFW3nfI": 0.183,
+  "uNDXWc6N298XONhIwRYR": 0.445,
+  "vhpK7vbHuETyZnWKdgEP": 0.064,
+  "wtq0jub6ptEhARbkmRPU": 0.006
+ },
  "generated": "2026-11-11",
  "month": "2026-06",
  "papers": [
@@ -223,7 +243,7 @@
    "doi": "10.1038/s41588-026-02637-4",
    "id": "10.1038_s41588-026-02637-4",
    "journal": "Nat Genet",
-   "p_pick": 0.786,
+   "p_pick": 0.787,
    "rank": 6,
    "score": 5.758,
    "short_name": "NatGenet_Xu_2026_MIXPRSEnablesMultiPopulation",
@@ -1529,7 +1549,7 @@
    "journal": "Nat Genet",
    "p_pick": 0.413,
    "rank": 22,
-   "score": 3.622,
+   "score": 3.621,
    "short_name": "NatGenet_Sarni_2026_ProgeriaSyndromeLinksDNA",
    "title": "A progeria syndrome links DNA hypermethylation to age-related pathology",
    "type": "published",
@@ -1752,7 +1772,7 @@
    "journal": "Nat Genet",
    "p_pick": 0.351,
    "rank": 28,
-   "score": 3.283,
+   "score": 3.282,
    "short_name": "NatGenet_Jie_2026_GenomicLandscapeHumanVaginal",
    "title": "Genomic landscape of the human vaginal microbiome is linked to host genetics and population of origin",
    "type": "published",
@@ -1963,11 +1983,11 @@
    "date": "2026-06-24",
    "doi": "10.64898/2026.06.22.26355163",
    "id": "10.64898_2026.06.22.26355163",
-   "journal": "medRxiv",
+   "journal": "Preprint",
    "p_pick": 0.27,
    "rank": 34,
    "score": 2.792,
-   "short_name": "medRxiv_Kosmicki_2026_RareProteinCodingVariation",
+   "short_name": "Preprint_Kosmicki_2026_RareProteinCodingVariation",
    "title": "Rare protein-coding variation and the genetic architecture of height in >1.4 million individuals",
    "type": "preprint",
    "url": "https://www.medrxiv.org/content/10.64898/2026.06.22.26355163v1",
@@ -2015,6 +2035,6 @@
    "venue_name": "Nature Genetics"
   }
  ],
- "pool": 2155,
+ "pool": 2146,
  "upvoted_papers_used": 0
 }

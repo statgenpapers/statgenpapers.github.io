@@ -93,7 +93,7 @@ def url_doi(url):
 def clean(text):
     """Plain text: entities decoded, inline markup removed, whitespace collapsed.
 
-    A leading "Abstract" heading, which OpenAlex often keeps, stays in: the lab weights were
+    A leading "Abstract" heading, which OpenAlex often keeps, stays in: the base weights were
     fitted and backtested on text that has it. The site hides it.
     """
     return " ".join(INLINE_TAG.sub("", html.unescape(text or "")).split())
@@ -181,8 +181,8 @@ def fetch_preprints(cfg, start, end):
                         # "Harvey, D. Y.; Smith, J." -> ["D. Y. Harvey", "J. Smith"]
                         authors=[" ".join(reversed(a.split(",", 1))).strip() for a in p["authors"].split(";") if a.strip()],
                         venue="Preprint",
-                        venue_name=f"{src['name']} · {category}",
-                        journal=src["name"],
+                        venue_name=f"{src['name']} · {category}",  # internal: the site does not show it for preprints
+                        journal="Preprint",  # a preprint is a preprint, whatever the server
                         date=p["date"],
                         type="preprint",
                         abstract=clean(p["abstract"]),

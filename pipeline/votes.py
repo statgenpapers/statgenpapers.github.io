@@ -26,6 +26,6 @@ def read_votes(project, month):
 
 
 def read_submissions(project, month):
-    """{submission id: {journal, short_name, title, url}}: the papers visitors added to one month."""
-    return {sid: {k: fields[k]["stringValue"] for k in ("journal", "short_name", "title", "url")}
+    """{submission id: {journal, short_name, title, url, abstract}}: the papers visitors added to one month."""
+    return {sid: {k: fields.get(k, {}).get("stringValue", "") for k in ("journal", "short_name", "title", "url", "abstract")}
             for sid, fields in documents(project, f"months/{month}/submissions").items()}

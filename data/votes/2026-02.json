@@ -1,56 +1,67 @@
 {
  "month": "2026-02",
  "submissions": {
-  "1kLzOMX4te0V3EuifIKR": {
-   "journal": "bioRxiv",
+  "09rznOvTAAoQDOkzO92d": {
+   "abstract": "Despite accumulating evidence that structural variants (SVs) exert disproportionate functional effects, their genome-wide contribution to complex trait heritability has not yet been systematically quantified. Here, we introduce MiXeR-SV, a tool that integrates long-read-derived SVs from existing reference catalogs with genome-wide association summary statistics to quantify SV heritability and enrichment. Applying MiXeR-SV to 105 complex traits, we identify 31 traits with significant enrichment (Bonferroni-corrected \\(P < 4.8 \\times 10^{-4}\\) ), with the SV component accounting for up to 32% of estimated total variant heritability under the model, despite SVs comprising less than 0.6% of the analyzed variants. Enrichment is most extensive in hematological, metabolic/biomarker, and cancer traits, trait-specific in neuropsychiatric and cardiometabolic phenotypes, and observed across all anthropometric traits, albeit with modest effect sizes, consistent with their highly polygenic architecture. These findings are robust across two independent SV reference panels built from complementary long-read and graph-based variant catalogs, with 93.5% of significant traits consistent between technologies. Furthermore, incorporating SV architecture into heritability models consistently increases total heritability estimates in enriched phenotypes, with SV heritability proportions correlating with the gap between SNP-based and twin heritability estimates across traits. Cross-ancestry replication in Biobank Japan confirms enrichment patterns. Our quantification of SV contributions to genetic architectures has significant implications for genetic prediction and fine-mapping of human complex traits and common diseases.",
+   "journal": "Preprint",
    "short_name": "biorxiv_ Nguyen_2026_StructuralVariantHeritability",
    "title": "Structural variants contribute substantially to complex trait heritability",
    "url": "https://www.biorxiv.org/content/10.64898/2026.02.28.708732v1"
   },
-  "JGKOHuXtaphs7NUUXkkn": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Yan_2026_FattyAcidGWAS",
-   "title": "Genetic regulation of fatty acid content in adipose tissue",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00479-3"
-  },
-  "Q6ovnVwxX4yTb5ZMLQho": {
+  "6NC3MQvr0WImsqKfhXNY": {
+   "abstract": "Variants in the familial hypercholesterolemia gene LDLR —the most important genetic driver of cardiovascular disease—can raise circulating low-density lipoprotein (LDL) cholesterol concentrations and increase the risk of premature atherosclerosis. Definitive classifications are lacking for nearly half of clinically encountered LDLR missense variants, limiting interventions that reduce disease burden. We tested the impact of ~17,000 (nearly all possible) LDLR coding variants on both LDLR cell-surface abundance and LDL uptake, yielding sequence–function maps that recapitulate known biochemistry, offer functional insights, and provide evidence for interpreting clinical variants. Functional scores correlated with hyperlipidemia phenotypes in prospective human cohorts and augmented polygenic scores to improve risk inference, highlighting the potential of this resource to accelerate familial hypercholesterolemia diagnosis and improve patient outcomes.",
    "journal": "Science",
    "short_name": "Science_Tabet_2026_FunctionalCharacterizationLDLR",
    "title": "The functional landscape of coding variation in the familial hypercholesterolemia gene LDLR",
    "url": "https://www.science.org/doi/10.1126/science.ady7186"
   },
-  "RJY5QtGzHB2irpehVv76": {
-   "journal": "medRxiv",
+  "G9lnPH5pfvRdk6LmIS0k": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Liang_2026_VarianceControlTWAS",
+   "title": "A gene-specific variance-control approach corrects polygenicity-driven inflation observed in transcriptome-wide association studies",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00485-9"
+  },
+  "RdyCn1qbrXtOMhFApx5d": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Yan_2026_FattyAcidGWAS",
+   "title": "Genetic regulation of fatty acid content in adipose tissue",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00479-3"
+  },
+  "XY5HcblyPnNkKcesVESp": {
+   "abstract": "Abstract Biobanks with longitudinal measurements have advanced our understanding of time-to-event (TTE) traits including age-of-onset and disease progression. However, limited work has characterized the heritability of TTE traits, a key parameter for comparisons of total association and predictive power. Here, we present COXMM, a Cox proportional hazard mixed model for estimating TTE heritability. Simulations show our model achieves nearly unbiased results, whereas non-TTE approaches severely underestimate TTE heritability. COXMM estimates also predict the expected accuracy of polygenic scores in survival analyses, informing study design. We analyzed a wide variety of traits and observed heritability patterns reflecting a mixture of TTE and case-control architectures with supporting GWAS and polygenic risk score analyses. Evaluating 18 trait pairs, progression to a severe condition has consistently lower heritability than all-cause incidence, suggesting that cause-specific progression may have stronger environmental influences. COXMM offers a novel framework for analyzing longitudinal disease architecture with implications for disease prediction.",
+   "journal": "Preprint",
    "short_name": "medrxiv_Taraszka_2026_Time-to-eventH2",
    "title": "A time-to-event heritability framework for inferring the genetic architecture of longitudinal traits",
    "url": "https://www.medrxiv.org/content/10.64898/2026.02.16.26346285v1"
   },
-  "im1o2vG8FBOJltaXvsrJ": {
-   "journal": "Nature",
-   "short_name": "Nature_Zou_2026_PhenomeWideCNVUKBB",
-   "title": "Phenome-wide analysis of copy number variants in 470,727 UK Biobank genomes",
-   "url": "https://www.nature.com/articles/s41586-025-10087-x"
-  },
-  "npazxiRRlejJYCOPvBOD": {
-   "journal": "medRxiv",
-   "short_name": "medrxiv_Dorans_2026_scTagging",
-   "title": "Distinguishing causal from tagging enhancers using single-cell multiome data",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.02.15.26346353v1"
-  },
-  "tqhiIVEX3DVd93MQNefP": {
+  "afs0YsMpQpdlmArzPvCS": {
+   "abstract": "",
    "journal": "Cell",
    "short_name": "Cell_Bader_2026_ProteomicsPredictsMS",
    "title": "Large-scale proteomics across neurological disorders uncovers biomarker panel and targets in multiple sclerosis",
    "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00104-2"
   },
-  "w9rRRkTczMdVmE8doOve": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Liang_2026_VarianceControlTWAS",
-   "title": "A gene-specific variance-control approach corrects polygenicity-driven inflation observed in transcriptome-wide association studies",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00485-9"
+  "w8EQmWkvdVtGst2CezAO": {
+   "abstract": "Abstract Methods that analyze single-cell RNA-seq+ATAC-seq multiome data have shown promise in linking enhancers to target genes by correlating chromatin accessibility with gene expression across cells. However, correlations among ATAC-seq peaks may induce non-causal tagging peak-gene links (analogous to tagging associations in GWAS); indeed, we confirm that tagging effects induced by peak co-accessibility are pervasive in peak-gene linking. We defined two scores for each ATAC-seq peak: co-accessibility score , the sum of squared correlations with each nearby peak; and co-activity score , the sum of squared correlations with each nearby gene. We compared these scores in 4 multiome data sets (spanning 86k cells and 6 immune/blood cell types) and determined that co-accessibility score and co-activity score were strongly correlated across peaks ( r = 0.57-0.73); these correlations were not explained by read depth, cell subtypes, or measurement noise, but are consistent with tagging. Indeed, non-causal peak-gene correlations were strongly correlated to a peak’s tagging correlation with a causal peak in CRISPRi data ( r = 0.92). We further determined that causal peak-gene associations are concentrated in specific functional categories of peaks, by regressing co-activity scores on stratified co-accessibility scores (S-CASC): e.g. 2.91x (s.e. 0.67) enrichment for peaks closest to a gene’s TSS and 1.41x (s.e. 0.11) enrichment for peaks overlapping H3K27ac marks. Co-accessibility scores were substantially driven by the number of transcription factor binding sites (TFBS) within a peak, and peak-peak correlations were substantially driven by the number of TFBS pairs within the two peaks with a shared TF. These effects were concentrated in a small number of pioneer TFs, which activate repressed chromatin regions. Consistent with widespread tagging, peak-gene links that we fine-mapped using SuSiE significantly outperformed marginal peak-gene links in evaluation sets derived from CRISPRi and eQTL data. We provide examples demonstrating the impact of tagging effects at specific peaks and genes implicated in GWAS of blood cell traits. Our findings underscore the importance of accounting for tagging effects when linking enhancers to target genes.",
+   "journal": "Preprint",
+   "short_name": "medrxiv_Dorans_2026_scTagging",
+   "title": "Distinguishing causal from tagging enhancers using single-cell multiome data",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.15.26346353v1"
+  },
+  "x2tETCxvNN569natbCxs": {
+   "abstract": ". Here we evaluate the role of CNVs across a broad range of human phenotypes and diseases by analysing CNVs from 470,727 UK Biobank whole-genome sequences and conducting a variant- and gene-level phenome-wide association study (PheWAS) with 2,941 plasma protein abundance measurements, 13,336 binary clinical phenotypes and 1,911 quantitative traits. Proteomic analyses validated functional associations of CNVs with nearby genes (cis-protein quantitative trait loci; cis-pQTLs)-with deletions and duplications typically associated with reduced and increased protein levels, respectively-and uncovered previously unknown protein-protein interactions (trans-pQTLs). Our PheWAS recapitulated known associations and uncovered associations in both coding and non-coding regions. Notably, we identified a rare deletion in ZNF451 associated with increased leukocyte telomere length and a non-coding deletion of a SLC2A9 enhancer associated with reduced gout risk. In addition, by combining CNVs with protein-coding single nucleotide variants and indels, we enhanced the power of our study to detect gene-disease associations. Finally, we leveraged this multiomics dataset to identify several pQTLs that constitute candidate biomarkers, including TMPRSS5 for Charcot-Marie-Tooth disease type 1A. This multiancestry whole-genome-sequence CNV PheWAS offers insights into the roles of CNVs in human health outcomes and could serve as a valuable resource for therapeutic development.",
+   "journal": "Nature",
+   "short_name": "Nature_Zou_2026_PhenomeWideCNVUKBB",
+   "title": "Phenome-wide analysis of copy number variants in 470,727 UK Biobank genomes",
+   "url": "https://www.nature.com/articles/s41586-025-10087-x"
   }
  },
  "votes": {
+  "09rznOvTAAoQDOkzO92d": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.ajhg.2026.01.003": {
    "8c6976e5b5410415": 1
   },
@@ -78,28 +89,25 @@
   "10.1038_s41588-026-02521-1": {
    "8c6976e5b5410415": 1
   },
-  "1kLzOMX4te0V3EuifIKR": {
+  "6NC3MQvr0WImsqKfhXNY": {
    "8c6976e5b5410415": 1
   },
-  "JGKOHuXtaphs7NUUXkkn": {
+  "G9lnPH5pfvRdk6LmIS0k": {
    "8c6976e5b5410415": 1
   },
-  "Q6ovnVwxX4yTb5ZMLQho": {
+  "RdyCn1qbrXtOMhFApx5d": {
    "8c6976e5b5410415": 1
   },
-  "RJY5QtGzHB2irpehVv76": {
+  "XY5HcblyPnNkKcesVESp": {
    "8c6976e5b5410415": 1
   },
-  "im1o2vG8FBOJltaXvsrJ": {
+  "afs0YsMpQpdlmArzPvCS": {
    "8c6976e5b5410415": 1
   },
-  "npazxiRRlejJYCOPvBOD": {
+  "w8EQmWkvdVtGst2CezAO": {
    "8c6976e5b5410415": 1
   },
-  "tqhiIVEX3DVd93MQNefP": {
-   "8c6976e5b5410415": 1
-  },
-  "w9rRRkTczMdVmE8doOve": {
+  "x2tETCxvNN569natbCxs": {
    "8c6976e5b5410415": 1
   }
  }

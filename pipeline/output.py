@@ -1,4 +1,4 @@
-"""Output records: Firestore paper ids, and rows of the lab Sheet's table (Journal, Short Name, Title, URL)."""
+"""Output records: Firestore paper ids, and rows of the table (Journal, Short Name, Title, URL)."""
 import re
 
 TABLE_HEADER = ["Journal", "Short Name", "Title", "URL"]

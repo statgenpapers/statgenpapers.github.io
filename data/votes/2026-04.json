@@ -1,158 +1,186 @@
 {
  "month": "2026-04",
  "submissions": {
-  "3VHzbifRwgy7jQlrCVPE": {
-   "journal": "Nat Genet",
-   "short_name": "NG_Yan_2026_SpaMosaic",
-   "title": "Mosaic integration of spatial multi-omics with SpaMosaic",
-   "url": "https://www.nature.com/articles/s41588-026-02573-3"
-  },
-  "5zwG2sA1LMklzRqyRI2e": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Yu_2026_SCADS",
-   "title": "Connecting polygenic disease risk to cell states and regulatory programs through single-cell chromatin accessibility",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721080v1"
-  },
-  "66RHQbqhnl3jEpOaj2sJ": {
-   "journal": "Science",
-   "short_name": "Science_Zhang_2026_iGOF-PerturbSeq",
-   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
-   "url": "https://www.science.org/doi/10.1126/science.adw2156"
-  },
-  "F4DrzOoScZpHGWZfEUb2": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Katzourou_2026_NeurodevelopmentalConditionsCNVonCardioDisease",
-   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00107-2"
-  },
-  "IapQBHrqGAJ4bUKfD4KU": {
-   "journal": "Nature",
-   "short_name": "Nature_Chen_2026_single-cellFourOmics",
-   "title": "Gene regulatory landscape dissected by single-cell four-omics sequencing",
-   "url": "https://www.nature.com/articles/s41586-026-10322-z"
-  },
-  "Iawd0UMnbNSiM5HkAfAY": {
-   "journal": "Nat Genet",
-   "short_name": "NG_Zhao_2026_INSPIRE",
-   "title": "Interpretable, flexible and spatially aware integration of multiple spatial transcriptomics datasets from diverse sources",
-   "url": "https://www.nature.com/articles/s41588-026-02579-x"
-  },
-  "L0QnLEhOMchL9noCe8qD": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Wang_2026_PheRS",
-   "title": "Phenome-derived polygenic scores and social determinants jointly shape context-dependent disease risk",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.04.16.26351039v1"
-  },
-  "PhJU3ULpkbaDvHcnt1Vb": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Guo_2026_ProtoCloud",
-   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00079-0"
-  },
-  "QOKi977UhgEigaM8vkCv": {
-   "journal": "Am J Hum Genet",
-   "short_name": "AJHG_Chaldebas_5primeUTRWithProteinImpact",
-   "title": "Genome-wide detection of human 5′ UTR variants that impact protein translation",
-   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00106-0"
-  },
-  "Spd4ZNK1d9bpy11bOqQJ": {
-   "journal": "Cell Genom",
-   "short_name": "CG_Rodriguez-Algarra_2026_ribosomalDNA",
-   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
-   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00075-3"
-  },
-  "Ug8PyTWhXwf2XGgig6Ec": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Sevilla-González_2026_MultiOmicT2D",
-   "title": "Multi-omic signatures of genetic mechanisms inform on type 2 diabetes biology and patient heterogeneity",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.04.17.26351136v1"
-  },
-  "V6zngwmNiWSrmMsVne4m": {
+  "0HCHXzAsXB9dtnpQtPIq": {
+   "abstract": "Sex differences in neurodevelopmental, psychiatric, and neurodegenerative disease susceptibility may arise from sex chromosome and hormonal influences on cell type–specific gene expression. We present a single-cell transcriptomic analysis of adult human cortex performed using 169 samples from 15 females and 15 males (age 26 to 78 years) across six regions selected according to their sex-biased volumes. Sex-based analysis identified the strongest differences in the fusiform cortex, glia, and excitatory neurons and among sex-chromosome genes. More than 3000 genes showed sex-biased expression, including 133 with consistent effects across regions and cell types. Core autosomal signatures linked sex differences to cortical architecture, hormone-responsive regulation, and genetic risk for sex-biased brain disorders. This study advances our understanding of sex differences in human brains and provides a valuable resource to support future research.",
    "journal": "Science",
    "short_name": "Science_Decasien_2026_SexSpecificBrainExpression",
    "title": "Sex effects on gene expression across the human cerebral cortex at cell type resolution",
    "url": "https://www.science.org/doi/10.1126/science.aea9063"
   },
-  "VgG1gjhVXm3Pt2WuhtYt": {
-   "journal": "JACC",
-   "short_name": "JACC_Misra_2026_PRSforEightCardiovascularDiseases",
-   "title": "Development and Validation of a Clinical Polygenic Risk Report in U.S.-Based Health Systems for 8 Cardiovascular Conditions",
-   "url": "https://www.jacc.org/doi/10.1016/j.jacc.2026.03.035"
+  "6X4P7srVmVfOVF9yjSkI": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Chaldebas_5primeUTRWithProteinImpact",
+   "title": "Genome-wide detection of human 5′ UTR variants that impact protein translation",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00106-0"
   },
-  "WKA7iiYOICqbLVCCXDco": {
-   "journal": "Cell",
-   "short_name": "Cell_Huang_2026_sSNV-AD",
-   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
-   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00341-7"
-  },
-  "X2DC6f33GSiAfKnkmMnp": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_SousaDaMota_2026_ReferencePanelAncientDNA",
-   "title": "Optimal Reference Panel Design in Ancient DNA Imputation from Coalescent Theory, Simulation, and Real Data Application with an Ancient Reference Panel",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721163v1.full"
-  },
-  "YUYeJttM29Q8G1VPMhdO": {
-   "journal": "bioRxiv",
-   "short_name": "Biorxiv_Shen_2026_EfficientARG",
-   "title": "Highly efficient genotype compression leveraging genealogical relatedness",
-   "url": "https://www.biorxiv.org/content/10.64898/2026.04.29.721594v2"
-  },
-  "ZdZ6afm7KG8B67pR6QOe": {
-   "journal": "bioRxiv",
+  "6YOvvS4AiArRjfXbKzP9": {
+   "abstract": "High-throughput affinity-based proteomics has advanced biomedical research, yet fundamental, persistent discordance between mainstream platforms (SomaScan and Olink) routinely undermines the replication of findings. This platform-driven non-replication complicates downstream biological validation and biomarker prioritization. Here, we develop a machine learning-based framework for cross-platform protein value imputation to resolve this translational bottleneck. Using paired proteomic data measured by both SomaScan and Olink from 5,325 participants of the Multi-Ethnic Study of Atherosclerosis, we developed models to impute cross-platform measurements and applied them to two independent and demographically distinct cohorts (Cardiovascular Health Study [N=3,171] and UK Biobank [UKB; N=41,405]) for external validation. Our bi-directional model 1) established an imputation performance-based protein fidelity index, validated against gold-standard measurements from Atherosclerosis Risk in Communities study (N=101) and Nurses' Health Study (N=54), 2) enabled imputation of platform-exclusive protein measurements, and 3) facilitated calibration of overlapping proteins. We demonstrate the utility of this framework through three applications: 1) fidelity-informed analyses enhanced the replication of biomarker discovery, 2) recovery of SomaScan signals that were previously inaccessible in UKB's original Olink measurements, and 3) improved replication performance for overlapping proteins. Our study offers a translational roadmap that allows researchers to achieve reliable epidemiological replication, target specific assays for future optimization, and prioritize biological signal over platform noise.",
+   "journal": "Preprint",
    "short_name": "Biorxiv_Li_2026_CrossPlatformProteinImputation",
    "title": "Machine learning cross-platform proteomic imputation enables protein quality scoring and replication of epidemiological associations",
    "url": "https://www.biorxiv.org/content/10.64898/2026.05.05.723059v1"
   },
-  "ZlMHHV4U6mPSFoLzmkQE": {
-   "journal": "Nature",
-   "short_name": "Nature_Yakubovsky_2026_SpatialLiverTranscriptomics",
-   "title": "A spatial atlas of the healthy human liver from live donors",
-   "url": "https://www.nature.com/articles/s41586-026-10377-y"
-  },
-  "cqLMAL5AcRzcz8YUnWSs": {
-   "journal": "medRxiv",
-   "short_name": "Medrxiv_Hou_2026_cis+transPWAS",
-   "title": "Functionally informed cis and trans proteome-wide association studies prioritize disease-critical genes",
-   "url": "https://www.medrxiv.org/content/10.64898/2026.04.24.26351667v1"
-  },
-  "gFECbVB06XZv1LiGD9HY": {
-   "journal": "Nature",
-   "short_name": "Nature_Xu_2026_PerturbFate",
-   "title": "Mapping convergent regulators of melanoma drug resistance by PerturbFate",
-   "url": "https://www.nature.com/articles/s41586-026-10367-0"
-  },
-  "kLYoVRDJ5izBkdOG8bm9": {
-   "journal": "Nature",
-   "short_name": "Nature_Wang_2026_1000ChinesePangenome",
-   "title": "The 1000 Chinese Pangenome empowers medical and population genetics",
-   "url": "https://www.nature.com/articles/s41586-026-10315-y"
-  },
-  "nQ1aLxHRtSkWtbjdPbH7": {
-   "journal": "Nature",
-   "short_name": "Nature_Dumoulin_2026_SpatialDKD",
-   "title": "Spatial atlas of diabetic kidney disease reveals a B cell-rich subgroup",
-   "url": "https://www.nature.com/articles/s41586-026-10363-4"
-  },
-  "syQk9K45OOZyndpcyEk5": {
+  "D2nWvIWsLCUkzFmiYtwd": {
+   "abstract": "Abstract DNA variants modulate mortality risks across an entire lifespan but their dynamic age-dependent effects have not been resolved in any species for either sex. Here we mapped variants that shape mortality using an actuarial approach, starting with a base population of 6,438 pubescent mice and ending with 559 survivors that lived beyond 1,100 days of age. Twenty-nine Vita loci influence lifespan with strong age- and sex-specific effects. Most act during distinct stages with polarities that often invert with age, but a minority have consistent age-dependent effects in one or both sexes. A separate set of 30 Soma loci influence correlations between body mass and life expectancy. Nineteen Soma loci mediate higher mortality in larger young mice, whereas 11 mediate lower mortality in larger old mice. All effects are stronger in male mice than in female mice. Vita and Soma loci form epistatic networks split strictly by sex. These findings provide a genetic bridge between evolutionary theories of ageing and molecular mechanisms that can guide interventions to extend healthy lifespan.",
    "journal": "Nature",
    "short_name": "Nature_Arends_2026_GeneticDynamicsAgeing",
    "title": "Dynamics of genetic and somatic trade-offs in ageing and mortality",
    "url": "https://www.nature.com/articles/s41586-026-10407-9"
   },
-  "uRhwNhK7rd6lOHglelNd": {
+  "DLl0mkDEyx6aNH39Opum": {
+   "abstract": "Understanding the genetic regulation of RNA abundance is essential for defining disease mechanisms. Conventional expression quantitative trait locus (eQTL) studies measure steady-state RNA and capture effects across the entire transcript lifecycle. While most eQTL likely affect transcription by altering promoter or enhancer function within the nucleus, others may act post-transcriptionally through RNA modification or stability in the cytosol. To distinguish these mechanisms, we compare eQTL from mature cellular RNA and recently transcribed nuclear RNA in brain and kidney. We identify distinct causal variants underlying cellular and nuclear eQTL at the same eGenes. Cellular eQTL are enriched in transcribed regions (P = 3.3×10⁻¹²⁶), suggesting post-transcriptional regulation, whereas nuclear eQTL are enriched in distal regulatory elements (P = 7.0×10⁻³²), consistent with transcriptional control. For example, stop-gain variants likely acting through nonsense-mediated decay appear only in cellular eQTL. Conversely, nuclear eQTL variants (e.g., TUBGCP4) within enhancers sometimes uniquely colocalize with disease loci (schizophrenia), revealing distinct regulatory mechanisms. By comparing newly produced RNA in the nucleus with mature RNA in the cytosol, genetic variants that control gene expression showed striking differences in localization and biological mechanisms, helping explain how they contribute to disease.",
    "journal": "Nat Commun",
    "short_name": "NatComm_Sakaue_2026_eQTLearly+late",
    "title": "Early and late RNA eQTL are driven by different genetic mechanisms",
    "url": "https://www.nature.com/articles/s41467-026-72139-8"
   },
-  "wXePW3elmtvzO0WTeSkP": {
+  "F1swD6z4OpsYV9l8L1Ii": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Rodriguez-Algarra_2026_ribosomalDNA",
+   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00075-3"
+  },
+  "HVm6JqAReaVyRG1hVIAp": {
+   "abstract": "",
+   "journal": "Nature",
+   "short_name": "Nature_Chen_2026_single-cellFourOmics",
+   "title": "Gene regulatory landscape dissected by single-cell four-omics sequencing",
+   "url": "https://www.nature.com/articles/s41586-026-10322-z"
+  },
+  "JJAWgQf4YbUz25Ll0Cea": {
+   "abstract": "Abstract With the advent of spatial multi-omics, we can mosaic integrate diverse datasets with partially overlapping modalities to construct consensus multi-modal spatial atlases of the source tissue. SpaMosaic is a spatial multi-omics mosaic integration tool that employs contrastive learning and graph neural networks to construct a modality-agnostic and batch-corrected latent space suited for analyses like spatial domain identification and imputing missing omes. Using simulated and experimentally acquired datasets, we benchmarked SpaMosaic against single-cell multi-omics mosaic integration methods. The experimental data encompassed RNA and protein abundance, chromatin accessibility or histone modifications, acquired from brain, embryo, tonsil, and lymph node tissues. SpaMosaic achieved superior performance over existing methods in identifying known spatial domains with enhanced resolution and clarity while reducing noise and batch effects. It also ranked top for modality alignment, enabling seamless diagonal integration without the need for image registration. After integration, SpaMosaic can also impute missing modalities. With a mosaic set of mouse brain data with RNA and different epigenomic modalities, we integrated and imputed the missing omics. There we found the imputed gene activity scores of activating and silencing histone marks show the correct correlation with RNA. Moreover, we uncovered more region-specific genes and pathways showing the correct transcriptome-epigenome correlations in the imputed histone modification than in the measured chromatin accessibility modalities. Lastly, SpaMosaic’s imputation also allows the inference of relationships between different modalities without requiring co-profiling from the same section.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Yan_2026_SpaMosaic",
+   "title": "Mosaic integration of spatial multi-omics with SpaMosaic",
+   "url": "https://www.nature.com/articles/s41588-026-02573-3"
+  },
+  "M9JvwtdoU4qC4BvhbBFD": {
+   "abstract": "",
+   "journal": "Cell Genom",
+   "short_name": "CG_Guo_2026_ProtoCloud",
+   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00079-0"
+  },
+  "O2ZW1ZfQQEH7oTS3owoB": {
+   "abstract": "",
    "journal": "Cell",
    "short_name": "Cell_Billmann_2026_PPI",
    "title": "Global genetic interaction network of a human cell maps conserved principles and informs functional interpretation of gene co-essentiality profiles",
    "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00345-4"
+  },
+  "OURqrCUnY1xQESkx3hrN": {
+   "abstract": "Type 2 diabetes (T2D) is a heterogeneous disease shaped by genetic pathways related to insulin resistance and β-cell dysfunction, but how this heterogeneity is reflected molecularly remains unclear. We integrated partitioned polygenic scores (pPS) with proteomic and metabolomic profiling to define molecular signatures of T2D and their clinical relevance. We analyzed UK Biobank participants with genomic, proteomic, and metabolomic data. In a disease-free training subset, we used LASSO regression to identify multi-omic signatures associated with each pPS by jointly modeling proteins and metabolites. In an independent testing set, we constructed multi-omic scores and examined their associations with clinical traits and diabetes-related outcomes. Mediation analyses were used to investigate putative causal pathways. Key findings were evaluated in the Multi-Ethnic Study of Atherosclerosis (MESA). We identified distinct multi-omic signatures that capture the molecular architecture of T2D genetic risk across physiological subtypes. Compared with genetic scores alone, multi-omic pPS showed larger effect sizes and better disease discrimination. These scores recapitulated subtype-specific physiology and were associated with T2D risk. The Beta-Cell 2 multi-omic score showed marked stratification for insulin use, which was replicated in MESA, where it also predicted future insulin use. Mediation analyses implicated lipoprotein remodeling and fatty acid metabolism in the Lipodystrophy 1 cluster, accounting for 30-45% of the total effect of pPS on T2D risk. Integrating process-specific genetic risk with circulating multi-omic profiles reveals biologically distinct endotypes of T2D and supports a framework for improved patient stratification and risk assessment.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Sevilla-González_2026_MultiOmicT2D",
+   "title": "Multi-omic signatures of genetic mechanisms inform on type 2 diabetes biology and patient heterogeneity",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.17.26351136v1"
+  },
+  "R5R5Kg9kfwQ3ShaRCWQY": {
+   "abstract": "Imputation is widely used in the ancient DNA (aDNA) field to determine which phenotypically important alleles ancient individuals carried, to study natural selection, and to detect segments of the genome that are shared between individuals identical by descent. However, rare variant imputation is less accurate, and rare variants tend to be excluded from downstream analyses. State-of-the-art imputation methods leverage large reference panels, improving rare variant accuracy in modern targets. However, it is unclear how to identify optimal panels for aDNA targets. It seems plausible that aDNA reference panels would improve imputation of aDNA, but no such panels have been assembled or tested. We leveraged analytical results from coalescent theory and complementary simulations to evaluate both performance of large modern panels, and ancient panels' impact on aDNA imputation. For modern panels, sample sizes as small as 5,000 saturate imputation performance and model misspecifications in standard imputation algorithms increase imputation error for rare and intermediate frequency variants. For instance, for European hunter-gatherers, non-reference imputed variants with derived allele frequency less than at least 2% should be removed. Including ancient genomes in a modern reference panel substantially improved imputation accuracy in analytical modelling and simulations, particularly, for rare variants and older samples from groups with low effective population size. We assembled a joint reference panel with 1000 Genomes and 95 ancient samples and used it to impute 95 downsampled genomes, finding modest gains in imputation performance. This approach can rescue rare variants typically discarded from current imputation pipelines and may prove useful as the number of ancient samples increases.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_SousaDaMota_2026_ReferencePanelAncientDNA",
+   "title": "Optimal Reference Panel Design in Ancient DNA Imputation from Coalescent Theory, Simulation, and Real Data Application with an Ancient Reference Panel",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721163v1.full"
+  },
+  "Uc9Ytyww7Y99KxbG9y1C": {
+   "abstract": "Abstract Single-cell ATAC-sequencing enables high-resolution mapping of cell states and their putative regulatory elements. The enrichment of genome-wide association study (GWAS) signals within context-specific regulatory regions can reveal disease-relevant cell populations. We present Single-Cell ATAC-seq Disease Score (SCADS), a computational framework that integrates GWAS summary statistics with scATAC-seq data to prioritize disease-relevant cells. SCADS produces calibrated, cell-level scores that are comparable across datasets and traits by: (i) identifying chromatin co-regulatory regions via topic modeling, (ii) quantifying their polygenic GWAS enrichment, and (iii) calculating cell-specific disease scores from topic weights and enrichment levels. Across extensive simulations, SCADS outperforms existing methods in power while controlling false positives. Applied to multiple autoimmune traits, SCADS reveals marked heterogeneity in disease relevance within canonical immune cell types. We specifically studied the differential disease relevance within CD8 + T and colon epithelial cells for inflammatory bowel disease, and pinpointed underlying gene programs and variants. SCADS is scalable, interpretable, and modular, providing a general framework to connect noncoding regulatory variation to cellular identity and function.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Yu_2026_SCADS",
+   "title": "Connecting polygenic disease risk to cell states and regulatory programs through single-cell chromatin accessibility",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721080v1"
+  },
+  "WpkxuD9i4DKIeTuNgEgt": {
+   "abstract": "Abstract Large genetic datasets are terabytes in size, presenting a computational challenge that will intensify as sequencing efforts scale. We present a lossless compression algorithm, kodama , which supports matrix multiplication and is suitable for large-scale statistical analyses. Kodama leverages genealogical relatedness among nominally unrelated individuals and infers a novel data structure similar to the ancestral recombination graph (ARG), called the linear ARG. We applied kodama to whole genome sequencing data from UK Biobank and All of Us. Inferred linear ARGs were 17-89 times smaller on disk compared to the input data; the entire UK Biobank N=200k dataset can be loaded into memory (58GB). Compared with the recently proposed genotype representation graph (GRG), the linear ARG is 2.5 times smaller. Genotype matrix multiplications, which are the bottleneck in most statistical applications, are extremely fast with the linear ARG; we performed a GWAS on the UK Biobank 200k cohort across 89 traits with 42 covariates in 100 seconds, representing a 4,700-fold speedup over PLINK 2.0. We expect that the linear ARG will enable genetic analyses to scale to millions of samples.",
+   "journal": "Preprint",
+   "short_name": "Biorxiv_Shen_2026_EfficientARG",
+   "title": "Highly efficient genotype compression leveraging genealogical relatedness",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.29.721594v2"
+  },
+  "YAKxSVIEne7TqFk48Y3q": {
+   "abstract": "Reconstructing gene expression atlases for human tissues is challenging due to limited access to healthy samples from live individuals. Neurologically deceased donors often show ischaemic changes, and tissues near diseased regions may have altered gene expression1,2. The liver, with its unique regenerative capacity, allows analysis from live healthy donors. Here, using spatial transcriptomics (Visium, Visium HD3, multiplexed error-robust fluorescence in situ hybridization (MERFISH)4 and PhenoCycler imaging5) and single-nucleus RNA sequencing6, we analysed 16 liver samples: 8 from young live healthy donors and 8 from individuals with liver pathology, sampling ‘adjacent normal’ tissue. Livers from live healthy donors displayed significant gene expression differences compared with the adjacent normal tissues from individuals with liver pathology. Hepatocytes and non-parenchymal cells exhibited marked zonation along the porto–central axis of the liver lobules, with key functions being pericentrally shifted compared to mice and other mammals. Our atlas identified dynamic programmes in early steatotic hepatocytes, including a decline in nuclear-encoded mitochondrial proteins and a compensatory increase in mitochondria-encoded transcripts. This study presents a spatial gene expression reference for the healthy human liver and insights into hepatocyte changes in early steatosis. A human spatial atlas of gene expression in liver based on live donors shows marked porto–central zonation of hepatocytes and non-parenchymal cells, and transcriptomic changes in early steatosis.",
+   "journal": "Nature",
+   "short_name": "Nature_Yakubovsky_2026_SpatialLiverTranscriptomics",
+   "title": "A spatial atlas of the healthy human liver from live donors",
+   "url": "https://www.nature.com/articles/s41586-026-10377-y"
+  },
+  "bw4JeuWUYcwqoY45Gx4n": {
+   "abstract": "Pangenomes are revolutionizing our ability to resolve genomic regions with complex variations1. However, existing human pangenomes2,3, constrained by small sample sizes, provide limited utility for medical and population genetic applications. Here we generated 1,116 diploid genome assemblies (55 de novo and 1,061 pangenome-informed) with an average size of 2.98 Gb and a mean quality value of 46 as part of the 1000 Chinese Pangenome (1KCP) project. On the basis of these assemblies, we constructed a pangenome comprising 405.3 million base pairs of sequences absent from the current references GRCh38 and CHM13, including 26.2 million base pairs of functional genic and predicted regulatory elements. We catalogued a full spectrum of genetic variation, including 35.4 million small variants, 110,530 structural variants (SVs), 485,575 tandem repeats (TRs) and 0.86 million nested variants embedded in non-reference sequences. This extensive dataset enabled detailed characterization of multiscale genic variations relevant to medical genetics, including gene-altering SVs, TR expansions, gene cluster variations and HLA gene haplotypes. Coupled with the 1KCP gene expression data, we conducted pan-variant expression quantitative trait locus (eQTL) mapping to analyse diverse variant types. We identified 3,256 eQTLs involving complex variants (SVs, TRs and nested variants) and elucidated their regulatory complexity. Finally, we developed a 1KCP pan-variant imputation reference panel, which provides multitype genetic markers to enhance the resolution of future association studies. This resource advances our understanding of complex variants and their functional implications to provide new insights into human health. Development of the pangenome-informed genome assembly (PIGA) workflow enabled the generation of 1,116 diploid genome assemblies (55 de novo and 1,061 pangenome-informed), representing an extensive resource of medically relevant genic variations.",
+   "journal": "Nature",
+   "short_name": "Nature_Wang_2026_1000ChinesePangenome",
+   "title": "The 1000 Chinese Pangenome empowers medical and population genetics",
+   "url": "https://www.nature.com/articles/s41586-026-10315-y"
+  },
+  "dLXLdWIAqSDHrmztsLiG": {
+   "abstract": "High-throughput genomic studies have uncovered associations between diverse genetic alterations and disease phenotypes. However, elucidating how perturbations in functionally disparate genes give rise to convergent cellular states remains challenging. Here we present PerturbFate, a high-throughput, cost-effective, combinatorial-indexing single-cell platform that enables systematic interrogation of massively parallel CRISPR interference1 perturbations across the full spectrum of gene regulation, from chromatin remodelling and nascent transcription to steady-state transcriptomic phenotypes. Using PerturbFate, we profiled more than 300,000 cultured melanoma cells to characterize multimodal phenotypic and gene regulatory responses to perturbations in more than 140 vemurafenib resistance-associated genes. We uncovered a shared dedifferentiated cell state marked by convergent cooperative transcription factor activities across diverse genetic perturbations. We further dissected phenotypic responses to perturbations in Mediator complex components, linking module-specific biochemical properties to convergent transcriptional activations. We identified common regulatory nodes that drive similar phenotypic outcomes across distinct genetic perturbations. We also delineated how perturbations in functionally unrelated genes reshape cell state. Thus, PerturbFate establishes a versatile platform for identifying key molecular regulators by anchoring multimodal regulatory dynamics to disease-relevant phenotypes. PerturbFate is a high-throughput, cost-effective, single-cell platform that systematically profiles CRISPR interference perturbations to reveal common regulatory nodes and convergent phenotypic states across diverse genetic alterations linked to vemurafenib resistance in melanoma cells.",
+   "journal": "Nature",
+   "short_name": "Nature_Xu_2026_PerturbFate",
+   "title": "Mapping convergent regulators of melanoma drug resistance by PerturbFate",
+   "url": "https://www.nature.com/articles/s41586-026-10367-0"
+  },
+  "gTBQhwdHtMWOgtb4AvYc": {
+   "abstract": "Abstract Proteome-wide association studies (PWAS) typically link genetically predicted protein levels to disease using cis-pQTLs, which can be limited by low cis-heritability for disease-critical genes under negative selection and by tagging due to co-regulation among nearby genes. Trans-pQTLs provide complementary information when large sample sizes are available to detect weak polygenic effects, enabling associations between trans-predicted protein levels and disease. We developed PolyPWAS, a functionally informed, summary statistics-based framework for associating both cis- and trans-predicted protein levels to disease. PolyPWAS integrates 96 functional annotations with proteome-wide pleiotropy to improve protein prediction, while correcting for PCs of predicted protein levels to limit tagging effects. We applied PolyPWAS to 2.8K plasma proteins measured in 34K UKB-PPP participants, analyzing GWAS summary statistics for 88 diseases and complex traits (average N=336K). Trans-predicted protein levels explained 21% of disease heritability (vs. 9.6% for cis-predicted protein levels), leveraging a 24% relative improvement in trans-prediction accuracy from functional priors. Trans-PWAS identified more significant protein-disease associations (and more conditionally significant associations) than cis-PWAS. Cis and trans associations showed only modest excess overlap (1.18, 95% CI: 1.11-1.26). Accordingly, combining evidence from cis and trans associations improved disease gene prioritization evaluated using gene sets from rare variant association studies (+11% relative improvement) and PoPS (+7.0% relative improvement) relative to cis-only approaches. PWAS associations to disease replicated across protein level cohorts, with strong UKB-PPP/deCODE concordance after adjusting for cohort-specific prediction accuracy. We provide examples where trans-regulatory effects link multiple disease-critical genes, underscoring the importance of integrating cis- and trans-regulatory effects to map protein-mediated disease biology.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Hou_2026_cis+transPWAS",
+   "title": "Functionally informed cis and trans proteome-wide association studies prioritize disease-critical genes",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.24.26351667v1"
+  },
+  "gbwUDIH2Gc4iQUgMhHRm": {
+   "abstract": "BACKGROUND: Polygenic risk scores (PRS) stratify inherited cardiovascular risk, but their path to clinical implementation remains unclear. OBJECTIVES: We aimed to develop and validate integrated PRS for 8 cardiovascular conditions and outline a framework for their clinical reporting. METHODS: We analyzed genotype and clinical data from 245,394 All of Us Research Program participants. Publicly available PRS for 8 traits-coronary artery disease, atrial fibrillation, type 2 diabetes, venous thromboembolism (VTE), thoracic aortic aneurysm (TAA), extreme hypertension, severe hypercholesterolemia, and elevated lipoprotein(a)-were combined using PRSmix, an elastic-net approach. Integrated PRS were externally validated in 53,306 Mass General Brigham Biobank participants using logistic regression, adjusting for age, sex, and ancestry. RESULTS: Of 53,306 genotyped Mass General Brigham Biobank participants (55.6% women, mean age 53 ± 17 years), integrated PRS demonstrated robust discrimination and appropriate calibration across 8 cardiovascular traits. Comparing high genetic risk (top 10% of PRS distribution, or top 20% for rarer TAA and VTE) vs average risk (26th-75th percentiles, or 21st-80th percentiles for TAA and VTE) yielded ORs: coronary artery disease (3.7 [95% CI: 3.4-4.1]), type 2 diabetes (3.1 [95% CI: 2.8-3.3]), atrial fibrillation (3.0 [95% CI: 2.7-3.3]), VTE (1.9 [95% CI: 1.6-2.0]), TAA (1.7 [95% CI: 1.5-1.9]), hypertension (2.1 [95% CI: 1.8-2.3]), hypercholesterolemia (4.1 [95% CI: 3.7-4.5]), and lipoprotein(a) (41.0 [95% CI: 27.0-62.2]). Incorporating integrated PRS into clinical models improved risk classification, while prospective analyses confirmed significant associations with incident cardiovascular outcomes. CONCLUSIONS: Integrated PRS offer an implementable framework for genetic risk reporting, and are now available as a clinically orderable test. Broader prospective validation studies are needed to further establish clinical utility.",
+   "journal": "JACC",
+   "short_name": "JACC_Misra_2026_PRSforEightCardiovascularDiseases",
+   "title": "Development and Validation of a Clinical Polygenic Risk Report in U.S.-Based Health Systems for 8 Cardiovascular Conditions",
+   "url": "https://www.jacc.org/doi/10.1016/j.jacc.2026.03.035"
+  },
+  "iGPSZtkfdR4nhUYNOcWw": {
+   "abstract": "",
+   "journal": "Cell",
+   "short_name": "Cell_Huang_2026_sSNV-AD",
+   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00341-7"
+  },
+  "mZTN9mCoqZqkftEZVlqw": {
+   "abstract": "",
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Katzourou_2026_NeurodevelopmentalConditionsCNVonCardioDisease",
+   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00107-2"
+  },
+  "oHrf0unZ8z1aLjqzat0W": {
+   "abstract": "An in vivo approach combining high-throughput screening with cell type–specific readouts could enable elucidation of genotype-phenotype relationships in complex tissues. We developed an in vivo gain-of-function Perturb-seq platform, termed iGOF–Perturb-seq, to build a functional atlas of ~1000 transcription factors (TFs) in astrocytes, a cell type essential to many brain functions. We then identified cofunctional modules, annotated uncharacterized TFs, and predicted disease-associated TF clusters. Furthermore, iGOF–Perturb-seq performed in a mouse neuroinflammatory model identified Ferd3l as a therapeutic candidate, and astrocyte-specific overexpression of Ferd3l alleviated Alzheimer’s disease symptoms in mice. This study provides resources for understanding gene regulation and disease mechanisms in vivo and for identifying potential therapeutic targets for different brain diseases.",
+   "journal": "Science",
+   "short_name": "Science_Zhang_2026_iGOF-PerturbSeq",
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "rexnBOiihv77kN5QEi8v": {
+   "abstract": "Diabetic kidney disease (DKD), the leading cause of kidney failure, is marked by clinical and molecular heterogeneity, making therapeutic development exceedingly difficult1. Here we used Xenium and CosMx single-cell spatial transcriptomics, integrated with single-nucleus RNA sequencing, to build a cross-platform kidney atlas that makes tissue architecture computable for prognosis, non-invasive detection and patient selection. Using this atlas, we defined reproducible tissue niches and injury-linked microenvironments and uncovered a profibrotic context that expands with disease and tracks with worse kidney function. Within this architecture, we identified a B cell-predominant, tertiary lymphoid structure-like immune microenvironment that defines a distinct DKD subset with accelerated progression to renal end-points. We developed tissue biomarkers and a matched plasma protein panel that capture this biology, stratify patients in a population biobank and improve risk prediction beyond clinical models—supporting their potential for biomarker-guided selection in future B cell-targeted DKD trials. A single-cell spatial atlas identifies a B cell-predominant microenvironment within the profibrotic tubular niche that marks a subset of patients with diabetic kidney disease with rapid progression.",
+   "journal": "Nature",
+   "short_name": "Nature_Dumoulin_2026_SpatialDKD",
+   "title": "Spatial atlas of diabetic kidney disease reveals a B cell-rich subgroup",
+   "url": "https://www.nature.com/articles/s41586-026-10363-4"
+  },
+  "vWiv61EjNQoBAlyHpzoB": {
+   "abstract": "Polygenic scores (PGS) are typically derived from single-trait genome-wide association studies (GWAS), yet many complex diseases arise from shared genetic liability distributed across correlated clinical dimensions. Accordingly, disease risk depends not only on how genetic liability is represented but also on the social context in which that liability is expressed. Whether phenome-derived latent factors improve prediction, and how social determinants of health (SDoH) modify the realized utility of PGS, remains unclear. Here we constructed PGS for 35 orthogonal latent phenomic factors derived from 2,772 phenotypes in 361,114 UK Biobank (UKB) participants and evaluated their phenomic specificity, cross-dataset portability and predictive performance relative to conventional disease-specific PGS across the UKB holdout, Mass General Brigham Biobank and the All of Us (AoU) Research Program. Factor-based PGS showed widespread, biologically coherent phenome-wide associations that were reproducible across biobanks and ancestries. Their predictive utility, however, was strongly disease dependent. For asthma, a respiratory factor PGS outperformed an internally derived disease-specific PGS and showed superior cross-ancestry portability, retaining 41.5% of European-ancestry predictive accuracy in African-ancestry individuals, compared with 22.9% for an asthma PGS derived from the largest available multi-ancestry GWAS. By contrast, disease-specific PGS remained superior for coronary artery disease (CAD) and type 2 diabetes (T2D). These findings suggest that phenome-derived aggregation is most beneficial when disease-specific GWAS incompletely capture underlying liability, including settings of biological heterogeneity or imprecise phenotyping. We then evaluated SDoH in AoU as a complementary axis shaping prevalent disease prediction beyond genetic susceptibility. Across all three diseases, SDoH contributed substantial and largely independent predictive information beyond the disease-optimal genetic model. SDoH also modified how genetic liability translated into observed disease prevalence: for asthma and CAD, genetic stratification attenuated with increasing social burden, whereas this attenuation was substantially weaker for T2D. As a result, the same genetic percentile corresponded to different standardized predicted prevalences across social strata, reflecting disease-specific shifts in baseline prevalence, genetic gradients and calibration. Together, these findings indicate that disease risk is shaped by both genetic liability and the social context in which that liability is realized. Phenome-derived PGS improve prediction under specific architectural conditions, whereas social context independently modifies the performance, calibration and interpretation of genetic risk across populations.",
+   "journal": "Preprint",
+   "short_name": "Medrxiv_Wang_2026_PheRS",
+   "title": "Phenome-derived polygenic scores and social determinants jointly shape context-dependent disease risk",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.16.26351039v1"
+  },
+  "zqL2wYD44mf2CoydNZkk": {
+   "abstract": "Recent advances in spatial transcriptomics (ST) have generated an expanding collection of heterogeneous datasets, offering unprecedented opportunities to investigate tissue organizations and functions. However, effective interpretation and integration of data originating from diverse sources and conditions remain a major challenge. We present INSPIRE, a deep-learning method for interpretable, integrative analysis of multiple ST datasets. INSPIRE adopts an adversarial learning strategy with graph neural networks to achieve spatially informed and adaptive data integration. By incorporating non-negative matrix factorization, INSPIRE identifies interpretable spatial factors and associated gene programs that characterize tissue architecture, cell-type organization and biological processes. Across a broad range of applications, INSPIRE demonstrates superior performance in resolving fine-grained biological signals, integrating complementary strengths across technologies, capturing condition-specific variation, uncovering tumor microenvironment heterogeneity, elucidating developmental dynamics and facilitating three-dimensional tissue reconstruction. INSPIRE also scales to extremely large datasets, as demonstrated by applications to Xenium-profiled human breast cancer and Stereo-seq mouse organogenesis datasets. INSPIRE addresses challenges to integrating diverse spatial transcriptomics datasets by combining deep learning with non-negative matrix factorization, revealing shared and context-specific spatial gene programs and tissue organization across scales.",
+   "journal": "Nat Genet",
+   "short_name": "NG_Zhao_2026_INSPIRE",
+   "title": "Interpretable, flexible and spatially aware integration of multiple spatial transcriptomics datasets from diverse sources",
+   "url": "https://www.nature.com/articles/s41588-026-02579-x"
   }
  },
  "votes": {
+  "0HCHXzAsXB9dtnpQtPIq": {
+   "8c6976e5b5410415": 1
+  },
   "10.1016_j.ajhg.2026.03.004": {
    "8c6976e5b5410415": 1
   },
@@ -186,79 +214,76 @@
   "10.1038_s41588-026-02582-2": {
    "8c6976e5b5410415": 1
   },
-  "3VHzbifRwgy7jQlrCVPE": {
+  "6X4P7srVmVfOVF9yjSkI": {
    "8c6976e5b5410415": 1
   },
-  "5zwG2sA1LMklzRqyRI2e": {
+  "6YOvvS4AiArRjfXbKzP9": {
    "8c6976e5b5410415": 1
   },
-  "66RHQbqhnl3jEpOaj2sJ": {
+  "D2nWvIWsLCUkzFmiYtwd": {
    "8c6976e5b5410415": 1
   },
-  "F4DrzOoScZpHGWZfEUb2": {
+  "DLl0mkDEyx6aNH39Opum": {
    "8c6976e5b5410415": 1
   },
-  "IapQBHrqGAJ4bUKfD4KU": {
+  "F1swD6z4OpsYV9l8L1Ii": {
    "8c6976e5b5410415": 1
   },
-  "Iawd0UMnbNSiM5HkAfAY": {
+  "HVm6JqAReaVyRG1hVIAp": {
    "8c6976e5b5410415": 1
   },
-  "L0QnLEhOMchL9noCe8qD": {
+  "JJAWgQf4YbUz25Ll0Cea": {
    "8c6976e5b5410415": 1
   },
-  "PhJU3ULpkbaDvHcnt1Vb": {
+  "M9JvwtdoU4qC4BvhbBFD": {
    "8c6976e5b5410415": 1
   },
-  "QOKi977UhgEigaM8vkCv": {
+  "O2ZW1ZfQQEH7oTS3owoB": {
    "8c6976e5b5410415": 1
   },
-  "Spd4ZNK1d9bpy11bOqQJ": {
+  "OURqrCUnY1xQESkx3hrN": {
    "8c6976e5b5410415": 1
   },
-  "Ug8PyTWhXwf2XGgig6Ec": {
+  "R5R5Kg9kfwQ3ShaRCWQY": {
    "8c6976e5b5410415": 1
   },
-  "V6zngwmNiWSrmMsVne4m": {
+  "Uc9Ytyww7Y99KxbG9y1C": {
    "8c6976e5b5410415": 1
   },
-  "VgG1gjhVXm3Pt2WuhtYt": {
+  "WpkxuD9i4DKIeTuNgEgt": {
    "8c6976e5b5410415": 1
   },
-  "WKA7iiYOICqbLVCCXDco": {
+  "YAKxSVIEne7TqFk48Y3q": {
    "8c6976e5b5410415": 1
   },
-  "X2DC6f33GSiAfKnkmMnp": {
+  "bw4JeuWUYcwqoY45Gx4n": {
    "8c6976e5b5410415": 1
   },
-  "YUYeJttM29Q8G1VPMhdO": {
+  "dLXLdWIAqSDHrmztsLiG": {
    "8c6976e5b5410415": 1
   },
-  "ZdZ6afm7KG8B67pR6QOe": {
+  "gTBQhwdHtMWOgtb4AvYc": {
    "8c6976e5b5410415": 1
   },
-  "ZlMHHV4U6mPSFoLzmkQE": {
+  "gbwUDIH2Gc4iQUgMhHRm": {
    "8c6976e5b5410415": 1
   },
-  "cqLMAL5AcRzcz8YUnWSs": {
+  "iGPSZtkfdR4nhUYNOcWw": {
    "8c6976e5b5410415": 1
   },
-  "gFECbVB06XZv1LiGD9HY": {
+  "mZTN9mCoqZqkftEZVlqw": {
    "8c6976e5b5410415": 1
   },
-  "kLYoVRDJ5izBkdOG8bm9": {
+  "oHrf0unZ8z1aLjqzat0W": {
    "8c6976e5b5410415": 1
   },
-  "nQ1aLxHRtSkWtbjdPbH7": {
+  "rexnBOiihv77kN5QEi8v": {
    "8c6976e5b5410415": 1
   },
-  "syQk9K45OOZyndpcyEk5": {
+  "vWiv61EjNQoBAlyHpzoB": {
    "8c6976e5b5410415": 1
   },
-  "uRhwNhK7rd6lOHglelNd": {
-   "8c6976e5b5410415": 1
-  },
-  "wXePW3elmtvzO0WTeSkP": {
+  "zqL2wYD44mf2CoydNZkk": {
    "8c6976e5b5410415": 1
   }
  }

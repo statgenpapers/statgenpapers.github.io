@@ -8,7 +8,7 @@ For each month M, in order:
    listed pick is marked, a missed pick is added as a paper and marked. The next month's run then
    sees them, as it would see readers' marks.
 
-Local only: reads the private handoff/data/ files (picks and the labelled 2025-11..2026-10 pool).
+Local only: reads the private handoff/data/ files (picks and the labelled pools from 2025-01).
 Run from the repository root with: uv run --group train python dev/rollforward.py 2026-01 2026-10
 """
 import csv
@@ -60,7 +60,8 @@ def weights(M):
 # The Journal column for a pick the model missed: the Sheet's journal key, as the site shows journals
 ABBR = {j["key"]: j["abbr"] for j in cfg["journals"]} | {j["name"]: j["abbr"] for j in cfg["journals"]} | {
     "biorxiv": "bioRxiv", "medrxiv": "medRxiv", "zenodo": "Zenodo", "nat comm": "Nat Commun", "nat genet": "Nat Genet"}
-journal = lambda j: ABBR.get(j) or ABBR.get(j.lower()) or j
+PREPRINT = re.compile(r"(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|10\.1101/|10\.5281/", re.I)
+journal = lambda j, url="": "Preprint" if PREPRINT.search(j) or PREPRINT.search(url) else ABBR.get(j) or ABBR.get(j.lower()) or j
 plain = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()
 
 
@@ -77,7 +78,7 @@ def lab_marks(M):
         if listed:
             marks.append(listed)
         elif r["url"].startswith(("http://", "https://")):
-            add.append({"journal": journal(r["journal"])[:60], "title": r["title"][:400], "url": r["url"][:500],
+            add.append({"journal": journal(r["journal"], r["url"])[:60], "title": r["title"][:400], "url": r["url"][:500],
                         "short_name": (r["short_name"] or r["title"])[:150]})
     return {"month": M, "marks": sorted(set(marks)), "add": add}
 
@@ -99,4 +100,6 @@ for M in months(*sys.argv[1:3]):
         json.dump(actions, f)
         f.flush()
         subprocess.run([sys.executable, "dev/lab_marks.py", f.name], cwd=ROOT, check=True)
+    # the picks just added get M's leak-free Score, not a later month's
+    subprocess.run([sys.executable, "-m", "pipeline", "--month", M, "--weights", str(path), "--added-only"], cwd=ROOT, check=True)
     print(f"== {M}: {len(actions['marks'])} picks on the list, {len(actions['add'])} added", flush=True)

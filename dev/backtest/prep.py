@@ -18,7 +18,9 @@ norm_title = lambda t: re.sub(r"[^a-z0-9]", "", t.lower())
 
 picks = pd.read_csv(D / "sheet-picks.csv", dtype=str).fillna("")
 picks["nt"] = picks.title.map(norm_title)
-pool = pd.DataFrame([json.loads(l) for l in gzip.open(D / "pool-2025-11_2026-10.jsonl.gz", "rt")])
+# every pool file: pool-2025-11_2026-10.jsonl.gz and any month fetched with `python -m pipeline --pool-only`
+# (2025-01..10 are kept in handoff/data/earlier/: adding them made the leak-free 2026 lists worse, 98 vs 110 picks)
+pool = pd.DataFrame([json.loads(l) for f in sorted(D.glob("pool-*.jsonl.gz")) for l in gzip.open(f, "rt")]).drop_duplicates("doi")
 # production source list only (the pool file also holds sources dropped earlier)
 pool = pool[pool.journal.isin(["Nature", "NG", "NatCommun", "NRG", "NatMed", "NatHumBehav", "Science", "SciTranslMed", "Cell", "CG", "AJHG"])
             | pool.category.isin(["genetics", "genomics", "genetic and genomic medicine", "health informatics"])].reset_index(drop=True)

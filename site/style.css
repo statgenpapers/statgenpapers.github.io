@@ -20,8 +20,8 @@ body { margin: 0; padding: 0 1rem; background: var(--bg); color: var(--text); fo
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a, button { touch-action: manipulation; }
-button, input { font: inherit; color: inherit; }
-input { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
+button, input, textarea { font: inherit; color: inherit; }
+input, textarea { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
 button { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .15rem .7rem; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* dashed underline: opens something in place (Details, Score) */
@@ -65,7 +65,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #login label { margin: 0; }
 #login p { flex-basis: 100%; margin: 0; }  /* the hint sits one row-gap under the field */
 #add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); }
-#add input { width: 100%; }
+#add input, #add textarea { width: 100%; font: inherit; resize: vertical; }
 #add div { display: flex; gap: .6rem; }
 .hint { color: var(--muted); font-size: var(--fs-small); }
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 10; width: max-content; max-width: calc(100vw - 2rem);
@@ -80,8 +80,8 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #listview { min-height: 100vh; }  /* the footer stays put while the list loads */
 .pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
 .title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
-#export-open { display: flex; padding: .3rem .2rem; color: var(--muted); }  /* the export icon: as muted as the heading, a larger hit area */
-#export-open:hover, #export-open[aria-expanded="true"] { color: var(--text); }
+.title-head .icon { display: flex; padding: .3rem .15rem; color: var(--muted); }  /* copy and download: as muted as the heading, a larger hit area */
+.title-head .icon:hover { color: var(--text); }
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
@@ -104,6 +104,9 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .sub a:not(.toggle) { text-decoration: underline; }
 .sub a:hover { color: var(--text); }
 .sub .toggle { margin-left: .6em; }
+/* an added paper: a small tag after the authors, so its Score is not read as the model's choice */
+.sub .added { margin-left: .6em; padding: 0 .35em; border-radius: var(--radius); background: var(--subtle); color: var(--body); }
+.sub .added.alone { margin-left: 0; }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details p:last-child { margin-bottom: 0; }
@@ -127,7 +130,7 @@ footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-t
   body { padding: 0 .6rem; }
   .paper { grid-template-columns: 1.8rem minmax(0, 1fr) 2.6rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }
-  input { font-size: 16px; }  /* iOS zooms into smaller inputs */
+  input, textarea { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
 
 /* About page */

@@ -20,6 +20,7 @@ import requests
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
+from pipeline.fetch import cached, openalex_key, url_doi  # noqa: E402
 from pipeline.votes import documents  # noqa: E402
 
 HANDLE = "admin"
@@ -46,7 +47,8 @@ def id_token():
 
 def create(token, path, fields, server_time=None):
     """Create one document; False if it exists already."""
-    write = {"update": {"name": f"{DOCS}/{path}", "fields": {k: {"stringValue": v} for k, v in fields.items()}},
+    value = lambda v: {"arrayValue": {"values": [{"stringValue": x} for x in v]}} if isinstance(v, list) else {"stringValue": v}
+    write = {"update": {"name": f"{DOCS}/{path}", "fields": {k: value(v) for k, v in fields.items()}},
              "currentDocument": {"exists": False}}
     if server_time:
         write["updateTransforms"] = [{"fieldPath": server_time, "setToServerValue": "REQUEST_TIME"}]
@@ -58,17 +60,42 @@ def create(token, path, fields, server_time=None):
     return True
 
 
+def details(url):
+    """Authors, abstract and date of a paper from OpenAlex, by the DOI in its URL; {} if not found."""
+    doi = url_doi(url)
+    if not doi:
+        return {}
+    try:
+        w = json.loads(cached(f"https://api.openalex.org/works/doi:{doi}",
+                              {"select": "authorships,abstract_inverted_index,publication_date", "api_key": openalex_key()}))
+    except Exception:  # not in OpenAlex: the paper shows without them
+        return {}
+    position = {p: word for word, ps in (w.get("abstract_inverted_index") or {}).items() for p in ps}
+    out = {"authors": [a["author"]["display_name"] for a in w.get("authorships", []) if a["author"].get("display_name")][:300],
+           "abstract": " ".join(position[i] for i in sorted(position))[:10000], "date": w.get("publication_date") or ""}
+    return {k: v for k, v in out.items() if v}
+
+
+def delete(token, path):
+    requests.delete(f"https://firestore.googleapis.com/v1/{DOCS}/{path}", headers={"Authorization": f"Bearer {token}"}).raise_for_status()
+
+
 def main(actions):
     month, uid_token = actions["month"], id_token()
     uid, token = uid_token
-    added = {f["url"]["stringValue"]: sid for sid, f in documents(PROJECT, f"months/{month}/submissions").items()
-             if f.get("name", {}).get("stringValue") == HANDLE}
+    added = {f["url"]["stringValue"]: (sid, "authors" in f or "abstract" in f)
+             for sid, f in documents(PROJECT, f"months/{month}/submissions").items() if f.get("name", {}).get("stringValue") == HANDLE}
     mark = lambda paper: create(token, f"months/{month}/votes/{paper}~{HANDLE}", {"paper": paper, "handle": HANDLE})
     new_marks = sum(mark(p) for p in actions["marks"])
     new_papers = 0
     for p in actions["add"]:
-        sid = added.get(p["url"])
+        sid, complete = added.get(p["url"], (None, False))
+        if sid and not complete:  # added before papers carried authors and abstract: papers cannot be edited, so replace it
+            delete(token, f"months/{month}/votes/{sid}~{HANDLE}")
+            delete(token, f"months/{month}/submissions/{sid}")
+            sid = None
         if not sid:
+            p = p | details(p["url"])
             sid = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(20))
             create(token, f"months/{month}/submissions/{sid}", p | {"uid": uid, "name": HANDLE}, server_time="created")
             new_papers += 1

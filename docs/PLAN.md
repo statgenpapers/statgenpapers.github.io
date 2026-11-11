@@ -112,8 +112,8 @@ Each monthly run, before scoring:
    and commit a snapshot to `data/votes/YYYY-MM.json` (uids hashed, names dropped).
 2. Label each voted paper by net votes: positive if above 0, negative if below 0.
 3. If at least 30 papers are labelled, fit a correction `Δ` by logistic regression with the
-   lab score as a fixed offset and an L2 penalty on `Δ`, so that with few votes the scorer
-   stays at the lab weights. Final score = lab score + `Δ·x`.
+   base score as a fixed offset and an L2 penalty on `Δ`, so that with few votes the scorer
+   stays at the base weights. Final score = base score + `Δ·x`.
 4. Re-embed the voted papers on the fly from `site/data/*.json`; no embedding store is needed.
 
 Write a unit test showing `Δ = 0` with no votes and that a consistent vote pattern moves scores.
@@ -162,7 +162,7 @@ Entry point: `uv run python -m pipeline --month YYYY-MM` (default: previous cale
 
 One workflow `monthly.yml` replacing `pages.yml`:
 
-1. Triggers: `schedule` (3rd of each month, for the previous month), `workflow_dispatch`
+1. Triggers: `schedule` (10th of each month, for the previous month), `workflow_dispatch`
    with an optional `month` input, and `push` to `site/**`.
 2. Job: checkout, `uv sync`, run the pipeline (skipped on plain pushes), commit
    `site/data/` and `data/votes/`, then upload and deploy Pages **in the same workflow**.
@@ -177,7 +177,7 @@ Rewrite `README.md` as the deliverable the spec asks for (setup incl. the Fireba
 already done, how to change sources, how to trigger a run, how to retrain weights locally).
 The spec's "how to add seed papers" becomes "how to retrain the weights"; the owner
 dropped the public seeds file. Keep the spec as `docs/spec.md`. Record project terms in a
-`AGENTS.md` Terminology section (pool, pick, shortlist, venue, lab weights, vote correction).
+`AGENTS.md` Terminology section (pool, shortlist, venue, base weights, vote correction).
 
 ## 8. Acceptance checks
 
@@ -206,7 +206,7 @@ the commit that added this section.
 
 ### Changes the owner asked for during the build
 
-1. **Table.** Every list is also the lab Sheet's four columns, `Journal`, `Short Name`, `Title`,
+1. **Table.** Every list is also a table of four columns, `Journal`, `Short Name`, `Title`,
    `URL`: `site/data/YYYY-MM.tsv`, the site's columns, and its "Copy table" button. Short names
    (`Journal_FirstAuthor_Year_Keyword`) are generated.
 2. **Submissions.** Visitors add a paper by typing journal, title and URL. It is stored in
@@ -216,10 +216,15 @@ the commit that added this section.
 3. **Upvotes only.** The site has no downvote. This changes "Learning from votes" in section 3:
    the training rows are the listed papers of every month that got votes, a paper with an
    upvote is a positive and the other listed papers are negatives, and the fit has a free
-   intercept next to the fixed lab-score offset. The correction starts at 30 upvoted papers
+   intercept next to the fixed base-score offset. The correction starts at 30 upvoted papers
    (`min_upvoted`). Not yet confirmed by the owner; see open item 4.
 4. **Look.** Arial, one upvote button per paper, authors as first two … last two, the journal
    only in its own column.
+5. **No lab picks (2026-11-11).** The site has no concept of a lab or picks. The reading-list picks of 2025-11 to
+   2026-10 were the cold start: they fitted the base weights and are on the site as marks and added papers of the
+   handle `admin`, which only `dev/lab_marks.py` writes, through the API. From 2026-11 every mark, `admin`'s
+   included, trains the vote correction. The Score is the calibrated prediction that a paper gets marked.
+   "Picks" in the evidence above means those cold-start positives.
 5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
    votes, equal votes by score. The Journal column shows official title abbreviations
    (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).

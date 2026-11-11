@@ -1,15 +1,16 @@
 # StatGen Papers
 
-<https://statgenpapers.github.io> lists each month's statistical genetics papers with a pick chance of at least
-25%, from a model trained on a lab's reading list. Readers mark papers they are interested in and add papers the model
+<https://statgenpapers.github.io> lists each month's statistical genetics papers with a Score of at least
+25%: the model's prediction of how likely a paper is to be marked. Readers mark papers they are interested in and add papers the model
 missed. It costs $0 and needs no monthly work. Requirements: [`docs/spec.md`](docs/spec.md); design and
 evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md).
 
 ## How it works
 
-1. **Monthly run.** On the 3rd, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches the
+1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches the
    previous month's ~2,000 candidates (`config/sources.toml`), dedupes and scores them, writes the shortlist to
-   `site/data/YYYY-MM.{json,tsv}`, commits and deploys `site/`.
+   `site/data/YYYY-MM.{json,tsv}`, commits and deploys `site/`. Papers readers added to that month are scored too
+   and listed with the tag "added"; until then they are not shown. Readers always add to the month in progress.
 2. **Scorer.** A `potion-base-32M` embedding of title and abstract plus the venue, through the logistic
    regression in `model/weights.json`. Once 30 listed papers have marks, the run also fits a vote correction.
    `dev/backtest/` holds the numbers on the About page.
@@ -23,14 +24,12 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
 1. **Run a month by hand:** `gh workflow run monthly.yml -R statgenpapers/statgenpapers.github.io -f month=2026-09`.
    Running a month again replaces its list; marks are kept.
 2. **Change sources or list size:** edit `config/sources.toml` and push.
-3. **Retrain** (needs the private files in `handoff/data/`, never committed):
-   `uv run --group train python dev/backtest/prep.py && uv run --group train python dev/train.py`, then commit
-   `model/weights.json`.
-4. **Each month's lab picks** (in `handoff/data/sheet-picks.csv`): `uv run --group train python dev/rollforward.py M M`
-   for one month M refits leak-free weights, rebuilds M and adds the picks as marks of the handle `admin`, which
-   `firebase/firestore.rules` reserves for one Firebase user (`~/.config/statgenpapers/lab.json`, never committed).
-   Then retrain `model/weights.json` on everything (task 3) for the next month.
-5. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
+3. **Cold start (done 2026-11-11; needs the private `handoff/data/`, never committed):**
+   `uv run --group train python dev/backtest/prep.py && uv run --group train python dev/train.py` fits
+   `model/weights.json`; `dev/rollforward.py 2026-01 2026-10` built those months leak-free and wrote their marks as
+   the handle `admin` through `dev/lab_marks.py` (`firebase/firestore.rules` reserves it for the one Firebase user in
+   `~/.config/statgenpapers/lab.json`, never committed). From 2026-11 the monthly run learns from all marks.
+4. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
 
 ## Checks
 
@@ -48,7 +47,7 @@ python3 -m http.server -d site 8000                # preview
 |---|---|
 | `config/sources.toml` | Sources, junk patterns, list size, vote settings |
 | `pipeline/` | Monthly run: `fetch`, `dedupe`, `score`, `votes`, `output` |
-| `model/weights.json` | Lab weights |
+| `model/weights.json` | Base weights |
 | `site/` | The website; `site/data/` has one `.json` and `.tsv` per month |
 | `data/votes/` | Monthly snapshots of marks (handles hashed) |
 | `firebase/` | Firestore rules, tests, live check |

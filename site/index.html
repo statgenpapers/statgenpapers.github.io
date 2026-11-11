@@ -33,7 +33,10 @@
     <label>journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, bioRxiv, PNAS, …" list="journals"></label>
     <label>title <input id="add-title" type="text" required maxlength="400"></label>
     <label>short name <input id="add-short" type="text" required maxlength="150" spellcheck="false"></label>
+    <label>authors <input id="add-authors" type="text" maxlength="20000" placeholder="optional; filled from the DOI"></label>
+    <label>abstract <textarea id="add-abstract" rows="3" maxlength="10000" placeholder="optional; filled from the DOI"></textarea></label>
     <datalist id="journals"></datalist>
+    <p id="add-when" class="hint"></p>
     <p class="hint">The short name is generated as Journal_FirstAuthor_Year_Keyword; edit it if you like.</p>
     <p id="add-note" class="hint" role="status"></p>
     <div><button type="submit">add</button> <button type="button" id="add-cancel">cancel</button></div>
@@ -42,10 +45,11 @@
   <section id="page" class="page" hidden></section>
 
   <div id="listview">
-  <div class="pick-head"><span class="title-head"><span id="list-month">Papers</span><span class="menu"><a href="#" id="export-open" aria-label="Export" title="Copy or download the table" aria-expanded="false" aria-controls="export"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span id="export" class="popover" hidden><a href="#" id="copy">Copy</a><a href="#" id="download">Download</a></span></span></span><span class="menu"><a href="#" id="score-help" class="dashed" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
-    <span id="score-note" class="popover score-note" hidden>The chance that a statistical genetics lab would pick this paper for its
-    monthly reading list, predicted by a model trained on a year of its past picks. Of papers scored 50%, about half
-    were picked. Marks re-order the list but do not change the score. <a href="about.html">more</a></span></span></div>
+  <div class="pick-head"><span class="title-head"><span id="list-month">Papers</span><a href="#" id="copy" class="icon" aria-label="Copy table" title="Copy the table: Journal, Short Name, Title, URL"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="5" width="8.5" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 2.5H4a1.5 1.5 0 0 0-1.5 1.5v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><a href="#" id="download" class="icon" aria-label="Download table" title="Download the table as a .tsv file"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span><span class="menu"><a href="#" id="score-help" class="dashed" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
+    <span id="score-note" class="popover score-note" hidden>The model's prediction of how likely a paper is to be
+    marked, learned from past marks. Of papers scored 50%, about half were marked. Marks re-order the list but do not
+    change the score.
+    <a href="about.html">more</a></span></span></div>
   <ol id="list" class="list"></ol>
   </div>
 </main>
@@ -62,7 +66,7 @@
     <span class="vote"><button class="up" aria-label="Interested" aria-pressed="false"><svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z" fill="currentColor"/></svg></button><span class="count"></span></span>
     <div class="main">
       <a class="title" target="_blank" rel="noopener noreferrer"></a> <span class="source"></span>
-      <div class="sub"><span class="meta"></span><a href="#" class="toggle dashed" aria-expanded="false">Details</a><span class="remove-wrap" hidden> · <a href="#" class="remove">remove</a></span></div>
+      <div class="sub"><span class="meta"></span><span class="added" hidden></span><a href="#" class="toggle dashed" aria-expanded="false">Details</a><span class="remove-wrap" hidden> · <a href="#" class="remove">remove</a></span></div>
       <div class="details" hidden></div>
     </div>
     <span class="pick"></span>
