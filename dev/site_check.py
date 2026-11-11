@@ -212,11 +212,16 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.fill("#add-title", "Same paper again")
         a.fill("#add-abstract", "An abstract.")
         a.click("#add button[type=submit]")
-        check("the same paper cannot be added twice", seen(a.locator("#add-note"), "Someone has added this paper to 2020/02 already.") is not None)
-        a.fill("#add-url", PAPERS[0]["url"])
-        a.fill("#add-title", PAPERS[0]["title"])
+        check("the same paper cannot be added twice",
+              seen(a.locator("#add-note"), "Someone has added this paper to 2020/02 already: mark it below.") is not None)
+        a.fill("#add-url", "https://example.org/other-link")
+        a.fill("#add-title", PAPERS[0]["title"].upper() + ".")  # the same title, other case and punctuation
         a.click("#add button[type=submit]")
-        check("nor a paper of the latest list", seen(a.locator("#add-note"), "This paper is on the 2020/01 list already.") is not None)
+        check("a paper of an earlier list is warned about, and may be added anyway",
+              seen(a.locator("#add-note"), "This paper is on the 2020/01 list already. Add it anyway?") is not None
+              and seen(a.locator("#add button[type=submit]"), "add anyway") is not None)
+        a.fill("#add-title", PAPERS[0]["title"] + " 2")
+        check("an edit checks the form afresh", seen(a.locator("#add button[type=submit]"), "add") is not None)
         paste = ("([name, text]) => { const input = document.getElementById(name); input.value = ''; input.focus();"
                  " const data = new DataTransfer(); data.setData('text/plain', text);"
                  " input.dispatchEvent(new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true })); }")

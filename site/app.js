@@ -769,6 +769,32 @@ async function lookUp() {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
   note(m.abstract ? "Filled from the DOI; edit anything that is off." : "Filled from the DOI, which has no abstract: paste it from the paper.");
+  const copy = await findCopy({ url, doi, title: field("title").value }).catch(() => null);  // warn before the rest is typed
+  if (copy && form.lookup.doi === doi) note(`Filled from the DOI. ${copy.message}`, true);
+}
+
+// Where this paper is already: on any month's list (its added papers included) or added to the month in progress,
+// matched by link, DOI or title (ignoring case and punctuation). null if nowhere; `here`: added to the month in progress.
+async function findCopy({ url, doi, title }) {
+  const t = plainTitle(title), months = [...state.months].reverse(), next = addMonth();  // newest list first
+  const same = (p) => (url && p.url === url) || (doi && (p.doi || urlDoi(p.url)) === doi) || (t && plainTitle(p.title) === t);
+  const added = async (m) => (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs.map((d) => d.data());
+  if ((await added(next)).some(same)) return { here: true, message: `Someone has added this paper to ${monthName(next)} already: mark it below.` };
+  const [lists, subs] = await Promise.all([Promise.all(months.map(monthData)), Promise.all(months.map(added))]);
+  const i = months.findIndex((m, k) => lists[k].papers.some(same) || subs[k].some(same));
+  return i < 0 ? null : { message: `This paper is on the ${monthName(months[i])} list already.` };
+}
+
+function resetAnyway() {
+  form.anyway = null;
+  $("add").querySelector("button[type=submit]").textContent = "add";
+}
+
+// A paper on an earlier list may still be added: the first "add" warns, a second one adds it
+function warnOnce(message) {
+  form.anyway = message;
+  $("add").querySelector("button[type=submit]").textContent = "add anyway";
+  note(`${message} Add it anyway?`, true);
 }
 
 async function submitPaper(event) {
@@ -784,12 +810,11 @@ async function submitPaper(event) {
   if (!httpUrl(paper.url)) return note("Enter a DOI (10.…) or a link starting with http:// or https://.", true);
   // a link without a DOI (cell.com) whose DOI the lookup found is stored as a DOI link: the run and the duplicate check use it
   if (!urlDoi(paper.url) && form.lookup.doi && form.lookup.url === paper.url) paper.url = `https://doi.org/${form.lookup.doi}`;
-  const doi = urlDoi(paper.url), title = plainTitle(paper.title), month = addMonth(), latest = state.months.at(-1);
-  const same = (p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title;
+  const month = addMonth();
   try {
-    if ((await monthData(latest)).papers.some(same)) return note(`This paper is on the ${monthName(latest)} list already.`, true);
-    const added = (await fb.getDocs(fb.collection(db, "months", month, "submissions"))).docs.map((d) => d.data());
-    if (added.some(same)) return note(`Someone has added this paper to ${monthName(month)} already.`, true);
+    const copy = await findCopy({ url: paper.url, doi: urlDoi(paper.url), title: paper.title });
+    if (copy?.here) return note(copy.message, true);
+    if (copy && form.anyway !== copy.message) return warnOnce(copy.message);
     if (!(await signedIn())) return;
     const ref = await fb.addDoc(fb.collection(db, "months", month, "submissions"),
       { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
@@ -809,6 +834,7 @@ function closeForm() {
   if (addMonth()) $("add-when").textContent = `Papers added here join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
   $("add").reset();
   form.lookup = {};
+  resetAnyway();
   note("");
   syncExpanded();
 }
@@ -907,6 +933,7 @@ async function init() {
       input.setRangeText(tidy(text), input.selectionStart, input.selectionEnd, "end");
     });
   }
+  $("add").addEventListener("input", () => form.anyway && resetAnyway());  // an edited form is checked afresh
   field("url").addEventListener("change", () => { form.pending = lookUp(); });
   field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
 
