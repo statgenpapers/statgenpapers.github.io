@@ -71,7 +71,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
 .up { border: 0; background: none; padding: .3rem 0 0; color: var(--muted); line-height: 0; }
-.up:hover:not(:disabled) { color: var(--text); }
+@media (hover: hover) { .up:not([aria-pressed="true"]):not(:disabled):hover { color: var(--text); } }  /* a marked triangle stays blue under the mouse; touch screens keep no hover */
 .up[aria-pressed="true"] { color: var(--accent); }
 .up:disabled { opacity: .4; cursor: default; }
 .title { color: var(--text); }
