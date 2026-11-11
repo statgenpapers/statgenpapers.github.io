@@ -108,10 +108,15 @@ test("nobody can edit a submission", async () => {
   await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed" }));
   await assertFails(submit("bob", { title: "Changed" }));
 });
-test("only the submitter can delete a submission", async () => {
+test("any signed-in browser may remove a reader's added paper (handles have no password); the site shows the x to its handle", async () => {
   await assertSucceeds(submit("bob"));
-  await assertFails(deleteDoc(doc(db("alice"), SUB)));
-  await assertSucceeds(deleteDoc(doc(db("bob"), SUB)));
+  await assertFails(deleteDoc(doc(db(null), SUB)));
+  await assertSucceeds(deleteDoc(doc(db("alice"), SUB)));
+});
+test("nobody but the lab's user removes a paper added as admin", async () => {
+  await assertSucceeds(submit("Yo7cchMxl7X4zHq5vOE9VmS2dOp1", { name: "admin" }));
+  await assertFails(deleteDoc(doc(db("bob"), SUB)));
+  await assertSucceeds(deleteDoc(doc(db("Yo7cchMxl7X4zHq5vOE9VmS2dOp1"), SUB)));
 });
 test("a submitted paper can be upvoted like any other, by its submission id", async () => {
   await assertSucceeds(submit("bob"));

@@ -236,6 +236,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               docs["documents"][0]["fields"]["short_name"]["stringValue"] == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
         (Path(tmp) / "data" / "2020-02.json").write_text(json.dumps({"month": "2020-02", "pool": 99, "papers": PAPERS[3:], "added": {sid: 0.42}}))
         (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH, "2020-02"]}))
+        os.utime(Path(tmp) / "data" / "index.json", (time.time() + 2,) * 2)  # the server dates files to the second: no stale 304
         for page in pages:
             page.goto(url)
         dt = seen(added(b).locator(".count"), "1")
@@ -253,12 +254,19 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
 
         # back before the run (the month unlisted again): its submitter removes it from the next month's page
         (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH]}))
+        os.utime(Path(tmp) / "data" / "index.json", (time.time() + 5,) * 2)  # the server dates files to the second: no stale 304
         for page in pages:
             page.goto(f"{url}?month=2020-02")
         expect(added(b)).to_have_count(1, timeout=15000)
         if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the submitter's row, for review
             added(a).screenshot(path=f"{shots}/own-added-row.png")
-        check("before the run, only its submitter can remove it", added(a).locator(".remove").is_visible() and added(b).locator(".remove").is_hidden())
+        for page in pages:  # the list first shows the browser's saved copy, without handles; then the live one
+            expect(added(page).locator(".up")).to_be_enabled(timeout=15000)
+        try:
+            expect(added(a).locator(".remove")).to_be_visible(timeout=15000)  # once the live submissions, with handles, are in
+            check("before the run, only its handle can remove it", added(b).locator(".remove").is_hidden())
+        except AssertionError:
+            check("before the run, only its handle can remove it", False)
         n = len(prompts)
         added(a).locator(".remove").click()
         try:

@@ -10,11 +10,12 @@ rules_version = '2';
 //
 // Papers added by visitors: months/{YYYY-MM}/submissions/{id}
 //   { journal, title, url, short_name, uid, created, name: "<handle>", and optionally authors: [..], abstract, date }
-// A signed-in browser may add a paper under its own uid and later delete it; nobody can
-// edit one. Upvotes of an added paper are votes like any other, with the submission id.
+// A signed-in browser may add a paper under its own uid; nobody can edit one. Like an upvote, any signed-in
+// browser may delete a reader's paper: the site offers that to the paper's handle only, until the monthly run
+// lists it. Upvotes of an added paper are votes like any other, with the submission id.
 //
-// The handle "admin" is reserved: its marks and added papers are the lab's picks (dev/lab_marks.py), written
-// only by the lab's one Firebase user, and only that user can take its marks back.
+// The handle "admin" is reserved: its marks and added papers are the cold start (dev/lab_marks.py), written,
+// and removed, only by one Firebase user.
 //
 // Everything else, including the uid-keyed months/{YYYY-MM}/papers of the first version,
 // is closed.
@@ -35,7 +36,8 @@ service cloud.firestore {
         && id.matches('^[A-Za-z0-9]{1,40}$')
         && validSubmission(request.resource.data)
         && mayUse(request.resource.data.name);
-      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      // like a mark: any signed-in browser (a handle has no password); the site offers it to the paper's handle only
+      allow delete: if request.auth != null && mayUse(resource.data.name);
     }
     function mayUse(h) {
       return h != 'admin' || request.auth.uid == 'Yo7cchMxl7X4zHq5vOE9VmS2dOp1';  // the lab's user: ~/.config/statgenpapers/lab.json
