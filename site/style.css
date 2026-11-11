@@ -85,7 +85,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
-.paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 3.5rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: start; }
+.paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 3.5rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: first baseline; }  /* triangle, count and Score sit on the title's first line */
 .paper.new { animation: flash 1.8s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
