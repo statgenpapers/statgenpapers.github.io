@@ -36,7 +36,7 @@ for everyone within seconds, and the list re-orders itself by them. The code and
 <ol>
   <li>Title and abstract are turned into a 512-number vector by a static text-embedding model
   (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>), which needs no GPU and reads
-  about 1,600 abstracts a second.</li>
+  about 1,800 abstracts a second on one CPU core (4,200 on four).</li>
   <li>A logistic regression on that vector, plus one indicator per journal or preprint category, gives the score.
   Its weights (<code>model/weights.json</code>) were fitted to twelve months of picks from a statistical genetics
   lab's reading list: the papers the lab chose are the positives, every other candidate a negative.</li>
@@ -108,8 +108,13 @@ Numbers generated <span data-v="generated"></span>.</p>
   <li>Log in with a handle (2–20 letters, digits or <code>_</code>, no password) and click the triangle beside a
   paper to mark that you are interested in it. The number beside the triangle counts interested readers; a handle
   counts once per paper, on any device. Click the blue triangle again to take the mark back.</li>
-  <li>Without a password, anyone who types your handle can mark papers as you. Pick one that others will not guess.
-  The site never shows handles: others see only how many readers are interested, and only you see your own list.</li>
+  <li>Without a password, anyone who types your handle can mark papers as you. The site never shows handles:
+  others see only how many readers are interested. The marks themselves are stored openly, though, so someone who
+  reads the database directly can see which handle marked what. Pick a handle you are happy to have seen.</li>
+  <li>While you are logged in, the links at the top right show the papers you are interested in, across all months
+  ("interested"), and your handle with a count. Only you see them, and they close when you log out. Your browser
+  keeps a copy of each month's counts, so the list shows at once on the next visit; logging out removes your handle
+  from that copy.</li>
   <li>"add" takes a journal, a title and a URL. The short name
   (<code>Journal_FirstAuthor_Year_Keyword</code>) is generated; the first author and year are looked up at
   <a href="https://www.crossref.org">Crossref</a> from the DOI in the URL. Adding a paper marks you as interested in it. You can remove a paper you added, from the same browser.</li>

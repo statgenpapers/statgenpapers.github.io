@@ -68,7 +68,7 @@ export function shortName(journal, surname, year, title) {
   const head = colon > 0 && t.slice(0, colon).trim().split(/\s+/).length <= 3 ? t.slice(0, colon) : t;
   const words = (head.match(/[\p{L}\p{N}]+/gu) || []).filter((w) => !STOPWORDS.has(w.toLowerCase())).slice(0, 4);
   const alnum = (s) => String(s || "").replace(/[^\p{L}\p{N}]/gu, "");
-  return [alnum(journal), alnum(surname), year, words.map((w) => (w !== w.toLowerCase() ? w : w[0].toUpperCase() + w.slice(1))).join("")]
+  return [alnum(journal), alnum(surname) || "NA", year, words.map((w) => (w !== w.toLowerCase() ? w : w[0].toUpperCase() + w.slice(1))).join("")]
     .filter(Boolean).join("_");
 }
 
@@ -131,7 +131,8 @@ function createRow(p) {
     q(".details").hidden = !open;
     q(".toggle").setAttribute("aria-expanded", open);
   }));
-  q(".up").addEventListener("click", () => vote(p.id, month));
+  q(".up").addEventListener("click", () => { q(".up").classList.add("clicked"); vote(p.id, month); });
+  q(".up").addEventListener("pointerleave", () => q(".up").classList.remove("clicked"));  // hover shows again once the pointer has left
   q(".remove").addEventListener("click", link(() => removeSubmission(p)));
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
@@ -139,7 +140,9 @@ function createRow(p) {
   q(".toggle").hidden = Boolean(p.added);  // an added paper has no abstract or authors here
   if (!p.added) {
     details.append(el("p", "", tidyAbstract(p.abstract || "") || "No abstract available."));
-    if (a.length > 4) details.append(el("p", "authors", `Authors: ${a.join(", ")}${cut ? ", …" : ""}`));
+    // a consortium paper can list hundreds: the first 30 and the last 5
+    const names = a.length > 35 ? [...a.slice(0, 30), "…", ...a.slice(-5)] : cut ? [...a, "…"] : a;
+    if (a.length > 4) details.append(el("p", "authors", `Authors: ${names.join(", ")}`));
   }
   return li;
 }
@@ -169,8 +172,8 @@ function updateRow(li, p) {
 }
 
 // The list: (1) shows at once, in the order last seen in this browser or else by score; (2) when marks
-// arrive or change, re-sorts: passed rows ease aside, a paper whose count changed fades in at its new
-// place; (3) while someone is reading, waits to re-sort. README "How it works" says the same.
+// arrive or change, re-sorts at once: passed rows ease aside, a paper whose count changed fades in at
+// its new place. README "How it works" says the same.
 function render() {
   const list = $("list");
   if (state.view === "list" && !state.data) return renderBar();  // the list shows as soon as its file is in
@@ -182,17 +185,15 @@ function render() {
   });
   const sameRows = nodes.length === list.children.length && [...list.children].every((li) => li.isConnected && nodes.includes(li));
   const reorder = nodes.some((n, i) => n !== list.children[i]);
-  if (sameRows && reorder && reading()) {  // counts are updated in place; the order follows once the reader pauses
-    clearTimeout(render.held);
-    render.held = setTimeout(render, 1000);
-    return renderBar();
-  }
   if (!nodes.length) {
     list.replaceChildren(el("li", "empty", "No list for this month yet."));
   } else if (!sameRows || reorder) {
     const focused = document.activeElement;
     list.replaceChildren(...nodes);
-    if (focused && list.contains(focused)) focused.focus({ preventScroll: true });
+    if (focused && list.contains(focused)) {
+      focused.focus({ preventScroll: true });
+      if (focused.matches(":focus-visible")) focused.scrollIntoView({ block: "nearest" });  // keyboard focus moved with its row: keep it on screen
+    }
     if (!reduceMotion) {
       // Re-sorting, with Material Design 3 motion tokens: the rows a paper passes move aside (standard
       // easing, medium1 = 250 ms), and each paper whose count changed fades in at its new place (emphasized
@@ -208,11 +209,6 @@ function render() {
   for (const li of nodes) li.dataset.placed = li.dataset.count;  // the count each row had when the order was last applied
   renderBar();
 }
-
-// Someone is reading: a details panel is open, or the page was scrolled, or the list pointed at or
-// typed in, within the last 3 s. Re-ordering then would move the row being read.
-let lastInput = 0;
-const reading = () => Date.now() - lastInput < 3000 || Boolean($("list").querySelector(".details:not([hidden])"));
 
 function renderBar() {
   // a month's list names its month at the end of the top bar, in the darker blue: "latest | past | add | 2026/10"
@@ -390,14 +386,18 @@ async function vote(id, month) {
   }))) return;
   if (month !== state.month || voting.has(id)) return;
   voting.add(id);
+  let slow;
   try {
     if (!(await signedIn()) || month !== state.month) return;
+    // the mark shows at once; if the server has not confirmed it in 3 s, say so
+    slow = setTimeout(() => toast("Not saved yet: waiting for the connection."), 3000);
     if (mine(id)) await fb.deleteDoc(voteRef(month, id));
     else await fb.setDoc(voteRef(month, id), { paper: id, handle: state.handle });
   } catch (e) {
     console.warn(e);
     toast("Your mark was not saved.");
   } finally {
+    clearTimeout(slow);
     voting.delete(id);
   }
 }
@@ -421,7 +421,29 @@ async function removeSubmission(p) {
 function setHandle(handle) {
   state.handle = handle;
   try { handle ? localStorage.setItem("handle", handle) : localStorage.removeItem("handle"); } catch {}
+  if (!handle) forgetHandle();
   render();
+}
+
+// After a logout, this browser keeps no trace of the handle: not in the login field, not in the saved marks.
+function forgetHandle() {
+  $("login-handle").value = "";
+  try {
+    for (const key of Object.keys(localStorage).filter((k) => k.startsWith("marks:"))) {
+      const saved = JSON.parse(localStorage.getItem(key));
+      localStorage.setItem(key, JSON.stringify({ ...saved, own: [], handle: "" }));
+    }
+  } catch {}
+}
+
+// A login or logout in another tab of this browser applies here too.
+function handleChanged(event) {
+  if (event.key !== "handle") return;
+  const handle = (event.newValue || "").toLowerCase();
+  state.handle = HANDLE.test(handle) ? handle : "";
+  if (!state.handle) $("login-handle").value = "";
+  if (state.view !== "list") go({});  // the handle's own pages close with it
+  else render();
 }
 
 function login(event) {
@@ -620,7 +642,7 @@ async function lookUp() {
       if (form.lookup.doi !== doi) return;
       form.lookup = { doi, surname: work.author?.[0]?.family, year: work.issued?.["date-parts"]?.[0]?.[0] };
       if (!field("title").value.trim() && work.title?.[0]) field("title").value = stripTags(work.title[0]);
-      note(form.lookup.surname ? "" : "Could not find the first author; add the surname to the short name if you like.");
+      note(form.lookup.surname ? "" : "Could not find the first author: the short name says NA; replace it if you like.");
     } catch (e) {
       console.warn(e);
     }
@@ -727,8 +749,6 @@ async function init() {
     // links that act like buttons (href="#") answer Space as buttons do
     if (e.key === " " && e.target.matches?.('a[href="#"]')) { e.preventDefault(); e.target.click(); }
   });
-  for (const type of ["pointermove", "pointerdown", "keydown"]) $("list").addEventListener(type, () => { lastInput = Date.now(); }, { passive: true });
-  addEventListener("scroll", () => { lastInput = Date.now(); }, { passive: true });
   // the toast stays while the pointer or focus is on it
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());
@@ -744,6 +764,7 @@ async function init() {
     return;
   }
   addEventListener("popstate", route);
+  addEventListener("storage", handleChanged);
   await route();
 }
 

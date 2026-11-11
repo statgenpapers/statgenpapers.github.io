@@ -18,7 +18,7 @@ def short_name(p):
     """
     title = re.sub(r"['’]s\b|['’]", "", p.title)  # Alzheimer's -> Alzheimer
     head, colon, _ = title.partition(":")
-    words = [w for w in re.findall(r"[^\W_]+", head if colon and len(head.split()) <= 3 else title)
+    words = [w for w in re.findall(r"[^\W_]+", head if colon and head.strip() and len(head.split()) <= 3 else title)
              if w.lower() not in STOPWORDS][:4]
     surname = re.sub(r"[\W_]", "", p.authors[0].split()[-1]) if p.authors else "NA"
     return "_".join([re.sub(r"[\W_]", "", p.journal), surname, p.date[:4],

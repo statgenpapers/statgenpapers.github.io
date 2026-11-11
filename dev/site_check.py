@@ -109,7 +109,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     order = lambda page: [t[-1] for t in page.locator("li.paper .title").all_inner_texts()]
 
     def settles(page, expected, timeout=8):
-        """The list reaches `expected` order; the page holds re-ordering while its reader is active (about 3 s)."""
+        """The list reaches `expected` order within `timeout` seconds."""
         t0 = time.time()
         while time.time() - t0 < timeout:
             if order(page) == list(expected):
@@ -131,7 +131,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".toggle").click()
     check("the abstract opens without its heading, and no handle shows",
           row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
-    row(b, 3).locator(".toggle").click()  # closed again: an open panel holds re-ordering
+    row(b, 3).locator(".toggle").click()  # closed again
 
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()

@@ -37,7 +37,7 @@ Delete the empty `backtest/` directory once no `embed` Slurm jobs remain.
 
 **Model:** `minishlab/potion-base-32M` (static embedding, 512 dimensions), revision
 `1e5a03f8eeb2c98b928fbbd846f22f816360919f`, loaded with `model2vec` (numpy only, no torch).
-It embeds about 1,600 abstracts per second on CPU, so a month takes seconds on the runner.
+It embeds about 1,800 abstracts per second on one CPU core (4,200 on four), so a month takes seconds on the runner.
 
 **Features:** L2-normalized embedding of `title + "\n" + abstract`, concatenated with a
 one-hot venue indicator (each journal; each preprint server:category). Venue is an input to

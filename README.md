@@ -19,12 +19,10 @@ the design decisions and their evidence are in [`docs/PLAN.md`](docs/PLAN.md).
    password: one vote document per mark (`months/{m}/votes/{paper}~{handle}`), one mark per handle and
    paper. `firebase/firestore.rules` checks the shape of every write and lets a browser remove only its
    own added papers.
-   The list follows three rules:
+   The list follows two rules:
    1. It shows at once: in the order last seen in this browser if it has seen the month, else by score.
-   2. When marks arrive or change, it re-sorts: the rows a paper passes ease aside, and each paper whose
-      count changed fades in at its new place.
-   3. While someone is reading (a Details panel open, or a scroll, pointer or key within 3 s), re-sorting
-      waits; counts still update.
+   2. When marks arrive or change, it re-sorts at once: the rows a paper passes ease aside, and each
+      paper whose count changed fades in at its new place.
 4. **Learning from votes.** Each monthly run first reads all votes and saves them in
    `data/votes/` (ids hashed, names dropped). Once 30 listed papers have an upvote, it fits a
    correction to the weights and scores with weights plus correction.
