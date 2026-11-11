@@ -25,12 +25,18 @@ const connected = new Promise((resolve) => { dbReady = resolve; });  // settles 
 
 // ---------------------------------------------------------------- helpers
 
-function toast(message) {
+// A short message at the bottom; with `undo`, it offers an "undo" button for a few seconds more.
+function toast(message, undo) {
   const t = $("toast");
-  t.textContent = message;
+  t.replaceChildren(message);
+  if (undo) {
+    const button = el("button", "undo", "undo");
+    button.addEventListener("click", () => { t.hidden = true; undo(); });
+    t.append(" ", button);
+  }
   t.hidden = false;
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => { t.hidden = true; }, 3500);
+  toast.timer = setTimeout(() => { t.hidden = true; }, undo ? 6000 : 3500);
 }
 
 const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
@@ -393,9 +399,19 @@ async function showInterested(handle) {
     sub.append(monthLink);
     const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
     undo.addEventListener("click", link(async () => {
+      const ref = fb.doc(db, "months", month, "votes", `${p.id}~${key()}`);
       try {
-        await fb.deleteDoc(fb.doc(db, "months", month, "votes", `${p.id}~${key()}`));
-        li.remove();
+        await fb.deleteDoc(ref);
+        li.hidden = true;
+        toast("Removed.", async () => {
+          try {
+            await fb.setDoc(ref, { paper: p.id, handle: key() });
+            li.hidden = false;
+          } catch (e) {
+            console.warn(e);
+            toast("Could not restore the mark.");
+          }
+        });
       } catch (e) {
         console.warn(e);
         toast("Could not remove the mark.");

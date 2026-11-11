@@ -98,6 +98,7 @@ footer p { margin: .6rem 0 0; }
 
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--text); color: var(--bg);
   padding: .5rem 1rem; border-radius: 6px; font-size: .9rem; max-width: calc(100vw - 2rem); z-index: 10; }
+.toast .undo { border: 0; background: none; padding: 0 0 0 .4rem; color: var(--accent-soft); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
 
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
