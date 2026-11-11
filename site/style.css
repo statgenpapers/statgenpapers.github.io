@@ -26,6 +26,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
 .links, .account { font-size: .92em; }
+#viewing { font-size: .9em; }  /* the month: 90% of the links beside it */
 .links { color: var(--muted); }
 .account { margin-left: auto; color: var(--muted); }
 .account #me { color: var(--text); margin-right: .3rem; }
