@@ -30,7 +30,12 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .account #me { color: var(--text); margin-right: .3rem; }
 .account #me::after { content: " |"; color: var(--muted); }
 
-.past { margin: .8rem 0 0; color: var(--muted); }
+.menu { position: relative; }
+.popover { position: absolute; top: calc(100% + .35rem); left: 0; z-index: 5; display: flex; flex-direction: column; min-width: 10rem;
+  padding: .3rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); }
+.popover a { padding: .3rem .8rem; white-space: nowrap; }
+.popover a:hover { background: var(--subtle); text-decoration: none; }
+.popover a.current { font-weight: 700; }
 .panel { margin: .9rem 0 0; padding: .7rem .8rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
 .panel label { display: flex; align-items: center; gap: .6rem; margin: .3rem 0; color: var(--muted); }
 #login { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }

@@ -159,7 +159,6 @@ async function loadMonth(month) {
   state.votes = new Map();
   state.subs = [];
   rows.clear();
-  $("past").hidden = true;
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
   listen();
@@ -266,14 +265,18 @@ function login(event) {
   $("login").hidden = true;
 }
 
-function showPast() {
+// "past": a drop-down of all months under the link; it covers the page instead of moving it.
+function togglePast(open = $("past").hidden) {
   const past = $("past");
-  past.replaceChildren(...[...state.months].reverse().flatMap((m, i) => {
-    const a = Object.assign(el("a", "", monthName(m)), { href: `?month=${m}` });
-    a.addEventListener("click", link(() => loadMonth(m)));
-    return i ? [" · ", a] : [a];
-  }));
-  past.hidden = !past.hidden;
+  if (open) {
+    past.replaceChildren(...[...state.months].reverse().map((m) => {
+      const a = Object.assign(el("a", m === state.month ? "current" : "", monthName(m)), { href: `?month=${m}`, role: "menuitem" });
+      a.addEventListener("click", link(() => { togglePast(false); loadMonth(m); }));
+      return a;
+    }));
+  }
+  past.hidden = !open;
+  $("past-open").setAttribute("aria-expanded", open);
 }
 
 // ---------------------------------------------------------------- add a paper
@@ -373,7 +376,9 @@ async function init() {
   $("login-open").addEventListener("click", link(() => (state.handle ? setHandle("") : openPanel("login"))));
   $("login-cancel").addEventListener("click", link(() => { $("login").hidden = true; }));
   $("login").addEventListener("submit", login);
-  $("past-open").addEventListener("click", link(showPast));
+  $("past-open").addEventListener("click", link(() => togglePast()));
+  document.addEventListener("click", (e) => { if (!e.target.closest(".menu")) togglePast(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") togglePast(false); });
   $("score-help").addEventListener("click", link(() => {
     $("score-note").hidden = !$("score-note").hidden;
     $("score-help").setAttribute("aria-expanded", !$("score-note").hidden);
