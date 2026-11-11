@@ -652,26 +652,41 @@ async function showInterested() {
 
 // ---------------------------------------------------------------- add a paper
 
-const form = { lookup: {}, edited: false };
+const form = { lookup: {} };
 const field = (name) => $(`add-${name}`);
 
+// The line under the DOI field: how the lookup went, or else what the field does
 function note(message, error = false) {
-  $("add-note").textContent = message;
+  $("add-note").textContent = message || "Paste the DOI first: title, journal, authors and abstract fill in from it.";
   $("add-note").classList.toggle("error", error);
 }
 
-// The first author's surname from the authors typed or pasted, when no DOI record gave one: "Žiga Avsec, …" -> "Avsec"
-const typedSurname = () => field("authors").value.split(",")[0].trim().split(/\s+/).at(-1) || undefined;
-
-function refreshShortName() {
-  if (form.edited) return;
-  field("short").value = field("journal").value.trim() && field("title").value.trim()
-    ? shortName(field("journal").value.trim(), form.lookup.surname || typedSurname(), form.lookup.year || state.month.slice(0, 4), field("title").value)
-    : "";
+// The table's short name, Journal_FirstAuthor_Year_Keyword, made on submit: the surname from the DOI record, or else
+// from the authors typed or pasted ("Žiga Avsec, …" -> "Avsec"), "NA" if neither
+function formShortName(journal, title) {
+  const typed = field("authors").value.split(",")[0].trim().split(/\s+/).at(-1) || undefined;
+  return shortName(journal, form.lookup.surname || typed, form.lookup.year || String(new Date().getFullYear()), title).slice(0, 150);
 }
 
 // What is known about a DOI, in one shape, or null: Crossref has journals, bioRxiv and medRxiv; DataCite has
 // Zenodo and arXiv. Each answers in well under a second; after 8 s a lookup gives up.
+// The journals the run reads, by full name, as the site shows them: keep in step with config/sources.toml
+const ABBR = { "nature": "Nature", "nature genetics": "Nat Genet", "nature communications": "Nat Commun",
+  "nature reviews genetics": "Nat Rev Genet", "nature medicine": "Nat Med", "nature human behaviour": "Nat Hum Behav",
+  "science": "Science", "science translational medicine": "Sci Transl Med", "cell": "Cell", "cell genomics": "Cell Genom",
+  "american journal of human genetics": "Am J Hum Genet" };
+const abbreviate = (name) => ABBR[(name || "").toLowerCase().replace(/^the /, "")];
+
+// An abstract from OpenAlex, which has many that Crossref lacks (Elsevier's): its word index put back in order
+async function openAlexAbstract(doi) {
+  const index = await fetch(`https://api.openalex.org/works/doi:${encodeURIComponent(doi)}?select=abstract_inverted_index`,
+    { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null).then((w) => w?.abstract_inverted_index);
+  if (!index) return "";
+  const words = [];
+  for (const [word, places] of Object.entries(index)) for (const i of places) words[i] = word;
+  return words.filter(Boolean).join(" ");
+}
+
 async function metadata(doi) {
   const get = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   const date = (parts) => parts.filter(Boolean).map((n, i) => (i ? String(n).padStart(2, "0") : n)).join("-");
@@ -681,7 +696,8 @@ async function metadata(doi) {
       title: stripTags(w.title?.[0] || ""), surname: w.author?.[0]?.family, date: date(w.issued?.["date-parts"]?.[0] ?? []),
       authors: (w.author || []).map((x) => [x.given, x.family].filter(Boolean).join(" ") || x.name).filter(Boolean),
       abstract: stripTags(w.abstract || "").replace(/^abstract\s*/i, ""),
-      journal: w.type === "posted-content" || PREPRINT.test(doi) ? "Preprint" : w["short-container-title"]?.[0] || w["container-title"]?.[0] || "",
+      journal: w.type === "posted-content" || PREPRINT.test(doi) ? "Preprint"
+        : abbreviate(w["container-title"]?.[0]) || w["short-container-title"]?.[0] || w["container-title"]?.[0] || "",
     };
   }
   const a = (await get(`https://api.datacite.org/dois/${encodeURIComponent(doi)}`))?.data?.attributes;
@@ -728,41 +744,44 @@ const PASTED = {
 
 // On a pasted or changed URL: fill the empty fields from the DOI's record, and say how it went. Whatever is
 // filled can be edited; nothing found leaves the form to be typed by hand.
+// The DOI field as a URL: a bare DOI becomes its doi.org link
+const linkValue = () => field("url").value.trim().replace(/^(?:doi:\s*)?(10\.\d{4,9}\/\S+)$/i, "https://doi.org/$1");
+
 async function lookUp() {
-  const url = field("url").value.trim(), pii = !urlDoi(url) && piiDoi(url);
+  const url = linkValue(), pii = !urlDoi(url) && piiDoi(url);
   if (pii) note("Looking up the DOI…");
   const doi = urlDoi(url) || (pii && (await pii)) || "";
-  if (field("url").value.trim() !== url || doi === form.lookup.doi) return;
+  if (linkValue() !== url || doi === form.lookup.doi) return;
   form.lookup = { doi };
   if (!url || !doi) {
-    note(url ? "No DOI in this URL: type the journal and title; the short name says NA for the author." : "");
-    return refreshShortName();
+    return note(url ? "No DOI found for this link: type the title, journal and abstract (a DOI fills them in)." : "");
   }
   note("Looking up the DOI…");
   const m = await metadata(doi);
   if (form.lookup.doi !== doi) return;  // the URL changed meanwhile
   if (!m) {
-    note("Nothing found for this DOI: type the journal and title.");
-    return refreshShortName();
+    return note("Nothing found for this DOI: type the title, journal and abstract.");
   }
+  if (!m.abstract) m.abstract = await openAlexAbstract(doi);
+  if (form.lookup.doi !== doi) return;
   form.lookup = { doi, url, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
   for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
-  note(m.surname ? "" : "Filled what the record has; it names no first author, so the short name says NA.");
-  refreshShortName();
+  note(m.abstract ? "Filled from the DOI; edit anything that is off." : "Filled from the DOI, which has no abstract: paste it from the paper.");
 }
 
 async function submitPaper(event) {
   event.preventDefault();
   await form.pending;  // leaving the URL field for "add" starts a lookup: let it fill the form first
-  const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
+  const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: linkValue() };
+  paper.short_name = formShortName(paper.journal, paper.title);
   // optional: authors, abstract and date, so an added paper shows like the others
   const authors = field("authors").value.split(/\s*[,;]\s*/).filter(Boolean).slice(0, 300), abstract = field("abstract").value.trim();
   Object.assign(paper, authors.length ? { authors } : {}, abstract ? { abstract: abstract.slice(0, 10000) } : {},
     form.lookup.date && form.lookup.doi === urlDoi(paper.url) ? { date: form.lookup.date } : {});
   if (needHandle(() => { $("add").hidden = false; $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
-  if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
+  if (!httpUrl(paper.url)) return note("Enter a DOI (10.…) or a link starting with http:// or https://.", true);
   // a link without a DOI (cell.com) whose DOI the lookup found is stored as a DOI link: the run and the duplicate check use it
   if (!urlDoi(paper.url) && form.lookup.doi && form.lookup.url === paper.url) paper.url = `https://doi.org/${form.lookup.doi}`;
   const doi = urlDoi(paper.url), title = plainTitle(paper.title), month = addMonth(), latest = state.months.at(-1);
@@ -790,7 +809,6 @@ function closeForm() {
   if (addMonth()) $("add-when").textContent = `Papers added here join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
   $("add").reset();
   form.lookup = {};
-  form.edited = false;
   note("");
   syncExpanded();
 }
@@ -887,15 +905,10 @@ async function init() {
       event.preventDefault();
       const input = field(name);
       input.setRangeText(tidy(text), input.selectionStart, input.selectionEnd, "end");
-      input.dispatchEvent(new Event("input", { bubbles: true }));  // the short name follows the title
     });
   }
   field("url").addEventListener("change", () => { form.pending = lookUp(); });
   field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
-  field("journal").addEventListener("input", refreshShortName);
-  field("title").addEventListener("input", refreshShortName);
-  field("authors").addEventListener("input", refreshShortName);
-  field("short").addEventListener("input", () => { form.edited = field("short").value !== ""; });
 
   const index = await fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
   state.months = index.months;

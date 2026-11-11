@@ -29,16 +29,14 @@
   </form>
 
   <form id="add" class="panel" hidden autocomplete="off">
-    <label>url <input id="add-url" type="url" required maxlength="500" placeholder="https://doi.org/… or the paper's page"></label>
-    <label>journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, Preprint, PNAS, …" list="journals"></label>
+    <label>DOI <input id="add-url" type="text" required maxlength="500" spellcheck="false" placeholder="10.1038/s41588-… (best), or a link to the paper"></label>
+    <p id="add-note" class="hint" role="status"></p>
     <label>title <input id="add-title" type="text" required maxlength="400"></label>
-    <label>short name <input id="add-short" type="text" required maxlength="150" spellcheck="false"></label>
-    <label>authors <input id="add-authors" type="text" maxlength="20000" placeholder="optional; filled from the DOI"></label>
-    <label>abstract <textarea id="add-abstract" rows="3" maxlength="10000" placeholder="optional; filled from the DOI"></textarea></label>
+    <label>journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, Preprint, …" list="journals"></label>
+    <label>authors <input id="add-authors" type="text" maxlength="20000" placeholder="optional; pasting from a PDF is fine"></label>
+    <label>abstract <textarea id="add-abstract" rows="3" required maxlength="10000" placeholder="the Score reads it; pasting from a PDF is fine"></textarea></label>
     <datalist id="journals"></datalist>
     <p id="add-when" class="hint"></p>
-    <p class="hint">The short name is generated as Journal_FirstAuthor_Year_Keyword; edit it if you like.</p>
-    <p id="add-note" class="hint" role="status"></p>
     <div><button type="submit">add</button> <button type="button" id="add-cancel">clear</button></div>
   </form>
 

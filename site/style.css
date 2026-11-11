@@ -67,6 +67,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); }
 #add input, #add textarea { width: 100%; font: inherit; resize: vertical; }
 #add div { display: flex; gap: .6rem; }
+#add > .hint, #add > div { margin-left: calc(6.5rem + .6rem); }  /* under the fields, not the labels */
 .hint { color: var(--muted); font-size: var(--fs-small); }
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 10; width: max-content; max-width: calc(100vw - 2rem);
   padding: .6rem .8rem; color: var(--text); font-size: var(--fs-meta); }
@@ -132,6 +133,7 @@ footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-t
   body { padding: 0 .6rem; }
   .paper { grid-template-columns: 1.8rem minmax(0, 1fr) 3.4rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }
+  #add > .hint, #add > div { margin-left: 0; }
   input, textarea { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
 

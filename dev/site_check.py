@@ -195,10 +195,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.click("#add-open")
         a.fill("#add-url", ADD_URL)
         a.locator("#add-url").blur()
-        a.fill("#add-journal", "Nature")
-        expect(a.locator("#add-title")).not_to_have_value("", timeout=15000)  # title filled from Crossref
-        check("the short name is generated from journal, first author, year and title",
-              seen(a.locator("#add-short"), "") is not None and a.input_value("#add-short") == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
+        expect(a.locator("#add-authors")).not_to_have_value("", timeout=15000)  # filled from Crossref
+        check("the link fills the form from its DOI", a.input_value("#add-journal") == "Nature" and "Karczewski" in a.input_value("#add-authors"))
         a.click("#add button[type=submit]")
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
         check("a paper is added to the month in progress, and not shown before its run scores it",
@@ -208,9 +206,10 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               a.inner_text("#list-month") == "Added to 2020/02 so far" and seen(added(a).locator(".pct"), "–") is not None
               and a.locator("#add").is_visible())
         a.click("#add-open")
-        a.fill("#add-url", ADD_URL + "?again")
+        a.fill("#add-url", ADD_URL.removeprefix("https://doi.org/"))  # a bare DOI
         a.fill("#add-journal", "Nature")
         a.fill("#add-title", "Same paper again")
+        a.fill("#add-abstract", "An abstract.")
         a.click("#add button[type=submit]")
         check("the same paper cannot be added twice", seen(a.locator("#add-note"), "Someone has added this paper to 2020/02 already.") is not None)
         a.fill("#add-url", PAPERS[0]["url"])
@@ -232,6 +231,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         project = "demo-statgenpapers" if EMULATOR else "statgenpapers"
         docs = json.load(urllib.request.urlopen(f"{base}/v1/projects/{project}/databases/(default)/documents/months/2020-02/submissions"))
         sid = docs["documents"][0]["name"].rsplit("/", 1)[1]
+        check("the short name is made on submit from journal, first author, year and title",
+              docs["documents"][0]["fields"]["short_name"]["stringValue"] == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
         (Path(tmp) / "data" / "2020-02.json").write_text(json.dumps({"month": "2020-02", "pool": 99, "papers": PAPERS[3:], "added": {sid: 0.42}}))
         (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH, "2020-02"]}))
         for page in pages:
