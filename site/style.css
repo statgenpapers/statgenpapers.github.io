@@ -87,7 +87,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .details { position: relative; }
 .details p:last-child { margin-bottom: 0; }
 /* a thin line in the gutter, from the first line's text to the last: the text stays where it was */
-.details::before { content: ""; position: absolute; left: -.7rem; top: .4em; bottom: .5em; width: 2px; background: var(--border); }
+.details::before { content: ""; position: absolute; left: -.5rem; top: .4em; bottom: .5em; width: 2px; background: var(--border); }
 .details .who { color: var(--muted); font-size: .9em; }
 .pick { text-align: right; color: var(--muted); font-size: .9em; font-variant-numeric: tabular-nums; }
 
