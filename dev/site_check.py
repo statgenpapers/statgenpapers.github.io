@@ -98,7 +98,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         try:
             expect(page.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=30000)
         except AssertionError:
-            sys.exit("voting did not become available: is Firebase refusing new anonymous sign-ups from this address? Try again later.")
+            sys.exit("voting did not become available: did the month's marks load from Firestore?")
         if page.inner_text("#login-open") == "login":  # the handle is remembered in the profile
             page.click("#login-open")
             page.fill("#login-handle", f"sitecheck_{profile}")
@@ -146,6 +146,39 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("copy table gives Journal, Short Name, Title, URL in the order shown",
           rows[0] == ["Journal", "Short Name", "Title", "URL"] and rows[1] == ["Nat Genet", "NatGenet_Tester_2020_TestPaper3", "Test paper 3", "https://example.org/paper-3"]
           and rows[4][0] == "bioRxiv" and len(rows) == 5)
+
+    # Without a connection Firestore answers from its empty cache: the saved counts must stay, and voting wait.
+    offline = b.context.new_page()
+    offline.route("**/google.firestore.v1.Firestore/**", lambda route: route.abort())
+    offline.goto(url)
+    offline.wait_for_timeout(12000)  # past the SDK's offline timeout (10 s)
+    check("without Firestore, the saved counts stay and voting waits",
+          count(offline, 3).inner_text() == "2" and offline.locator("li.paper .up:not([disabled])").count() == 0
+          and offline.evaluate(f"JSON.parse(localStorage.getItem('marks:{MONTH}')).counts")["sitecheck-3"] == 2)
+    offline.close()
+
+    if EMULATOR:  # a fresh browser: a new anonymous user, free on the emulator
+        c = pw.chromium.launch_persistent_context(Path(tmp) / "profile-c").pages[0]
+        c.on("pageerror", lambda e: errors.append(str(e)))
+        signups = []
+        c.on("request", lambda r: "accounts:signUp" in r.url and signups.append(r.url))
+        c.goto(url)
+        expect(c.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=30000)
+        row(c, 1).locator(".up").click()  # asks for a handle; cancelled, the click is forgotten
+        c.click("#login-cancel")
+        c.click("#login-open")
+        c.fill("#login-handle", "sitecheck_c")
+        c.click("#login button[type=submit]")
+        c.wait_for_timeout(1500)
+        check("a login opened by hand does not carry out an earlier, cancelled click", count(c, 1).inner_text() == "0")
+        c.evaluate("() => { for (const li of document.querySelectorAll('li.paper'))"  # two first writes at once
+                   "  if (/Test paper [12]$/.test(li.querySelector('.title').textContent)) li.querySelector('.up').click(); }")
+        check("writes started together sign in once", seen(count(a, 1), "1") is not None and seen(count(a, 2), "1") is not None
+              and len(signups) == 1)
+        for n in (1, 2):
+            row(c, n).locator(".up").click()
+        check("and the marks can be taken back", seen(count(a, 1), "0") is not None and seen(count(a, 2), "0") is not None)
+        c.context.close()
 
     row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()

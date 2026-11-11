@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="bar">
-  <a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a>
+  <h1 class="brand"><a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a></h1>
 </header>
 
 <main class="prose">
@@ -39,9 +39,9 @@ for everyone within seconds, and the list re-orders itself by them. The code and
   about 1,600 abstracts a second.</li>
   <li>A logistic regression on that vector, plus one indicator per journal or preprint category, gives the score.
   Its weights (<code>model/weights.json</code>) were fitted to twelve months of picks from a statistical genetics
-  group's reading list: the papers the group chose are the positives, every other candidate a negative.</li>
+  lab's reading list: the papers the lab chose are the positives, every other candidate a negative.</li>
   <li>The whole pool is ranked and the top 25 are shown.</li>
-  <li><strong>Score</strong>, the percentage beside each paper, is the model output turned into a probability that the group lists the paper. The
+  <li><strong>Score</strong>, the percentage beside each paper, is the model output turned into a probability that the lab lists the paper. The
   conversion (stored with the weights) was fitted to the scores of the rolling test below, where each month was
   scored by a model that had not seen it. There, papers given about 50% were picked about half the time, and the
   top 25 held 0.45 picks per paper against a predicted 0.46.</li>
@@ -56,16 +56,16 @@ for everyone within seconds, and the list re-orders itself by them. The code and
 <p>The scorer was tested on past months of the reading list: to score a month, the model saw only earlier
 months, and a paper counted as found if it was among the top 25. The test covers
 <span data-v="n_months">8</span> months (March to October 2026), <span data-v="picks">210</span> picks, and about
-<span data-v="pool_per_month">2,100</span> candidates a month. AUC is the chance that a picked paper outranks one
+2,100 candidates a month. AUC is the chance that a picked paper outranks one
 that was not picked.</p>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Picks in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
   <tbody></tbody>
 </table>
 <p>An earlier experiment had a language model (Claude Haiku) read and grade about
-<span data-v="haiku.papers_per_month">340</span> pre-filtered papers a month. On those same papers and labels:</p>
+340 pre-filtered papers a month. On those same papers and labels:</p>
 <table id="haiku">
-  <thead><tr><th></th><th class="num">AUC Aug / Sep / Oct</th><th class="num">Top-25 Aug / Sep / Oct</th><th class="num">Total</th></tr></thead>
+  <thead><tr><th>Scorer</th><th class="num">AUC Aug / Sep / Oct</th><th class="num">Top-25 Aug / Sep / Oct</th><th class="num">Total</th></tr></thead>
   <tbody></tbody>
 </table>
 <p>What these numbers do and do not show:</p>
@@ -90,7 +90,7 @@ that was not picked.</p>
   <li>Other classifiers on the same embeddings did not beat logistic regression consistently (table below): the
   best on one embedding model is mid-table on the other.</li>
   <li>Larger transformer embedding models (PubMedBERT, BGE, SciNCL, MedCPT, MPNet, SPECTER2, E5) find at most 6
-  more of the 210 picks (96 at best), none more in the held-out October, and are about a thousand times slower.
+  more of the 210 picks (96 at best) and at most one more in the held-out October, and are about a thousand times slower.
   potion-32M is the fastest model tested.</li>
   <li>The weights in use were fitted on all twelve months up to October 2026. Lists for those months are therefore
   scored by a model that has seen their answers, and look better than a future month will.</li>
@@ -122,7 +122,15 @@ Numbers generated <span data-v="generated"></span>.</p>
 <footer><a href="./">list</a></footer>
 
 <script type="module">
-const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => r.json());
+const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null), () => null);
+if (!data) {  // the text keeps its written-in numbers; the tables say why they are empty
+  for (const body of document.querySelectorAll("table tbody")) {
+    const td = Object.assign(document.createElement("td"), { textContent: "Unavailable right now.", colSpan: 4 });
+    body.append(document.createElement("tr"));
+    body.lastElementChild.append(td);
+  }
+  throw new Error("data/backtest.json did not load");
+}
 data.n_months = data.months.length;
 const cell = (text, cls) => Object.assign(document.createElement("td"), { textContent: text, className: cls || "" });
 const row = (cells, chosen) => {
@@ -138,7 +146,7 @@ document.querySelector("#strategies tbody").append(...data.strategies.map((s) =>
   row([s.strategy.replace("lr", "logistic regression").replace(" (baseline)", " (in use)"), s.potion_32m_top25, s.minilm_top25], s.strategy.includes("baseline"))));
 for (const span of document.querySelectorAll("[data-v]")) {
   const value = span.dataset.v.split(".").reduce((o, k) => o?.[k], data);
-  if (value !== undefined) span.textContent = typeof value === "number" ? value.toLocaleString("en") : value;
+  if (value !== undefined) span.textContent = typeof value === "number" ? value.toLocaleString("en") : span.dataset.v === "generated" ? String(value).replaceAll("-", "/") : value;
 }
 </script>
 </body>

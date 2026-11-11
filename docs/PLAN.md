@@ -238,7 +238,8 @@ the commit that added this section.
 5. Vote snapshots are `data/votes/YYYY-MM.json`, one per listed month, rewritten each run.
 6. The workflow is built as section 6 proposes. `astral-sh/setup-uv` has no moving major tag, so
    it is pinned to a full version.
-7. The site signs in before it opens its Firestore listeners and uses long-polling
+7. The site opens its Firestore listeners without signing in (marks are public), signs in
+   anonymously on the first write, and uses long-polling
    (`experimentalForceLongPolling`). With the SDK default, 2 of 90 page loads in a two-browser
    test showed the other browser's vote more than 25 s late, although the server had it within
    a second; with long-polling, 0 of 60 (median 0.5 s).

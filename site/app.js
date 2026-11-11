@@ -21,6 +21,7 @@ const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a mark write in flight: a second click must wait for it
 let fb = null, db = null, signer = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load
 let dbReady, afterLogin = null;  // afterLogin: the action that asked for a handle, run once one is given
+const UNAVAILABLE = "Marking and adding are unavailable right now; the list is still readable.";
 const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
 // ---------------------------------------------------------------- helpers
@@ -47,15 +48,18 @@ function hideToast() {
 }
 
 const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
-const httpUrl = (url) => (/^https?:\/\/\S+$/i.test(url) ? url : null);
+const httpUrl = (url) => (/^https?:\/\/\S+$/.test(url) ? url : null);
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
 
-// DOI shown in a paper URL, without a preprint version; "" if none
+// DOI shown in a paper URL, without a preprint version, a page suffix or trailing punctuation; "" if none.
+// nature.com/articles/X is the paper with DOI 10.1038/X.
 function urlDoi(url) {
-  const m = url.match(/10\.\d{4,9}\/[^\s?#]+/);
-  return m ? m[0].replace(/(\.full|\.abstract|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
+  const nature = url.match(/nature\.com\/articles\/([^\s?#/]+)/i);
+  const doi = nature ? `10.1038/${nature[1]}` : url.match(/10\.\d{4,9}\/[^\s?#]+/)?.[0];
+  return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
 }
+const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
 // Sheet-style label Journal_Surname_Year_Keyword. Keep in step with short_name() in pipeline/output.py.
 export function shortName(journal, surname, year, title) {
@@ -87,13 +91,19 @@ function visible() {
   return items().sort((a, b) => count(b.id) - count(a.id) || (score(a) === score(b) ? age(a) - age(b) : score(b) - score(a)));
 }
 
-const link = (handler) => (event) => { event.preventDefault(); handler(event); };
+// A link that acts in the page. Ctrl, Cmd or Shift on a link to another page opens that page as the browser would.
+const link = (handler) => (event) => {
+  if ((event.ctrlKey || event.metaKey || event.shiftKey) && event.currentTarget.getAttribute("href") !== "#") return;
+  event.preventDefault();
+  handler(event);
+};
 
 // A month's data file, fetched once per page load
 const monthFiles = new Map();
 function monthData(m) {
   if (!monthFiles.has(m)) {
-    monthFiles.set(m, fetch(`data/${m}.json`, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { papers: [] }), () => ({ papers: [] })));
+    monthFiles.set(m, fetch(`data/${m}.json`, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+      .catch((e) => { console.warn(e); monthFiles.delete(m); return { papers: [] }; }));  // a failed fetch is tried again next time
   }
   return monthFiles.get(m);
 }
@@ -101,6 +111,7 @@ function monthData(m) {
 // ---------------------------------------------------------------- rendering
 
 function createRow(p) {
+  const month = state.month;  // a row belongs to one month: a late click never marks a paper of another
   const li = $("row").content.firstElementChild.cloneNode(true);
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
@@ -120,11 +131,12 @@ function createRow(p) {
     q(".details").hidden = !open;
     q(".toggle").setAttribute("aria-expanded", open);
   }));
-  q(".up").addEventListener("click", () => vote(p.id));
+  q(".up").addEventListener("click", () => vote(p.id, month));
   q(".remove").addEventListener("click", link(() => removeSubmission(p)));
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
   const details = q(".details");
+  q(".toggle").hidden = Boolean(p.added);  // an added paper has no abstract or authors here
   if (!p.added) {
     details.append(el("p", "", tidyAbstract(p.abstract || "") || "No abstract available."));
     if (a.length > 4) details.append(el("p", "authors", `Authors: ${a.join(", ")}${cut ? ", …" : ""}`));
@@ -133,11 +145,15 @@ function createRow(p) {
 }
 
 // OpenAlex abstracts lose their markup: "5×10<sup>−8</sup>)" arrives as "5x10 -8 )". Restore the exponent
-// after a "×10" or "= 10", drop the spaces inside brackets and before punctuation, and drop a leading "Abstract".
+// after "5x10" (signed or after a space) or after "= 10 " (signed only, so "n = 105" and "> 100,000" stay),
+// drop the spaces inside brackets and before punctuation, and drop a leading "Abstract".
+// No lookbehind: Safari before 16.4 cannot parse it.
 const SUPERSCRIPT = Object.fromEntries([..."0123456789-−–"].map((c, i) => [c, "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁻⁻"[i]]));
+const sup = (e) => [...e].map((c) => SUPERSCRIPT[c]).join("");
 function tidyAbstract(text) {
   return text.replace(/^abstract[\s:.]+(?=[A-Z])/i, "")
-    .replace(/(?<=\d ?[x×] ?|[=<>≤≥] ?)10 ?([-−–]?\d{1,3})\b/g, (_, e) => `10${[...e].map((c) => SUPERSCRIPT[c]).join("")}`)
+    .replace(/(\d ?[x×] ?10)(?: ?([-−–]\d{1,3})| (\d{1,3}))(?![\d.,]?\d)/g, (_, base, e1, e2) => base + sup(e1 ?? e2))
+    .replace(/([=<>≤≥] ?10) ([-−–]\d{1,3})(?![\d.,]?\d)/g, (_, base, e) => base + sup(e))
     .replace(/\( /g, "(").replace(/ ([),;.])(?=[\s),;.]|$)/g, "$1");
 }
 
@@ -147,9 +163,8 @@ function updateRow(li, p) {
   li.dataset.count = n;
   q(".count").title = `${n} interested`;
   q(".up").setAttribute("aria-pressed", own);
-  q(".up").setAttribute("aria-label", own ? "Not interested any more" : "Interested");
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
-  q(".up").disabled = !db;
+  q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
@@ -206,10 +221,24 @@ function renderBar() {
   $("viewing").textContent = listed ? monthName(state.month) : "";
   $("me-wrap").hidden = $("interested-wrap").hidden = !state.handle;
   $("me").textContent = state.handle;
-  $("me").classList.toggle("current", state.view === "user");
-  $("interested-open").classList.toggle("current", state.view === "interested");
+  $("me").href = `?user=${state.handle}`;
+  $("interested-open").href = `?interested=${state.handle}`;
+  for (const [a, current] of [[$("me"), state.view === "user"], [$("interested-open"), state.view === "interested"]]) {
+    a.classList.toggle("current", current);
+    current ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
+  }
   $("copy-wrap").hidden = state.view !== "list";
   $("login-open").textContent = state.handle ? "logout" : "login";
+  syncExpanded();
+  document.title = { list: listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
+    user: "Your handle · StatGen Papers", interested: "Interested · StatGen Papers" }[state.view];
+}
+
+// The "add" and "login" links say whether their form is open.
+function syncExpanded() {
+  $("add-open").setAttribute("aria-expanded", !$("add").hidden);
+  if (state.handle) $("login-open").removeAttribute("aria-expanded");  // "logout" opens nothing
+  else $("login-open").setAttribute("aria-expanded", !$("login").hidden);
 }
 
 // ---------------------------------------------------------------- data
@@ -242,7 +271,12 @@ function listen() {
   unsubscribe = [];
   if (!db || !state.month || state.view !== "list") return;
   const month = state.month, at = (name) => fb.collection(db, "months", month, name);
-  unsubscribe.push(fb.onSnapshot(at("votes"), (snap) => {
+  // Without a connection Firestore answers from its empty cache: that answer would zero the counts and
+  // overwrite the saved copy, so the month waits for the server's first answer.
+  const fromServer = (name, snap) => !(snap.metadata.fromCache && state.waiting.has(name));
+  const live = { includeMetadataChanges: true };
+  unsubscribe.push(fb.onSnapshot(at("votes"), live, (snap) => {
+    if (!fromServer("votes", snap)) return;
     state.votes = new Map();
     for (const d of snap.docs) {
       const { paper, handle } = d.data();
@@ -250,8 +284,9 @@ function listen() {
       state.votes.get(paper).add(handle);
     }
     arrived("votes");
-  }, (e) => { console.warn("votes", e); arrived("votes"); toast("Marking is unavailable right now; the list is still readable."); }));
-  unsubscribe.push(fb.onSnapshot(at("submissions"), (snap) => {
+  }, (e) => { console.warn("votes", e); arrived("votes"); toast(UNAVAILABLE); }));
+  unsubscribe.push(fb.onSnapshot(at("submissions"), live, (snap) => {
+    if (!fromServer("submissions", snap)) return;
     state.subs = snap.docs.map((d) => {
       const s = d.data({ serverTimestamps: "estimate" });
       return { ...s, id: d.id, created: s.created?.toMillis() ?? Date.now() };
@@ -312,7 +347,7 @@ async function connect() {
     state.waiting.clear();
     render();
     console.warn(e);
-    toast("Marking is unavailable right now; the list is still readable.");
+    toast(UNAVAILABLE);
   }
 }
 
@@ -324,12 +359,14 @@ async function signedIn() {
   if (!signer) return toast("Still connecting; try again in a moment."), false;
   await signer.authStateReady();
   if (signer.currentUser) return true;
+  // Writes started together (a mark and an added paper, quick clicks) share one sign-in: one Firebase user.
+  signedIn.pending ??= fb.signInAnonymously(signer).finally(() => { signedIn.pending = null; });
   try {
-    state.uid = (await fb.signInAnonymously(signer)).user.uid;
+    state.uid = (await signedIn.pending).user.uid;
     return true;
   } catch (e) {
     console.warn(e);
-    toast("Marking is unavailable right now; try again later.");
+    toast("Marking and adding are unavailable right now; try again later.");
     return false;
   }
 }
@@ -337,21 +374,26 @@ async function signedIn() {
 // Without a handle, open the login form and remember what to do once one is given.
 function needHandle(action) {
   if (state.handle) return false;
-  afterLogin = action;
   if ($("login").hidden) openPanel("login");
   else $("login-handle").focus();
+  afterLogin = action;  // after opening, which forgets any earlier action
   return true;
 }
 
-// Mark a paper, or take the mark back if this handle already gave one.
-async function vote(id) {
-  if (needHandle(() => vote(id).then(() => rows.get(id)?.scrollIntoView({ block: "center" })))) return;
-  if (voting.has(id)) return;
+// Mark a paper of `month`, or take the mark back if this handle already gave one. After a login asked
+// for by the click, the paper is scrolled to and its triangle focused.
+async function vote(id, month) {
+  if (needHandle(() => vote(id, month).then(() => {
+    const up = rows.get(id)?.querySelector(".up");
+    up?.scrollIntoView({ block: "center" });
+    up?.focus({ preventScroll: true });
+  }))) return;
+  if (month !== state.month || voting.has(id)) return;
   voting.add(id);
   try {
-    if (!(await signedIn())) return;
-    if (mine(id)) await fb.deleteDoc(voteRef(state.month, id));
-    else await fb.setDoc(voteRef(state.month, id), { paper: id, handle: state.handle });
+    if (!(await signedIn()) || month !== state.month) return;
+    if (mine(id)) await fb.deleteDoc(voteRef(month, id));
+    else await fb.setDoc(voteRef(month, id), { paper: id, handle: state.handle });
   } catch (e) {
     console.warn(e);
     toast("Your mark was not saved.");
@@ -362,10 +404,12 @@ async function vote(id) {
 
 // Remove a paper this browser added, and its marks, which would otherwise be read on every visit.
 async function removeSubmission(p) {
+  const month = state.month, handles = [...(state.votes.get(p.id) ?? [])].filter((h) => HANDLE.test(h));
   if (!confirm(`Remove "${p.title}" from the list?`)) return;
   try {
-    await Promise.all([...(state.votes.get(p.id) ?? [])].filter((h) => HANDLE.test(h)).map((handle) => fb.deleteDoc(voteRef(state.month, p.id, handle))));
-    await fb.deleteDoc(fb.doc(db, "months", state.month, "submissions", p.id));
+    // the paper first: if its marks then fail to go, nobody sees them
+    await fb.deleteDoc(fb.doc(db, "months", month, "submissions", p.id));
+    await Promise.all(handles.map((handle) => fb.deleteDoc(voteRef(month, p.id, handle))));
   } catch (e) {
     console.warn(e);
     toast("Could not remove the paper.");
@@ -385,6 +429,7 @@ function login(event) {
   const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one Firestore query
   if (!HANDLE.test(handle)) {
     $("login-note").textContent = "A handle is 2–20 letters, digits or _.";
+    $("login-note").classList.add("error");
     return $("login-handle").focus();
   }
   const action = afterLogin;
@@ -396,7 +441,9 @@ function login(event) {
 function closeLogin() {
   $("login").hidden = true;
   $("login-note").textContent = "";
+  $("login-note").classList.remove("error");
   afterLogin = null;
+  syncExpanded();
   $("login-open").focus({ preventScroll: true });
 }
 
@@ -408,9 +455,12 @@ function toggleScoreNote(open = $("score-note").hidden) {
 // "past": a drop-down of all months under the link; it covers the page instead of moving it.
 function togglePast(open = $("past").hidden) {
   const past = $("past");
+  if (!state.months.length) open = false;  // nothing to list yet
   if (open) {
     past.replaceChildren(...[...state.months].reverse().map((m) => {
-      const a = Object.assign(el("a", m === state.month && state.view === "list" ? "current" : "", monthName(m)), { href: `?month=${m}` });
+      const current = m === state.month && state.view === "list";
+      const a = Object.assign(el("a", current ? "current" : "", monthName(m)), { href: `?month=${m}` });
+      if (current) a.setAttribute("aria-current", "page");
       a.addEventListener("click", link(() => { go({ month: m }); $("past-open").focus({ preventScroll: true }); }));
       return a;
     }));
@@ -432,7 +482,8 @@ function route() {
 
 // Every navigation adds a history entry, so Back returns to the previous month or page.
 function go(params) {
-  history.pushState(null, "", `?${new URLSearchParams(params)}`);
+  const search = String(new URLSearchParams(params));
+  if (search !== location.search.slice(1)) history.pushState(null, "", `?${search}`);
   togglePast(false);
   return route();
 }
@@ -464,12 +515,12 @@ function showPage(view, ...content) {
   $("listview").hidden = true;
   $("page").hidden = false;
   $("page").replaceChildren(...content);
-  render();
+  renderBar();
 }
 
 async function showUser() {
   const handle = state.handle, total = el("span", "", "…"), table = el("div", "user");
-  for (const [label, value] of [["user:", el("span", "", handle)], ["interested in:", total]]) {
+  for (const [label, value] of [["handle:", el("span", "", handle)], ["interested in:", total]]) {
     const row = el("div", "row");
     row.append(el("span", "label", label), value);
     table.append(row);
@@ -502,7 +553,8 @@ async function showInterested() {
     return;
   }
   if (state.view !== "interested" || state.handle !== handle) return;
-  if (!marks.length) return list.replaceChildren(el("li", "empty", "Nothing yet: click the triangle beside a paper."));
+  const empty = el("li", "empty", "Nothing yet: click the triangle beside a paper.");
+  const syncEmpty = () => { empty.remove(); if ([...list.children].every((li) => li.hidden)) list.append(empty); };
   list.replaceChildren(...marks.map(({ month, paper: p }) => {
     const li = el("li", "mark"), title = el("a", "title", p.title), url = httpUrl(p.url);
     if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
@@ -515,10 +567,12 @@ async function showInterested() {
         if (!(await signedIn())) return;
         await fb.deleteDoc(ref);
         li.hidden = true;
+        syncEmpty();
         toast("Removed.", async () => {
           try {
             await fb.setDoc(ref, { paper: p.id, handle });
             li.hidden = false;
+            syncEmpty();
           } catch (e) {
             console.warn(e);
             toast("Could not restore the mark.");
@@ -534,6 +588,7 @@ async function showInterested() {
     li.append(title, " ", el("span", "source", source(p)), sub);
     return li;
   }));
+  syncEmpty();
 }
 
 // ---------------------------------------------------------------- add a paper
@@ -576,17 +631,20 @@ async function lookUp() {
 async function submitPaper(event) {
   event.preventDefault();
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
-  if (needHandle(() => { openPanel("add"); })) return;
+  if (needHandle(() => { openPanel("add"); $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
-  const doi = urlDoi(paper.url);
-  if (items().some((p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi))) return note("This paper is already on the list.", true);
+  const doi = urlDoi(paper.url), title = plainTitle(paper.title);
+  if (items().some((p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title)) {
+    return note("This paper is already on the list.", true);
+  }
   try {
+    const month = state.month;
     if (!(await signedIn())) return;
-    const ref = await fb.addDoc(fb.collection(db, "months", state.month, "submissions"),
+    const ref = await fb.addDoc(fb.collection(db, "months", month, "submissions"),
       { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
     closeForm();
     $("add-open").focus({ preventScroll: true });
-    await vote(ref.id);  // adding a paper marks it, and the mark can be taken back like any other
+    await vote(ref.id, month);  // adding a paper marks it, and the mark can be taken back like any other
     rows.get(ref.id)?.classList.add("new");
     rows.get(ref.id)?.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
   } catch (e) {
@@ -601,6 +659,7 @@ function closeForm() {
   form.lookup = {};
   form.edited = false;
   note("");
+  syncExpanded();
 }
 
 // Show one of the two forms (login, add), or hide it if it is open.
@@ -608,6 +667,8 @@ function openPanel(name) {
   const other = name === "add" ? "login" : "add";
   $(other).hidden = true;
   $(name).hidden = !$(name).hidden;
+  afterLogin = null;  // the login opened or closed by hand: nothing waits for it
+  syncExpanded();
   if (!$(name).hidden) $(name).querySelector("input").focus();
 }
 
@@ -619,7 +680,7 @@ async function copyTable() {
     .map((row) => row.map((cell) => String(cell).replace(/\s+/g, " ")).join("\t")).join("\n");
   try {
     await navigator.clipboard.writeText(text);
-    toast(`Copied ${shown.length} rows: ${TABLE_HEADER.join(", ")}.`);
+    toast(`Copied ${shown.length} paper${shown.length === 1 ? "" : "s"}: ${TABLE_HEADER.join(", ")}.`);
   } catch {
     toast("Copying is blocked in this browser.");
   }
@@ -630,6 +691,7 @@ async function init() {
   connect();  // in parallel with the month index; listening starts once a month is shown
   $("copy").addEventListener("click", link(copyTable));
   $("add-open").addEventListener("click", link(async () => {
+    if (!state.months.length) return toast("There is no list to add to yet.");
     if (state.view !== "list") await go({});  // a paper is added to the month shown
     openPanel("add");
   }));
@@ -652,7 +714,19 @@ async function init() {
     if (!e.target.closest(".links .menu")) togglePast(false);
     if (!e.target.closest(".pick-head .menu")) toggleScoreNote(false);
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { togglePast(false); toggleScoreNote(false); } });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      // closing a pop-up puts the focus back on its link
+      for (const [pop, opener, close] of [["past", "past-open", togglePast], ["score-note", "score-help", toggleScoreNote]]) {
+        if ($(pop).hidden) continue;
+        const inside = $(pop).contains(document.activeElement);
+        close(false);
+        if (inside) $(opener).focus();
+      }
+    }
+    // links that act like buttons (href="#") answer Space as buttons do
+    if (e.key === " " && e.target.matches?.('a[href="#"]')) { e.preventDefault(); e.target.click(); }
+  });
   for (const type of ["pointermove", "pointerdown", "keydown"]) $("list").addEventListener(type, () => { lastInput = Date.now(); }, { passive: true });
   addEventListener("scroll", () => { lastInput = Date.now(); }, { passive: true });
   // the toast stays while the pointer or focus is on it

@@ -21,7 +21,7 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a, button { touch-action: manipulation; }
 button, input { font: inherit; color: inherit; }
-input { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
+input { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
 button { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .15rem .7rem; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* dashed underline: opens something in place (Details, Score) */
@@ -30,6 +30,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 /* top bar */
 .bar, main, footer { max-width: 54rem; margin: 0 auto; }  /* one centred column: the bar's and footer's rules end where the list does */
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; padding-top: 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--accent); }
+.brand { margin: 0; font: inherit; }  /* the h1 of every page, styled as the logo link */
 .home { display: flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
@@ -37,6 +38,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #viewing { font-size: var(--fs-small); }  /* the month: a little smaller than the links beside it */
 .account { margin-left: auto; }
 #me { color: var(--text); }
+#me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
 .menu { position: relative; }
 .bar .current, .popover a.current { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
@@ -60,8 +62,9 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #login p { flex-basis: 100%; margin: 0; }  /* the hint sits one row-gap under the field */
 #add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); }
 #add input { width: 100%; }
+#add div { display: flex; gap: .6rem; }
 .hint { color: var(--muted); font-size: var(--fs-small); }
-.toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 10; max-width: calc(100vw - 2rem);
+.toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 10; width: max-content; max-width: calc(100vw - 2rem);
   padding: .6rem .8rem; color: var(--text); font-size: var(--fs-meta); }
 .toast:empty { display: none; }
 .toast .undo { border: 0; background: none; padding: 0 0 0 .5rem; color: var(--accent); }
@@ -75,7 +78,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .title-head { padding-left: 2.45rem; }  /* the vote column (2.2rem) plus the gap (.25rem) */
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
-.paper .main { max-width: 44rem; }  /* titles and abstracts: about 85–95 characters a line at most */
+.paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
 .paper { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } }
@@ -90,7 +93,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .up[aria-pressed="true"] + .count { color: var(--accent); }
 .title { color: var(--text); }
 .title:visited { color: var(--muted); }
-.source { color: var(--muted); font-size: var(--fs-small); white-space: nowrap; }
+.source { display: inline-block; color: var(--muted); font-size: var(--fs-small); }  /* moves to the next line whole when it does not fit */
 .sub { color: var(--muted); font-size: var(--fs-small); margin-top: .1rem; }
 .sub a { color: var(--muted); padding: .25rem 0 .55rem; }
 .sub a:not(.toggle) { text-decoration: underline; }
