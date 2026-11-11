@@ -134,7 +134,8 @@ function createRow(p) {
   q(".source").title = p.type === "preprint" || p.added ? "" : p.venue_name || "";  // a journal's full name; preprints stay "Preprint"
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
-  q(".added-icon").toggleAttribute("hidden", !p.added);  // an added paper: a person-plus icon left of its Score (an SVG has no .hidden)
+  q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
+  q(".added-icon").addEventListener("click", () => toast("Added by a reader, not chosen by the model."));  // a tap says so on phones
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
@@ -704,6 +705,7 @@ async function lookUp() {
 
 async function submitPaper(event) {
   event.preventDefault();
+  await form.pending;  // leaving the URL field for "add" starts a lookup: let it fill the form first
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
   // optional: authors, abstract and date, so an added paper shows like the others
   const authors = field("authors").value.split(/\s*[,;]\s*/).filter(Boolean).slice(0, 300), abstract = field("abstract").value.trim();
@@ -825,8 +827,9 @@ async function init() {
   // the toast stays while the pointer or focus is on it
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());
-  field("url").addEventListener("change", lookUp);
-  field("url").addEventListener("paste", () => setTimeout(lookUp));  // a pasted URL is looked up at once, not on leaving the field
+  // a lookup in flight is awaited by submitPaper, so its last note cannot overwrite the submit's
+  field("url").addEventListener("change", () => { form.pending = lookUp(); });
+  field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
   field("journal").addEventListener("input", refreshShortName);
   field("title").addEventListener("input", refreshShortName);
   field("short").addEventListener("input", () => { form.edited = field("short").value !== ""; });

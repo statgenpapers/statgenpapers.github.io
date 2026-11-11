@@ -105,7 +105,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .sub a:hover { color: var(--text); }
 .sub .toggle { margin-left: .6em; }
 /* an added paper: a small person-plus icon left of its Score, so the Score is not read as the model's choice */
-.pick .added-icon { position: relative; top: 1px; }  /* an added paper: at the Score column's left edge, the same place in every row */
+.pick .added-icon { position: relative; top: 1px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; line-height: 0; }  /* an added paper: at the Score column's left edge, the same place in every row */
 .pick .pct { margin-left: auto; }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
