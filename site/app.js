@@ -245,7 +245,7 @@ async function vote(id) {
   const ref = fb.doc(db, "months", state.month, "votes", `${id}~${key()}`);
   try {
     if (mine(id)) await fb.deleteDoc(ref);
-    else await fb.setDoc(ref, { paper: id, handle: state.handle, created: fb.serverTimestamp() });
+    else await fb.setDoc(ref, { paper: id, handle: state.handle });
   } catch (e) {
     console.warn(e);
     toast("Your vote was not saved.");
@@ -321,14 +321,7 @@ function handleLink(handle) {
   return a;
 }
 
-function ago(ms) {
-  const s = (Date.now() - ms) / 1000;
-  const [n, unit] = s < 3600 ? [Math.max(1, Math.round(s / 60)), "minute"] : s < 86400 ? [Math.round(s / 3600), "hour"]
-    : s < 86400 * 60 ? [Math.round(s / 86400), "day"] : [0, ""];
-  return unit ? `${n} ${unit}${n === 1 ? "" : "s"} ago` : new Date(ms).toISOString().slice(0, 10);
-}
-
-// Every paper `handle` is interested in, newest mark first: [{ month, paper, created (ms or null) }].
+// Every paper `handle` is interested in, newest month first: [{ month, paper }].
 async function marksOf(handle) {
   await connected;
   if (!db) throw new Error("Firestore is unavailable");
@@ -340,9 +333,9 @@ async function marksOf(handle) {
       votes, fb.getDocs(fb.collection(db, "months", m, "submissions"))]);
     const papers = new Map([...subs.docs.map((d) => [d.id, { ...d.data(), id: d.id, added: true }]), ...data.papers.map((p) => [p.id, p])]);
     return mine.docs.map((d) => d.data()).filter((v) => papers.has(v.paper))
-      .map((v) => ({ month: m, paper: papers.get(v.paper), created: v.created?.toMillis() ?? null }));
+      .map((v) => ({ month: m, paper: papers.get(v.paper) }));
   }));
-  return months.flat().sort((a, b) => (b.created ?? 0) - (a.created ?? 0) || b.month.localeCompare(a.month));
+  return months.reverse().flat();
 }
 
 function showPage(handle, view, ...content) {
@@ -358,9 +351,9 @@ function showPage(handle, view, ...content) {
 }
 
 async function showUser(handle) {
-  const since = el("span", "", "…"), count = el("span", "", "…");
+  const count = el("span", "", "…");
   const table = el("div", "user");
-  for (const [label, value] of [["user:", handle], ["active since:", since], ["interested in:", count]]) {
+  for (const [label, value] of [["user:", handle], ["interested in:", count]]) {
     const row = el("div", "row");
     row.append(el("span", "label", label), value instanceof Node ? value : el("span", "", value));
     table.append(row);
@@ -373,12 +366,10 @@ async function showUser(handle) {
   try {
     const marks = await marksOf(handle);
     if (state.view !== "user" || state.page !== handle) return;
-    const times = marks.map((x) => x.created).filter(Boolean);
     count.textContent = `${marks.length} paper${marks.length === 1 ? "" : "s"}`;
-    since.textContent = times.length ? ago(Math.min(...times)) : "—";
   } catch (e) {
     console.warn(e);
-    count.textContent = since.textContent = "unavailable";
+    count.textContent = "unavailable";
   }
 }
 
@@ -398,13 +389,13 @@ async function showInterested(handle) {
   }
   if (state.view !== "interested" || state.page !== handle) return;
   if (!marks.length) return list.replaceChildren(el("li", "empty", own ? "Nothing yet: click the triangle beside a paper." : "Nothing yet."));
-  list.replaceChildren(...marks.map(({ month, paper: p, created }) => {
+  list.replaceChildren(...marks.map(({ month, paper: p }) => {
     const li = el("li", "mark"), title = el("a", "title", p.title), url = httpUrl(p.url);
     if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
     const monthLink = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });
     monthLink.addEventListener("click", link(() => go({ month })));
     const sub = el("div", "sub");
-    sub.append(...(created ? [`${ago(created)} · `] : []), "in the list of ", monthLink);
+    sub.append("in the list of ", monthLink);
     if (own) {
       const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
       undo.addEventListener("click", link(async () => {

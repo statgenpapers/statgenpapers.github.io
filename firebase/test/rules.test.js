@@ -9,7 +9,7 @@ const M = "months/2026-10", P = "10.1038_s41588-026-00001-1";
 const db = (uid) => (uid ? env.authenticatedContext(uid) : env.unauthenticatedContext()).firestore();
 // An upvote is the document months/{m}/votes/{paper}~{handle in lower case}.
 const vote = (uid, handle, { paper = P, id = `${paper}~${String(handle).toLowerCase()}`, month = M, ...extra } = {}) =>
-  setDoc(doc(db(uid), `${month}/votes/${id}`), { paper, handle, created: serverTimestamp(), ...extra });
+  setDoc(doc(db(uid), `${month}/votes/${id}`), { paper, handle, ...extra });
 
 before(async () => {
   env = await initializeTestEnvironment({
@@ -43,10 +43,7 @@ test("handles are 2-20 lower-case letters, digits or _", async () => {
   await assertSucceeds(vote("uid-b", "under_score9"));
 });
 test("no other fields, so no downvote or weight", () => assertFails(vote("uid-b", "bob", { v: -1 })));
-test("an upvote carries the server time, not a client time", async () => {
-  await assertFails(vote("uid-b", "bob", { created: new Date(0) }));
-  await assertFails(setDoc(doc(db("uid-b"), `${M}/votes/${P}~bob`), { paper: P, handle: "bob" }));
-});
+test("an upvote stores no time", () => assertFails(vote("uid-b", "bob", { created: serverTimestamp() })));
 test("paper id must be well formed", () => assertFails(vote("uid-b", "bob", { paper: "a b" })));
 test("month must be well formed", () => assertFails(vote("uid-b", "bob", { month: "months/junk" })));
 test("any signed-in browser may take back a handle's upvote (handles have no password)", () =>

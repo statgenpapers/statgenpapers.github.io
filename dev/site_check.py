@@ -117,7 +117,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     dt = seen(count(b, 3), "1")
     check(f"an upvote in one browser shows in the other ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
     check("the other browser re-orders the list, animated", order(b)[0] == "3" and b.evaluate("window.moves") > 0)
-    check("own vote is highlighted (green) only for the voter", pressed(a, 3) and not pressed(b, 3))
+    check("own mark is highlighted (blue) only for the voter", pressed(a, 3) and not pressed(b, 3))
     check("there is no downvote", a.locator("li.paper button").count() == 4)
     row(b, 3).locator(".toggle").click()
     check("the handle shows next to the vote; the abstract opens without its heading",
