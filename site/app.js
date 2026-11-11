@@ -176,18 +176,56 @@ function render() {
     list.replaceChildren(...nodes);
     if (focused && list.contains(focused)) focused.focus({ preventScroll: true });
     if (!reduceMotion) {
-      // The paper whose marks changed fades in at its new place, rising a little; the rows it displaced
-      // ease aside by a slot. No row travels across the list.
+      // FLIP: every row glides from where it was to where it is, so the eye can follow each paper
+      // (object constancy). Material Design's standard easing; longer moves take a little longer
+      // (250–450 ms). A row that passes others is drawn above them, on the page colour, so text never overlaps.
+      // TEMPORARY trial "fade": the paper whose count changed fades in once the rows it passed have made room.
+      const fade = animStyle() === "fade";
       for (const li of nodes) {
         const dy = before.has(li) ? before.get(li) - li.getBoundingClientRect().top : 0;
         if (Math.abs(dy) <= 1) continue;
-        if (li.dataset.count !== li.dataset.placed) li.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: 180, easing: "ease-out", fill: "backwards" });  // after the others have made room
-        else li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 250, easing: "cubic-bezier(.2, 0, 0, 1)" });
+        if (fade) {
+          if (li.dataset.count !== li.dataset.placed) li.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: 180, easing: "ease-out", fill: "backwards" });
+          else li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 250, easing: "cubic-bezier(.2, 0, 0, 1)" });
+          continue;
+        }
+        const far = Math.abs(dy) > li.offsetHeight;
+        if (far) li.classList.add("lift");
+        const glide = li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }],
+          { duration: Math.min(450, 250 + Math.abs(dy) / 4), easing: "cubic-bezier(.2, 0, 0, 1)" });
+        if (far) glide.finished.finally(() => li.classList.remove("lift")).catch(() => {});
       }
     }
   }
   for (const li of nodes) li.dataset.placed = li.dataset.count;  // the count each row had when the order was last applied
   renderBar();
+}
+
+// TEMPORARY animation trial (#anim): pick slide or fade, and "try it" fakes one mark on a lower paper in this
+// page only (never saved), then takes it back after 3 s.
+const animStyle = () => { try { return localStorage.getItem("anim") || "slide"; } catch { return "slide"; } };
+function animTrial() {
+  const show = () => {
+    $("anim-trial").hidden = location.hash !== "#anim";
+    for (const a of document.querySelectorAll("[data-anim]")) a.classList.toggle("current", a.dataset.anim === animStyle());
+  };
+  for (const a of document.querySelectorAll("[data-anim]")) a.addEventListener("click", link(() => { try { localStorage.setItem("anim", a.dataset.anim); } catch {} show(); }));
+  $("anim-try").addEventListener("click", link(() => {
+    if (state.view !== "list" || !state.data) return;
+    const shown = visible(), paper = shown[Math.min(shown.length - 1, 4 + Math.floor(Math.random() * 10))];
+    const fake = "\u0000trial";  // not a valid handle: never saved, matched or deleted
+    if (!state.votes.has(paper.id)) state.votes.set(paper.id, new Set());
+    for (let i = 0; i < 5; i++) state.votes.get(paper.id).add(fake + i);
+    lastInput = 0;
+    render();
+    setTimeout(() => {
+      for (let i = 0; i < 5; i++) state.votes.get(paper.id)?.delete(fake + i);
+      lastInput = 0;
+      render();
+    }, 3000);
+  }));
+  addEventListener("hashchange", show);
+  show();
 }
 
 // Someone is reading: a details panel is open, or the page was scrolled, or the list pointed at or
@@ -223,7 +261,7 @@ async function loadMonth(month) {
   state.votes = saved?.votes ?? new Map();
   state.subs = saved?.subs ?? [];
   state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
-  history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
+  history.replaceState(null, "", (month === state.months.at(-1) ? location.pathname : `?month=${month}`) + location.hash);
   closeForm();
   listen();
   const data = await monthData(month);
@@ -267,7 +305,7 @@ function arrived(name) {
 // until the first snapshot replaces them.
 function saveMarks() {
   if (state.waiting.size) return;  // not before both snapshots are in
-  const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, handles.size]));
+  const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, [...handles].filter((h) => !h.startsWith("\u0000trial")).length]));
   const own = [...state.votes].filter(([, handles]) => handles.has(state.handle)).map(([id]) => id);
   const subs = state.subs.map(({ name, ...s }) => s);
   try { localStorage.setItem(`marks:${state.month}`, JSON.stringify({ counts, own, handle: state.handle, subs })); } catch {}
@@ -639,6 +677,7 @@ async function init() {
   // the toast stays while the pointer or focus is on it
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());
+  animTrial();
   field("url").addEventListener("change", lookUp);
   field("journal").addEventListener("input", refreshShortName);
   field("title").addEventListener("input", refreshShortName);
