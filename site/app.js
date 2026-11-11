@@ -141,9 +141,9 @@ function render() {
     }
   }
   // the month shown, in the top bar: "this month (October 2026)", or "past (September 2026)" for an earlier one
-  const latest = state.month === state.months.at(-1), viewed = state.month ? ` (${monthName(state.month)})` : "";
-  $("this-month").textContent = `this month${latest ? viewed : ""}`;
-  $("past-open").textContent = `past${latest ? "" : viewed}`;
+  const latest = state.month === state.months.at(-1), viewed = state.month ? [" ", el("span", "when", `(${monthName(state.month)})`)] : [];
+  $("this-month").replaceChildren("this month", ...(latest ? viewed : []));
+  $("past-open").replaceChildren("past", ...(latest ? [] : viewed));
   $("this-month").classList.toggle("current", latest);
   $("past-open").classList.toggle("current", Boolean(state.month) && !latest);
   $("me").hidden = !state.handle;
