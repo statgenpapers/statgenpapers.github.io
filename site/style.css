@@ -112,6 +112,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .marks .mark { padding-top: .35rem; padding-bottom: .45rem; }
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
 .user .label { color: var(--muted); }
+.user a { justify-self: start; color: var(--text); }
 .page p { margin: .8rem 0 0; }
 
 footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: var(--fs-small); text-align: center; }

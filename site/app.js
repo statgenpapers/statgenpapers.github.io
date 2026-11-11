@@ -540,24 +540,22 @@ function showPage(view, ...content) {
 }
 
 async function showUser() {
-  const handle = state.handle, total = el("span", "", "…"), table = el("div", "user");
+  // the count is the link to the papers: "3 papers", dashed like Details
+  const handle = state.handle, total = Object.assign(el("a", "dashed", "…"), { href: `?interested=${handle}` }), table = el("div", "user");
+  total.addEventListener("click", link(() => go({ interested: handle })));
   for (const [label, value] of [["handle:", el("span", "", handle)], ["interested in:", total]]) {
     const row = el("div", "row");
     row.append(el("span", "label", label), value);
     table.append(row);
   }
-  const shown = Object.assign(el("a", "", "interested papers"), { href: `?interested=${handle}` });
-  shown.addEventListener("click", link(() => go({ interested: handle })));
-  const more = el("p");
-  more.append(shown);
-  showPage("user", table, more);
+  showPage("user", table);
   try {
     const marks = await myMarks();
     if (state.view !== "user" || state.handle !== handle) return;
     total.textContent = `${marks.length} paper${marks.length === 1 ? "" : "s"}`;
   } catch (e) {
     console.warn(e);
-    total.textContent = "unavailable";
+    total.replaceWith(el("span", "", "unavailable"));
   }
 }
 
