@@ -42,7 +42,7 @@ PAPERS = [{"id": f"sitecheck-{i}", "doi": f"10.0000/sitecheck-{i}", "url": f"htt
            "venue": "Preprint" if i == 2 else "NG", "venue_name": "bioRxiv · genetics" if i == 2 else "Nature Genetics",
            "journal": "bioRxiv" if i == 2 else "Nat Genet",
            "type": "preprint" if i == 2 else "published", "abstract": f"Abstract Body of abstract {i}.",
-           "short_name": f"NatGenet_Tester_2020_TestPaper{i}", "score": 5.0 - i, "rank": i} for i in range(1, 5)]
+           "short_name": f"NatGenet_Tester_2020_TestPaper{i}", "score": 5.0 - i, "p_pick": round(0.9 - 0.1 * i, 2), "rank": i} for i in range(1, 5)]
 ADD_URL = "https://doi.org/10.1038/s41586-020-2308-7"  # a real DOI, for the Crossref lookup (gnomAD, Karczewski 2020)
 failed = False
 

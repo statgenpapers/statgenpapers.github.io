@@ -97,11 +97,10 @@ function items() {
       p_pick: scored[s.id] }))];
 }
 
-// By marks. On equal marks an added paper comes first (a reader chose it), then the listed ones; each group by
-// Score, highest first. Unscored added papers (the next month's page) go oldest first.
+// By marks, then by Score (an added paper's too). Unscored added papers (the next month's page) go oldest first.
 function visible() {
-  const rank = (p) => (p.added ? p.p_pick ?? -(p.created ?? 0) / 1e15 : p.score);
-  return items().sort((a, b) => count(b.id) - count(a.id) || Number(Boolean(b.added)) - Number(Boolean(a.added)) || rank(b) - rank(a));
+  const rank = (p) => p.p_pick ?? -(p.created ?? 0) / 1e15;
+  return items().sort((a, b) => count(b.id) - count(a.id) || rank(b) - rank(a));
 }
 
 // A link that acts in the page. Ctrl, Cmd or Shift on a link to another page opens that page as the browser would.
