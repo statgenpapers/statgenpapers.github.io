@@ -15,7 +15,7 @@ const state = {
   uid: null,
   handle: "",        // the reader's handle, lower case; "" when logged out
   view: "list",      // "list" (a month), "user" or "interested" (pages of the logged-in handle)
-  waiting: new Set(),  // first snapshots a month's first draw waits for: "votes", "submissions"
+  waiting: new Set(),  // a month's first snapshots not yet in: "votes", "submissions"; saved marks wait for both
 };
 const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a mark write in flight: a second click must wait for it
@@ -144,6 +144,7 @@ function tidyAbstract(text) {
 function updateRow(li, p) {
   const n = count(p.id), own = mine(p.id), q = (sel) => li.querySelector(sel);
   q(".count").textContent = n;
+  li.dataset.count = n;
   q(".count").title = `${n} interested`;
   q(".up").setAttribute("aria-pressed", own);
   q(".up").setAttribute("aria-label", own ? "Not interested any more" : "Interested");
@@ -154,7 +155,7 @@ function updateRow(li, p) {
 
 function render() {
   const list = $("list");
-  if (state.view === "list" && (!state.data || state.waiting.size)) return renderBar();
+  if (state.view === "list" && !state.data) return renderBar();  // the list shows as soon as its file is in
   const before = new Map([...list.children].map((li) => [li, li.getBoundingClientRect().top]));
   const nodes = visible().map((p) => {
     if (!rows.has(p.id)) rows.set(p.id, createRow(p));
@@ -175,16 +176,17 @@ function render() {
     list.replaceChildren(...nodes);
     if (focused && list.contains(focused)) focused.focus({ preventScroll: true });
     if (!reduceMotion) {
-      for (const li of nodes) {  // FLIP: start each row where it was, let it glide to its new place
+      // The paper whose marks changed fades in at its new place, rising a little; the rows it displaced
+      // ease aside by a slot. No row travels across the list.
+      for (const li of nodes) {
         const dy = before.has(li) ? before.get(li) - li.getBoundingClientRect().top : 0;
         if (Math.abs(dy) <= 1) continue;
-        const far = Math.abs(dy) > li.offsetHeight;  // passes other rows: draw it above them
-        if (far) li.classList.add("lift");
-        const glide = li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 300, easing: "cubic-bezier(.2, 0, 0, 1)" });
-        if (far) glide.finished.then(() => li.classList.remove("lift"), () => li.classList.remove("lift"));
+        if (li.dataset.count !== li.dataset.placed) li.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300, delay: 180, easing: "ease-out", fill: "backwards" });  // after the others have made room
+        else li.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 250, easing: "cubic-bezier(.2, 0, 0, 1)" });
       }
     }
   }
+  for (const li of nodes) li.dataset.placed = li.dataset.count;  // the count each row had when the order was last applied
   renderBar();
 }
 
@@ -216,13 +218,11 @@ async function loadMonth(month) {
   state.data = null;
   rows.clear();
   // Stale-while-revalidate: a month seen before shows at once in its last-seen order, and only changes
-  // glide in. A first visit waits for the marks (at most 3 s), so it too opens already in order.
+  // move; a first visit shows the file's order at once, and the marks re-order it when they arrive.
   const saved = readMarks(month);
   state.votes = saved?.votes ?? new Map();
   state.subs = saved?.subs ?? [];
-  state.waiting = new Set(saved || offline ? [] : ["votes", "submissions"]);
-  clearTimeout(loadMonth.timer);
-  loadMonth.timer = setTimeout(() => { state.waiting.clear(); render(); }, 3000);
+  state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
   listen();
