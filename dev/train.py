@@ -37,7 +37,7 @@ emb = embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map(clean))
 X = np.hstack([emb, venue[:, None] == names])
 fit = lambda rows, y: LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X[rows], y[rows])
 
-auc, hits, picks = [], 0, 0
+auc, hits, picks, oos = [], 0, 0, []
 for M in [f"2026-{m:02d}" for m in range(3, 11)]:
     train, test = month < M, month == M
     s = fit(train, (tab != "") & (tab < M)).decision_function(X[test])
@@ -45,7 +45,15 @@ for M in [f"2026-{m:02d}" for m in range(3, 11)]:
     auc.append(roc_auc_score(y, s))
     hits += y[np.argsort(-s, kind="stable")[:25]].sum()
     picks += y.sum()
+    oos.append((s, y))
 print(f"rolling check, Mar-Oct 2026: mean AUC {np.mean(auc):.3f}, picks in top 25: {hits} of {picks}")
+
+# Calibration: P(pick) = sigmoid(a + b·score), fitted (unpenalized) to the out-of-sample scores above.
+# The balanced class weights make sigmoid(score) itself far too high.
+s, y = map(np.concatenate, zip(*oos))
+cal = LogisticRegression(penalty=None).fit(s[:, None], y)
+calibration = {"a": round(float(cal.intercept_[0]), 4), "b": round(float(cal.coef_[0, 0]), 4)}
+print(f"calibration: P(pick) = sigmoid({calibration['a']} + {calibration['b']} * score)")
 
 lr = fit(np.ones(len(pool), bool), tab != "")
 w = lr.coef_[0].round(6).tolist()
@@ -55,6 +63,7 @@ w = lr.coef_[0].round(6).tolist()
     "bias": round(float(lr.intercept_[0]), 6),
     "embedding": w[:emb.shape[1]],
     "venue": dict(zip(names.tolist(), w[emb.shape[1]:])),
+    "calibration": calibration,
     "trained": date.today().isoformat(),
     "train_months": sorted(set(month)),
 }) + "\n")

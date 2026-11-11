@@ -3,7 +3,8 @@ import numpy as np
 from pipeline.dedupe import dedupe
 from pipeline.fetch import Paper, clean, url_doi
 from pipeline.output import paper_id, short_name, table_row
-from pipeline.score import linear, vote_correction
+from pipeline.score import linear, probability, vote_correction
+from pipeline import votes as votes_module
 
 
 def paper(doi, title, type="published", journal="Nat Genet", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
@@ -96,3 +97,21 @@ def test_correction_ignores_how_popular_voting_is():
     emb, venues, upvoted = votes(80)
     a, b = (vote_correction(emb, venues, upvoted, np.full(80, shift), 1.0, 30)["embedding"] for shift in (0.0, 5.0))
     np.testing.assert_allclose(a, b, atol=1e-3)
+
+
+def test_pick_chance_is_calibrated_and_monotone():
+    w = {"calibration": {"a": -3.0, "b": 0.75}}
+    p = probability(w, [-10.0, 4.0, 10.0])
+    np.testing.assert_allclose(p[1], 0.5)
+    assert 0 < p[0] < p[1] < p[2] < 1
+
+
+def test_read_votes_counts_one_upvote_per_handle_and_hashes_handles(monkeypatch):
+    docs = {"p1~alice": {"paper": {"stringValue": "p1"}, "handle": {"stringValue": "Alice"}},
+            "p1~bob": {"paper": {"stringValue": "p1"}, "handle": {"stringValue": "bob"}},
+            "p2~alice": {"paper": {"stringValue": "p2"}, "handle": {"stringValue": "alice"}}}
+    monkeypatch.setattr(votes_module, "documents", lambda project, path: docs if path == "months/2026-10/votes" else {})
+    out = votes_module.read_votes("proj", "2026-10")
+    assert {k: len(v) for k, v in out.items()} == {"p1": 2, "p2": 1}
+    assert set(out["p1"].values()) == {1} and out["p2"].keys() <= out["p1"].keys()  # the same handle, whatever its case
+    assert not any("alice" in h or "bob" in h for v in out.values() for h in v)

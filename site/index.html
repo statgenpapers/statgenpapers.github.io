@@ -5,87 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StatGen Papers</title>
 <meta name="description" content="A monthly shortlist of statistical genetics papers, ranked live by votes.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232355d8'/%3E%3Cpath d='M8 21l5-9 4 6 3-4 4 7' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M5%201.5h16.5l5.5%205.5v23.5H5z'%20fill='%23fff'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cpath%20d='M21.5%201.5V7H27'%20fill='%23c9d6f7'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cg%20font-family='Arial,Helvetica,sans-serif'%20font-weight='700'%20font-size='9'%20fill='%2310204f'%20text-anchor='middle'%3E%3Ctext%20x='16'%20y='15.3'%3EStat%3C/text%3E%3Ctext%20x='16'%20y='24'%3EGen%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2355d8"/><path d="M8 21l5-9 4 6 3-4 4 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <div>
-      <h1><a href="./">StatGen Papers</a></h1>
-      <p class="tagline">A monthly shortlist of statistical genetics papers. Upvote, and the list re-orders live.</p>
-    </div>
-  </div>
-  <nav><a href="about.html">About</a></nav>
+<header class="bar">
+  <a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a>
+  <nav class="links"><a href="./" id="this-month">this month</a> | <a href="#" id="past-open">past</a> | <a href="about.html">about</a> | <a href="#" id="add-open">add</a></nav>
+  <span class="account"><span id="me" hidden></span><a href="#" id="login-open">login</a></span>
 </header>
 
 <main>
-  <section class="controls" aria-label="List controls">
-    <div class="group">
-      <button id="prev" class="icon" aria-label="Earlier month" title="Earlier month">‹</button>
-      <select id="month" aria-label="Month"></select>
-      <button id="next" class="icon" aria-label="Later month" title="Later month">›</button>
-    </div>
-    <label class="group name" title="Shown next to your votes and the papers you add. Leave empty to stay anonymous.">
-      <span class="label">Name</span>
-      <input id="name" type="text" maxlength="40" placeholder="optional" autocomplete="nickname">
-    </label>
-    <div class="group actions">
-      <button id="copy" title="Copy the list as shown: Journal, Short Name, Title, URL (tab-separated, pastes into a spreadsheet)">Copy table</button>
-      <button id="add-open" class="primary">Add a paper</button>
-    </div>
-  </section>
+  <p id="past" class="past" hidden></p>
 
-  <form id="add" class="panel" hidden autocomplete="off">
-    <h2>Add a paper to this month</h2>
-    <label>URL <input id="add-url" type="url" required maxlength="500" placeholder="https://doi.org/… or the paper's page"></label>
-    <label>Journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, bioRxiv, PNAS, …" list="journals"></label>
-    <label class="wide">Title <input id="add-title" type="text" required maxlength="400"></label>
-    <label class="wide">Short name <span class="hint">generated as Journal_FirstAuthor_Year_Keyword; edit it if you like</span>
-      <input id="add-short" type="text" required maxlength="150" spellcheck="false"></label>
-    <datalist id="journals"></datalist>
-    <p id="add-note" class="hint" role="status"></p>
-    <div class="buttons">
-      <button type="submit" class="primary">Add</button>
-      <button type="button" id="add-cancel">Cancel</button>
-    </div>
+  <form id="login" class="panel" hidden autocomplete="off">
+    <label>handle <input id="login-handle" type="text" required minlength="2" maxlength="20" pattern="[A-Za-z0-9_]{2,20}" spellcheck="false" autocomplete="nickname"></label>
+    <button type="submit">login</button> <button type="button" id="login-cancel">cancel</button>
+    <p class="hint">No password: pick a handle and remember it. Letters, digits and _; 2–20 characters.
+    Anyone who types your handle can vote as you, so pick one that others will not guess.</p>
   </form>
 
-  <p id="status" class="status" role="status">Loading…</p>
+  <form id="add" class="panel" hidden autocomplete="off">
+    <label>url <input id="add-url" type="url" required maxlength="500" placeholder="https://doi.org/… or the paper's page"></label>
+    <label>journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, bioRxiv, PNAS, …" list="journals"></label>
+    <label>title <input id="add-title" type="text" required maxlength="400"></label>
+    <label>short name <input id="add-short" type="text" required maxlength="150" spellcheck="false"></label>
+    <datalist id="journals"></datalist>
+    <p class="hint">The short name is generated as Journal_FirstAuthor_Year_Keyword; edit it if you like.</p>
+    <p id="add-note" class="hint" role="status"></p>
+    <div><button type="submit">add</button> <button type="button" id="add-cancel">cancel</button></div>
+  </form>
 
-  <div class="table">
-    <div class="thead" aria-hidden="true">
-      <span>Votes</span><span>Journal</span><span>Short Name</span><span>Title</span><span>URL</span>
-    </div>
-    <ol id="list" class="list"></ol>
-  </div>
+  <p class="status"><b id="month-name"></b> <span id="status" role="status">Loading…</span></p>
+  <p class="pick-head" title="Calibrated chance that the lab lists this paper in its reading list">Score</p>
+  <ol id="list" class="list"></ol>
 </main>
 
 <footer>
-  <p>No account needed: each browser gets one upvote per paper, which you can take back.
-  Papers are collected and scored automatically each month; see <a href="about.html">About</a>.</p>
+  <a href="#" id="copy" title="Copy the list as shown: Journal, Short Name, Title, URL (tab-separated, pastes into a spreadsheet)">copy table</a> |
+  <a href="about.html">about</a>
+  <p>Papers are collected and scored automatically each month. Log in with any handle to vote.</p>
 </footer>
 
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <template id="row">
   <li class="paper">
-    <div class="vote">
-      <button class="up" aria-label="Upvote" aria-pressed="false">
-        <svg width="14" height="9" viewBox="0 0 14 9" aria-hidden="true"><path d="M7 0l7 9H0z" fill="currentColor"/></svg>
-        <span class="count">0</span>
-      </button>
-    </div>
-    <div class="journal"><span class="abbr"></span></div>
-    <div class="short"></div>
+    <button class="up" aria-label="Upvote" aria-pressed="false"><svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z" fill="currentColor"/></svg></button>
     <div class="main">
-      <a class="title" target="_blank" rel="noopener noreferrer"></a>
-      <div class="meta"></div>
-      <button class="toggle" aria-expanded="false"></button>
+      <a class="title" target="_blank" rel="noopener noreferrer"></a> <span class="source"></span>
+      <div class="sub"><span class="count"></span> · <span class="meta"></span><a href="#" class="toggle" aria-expanded="false"></a><span class="remove-wrap" hidden> · <a href="#" class="remove">remove</a></span></div>
       <div class="details" hidden></div>
     </div>
-    <a class="url" target="_blank" rel="noopener noreferrer"></a>
+    <span class="pick"></span>
   </li>
 </template>
 

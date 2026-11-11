@@ -10,11 +10,13 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const state = {
   months: [], month: null, data: null,
-  votes: new Map(),  // paper id -> { uid: { v: 1, name? } }
+  votes: new Map(),  // paper id -> { handle key: handle as typed }
   subs: [],          // papers added by visitors
   uid: null, live: false,
+  handle: "",       // the visitor's handle as typed; "" when logged out
 };
 const rows = new Map();  // paper id -> <li>
+const voting = new Set();  // paper ids with a vote write in flight: a second click must wait for it
 let fb = null, db = null, unsubscribe = [];
 
 // ---------------------------------------------------------------- helpers
@@ -48,9 +50,14 @@ export function shortName(journal, surname, year, title) {
     .filter(Boolean).join("_");
 }
 
-// Upvotes of a paper: [uid, { v, name? }] pairs. Only v = 1 counts.
-const upvotes = (id) => Object.entries(state.votes.get(id) || {}).filter(([, x]) => x.v === 1);
-const mine = (id) => state.votes.get(id)?.[state.uid]?.v === 1;
+// A handle is the visitor's login: no password, so anyone who types it votes as its owner.
+// Votes are keyed by the lower-case handle, so one handle has one vote per paper on any device.
+const HANDLE = /^[A-Za-z0-9_]{2,20}$/;
+const key = () => state.handle.toLowerCase();
+
+// Upvotes of a paper: [handle key, handle] pairs, one Firestore document each (months/{m}/votes/{paper}~{key}).
+const upvotes = (id) => Object.entries(state.votes.get(id) || {});
+const mine = (id) => Boolean(state.handle) && key() in (state.votes.get(id) || {});
 
 // Listed papers and visitor-added papers in one shape
 function items() {
@@ -64,31 +71,33 @@ function visible() {
   return items().sort((a, b) => votes(b) - votes(a) || (score(a) === score(b) ? age(a) - age(b) : score(b) - score(a)));
 }
 
+const link = (handler) => (event) => { event.preventDefault(); handler(event); };
+
 // ---------------------------------------------------------------- rendering
 
 function createRow(p) {
   const li = $("row").content.firstElementChild.cloneNode(true);
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
-  q(".abbr").textContent = p.journal;
-  q(".abbr").title = p.venue_name || "";
-  if (p.added) q(".journal").append(el("span", "kind", "added"));
-  q(".short").append(...p.short_name.split("_").flatMap((part, i) => (i ? ["_", document.createElement("wbr"), part] : [part])));  // wrap after underscores first
   q(".title").textContent = p.title;
-  q(".url").textContent = (p.url || "").replace(/^https?:\/\/(www\.)?/i, "");
-  q(".url").title = p.url || "";
-  for (const a of [q(".title"), q(".url")]) url ? (a.href = url) : a.removeAttribute("href");
+  url ? (q(".title").href = url) : q(".title").removeAttribute("href");
+  q(".source").textContent = `(${[p.journal, p.date].filter(Boolean).join(", ")})`;
+  q(".source").title = p.venue_name || "";
   const a = p.authors || [], cut = a.length === 100;  // OpenAlex lists at most 100 authors, so the last ones are unknown
-  const authors = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
-  const meta = p.added ? [`Added by ${p.name || "a visitor"}`] : [authors, p.date, `score ${p.score.toFixed(2)}`];
-  q(".meta").append(...meta.filter(Boolean).flatMap((text, i) => [i ? " · " : "", el("span", i ? "nowrap" : "", text)]));
+  q(".meta").textContent = p.added ? `added by ${p.name || "a visitor"}`
+    : a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
+  if (p.p_pick != null) {
+    q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
+    q(".pick").title = `Calibrated chance the lab picks this paper (raw score ${p.score.toFixed(2)})`;
+  }
   q(".toggle").textContent = p.added ? "Details" : "Abstract";
-  q(".toggle").addEventListener("click", () => {
+  q(".toggle").addEventListener("click", link(() => {
     const open = q(".details").hidden;
     q(".details").hidden = !open;
     q(".toggle").setAttribute("aria-expanded", open);
-  });
+  }));
   q(".up").addEventListener("click", () => vote(p.id));
+  q(".remove").addEventListener("click", link(() => removeSubmission(p)));
 
   const details = q(".details");
   if (!p.added) {
@@ -96,24 +105,18 @@ function createRow(p) {
     if (a.length > 4) details.append(el("p", "who", `Authors: ${a.join(", ")}${cut ? ", …" : ""}`));
   }
   details.append(el("p", "who voters"));
-  if (p.added) {
-    const remove = el("button", "remove", "Remove this paper");
-    remove.hidden = true;
-    remove.addEventListener("click", () => removeSubmission(p));
-    details.append(remove);
-  }
   return li;
 }
 
 function updateRow(li, p) {
   const ups = upvotes(p.id), q = (sel) => li.querySelector(sel);
-  const named = ups.map(([, x]) => x.name).filter(Boolean), anonymous = ups.length - named.length;
-  q(".count").textContent = ups.length;
+  q(".count").textContent = `${ups.length} vote${ups.length === 1 ? "" : "s"}`;
   q(".up").setAttribute("aria-pressed", mine(p.id));
   q(".up").setAttribute("aria-label", mine(p.id) ? "Remove your upvote" : "Upvote");
+  q(".up").title = state.handle ? "" : "Log in with a handle to vote";
   q(".up").disabled = !state.uid;
-  q(".voters").textContent = ups.length ? `Upvoted by ${[...named, ...(anonymous ? [`${anonymous} anonymous`] : [])].join(", ")}` : "No votes yet.";
-  if (p.added) q(".remove").hidden = p.uid !== state.uid;
+  q(".voters").textContent = ups.length ? `Voted by ${ups.map(([, handle]) => handle).join(", ")}` : "No votes yet.";
+  q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
 function render() {
@@ -141,9 +144,12 @@ function render() {
   const votes = all.reduce((sum, p) => sum + upvotes(p.id).length, 0);
   const status = $("status");
   status.textContent = d
-    ? `Top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added by visitors` : ""} · ${votes} vote${votes === 1 ? "" : "s"} · `
+    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"} · `
     : "";
   if (d) status.append(el("span", state.live ? "live" : "", state.live ? "● live" : "connecting…"));
+  $("me").hidden = !state.handle;
+  $("me").textContent = state.handle;
+  $("login-open").textContent = state.handle ? "logout" : "login";
 }
 
 // ---------------------------------------------------------------- data
@@ -154,9 +160,8 @@ async function loadMonth(month) {
   state.votes = new Map();
   state.subs = [];
   rows.clear();
-  $("month").value = month;
-  $("prev").disabled = state.months.indexOf(month) <= 0;
-  $("next").disabled = state.months.indexOf(month) >= state.months.length - 1;
+  $("month-name").textContent = monthName(month);
+  $("past").hidden = true;
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
   listen();
@@ -172,8 +177,12 @@ function listen() {
   unsubscribe = [];
   if (!db || !state.month) return;
   const month = state.month, at = (name) => fb.collection(db, "months", month, name);
-  unsubscribe.push(fb.onSnapshot(at("papers"), (snap) => {
-    state.votes = new Map(snap.docs.map((d) => [d.id, d.data().votes || {}]));
+  unsubscribe.push(fb.onSnapshot(at("votes"), (snap) => {
+    state.votes = new Map();
+    for (const d of snap.docs) {
+      const { paper, handle } = d.data();
+      state.votes.set(paper, { ...state.votes.get(paper), [handle.toLowerCase()]: handle });
+    }
     state.live = true;
     render();
   }, (e) => { state.live = false; console.warn("votes", e); render(); }));
@@ -193,7 +202,7 @@ async function connect() {
     const instance = app.initializeApp(firebaseConfig), user = fb.getAuth(instance);
     // Sign in before the first listener, so the connection opens once, as this visitor.
     await user.authStateReady();
-    if (!user.currentUser) {  // silent: no prompt, the id stays in this browser
+    if (!user.currentUser) {  // silent: no prompt; the handle, not this id, is what votes
       await fb.signInAnonymously(user).catch((e) => { console.warn(e); toast("Voting is unavailable right now; the list is still live."); });
     }
     fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
@@ -209,20 +218,28 @@ async function connect() {
 
 // ---------------------------------------------------------------- writes
 
-const myName = () => $("name").value.trim().slice(0, 40);
+function needHandle() {
+  if (state.handle) return false;
+  openPanel("login");
+  toast("Log in with a handle to vote or add papers.");
+  return true;
+}
 
-// Upvote a paper, or take the upvote back if this browser already gave one.
+// Upvote a paper, or take the upvote back if this handle already gave one.
 async function vote(id) {
   if (!state.uid) return toast("Still connecting; try again in a moment.");
-  const ref = fb.doc(db, "months", state.month, "papers", id), field = `votes.${state.uid}`;
-  const entry = { v: 1, ...(myName() && { name: myName() }) };
+  if (needHandle()) return;
+  if (voting.has(id)) return;
+  voting.add(id);
+  const ref = fb.doc(db, "months", state.month, "votes", `${id}~${key()}`);
   try {
-    if (mine(id)) await fb.updateDoc(ref, { [field]: fb.deleteField() });
-    else if (state.votes.has(id)) await fb.updateDoc(ref, { [field]: entry });
-    else await fb.setDoc(ref, { votes: { [state.uid]: entry } }, { merge: true });  // first vote on this paper
+    if (mine(id)) await fb.deleteDoc(ref);
+    else await fb.setDoc(ref, { paper: id, handle: state.handle });
   } catch (e) {
     console.warn(e);
     toast("Your vote was not saved.");
+  } finally {
+    voting.delete(id);
   }
 }
 
@@ -234,6 +251,32 @@ async function removeSubmission(p) {
     console.warn(e);
     toast("Could not remove the paper.");
   }
+}
+
+// ---------------------------------------------------------------- login, past months
+
+function setHandle(handle) {
+  state.handle = handle;
+  try { handle ? localStorage.setItem("handle", handle) : localStorage.removeItem("handle"); } catch {}
+  render();
+}
+
+function login(event) {
+  event.preventDefault();
+  const handle = $("login-handle").value.trim();
+  if (!HANDLE.test(handle)) return toast("A handle is 2–20 letters, digits or _.");
+  setHandle(handle);
+  $("login").hidden = true;
+}
+
+function showPast() {
+  const past = $("past");
+  past.replaceChildren(...[...state.months].reverse().flatMap((m, i) => {
+    const a = Object.assign(el("a", "", monthName(m)), { href: `?month=${m}` });
+    a.addEventListener("click", link(() => loadMonth(m)));
+    return i ? [" · ", a] : [a];
+  }));
+  past.hidden = !past.hidden;
 }
 
 // ---------------------------------------------------------------- add a paper
@@ -277,12 +320,13 @@ async function submitPaper(event) {
   event.preventDefault();
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
   if (!state.uid) return note("Still connecting; try again in a moment.", true);
+  if (needHandle()) return;
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
   const doi = urlDoi(paper.url);
   if (items().some((p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi))) return note("This paper is already on the list.", true);
   try {
     const ref = await fb.addDoc(fb.collection(db, "months", state.month, "submissions"),
-      { ...paper, uid: state.uid, created: fb.serverTimestamp(), ...(myName() && { name: myName() }) });
+      { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
     closeForm();
     await vote(ref.id);  // adding a paper counts as an upvote, which can be taken back like any vote
     rows.get(ref.id)?.classList.add("new");
@@ -301,6 +345,14 @@ function closeForm() {
   note("");
 }
 
+// Show one of the two forms (login, add), or hide it if it is open.
+function openPanel(name) {
+  const other = name === "add" ? "login" : "add";
+  $(other).hidden = true;
+  $(name).hidden = !$(name).hidden;
+  if (!$(name).hidden) $(name).querySelector("input").focus();
+}
+
 // ---------------------------------------------------------------- controls
 
 async function copyTable() {
@@ -316,20 +368,20 @@ async function copyTable() {
 }
 
 async function init() {
-  $("name").value = localStorage.getItem("name") || "";
-  $("name").addEventListener("input", () => localStorage.setItem("name", myName()));
-  $("copy").addEventListener("click", copyTable);
-  $("add-open").addEventListener("click", () => { $("add").hidden = !$("add").hidden; if (!$("add").hidden) field("url").focus(); });
-  $("add-cancel").addEventListener("click", closeForm);
+  try { const saved = localStorage.getItem("handle") || ""; if (HANDLE.test(saved)) state.handle = saved; } catch {}
+  $("copy").addEventListener("click", link(copyTable));
+  $("add-open").addEventListener("click", link(() => openPanel("add")));
+  $("add-cancel").addEventListener("click", link(closeForm));
   $("add").addEventListener("submit", submitPaper);
+  $("login-open").addEventListener("click", link(() => (state.handle ? setHandle("") : openPanel("login"))));
+  $("login-cancel").addEventListener("click", link(() => { $("login").hidden = true; }));
+  $("login").addEventListener("submit", login);
+  $("past-open").addEventListener("click", link(showPast));
+  $("this-month").addEventListener("click", link(() => loadMonth(state.months.at(-1))));
   field("url").addEventListener("change", lookUp);
   field("journal").addEventListener("input", refreshShortName);
   field("title").addEventListener("input", refreshShortName);
   field("short").addEventListener("input", () => { form.edited = field("short").value !== ""; });
-  $("month").addEventListener("change", () => loadMonth($("month").value));
-  const step = (by) => () => loadMonth(state.months[state.months.indexOf(state.month) + by]);
-  $("prev").addEventListener("click", step(-1));
-  $("next").addEventListener("click", step(1));
 
   const index = await fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
   state.months = index.months;
@@ -337,7 +389,6 @@ async function init() {
     $("status").textContent = "No lists yet.";
     return;
   }
-  $("month").replaceChildren(...[...state.months].reverse().map((m) => Object.assign(el("option", "", monthName(m)), { value: m })));
   const asked = new URLSearchParams(location.search).get("month");
   connect();
   await loadMonth(state.months.includes(asked) ? asked : state.months.at(-1));

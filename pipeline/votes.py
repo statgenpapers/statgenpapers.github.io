@@ -17,12 +17,12 @@ def documents(project, path):
 
 
 def read_votes(project, month):
-    """{paper id: {hashed uid: 1 or -1}} for one month. Names are dropped."""
-    votes = {pid: fields.get("votes", {}).get("mapValue", {}).get("fields", {})
-             for pid, fields in documents(project, f"months/{month}/papers").items()}
-    return {pid: {hashlib.sha256(uid.encode()).hexdigest()[:16]: int(next(iter(v["mapValue"]["fields"]["v"].values())))
-                  for uid, v in vs.items()}
-            for pid, vs in votes.items() if vs}
+    """{paper id: {hashed handle: 1}} for one month: one entry per upvote. Handles are hashed."""
+    votes = {}
+    for fields in documents(project, f"months/{month}/votes").values():
+        handle = fields["handle"]["stringValue"].lower()
+        votes.setdefault(fields["paper"]["stringValue"], {})[hashlib.sha256(handle.encode()).hexdigest()[:16]] = 1
+    return votes
 
 
 def read_submissions(project, month):

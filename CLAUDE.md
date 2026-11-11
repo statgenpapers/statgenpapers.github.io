@@ -8,8 +8,8 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
    and aggregate backtest numbers are public.
 2. Cancel Slurm jobs only by explicit job ID.
 3. Push workflow files over SSH; the local `gh` token lacks the `workflow` scope.
-4. A change to `firebase/firestore.rules` takes effect only when the owner publishes it in the
-   Firebase console (no CLI login exists on this machine).
+4. Publish a change to `firebase/firestore.rules` with `cd firebase && npx firebase deploy --only firestore:rules
+   --project statgenpapers` (the owner's CLI login), only after `npm test` and `dev/site_check.py --emulator` pass.
 5. Do not open the site in fresh browser profiles in a loop: every new profile creates an
    anonymous Firebase user, and Firebase refuses sign-ups from an IP address after about 100 an
    hour. `dev/site_check.py` reuses two saved profiles for this reason.
@@ -26,3 +26,5 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 - *Table:* the four columns `Journal`, `Short Name`, `Title`, `URL`, as in the lab Sheet.
 - *Short name:* the label `Journal_FirstAuthor_Year_Keyword`, generated for every paper.
 - *Submission:* a paper a visitor added on the site (`months/YYYY-MM/submissions` in Firestore).
+- *Handle:* a visitor's login name, without a password. Votes are keyed by the lower-case handle.
+- *Pick chance:* shown on the site as "Score"; the calibrated probability that the lab picks a paper, `sigmoid(a + b·score)`, with `a` and `b` stored in the lab weights.

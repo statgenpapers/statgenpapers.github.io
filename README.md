@@ -15,8 +15,10 @@ the design decisions and their evidence are in [`docs/PLAN.md`](docs/PLAN.md).
    through the logistic-regression weights in `model/weights.json`. The site's About page shows
    how well it works and where it falls short; `dev/backtest/` holds the code behind those numbers.
 3. **Site.** `site/` is plain HTML, CSS and JavaScript. Upvotes and visitor-added papers live in
-   Firebase Firestore behind an anonymous sign-in, so nobody logs in. `firebase/firestore.rules`
-   lets a browser change only its own vote and its own added papers.
+   Firebase Firestore behind a silent anonymous sign-in. Visitors vote under a handle, without a
+   password: one document per upvote (`months/{m}/votes/{paper}~{handle}`), one upvote per handle and
+   paper. `firebase/firestore.rules` checks the shape of every write and lets a browser remove only its
+   own added papers.
 4. **Learning from votes.** Each monthly run first reads all votes and saves them in
    `data/votes/` (ids hashed, names dropped). Once 30 listed papers have an upvote, it fits a
    correction to the weights and scores with weights plus correction.
@@ -84,6 +86,9 @@ uv run pytest                                        # pipeline: dedupe, ids, ta
 cd firebase && npm install && npm test               # security rules, in the local emulator
 node firebase/live-check.mjs                         # security rules of the live project
 uv run --with playwright python dev/site_check.py    # two browsers voting and adding a paper, live (one-time browser install: see the file)
+# the same against local emulators, with the rules as they are in the repository (see dev/site_check.py)
+cd firebase && npx firebase emulators:exec --only firestore,auth --project demo-statgenpapers "cd .. && uv run --with playwright python dev/site_check.py --emulator"
+cd firebase && npx firebase deploy --only firestore:rules --project statgenpapers   # publish the rules (after npx firebase login)
 python3 -m http.server -d site 8000                  # preview the site
 ```
 

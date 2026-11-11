@@ -15,7 +15,7 @@ from . import ROOT
 from .dedupe import dedupe
 from .fetch import fetch_pool, url_doi
 from .output import TABLE_HEADER, paper_id, short_name, table_row
-from .score import embed, linear, load_model, vote_correction
+from .score import embed, linear, load_model, probability, vote_correction
 from .votes import read_submissions, read_votes
 
 DATA, VOTES = ROOT / "site" / "data", ROOT / "data" / "votes"
@@ -83,7 +83,8 @@ def main():
 
     shortlist = [papers[i] for i in top]
     out = [{k: v for k, v in asdict(p).items() if k != "published_doi"}
-           | {"id": paper_id(p.doi), "short_name": short_name(p), "score": round(float(score[i]), 3), "rank": rank}
+           | {"id": paper_id(p.doi), "short_name": short_name(p), "score": round(float(score[i]), 3),
+              "p_pick": round(float(probability(weights, score[i])), 3), "rank": rank}
            for rank, (i, p) in enumerate(zip(top, shortlist), 1)]
     write_json(DATA / f"{month}.json", {"month": month, "generated": date.today().isoformat(), "pool": len(papers),
                                          "upvoted_papers_used": sum(upvoted) if corrected else 0, "papers": out})

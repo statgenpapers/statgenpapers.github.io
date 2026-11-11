@@ -2,12 +2,14 @@
 import { test, before, after, beforeEach } from "node:test";
 import { readFileSync } from "node:fs";
 import { initializeTestEnvironment, assertFails, assertSucceeds } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, updateDoc, deleteDoc, deleteField, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
 let env;
-const PATH = "months/2026-10/papers/10.1038_s41588-026-00001-1";
+const M = "months/2026-10", P = "10.1038_s41588-026-00001-1";
 const db = (uid) => (uid ? env.authenticatedContext(uid) : env.unauthenticatedContext()).firestore();
-const vote = (uid, v, extra = {}) => updateDoc(doc(db(uid), PATH), { [`votes.${uid}`]: { v, ...extra } });
+// An upvote is the document months/{m}/votes/{paper}~{handle in lower case}.
+const vote = (uid, handle, { paper = P, id = `${paper}~${String(handle).toLowerCase()}`, month = M, ...extra } = {}) =>
+  setDoc(doc(db(uid), `${month}/votes/${id}`), { paper, handle, ...extra });
 
 before(async () => {
   env = await initializeTestEnvironment({
@@ -18,38 +20,54 @@ before(async () => {
 after(() => env.cleanup());
 beforeEach(async () => {
   await env.clearFirestore();
-  await assertSucceeds(setDoc(doc(db("alice"), PATH), { votes: { alice: { v: 1 } } }));
+  await assertSucceeds(vote("uid-a", "Alice"));
 });
 
-test("anyone can read without signing in", () => assertSucceeds(getDoc(doc(db(null), PATH))));
-test("unauthenticated cannot vote", () => assertFails(setDoc(doc(db(null), "months/2026-10/papers/x"), { votes: {} })));
-test("second voter adds own vote, with a name", () => assertSucceeds(vote("bob", -1, { name: "Bob" })));
-test("voter changes own vote", () => assertSucceeds(vote("alice", -1)));
-test("voter removes own vote", () => assertSucceeds(updateDoc(doc(db("alice"), PATH), { "votes.alice": deleteField() })));
-test("cannot change another voter's vote", () => assertFails(updateDoc(doc(db("bob"), PATH), { "votes.alice": { v: -1 } })));
-test("cannot remove another voter's vote", () => assertFails(updateDoc(doc(db("bob"), PATH), { "votes.alice": deleteField() })));
-test("cannot overwrite the whole map", () => assertFails(setDoc(doc(db("bob"), PATH), { votes: { bob: { v: 1 } } })));
-test("cannot vote with weight other than +-1", () => assertFails(vote("bob", 5)));
-test("cannot add other fields to a vote", () => assertFails(vote("bob", 1, { admin: true })));
-test("cannot add top-level fields", () => assertFails(updateDoc(doc(db("bob"), PATH), { count: 99 })));
-test("name is capped at 40 characters", () => assertFails(vote("bob", 1, { name: "x".repeat(41) })));
-test("cannot create a doc holding someone else's vote", () =>
-  assertFails(setDoc(doc(db("bob"), "months/2026-10/papers/y"), { votes: { alice: { v: 1 } } })));
-test("cannot create under a malformed month", () =>
-  assertFails(setDoc(doc(db("bob"), "months/junk/papers/y"), { votes: { bob: { v: 1 } } })));
-test("cannot delete a paper document", () => assertFails(deleteDoc(doc(db("alice"), PATH))));
-test("cannot write elsewhere", () => assertFails(setDoc(doc(db("alice"), "other/x"), { a: 1 })));
+test("anyone can read votes without signing in", () => assertSucceeds(getDocs(collection(db(null), `${M}/votes`))));
+test("unauthenticated cannot vote", () => assertFails(vote(null, "carol")));
+test("a second handle upvotes the same paper", () => assertSucceeds(vote("uid-b", "bob")));
+test("one upvote per handle and paper: a second write is an update, which is closed", () =>
+  assertFails(vote("uid-b", "alice")));
+test("an upvote cannot be edited", () => assertFails(updateDoc(doc(db("uid-a"), `${M}/votes/${P}~alice`), { handle: "ALICE" })));
+test("the id must be paper~handle in lower case", async () => {
+  await assertFails(vote("uid-b", "bob", { id: `${P}~carol` }));
+  await assertFails(vote("uid-b", "Dave", { id: `${P}~Dave` }));
+  await assertFails(vote("uid-b", "bob", { id: `other~bob` }));
+});
+test("handles are 2-20 letters, digits or _", async () => {
+  await assertFails(vote("uid-b", "e"));
+  await assertFails(vote("uid-b", "e.f"));
+  await assertFails(vote("uid-b", "a".repeat(21)));
+  await assertFails(vote("uid-b", 12, { id: `${P}~12` }));
+  await assertSucceeds(vote("uid-b", "Under_score9"));
+});
+test("no other fields, so no downvote or weight", () => assertFails(vote("uid-b", "bob", { v: -1 })));
+test("paper id must be well formed", () => assertFails(vote("uid-b", "bob", { paper: "a b" })));
+test("month must be well formed", () => assertFails(vote("uid-b", "bob", { month: "months/junk" })));
+test("any signed-in browser may take back a handle's upvote (handles have no password)", () =>
+  assertSucceeds(deleteDoc(doc(db("uid-b"), `${M}/votes/${P}~alice`))));
+test("unauthenticated cannot take back an upvote", () => assertFails(deleteDoc(doc(db(null), `${M}/votes/${P}~alice`))));
+test("the uid-keyed papers collection of the first version is closed", async () => {
+  await assertFails(setDoc(doc(db("uid-a"), `${M}/papers/${P}`), { votes: { "uid-a": { v: 1 } } }));
+  await assertFails(getDoc(doc(db(null), `${M}/papers/${P}`)));
+});
+test("cannot write elsewhere", () => assertFails(setDoc(doc(db("uid-a"), "other/x"), { a: 1 })));
 
 // Papers added by visitors
-const SUB = "months/2026-10/submissions/Ab3dEf6hIj9kLmNoPq2r";
+const SUB = `${M}/submissions/Ab3dEf6hIj9kLmNoPq2r`;
 const paper = (uid, extra = {}) => ({ journal: "PNAS", title: "A paper the pipeline missed", url: "https://doi.org/10.1073/pnas.1",
-  short_name: "PNAS_Smith_2026_PaperPipelineMissed", uid, created: serverTimestamp(), ...extra });
+  short_name: "PNAS_Smith_2026_PaperPipelineMissed", uid, created: serverTimestamp(), name: "Bob", ...extra });
 const submit = (uid, extra, path = SUB) => setDoc(doc(db(uid), path), paper(uid, extra));
 
-test("signed-in visitor submits a paper, with a name", () => assertSucceeds(submit("bob", { name: "Bob" })));
+test("signed-in visitor submits a paper under a handle", () => assertSucceeds(submit("bob")));
 test("anyone can read submissions without signing in", () => assertSucceeds(getDoc(doc(db(null), SUB))));
 test("unauthenticated cannot submit", () => assertFails(setDoc(doc(db(null), SUB), paper("bob"))));
 test("cannot submit under another uid", () => assertFails(setDoc(doc(db("bob"), SUB), paper("alice"))));
+test("a submission needs a valid handle", async () => {
+  const { name, ...anonymous } = paper("bob");
+  await assertFails(setDoc(doc(db("bob"), SUB), anonymous));
+  await assertFails(submit("bob", { name: "a b" }));
+});
 test("cannot submit a non-http url", () => assertFails(submit("bob", { url: "javascript:alert(1)" })));
 test("cannot submit an empty or oversized title", async () => {
   await assertFails(submit("bob", { title: "" }));
@@ -57,12 +75,12 @@ test("cannot submit an empty or oversized title", async () => {
 });
 test("cannot submit extra or missing fields", async () => {
   await assertFails(submit("bob", { score: 99 }));
-  await assertFails(setDoc(doc(db("bob"), SUB), { journal: "PNAS", title: "t", url: "https://x.org", uid: "bob", created: serverTimestamp() }));
+  await assertFails(setDoc(doc(db("bob"), SUB), { journal: "PNAS", title: "t", url: "https://x.org", uid: "bob", created: serverTimestamp(), name: "Bob" }));
 });
 test("cannot backdate a submission", () => assertFails(submit("bob", { created: new Date(0) })));
 test("cannot submit under a malformed month or id", async () => {
   await assertFails(submit("bob", {}, "months/junk/submissions/abc"));
-  await assertFails(submit("bob", {}, "months/2026-10/submissions/10.1038_x"));
+  await assertFails(submit("bob", {}, `${M}/submissions/10.1038_x`));
 });
 test("nobody can edit a submission", async () => {
   await assertSucceeds(submit("bob"));
@@ -74,7 +92,7 @@ test("only the submitter can delete a submission", async () => {
   await assertFails(deleteDoc(doc(db("alice"), SUB)));
   await assertSucceeds(deleteDoc(doc(db("bob"), SUB)));
 });
-test("a submitted paper can be voted on like any other", async () => {
+test("a submitted paper can be upvoted like any other, by its submission id", async () => {
   await assertSucceeds(submit("bob"));
-  await assertSucceeds(setDoc(doc(db("alice"), SUB.replace("submissions", "papers")), { votes: { alice: { v: 1 } } }, { merge: true }));
+  await assertSucceeds(vote("uid-a", "Alice", { paper: SUB.split("/").pop() }));
 });

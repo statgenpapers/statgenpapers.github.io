@@ -4,25 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · StatGen Papers</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232355d8'/%3E%3Cpath d='M8 21l5-9 4 6 3-4 4 7' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M5%201.5h16.5l5.5%205.5v23.5H5z'%20fill='%23fff'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cpath%20d='M21.5%201.5V7H27'%20fill='%23c9d6f7'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cg%20font-family='Arial,Helvetica,sans-serif'%20font-weight='700'%20font-size='9'%20fill='%2310204f'%20text-anchor='middle'%3E%3Ctext%20x='16'%20y='15.3'%3EStat%3C/text%3E%3Ctext%20x='16'%20y='24'%3EGen%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2355d8"/><path d="M8 21l5-9 4 6 3-4 4 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <div>
-      <h1><a href="./">StatGen Papers</a></h1>
-      <p class="tagline">About this site</p>
-    </div>
-  </div>
-  <nav><a href="./">← The list</a></nav>
+<header class="bar">
+  <a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a>
+  <nav class="links"><a href="./">this month</a> | <a href="./">past</a> | <b>about</b></nav>
 </header>
 
 <main class="prose">
 <h2>What this is</h2>
 <p>Each month this site lists about 25 new statistical genetics papers, chosen by a small model from
-roughly 2,000 candidates. Anyone can upvote papers and add papers the model missed. Votes show up
+roughly 2,000 candidates. Anyone with a handle can upvote papers and add papers the model missed. Votes show up
 for everyone within seconds, and the list re-orders itself. The code and the data are in the
 <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
 
@@ -48,6 +42,10 @@ for everyone within seconds, and the list re-orders itself. The code and the dat
   Its weights (<code>model/weights.json</code>) were fitted to twelve months of picks from a statistical genetics
   group's reading list: the papers the group chose are the positives, every other candidate a negative.</li>
   <li>The whole pool is ranked and the top <span data-v="shortlist">25</span> are shown.</li>
+  <li><strong>Score</strong>, the percentage beside each paper, is the model output turned into a probability that the group lists the paper. The
+  conversion (stored with the weights) was fitted to the scores of the rolling test below, where each month was
+  scored by a model that had not seen it. There, papers given about 50% were picked about half the time, and the
+  top 25 held 0.45 picks per paper against a predicted 0.46.</li>
   <li><strong>Learning from votes.</strong> Before each monthly run, all votes are read. Once 30 listed papers
   have an upvote, a correction to the weights is fitted: in every month that got votes, the listed papers with
   an upvote count as positives and the other listed papers as negatives. The original score is the starting
@@ -92,8 +90,9 @@ that was not picked.</p>
   so there is no keyword filter.</li>
   <li>Other classifiers on the same embeddings did not beat logistic regression consistently (table below): the
   best on one embedding model is mid-table on the other.</li>
-  <li>Larger embedding models (PubMedBERT, MedCPT, SPECTER2, SciNCL, BGE, MPNet, E5, GTE-ModernBERT) have not been
-  compared yet.</li>
+  <li>Larger transformer embedding models (PubMedBERT, BGE, SciNCL, MedCPT, MPNet, SPECTER2, E5) find at most 6
+  more of the 210 picks (96 at best), none more in the held-out October, and are about a thousand times slower.
+  potion-32M is the fastest model tested.</li>
   <li>The weights in use were fitted on all twelve months up to October 2026. Lists for those months are therefore
   scored by a model that has seen their answers, and look better than a future month will.</li>
 </ol>
@@ -107,17 +106,16 @@ Numbers generated <span data-v="generated"></span>.</p>
 
 <h2>Voting and adding papers</h2>
 <ol>
-  <li>There are no accounts. Your browser gets a random anonymous id, which gives it one upvote per paper; you
-  can take the upvote back. There are no downvotes. Clearing site data or using another browser gives a new id.</li>
-  <li>A name is optional. If you enter one, it is stored with your votes and the papers you add, and is visible to
-  everyone.</li>
-  <li>"Add a paper" takes a journal, a title and a URL. The short name
+  <li>To vote, log in with a handle: 2–20 letters, digits or <code>_</code>, with no password. A handle has one
+  upvote per paper, on any device; click the green triangle again to take it back. There are no downvotes.</li>
+  <li>Without a password, anyone who types your handle can vote as you. Pick one that others will not guess.
+  Handles are shown next to votes and the papers you add.</li>
+  <li>"add" takes a journal, a title and a URL. The short name
   (<code>Journal_FirstAuthor_Year_Keyword</code>) is generated; the first author and year are looked up at
   <a href="https://www.crossref.org">Crossref</a> from the DOI in the URL. Adding a paper upvotes it. You can remove a paper you added.</li>
-  <li>"Copy table" copies the list as shown, as four tab-separated columns (Journal, Short Name, Title, URL)
+  <li>"copy table", at the bottom of the list, copies the list as shown, as four tab-separated columns (Journal, Short Name, Title, URL)
   that paste into a spreadsheet.</li>
-  <li>Votes are stored in Google Firebase and copied into the repository each month, without names and with the
-  ids hashed.</li>
+  <li>Votes are stored in Google Firebase and copied into the repository each month, with the handles hashed.</li>
 </ol>
 </main>
 

@@ -23,8 +23,8 @@ earlier section, section 10 holds.
 
 | Path | State |
 |---|---|
-| `firebase/firestore.rules` | 28 emulator tests pass (`cd firebase && npm install && npm test`). Published in the live project, including the submissions block of section 10. |
-| `firebase/live-check.mjs` | End-to-end check against the live project; 16/16 pass (`node live-check.mjs`). |
+| `firebase/firestore.rules` | Handle votes, one document per upvote (2026-11-10). 27 emulator tests pass (`cd firebase && npm install && npm test`); `dev/site_check.py --emulator` passes 18/18. Published 2026-11-10 with the Firebase CLI; `live-check.mjs` 17/17 and `dev/site_check.py` 18/18 pass live. |
+| `firebase/live-check.mjs` | End-to-end check against the live project, for handle votes; 17/17 pass (`node firebase/live-check.mjs`). |
 | `site/config.js` | Live Firebase web config (public by design). |
 | `dev/backtest/` | Backtest harness and README. Results in `handoff/data/bt/results/`. |
 | `.github/workflows/monthly.yml` | Monthly run, manual run, and deploy (section 6). Replaced `pages.yml`. |
@@ -85,9 +85,9 @@ Findings to state honestly on the About page:
    separate title embedding, other penalties) did not beat logistic regression consistently:
    most land within six top-25 hits of it out of 191, and the best on one embedding is
    mid-table on the other. Venue written into the embedded text was worse than the indicator.
-8. Not yet backtested: bge-small, PubMedBERT, MedCPT, SPECTER2, SciNCL, bge-base, mpnet,
-   e5-base, gte-modernbert. Their embeddings were still computing (below 25 abstracts per
-   second on 16 threads). The owner chose to start with the small model and revisit.
+8. Larger transformer embeddings (PubMedBERT, bge-base, SciNCL, MedCPT, …) find up to 6 more
+   of 210 picks, none more on the held-out month, at about 1/1,000 of potion's speed; potion
+   stays. Table and speeds in `dev/LOG.md` (2026-11-10).
 
 ### Weights file
 

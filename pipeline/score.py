@@ -25,6 +25,11 @@ def linear(w, emb, venues):
     return w.get("bias", 0.0) + emb @ np.asarray(w["embedding"]) + np.array([w["venue"].get(v, 0.0) for v in venues])
 
 
+def probability(w, score):
+    """Calibrated chance that the lab picks the paper: sigmoid(a + b·score), a and b from dev/train.py."""
+    return expit(w["calibration"]["a"] + w["calibration"]["b"] * np.asarray(score))
+
+
 def vote_correction(emb, venues, upvoted, offset, penalty, min_upvoted):
     """Correction Δ to the lab weights, learned from votes, in the shape `linear` takes.
 
