@@ -16,10 +16,11 @@ const state = {
   handle: "",       // the visitor's handle as typed; "" when logged out
   view: "list",     // "list" (a month), "user" or "interested" (pages of one handle)
   page: "",         // the handle the user and interested pages are about
+  waiting: new Set(),  // a month's first snapshots not yet arrived: "votes", "submissions"
 };
 const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a vote write in flight: a second click must wait for it
-let fb = null, db = null, unsubscribe = [];
+let fb = null, db = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load or sign in
 let dbReady;
 const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
@@ -136,8 +137,16 @@ function updateRow(li, p) {
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
+// A month's list is first drawn once its marks and added papers are in (or after 3 s), so a visitor sees it
+// already in order; only later changes glide (FLIP needs a row's old place, and a first-drawn row has none).
+function arrived(name) {
+  state.waiting.delete(name);
+  render();
+}
+
 function render() {
   const list = $("list"), shown = visible();
+  if (state.view === "list" && state.waiting.size) return renderBar();
   const before = new Map([...list.children].map((li) => [li, li.getBoundingClientRect().top]));
   const nodes = shown.map((p) => {
     if (!rows.has(p.id)) rows.set(p.id, createRow(p));
@@ -157,6 +166,10 @@ function render() {
       }
     }
   }
+  renderBar();
+}
+
+function renderBar() {
   // a month's list names its month at the end of the top bar, in the darker blue: "this month | past | add | 2026/10"
   const listed = state.view === "list" && state.month;
   $("viewing-wrap").hidden = !listed;
@@ -180,6 +193,9 @@ async function loadMonth(month) {
   state.votes = new Map();
   state.subs = [];
   rows.clear();
+  state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
+  clearTimeout(loadMonth.timer);
+  loadMonth.timer = setTimeout(() => { state.waiting.clear(); render(); }, 3000);
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
   listen();
@@ -201,15 +217,15 @@ function listen() {
       const { paper, handle } = d.data();
       state.votes.set(paper, { ...state.votes.get(paper), [handle.toLowerCase()]: handle });
     }
-    render();
-  }, (e) => { console.warn("votes", e); toast("Votes are unavailable right now; the list is still readable."); }));
+    arrived("votes");
+  }, (e) => { console.warn("votes", e); arrived("votes"); toast("Votes are unavailable right now; the list is still readable."); }));
   unsubscribe.push(fb.onSnapshot(at("submissions"), (snap) => {
     state.subs = snap.docs.map((d) => {
       const s = d.data({ serverTimestamps: "estimate" });
       return { ...s, id: d.id, created: s.created?.toMillis() ?? Date.now() };
     });
-    render();
-  }, (e) => console.warn("submissions", e)));
+    arrived("submissions");
+  }, (e) => { console.warn("submissions", e); arrived("submissions"); }));
 }
 
 async function connect() {
@@ -230,6 +246,9 @@ async function connect() {
     listen();
   } catch (e) {
     dbReady();
+    offline = true;
+    state.waiting.clear();
+    render();
     console.warn(e);
     toast("Voting is unavailable right now; the list is still readable.");
   }
