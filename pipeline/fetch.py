@@ -9,6 +9,7 @@ import time
 from collections import Counter
 from dataclasses import dataclass, replace
 from pathlib import Path
+from types import SimpleNamespace
 
 import requests
 
@@ -258,6 +259,26 @@ def fill_abstracts(papers):
                 chunk[norm_doi(doi.group(1))].abstract = clean(" ".join(
                     re.sub(r"<[^>]+>", "", a) for a in re.findall(r"<AbstractText[^>]*>(.*?)</AbstractText>", article, re.S)))
         time.sleep(0.4)  # NCBI allows 3 requests a second without a key
+
+
+def abstract_elsewhere(doi):
+    """The abstract of a paper OpenAlex has none for: PubMed, then Europe PMC, then the publisher's page (its
+    citation_abstract or dc.description; never og:description, a teaser); "" if none has it."""
+    paper = SimpleNamespace(doi=norm_doi(doi), abstract="")
+    fill_abstracts([paper])
+    if paper.abstract:
+        return paper.abstract
+    try:
+        found = session.get("https://www.ebi.ac.uk/europepmc/webservices/rest/search", timeout=30, params={
+            "query": f'DOI:"{paper.doi}"', "resultType": "core", "format": "json", "pageSize": 1}).json()
+        text = (found.get("resultList", {}).get("result") or [{}])[0].get("abstractText", "")
+        if not text:
+            page = session.get(f"https://doi.org/{paper.doi}", timeout=30).text
+            meta = re.search(r'<meta name="(?:citation_abstract|dc\.description)" content="([^"]{100,})"', page)
+            text = html.unescape(meta.group(1)) if meta else ""
+    except (requests.RequestException, ValueError):
+        return ""
+    return clean(text)
 
 
 def nature_type(doi):

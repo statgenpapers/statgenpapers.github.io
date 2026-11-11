@@ -687,6 +687,13 @@ async function openAlexAbstract(doi) {
   return words.filter(Boolean).join(" ");
 }
 
+// PubMed's abstract through Europe PMC (PubMed itself refuses browser requests), where OpenAlex has none
+async function europePmcAbstract(doi) {
+  const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(`DOI:"${doi}"`)}&resultType=core&format=json&pageSize=1`;
+  const r = await fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null);
+  return stripTags(r?.resultList?.result?.[0]?.abstractText || "").replace(/\s+/g, " ").trim();
+}
+
 async function metadata(doi) {
   const get = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   const date = (parts) => parts.filter(Boolean).map((n, i) => (i ? String(n).padStart(2, "0") : n)).join("-");
@@ -762,7 +769,7 @@ async function lookUp() {
   if (!m) {
     return note("Nothing found for this DOI: type the title, journal and abstract.");
   }
-  if (!m.abstract) m.abstract = await openAlexAbstract(doi);
+  if (!m.abstract) m.abstract = (await openAlexAbstract(doi)) || (await europePmcAbstract(doi));
   if (form.lookup.doi !== doi) return;
   form.lookup = { doi, url, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
   for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
