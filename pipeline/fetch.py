@@ -7,7 +7,7 @@ import re
 import sys
 import time
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import requests
@@ -146,6 +146,17 @@ def fetch_journals(cfg, start, end):
         cursor = data["meta"].get("next_cursor") if data["results"] else None
     print(f"  OpenAlex: {len(out)} papers, spent ${openalex_usd:.4f} this run", flush=True)
     return out
+
+
+OPENALEX_AUTHOR_CAP = 100  # OpenAlex lists cut authorships at 100; a single-work request has them all
+
+
+def full_authors(paper):
+    """`paper` with every author, fetched one work at a time for a journal paper at OpenAlex's cap of 100."""
+    if paper.type != "published" or len(paper.authors) != OPENALEX_AUTHOR_CAP:
+        return paper
+    w = json.loads(cached(f"https://api.openalex.org/works/doi:{paper.doi}", {"select": "authorships", "api_key": openalex_key()}))
+    return replace(paper, authors=[a["author"]["display_name"] for a in w["authorships"] if a["author"].get("display_name")])
 
 
 def fetch_preprints(cfg, start, end):

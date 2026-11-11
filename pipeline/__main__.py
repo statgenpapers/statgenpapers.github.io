@@ -13,7 +13,7 @@ import numpy as np
 
 from . import ROOT
 from .dedupe import dedupe
-from .fetch import fetch_pool, url_doi
+from .fetch import fetch_pool, full_authors, url_doi
 from .output import TABLE_HEADER, paper_id, short_name, table_row
 from .score import embed, linear, load_model, probability, vote_correction
 from .votes import read_submissions, read_votes
@@ -81,7 +81,7 @@ def main():
         kept = len(set(top) & set(np.argsort(-lab, kind="stable")[:len(top)]))
         print(f"vote correction from {sum(upvoted)} upvoted papers: {kept}/{len(top)} of the lab-weights shortlist kept", flush=True)
 
-    shortlist = [papers[i] for i in top]
+    shortlist = [full_authors(papers[i]) for i in top]
     out = [{k: v for k, v in asdict(p).items() if k != "published_doi"}
            | {"id": paper_id(p.doi), "short_name": short_name(p), "score": round(float(score[i]), 3),
               "p_pick": round(float(probability(weights, score[i])), 3), "rank": rank}
