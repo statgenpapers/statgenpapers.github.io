@@ -93,7 +93,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         page = context.pages[0]
         page.on("dialog", lambda d: (prompts.append(d.message), d.accept()))
         page.on("popup", lambda p: prompts.append("popup"))
-        page.on("pageerror", lambda e: errors.append(str(e)))
+        page.on("pageerror", lambda e: errors.append(str(e) + " " + (e.stack or "")[:300]))
         page.goto(url)
         try:
             expect(page.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=30000)
@@ -202,8 +202,11 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.click("#add button[type=submit]")
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
         check("a paper is added to the month in progress, and not shown before its run scores it",
-              seen(a.locator("#toast"), "Added to 2020/02: it shows on that list, with a Score, from 2020/03/10.") is not None
-              and added(b).count() == 0 and added(a).count() == 0)
+              seen(a.locator("#toast"), "Added to 2020/02; it gets a Score on 2020/03/10.") is not None
+              and added(b).count() == 0)
+        check("the add page lists it, unscored, under its form",
+              a.inner_text("#list-month") == "Added to 2020/02 so far" and seen(added(a).locator(".pct"), "–") is not None
+              and a.locator("#add").is_visible())
         a.click("#add-open")
         a.fill("#add-url", ADD_URL + "?again")
         a.fill("#add-journal", "Nature")
@@ -227,9 +230,9 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
             page.goto(url)
         dt = seen(added(b).locator(".count"), "1")
         check("after its run, it is listed in both browsers, marked by its submitter", dt is not None)
-        check("with its journal, the authors found for its DOI, its Score and an added tag, and no handle",
+        check("with its journal, the authors found for its DOI, its Score and the added icon, and no handle",
               added(b).locator(".source").inner_text().startswith("(Nature") and "Karczewski" in added(b).locator(".meta").inner_text()
-              and added(b).locator(".pick").inner_text() == "42%" and added(b).locator(".added").inner_text() == "added by a reader"
+              and added(b).locator(".pick").inner_text() == "42%" and added(b).locator(".added-icon").is_visible() and row(b, 4).locator(".added-icon").is_hidden()
               and "sitecheck" not in added(b).inner_text())
         check("only the submitter can remove it", added(a).locator(".remove").is_visible() and not added(b).locator(".remove").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back, then remove the paper

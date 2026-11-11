@@ -51,7 +51,8 @@ const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
 const nextMonth = (m) => { const [y, n] = m.split("-").map(Number); return n === 12 ? `${y + 1}-01` : `${y}-${String(n + 1).padStart(2, "0")}`; };
 // Papers are added to the month in progress, the one after the latest list: its monthly run (on the 10th of the month
 // after it) scores them and lists them with the model's papers, so an added paper is never shown without a Score.
-const addMonth = () => nextMonth(state.months.at(-1));
+const addMonth = () => (state.months.length ? nextMonth(state.months.at(-1)) : null);  // null until the month index is in
+const upcoming = () => state.view === "list" && Boolean(state.month) && state.month === addMonth();  // the "add to next month" page: its form and the papers added so far
 const httpUrl = (url) => (/^https?:\/\/\S+$/.test(url) ? url : null);
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
@@ -91,7 +92,7 @@ const shownJournal = (journal, url) => (PREPRINT.test(journal) || PREPRINT.test(
 // Listed papers and added papers in one shape: an added paper shows once the monthly run has scored it (data.added: id → score)
 function items() {
   const listed = state.data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = state.data?.added || {};
-  return [...listed, ...state.subs.filter((s) => s.id in scored && !dois.has(urlDoi(s.url)))
+  return [...listed, ...state.subs.filter((s) => (s.id in scored || state.data?.upcoming) && !dois.has(urlDoi(s.url)))
     .map((s) => ({ ...s, journal: shownJournal(s.journal, s.url), authors: Array.isArray(s.authors) ? s.authors : [], added: true,
       p_pick: scored[s.id] }))];
 }
@@ -133,11 +134,12 @@ function createRow(p) {
   q(".source").title = p.type === "preprint" || p.added ? "" : p.venue_name || "";  // a journal's full name; preprints stay "Preprint"
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
-  q(".added").hidden = !p.added;
-  q(".added").textContent = "added by a reader";
-  if (!a.length) q(".added").classList.add("alone");  // no authors: no separator before it
-  if (p.p_pick != null) {
-    q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
+  q(".added-icon").toggleAttribute("hidden", !p.added);  // an added paper: a person-plus icon left of its Score (an SVG has no .hidden)
+  if (p.added && p.p_pick == null) {  // next month's page: scored by its run
+    q(".pct").textContent = "–";
+    q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
+  } else if (p.p_pick != null) {
+    q(".pct").textContent = `${Math.round(100 * p.p_pick)}%`;
     q(".pick").title = p.added ? "Added by a reader, not chosen by the model; the model's prediction of how likely it is to be marked"
       : `The model's prediction of how likely this paper is to be marked (raw score ${p.score.toFixed(2)})`;
   }
@@ -200,7 +202,9 @@ function render() {
   const sameRows = nodes.length === list.children.length && [...list.children].every((li) => li.isConnected && nodes.includes(li));
   const reorder = nodes.some((n, i) => n !== list.children[i]);
   if (!nodes.length) {
-    list.replaceChildren(el("li", "empty", "No list for this month yet."));
+    list.replaceChildren(el("li", "empty", upcoming()
+      ? `Nothing added yet. Papers added now join the ${monthName(state.month)} list on ${monthName(nextMonth(state.month))}/10.`
+      : "No list for this month yet."));
   } else if (!sameRows || reorder) {
     const focused = document.activeElement;
     list.replaceChildren(...nodes);
@@ -227,19 +231,20 @@ function render() {
 function renderBar() {
   // the list's heading names its month: "Papers of 2026/10"
   const listed = state.view === "list" && state.month;
-  $("list-month").textContent = listed ? `Papers of ${monthName(state.month)}` : "Papers";
+  $("list-month").textContent = upcoming() ? `Added to ${monthName(state.month)} so far` : listed ? `Papers of ${monthName(state.month)}` : "Papers";
   $("me-wrap").hidden = $("interested-wrap").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("me").href = `?user=${state.handle}`;
   $("interested-open").href = `?interested=${state.handle}`;
-  for (const [a, current] of [[$("me"), state.view === "user"], [$("interested-open"), state.view === "interested"]]) {
+  $("add-open").href = `?month=${addMonth()}`;
+  for (const [a, current] of [[$("me"), state.view === "user"], [$("interested-open"), state.view === "interested"], [$("add-open"), upcoming()]]) {
     a.classList.toggle("current", current);
     current ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
   }
   $("login-open").textContent = state.handle ? "logout" : "login";
   syncExpanded();
   syncAccountSep();
-  document.title = { list: listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
+  document.title = { list: upcoming() ? "Next month · StatGen Papers" : listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
     user: "Your handle · StatGen Papers", interested: "Interested · StatGen Papers" }[state.view];
 }
 
@@ -249,9 +254,8 @@ function syncAccountSep() {
   $("account-sep").hidden = $("login-open").parentElement.offsetTop > $("interested-wrap").offsetTop;
 }
 
-// The "add" and "login" links say whether their form is open.
+// The "login" link says whether its form is open.
 function syncExpanded() {
-  $("add-open").setAttribute("aria-expanded", !$("add").hidden);
   if (state.handle) $("login-open").removeAttribute("aria-expanded");  // "logout" opens nothing
   else $("login-open").setAttribute("aria-expanded", !$("login").hidden);
 }
@@ -272,9 +276,9 @@ async function loadMonth(month) {
   state.subs = saved?.subs ?? [];
   state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
-  closeForm();
+  closeForm();  // the form shows only on the next month's page
   listen();
-  const data = await monthData(month);
+  const data = month === addMonth() ? { papers: [], added: {}, upcoming: true } : await monthData(month);  // next month has no file yet
   if (state.month !== month) return;  // the reader moved on while this was loading
   state.data = data;
   $("journals").replaceChildren(...[...new Set(items().map((p) => p.journal))].sort().map((j) => Object.assign(el("option"), { value: j })));
@@ -518,7 +522,7 @@ function route() {
   const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
   if (own(q.get("user"))) return showUser();
   if (own(q.get("interested"))) return showInterested();
-  return loadMonth(state.months.includes(month) ? month : state.months.at(-1));
+  return loadMonth(state.months.includes(month) || month === addMonth() ? month : state.months.at(-1));
 }
 
 // Every navigation adds a history entry, so Back returns to the previous month or page.
@@ -705,7 +709,7 @@ async function submitPaper(event) {
   const authors = field("authors").value.split(/\s*[,;]\s*/).filter(Boolean).slice(0, 300), abstract = field("abstract").value.trim();
   Object.assign(paper, authors.length ? { authors } : {}, abstract ? { abstract: abstract.slice(0, 10000) } : {},
     form.lookup.date && form.lookup.doi === urlDoi(paper.url) ? { date: form.lookup.date } : {});
-  if (needHandle(() => { openPanel("add"); $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
+  if (needHandle(() => { $("add").hidden = false; $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
   const doi = urlDoi(paper.url), title = plainTitle(paper.title), month = addMonth(), latest = state.months.at(-1);
   const same = (p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title;
@@ -720,7 +724,7 @@ async function submitPaper(event) {
     $("add-open").focus({ preventScroll: true });
     // adding a paper marks it (not through vote(), which marks only the month shown); the mark shows on the handle's page
     await fb.setDoc(voteRef(month, ref.id), { paper: ref.id, handle: state.handle });
-    toast(`Added to ${monthName(month)}: it shows on that list, with a Score, from ${monthName(nextMonth(month))}/10.`);
+    toast(`Added to ${monthName(month)}; it gets a Score on ${monthName(nextMonth(month))}/10.`);
   } catch (e) {
     console.warn(e);
     note("The paper was not added. Please try again later.", true);
@@ -728,7 +732,8 @@ async function submitPaper(event) {
 }
 
 function closeForm() {
-  $("add").hidden = true;
+  $("add").hidden = !upcoming();
+  if (addMonth()) $("add-when").textContent = `Papers added here join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
   $("add").reset();
   form.lookup = {};
   form.edited = false;
@@ -739,7 +744,7 @@ function closeForm() {
 // Show one of the two forms (login, add), or hide it if it is open.
 function openPanel(name) {
   const other = name === "add" ? "login" : "add";
-  $(other).hidden = true;
+  if (!(other === "add" && upcoming())) $(other).hidden = true;  // the next month's page keeps its form under the login
   $(name).hidden = !$(name).hidden;
   afterLogin = null;  // the login opened or closed by hand: nothing waits for it
   syncExpanded();
@@ -780,10 +785,12 @@ async function init() {
   $("download").addEventListener("click", link(downloadTable));
   $("add-open").addEventListener("click", link(async () => {
     if (!state.months.length) return toast("There is no list to add to yet.");
-    openPanel("add");
-    $("add-when").textContent = `Papers added now join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
+    if (!upcoming()) await go({ month: addMonth() });
+    $("login").hidden = true;
+    $("add").hidden = false;
+    field("url").focus();
   }));
-  $("add-cancel").addEventListener("click", link(() => { closeForm(); $("add-open").focus({ preventScroll: true }); }));
+  $("add-cancel").addEventListener("click", link(() => { closeForm(); field("url").focus(); }));  // clears the form
   $("add").addEventListener("submit", submitPaper);
   $("login-open").addEventListener("click", link(() => {
     if (!state.handle) return openPanel("login");

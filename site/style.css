@@ -104,9 +104,8 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .sub a:not(.toggle) { text-decoration: underline; }
 .sub a:hover { color: var(--text); }
 .sub .toggle { margin-left: .6em; }
-/* an added paper: a small tag after the authors, so its Score is not read as the model's choice */
-.sub .added { margin-left: .6em; padding: 0 .35em; border-radius: var(--radius); background: var(--subtle); color: var(--body); }
-.sub .added.alone { margin-left: 0; }
+/* an added paper: a small person-plus icon left of its Score, so the Score is not read as the model's choice */
+.pick .added-icon { margin-right: .3em; vertical-align: -1px; }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details p:last-child { margin-bottom: 0; }

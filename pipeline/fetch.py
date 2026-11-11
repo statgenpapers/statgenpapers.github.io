@@ -17,7 +17,11 @@ session.headers["User-Agent"] = "monthly-papers/0.1"
 n_requests = 0
 openalex_usd = 0.0
 OPENALEX_MAX_USD = float(os.environ.get("OPENALEX_MAX_USD", 0.5))  # stop a run before it spends half the keyed $1/day budget
-HTTP_CACHE = os.environ.get("PIPELINE_HTTP_CACHE")  # development: directory that keeps response bodies, so reruns make no calls
+# Local runs keep response bodies in .cache/http for a week, so reruns make almost no calls; the monthly
+# workflow fetches fresh. PIPELINE_HTTP_CACHE sets another directory, or "" for none.
+HTTP_CACHE = os.environ.get("PIPELINE_HTTP_CACHE", "" if os.environ.get("GITHUB_ACTIONS") else str(Path(__file__).parents[1] / ".cache" / "http"))
+CACHE_DAYS = float(os.environ.get("PIPELINE_HTTP_CACHE_DAYS", 7))
+fresh = lambda path: path.exists() and time.time() - path.stat().st_mtime < CACHE_DAYS * 86400
 INLINE_TAG = re.compile(r"</?(?:i|em|b|strong|sub|sup|sc|scp|p|br|title|sec|jats:[\w-]+)\b[^>]*>", re.I)
 
 
@@ -67,7 +71,7 @@ def cached(url, params=None, data=None):
     if HTTP_CACHE:
         key = json.dumps([url, {k: v for k, v in (params or {}).items() if k != "api_key"}, data], sort_keys=True)
         path = Path(HTTP_CACHE) / f"{hashlib.sha256(key.encode()).hexdigest()}.txt"
-        if path.exists():
+        if fresh(path):
             return path.read_text()
     text = request("POST" if data else "GET", url, params=params, data=data).text
     if HTTP_CACHE:
@@ -215,6 +219,23 @@ def fill_abstracts(papers):
         time.sleep(0.4)  # NCBI allows 3 requests a second without a key
 
 
+def nature_type(doi):
+    """A Nature-family paper's article type from its page ("Article", "Research Highlight"); "" if unknown."""
+    path = Path(HTTP_CACHE) / f"nature-type-{doi.replace('/', '_')}.txt" if HTTP_CACHE else None
+    if path and fresh(path):
+        return path.read_text()
+    try:
+        page = session.get(f"https://www.nature.com/articles/{doi.split('/', 1)[1]}", timeout=30).text
+    except requests.RequestException:
+        return ""  # unknown: the paper stays
+    found = re.search(r'name="citation_article_type" content="([^"]*)"', page)
+    kind = html.unescape(found.group(1)) if found else ""
+    if path and kind:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(kind)
+    return kind
+
+
 def fetch_pool(cfg, start, end):
     """The month's candidates from every configured source, junk removed, abstracts filled."""
     papers = fetch_journals(cfg, start, end) + fetch_preprints(cfg, start, end)
@@ -226,6 +247,13 @@ def fetch_pool(cfg, start, end):
     junk_doi = re.compile("|".join(cfg["junk_doi"]))
     papers = list({p.doi: p for p in papers if not junk_title.match(p.title) and not junk_doi.search(p.doi)}.values())
     fill_abstracts(papers)
+    # Nature-family pieces without an abstract are mostly research highlights, briefings and columns: keep
+    # only research and review articles (a page lookup each, a few dozen a month)
+    kinds = {p.doi: nature_type(p.doi) for p in papers if p.doi.startswith("10.1038/") and not p.abstract}
+    dropped = {doi for doi, kind in kinds.items() if kind and kind not in cfg["nature_article_types"]}
+    papers = [p for p in papers if p.doi not in dropped]
+    print(f"{len(dropped)} of {len(kinds)} Nature-family papers without abstract left out as not research: "
+          f"{dict(Counter(kinds[d] for d in dropped))}", flush=True)
     missing = Counter(p.venue for p in papers if not p.abstract)
     for venue, n in missing.items():
         if total[venue] >= 10 and n > 0.6 * total[venue]:  # NG and others sit near 40% (News & Views)

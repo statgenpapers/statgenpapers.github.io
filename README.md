@@ -10,7 +10,7 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
 1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches the
    previous month's ~2,000 candidates (`config/sources.toml`), dedupes and scores them, writes the shortlist to
    `site/data/YYYY-MM.{json,tsv}`, commits and deploys `site/`. Papers readers added to that month are scored too
-   and listed with the tag "added"; until then they are not shown. Readers always add to the month in progress.
+   and listed with a person icon beside the Score; until then they are not shown. Readers always add to the month in progress.
 2. **Scorer.** A `potion-base-32M` embedding of title and abstract plus the venue, through the logistic
    regression in `model/weights.json`. Once 30 listed papers have marks, the run also fits a vote correction.
    `dev/backtest/` holds the numbers on the About page.

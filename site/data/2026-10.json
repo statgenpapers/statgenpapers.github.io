@@ -1242,23 +1242,6 @@
    "venue_name": "American Journal of Human Genetics"
   },
   {
-   "abstract": "",
-   "authors": [],
-   "date": "2026-10-26",
-   "doi": "10.1038/s41588-026-02806-5",
-   "id": "10.1038_s41588-026-02806-5",
-   "journal": "Nat Genet",
-   "p_pick": 0.291,
-   "rank": 26,
-   "score": 3.328,
-   "short_name": "NatGenet_NA_2026_fastGxEPowerfulMethodUncovering",
-   "title": "fastGxE is a powerful method for uncovering genotype–environment interactions in biobanks",
-   "type": "published",
-   "url": "https://doi.org/10.1038/s41588-026-02806-5",
-   "venue": "NG",
-   "venue_name": "Nature Genetics"
-  },
-  {
    "abstract": "Psoriasis is associated with increased cardiovascular morbidity, but the extent and structure of the shared genetic architecture remain incompletely understood. We integrated large-scale European-ancestry genome-wide summary statistics for psoriasis and seven cardiovascular diseases to quantify genetic overlap, model shared liability and prioritize candidate mechanisms. Psoriasis showed modest genetic correlations with all cardiovascular outcomes, but mixture modelling estimated that more than half of psoriasis-associated non-zero variants were shared with five cardiovascular diseases. Genomic structural equation modelling of a latent psoriasis-CVD factor identified 167 independent risk loci, including 50 not genome-wide significant in any component trait. Multimodal prioritization nominated 473 candidate genes and 90 approved compounds with therapeutic relevance, including shared targets involving PDE4B, GLP1R, KEAP1 and PRDM16. Mediation and Mendelian randomization analyses implicated cardiometabolic traits, although no single trait accounted for more than half of the shared liability. These results prioritize genetic mechanisms and pharmacological hypotheses for psoriasis-associated cardiovascular multimorbidity.",
    "authors": [
     "C. Antonatos",
@@ -1271,7 +1254,7 @@
    "id": "10.64898_2026.10.19.26365878",
    "journal": "Preprint",
    "p_pick": 0.283,
-   "rank": 27,
+   "rank": 26,
    "score": 3.274,
    "short_name": "Preprint_Antonatos_2026_MultivariateGeneticAnalysisMaps",
    "title": "Multivariate genetic analysis maps shared biology between psoriasis and cardiovascular diseases",
@@ -1279,25 +1262,6 @@
    "url": "https://www.medrxiv.org/content/10.64898/2026.10.19.26365878v1",
    "venue": "Preprint",
    "venue_name": "medRxiv · genetic and genomic medicine"
-  },
-  {
-   "abstract": "",
-   "authors": [
-    "Yunlong Ma"
-   ],
-   "date": "2026-10-07",
-   "doi": "10.1038/s41576-026-01025-2",
-   "id": "10.1038_s41576-026-01025-2",
-   "journal": "Nat Rev Genet",
-   "p_pick": 0.282,
-   "rank": 28,
-   "score": 3.266,
-   "short_name": "NatRevGenet_Ma_2026_MappingGeneticRiskRegulatory",
-   "title": "Mapping genetic risk to regulatory networks at single-cell resolution",
-   "type": "published",
-   "url": "https://doi.org/10.1038/s41576-026-01025-2",
-   "venue": "NRG",
-   "venue_name": "Nature Reviews Genetics"
   },
   {
    "abstract": "Gallstone disease is a highly prevalent and costly gastrointestinal disease. Yet, genetic variation in susceptibility to gallstone disease and its implication in metabolic regulatory pathways remain to be explored. We report a trans-ancestry genome-wide association meta-analysis of gallstone disease including 88,063 cases and 1,490,087 controls in the UK Biobank, FinnGen, Biobank Japan, and Million Veteran Program. We identified 91 (37 novel) risk loci across the meta-analysis and found replication in statistically compelling signals in the All of Us Research Program. A polygenic risk score constructed from trans-ancestry lead variants was positively associated with liver chemistry and alpha-1-antitrypsin deficiency and negatively associated with total cholesterol and low-density lipoprotein levels among trans-ancestry and European ancestry groups in the Penn Medicine BioBank. Cross-trait colocalization analysis between risk loci and 44 liver, metabolic, renal, and inflammatory traits yielded 350 significant colocalizations as well as 97 significant colocalizations and 65 prioritized genes from expression quantitative trait loci from eight tissues. These findings broaden our understanding of the genetic architecture of gallstone disease.",
@@ -1329,7 +1293,7 @@
    "id": "10.1038_s41467-026-78644-0",
    "journal": "Nat Commun",
    "p_pick": 0.275,
-   "rank": 29,
+   "rank": 27,
    "score": 3.219,
    "short_name": "NatCommun_Lim_2026_TransAncestryGenomeWide",
    "title": "Trans-ancestry genome-wide association meta-analysis of gallstone disease",
@@ -1349,7 +1313,7 @@
    "id": "10.1016_j.ajhg.2026.08.015",
    "journal": "Am J Hum Genet",
    "p_pick": 0.273,
-   "rank": 30,
+   "rank": 28,
    "score": 3.203,
    "short_name": "AmJHumGenet_Cai_2026_MMACHCBurdenVariantsAssociated",
    "title": "MMACHC burden variants are associated with higher circulating vitamin B12 in the All of Us cohort",
@@ -1395,7 +1359,7 @@
    "id": "10.1016_j.cell.2026.09.034",
    "journal": "Cell",
    "p_pick": 0.27,
-   "rank": 31,
+   "rank": 29,
    "score": 3.185,
    "short_name": "Cell_Vollger_2026_SomaticEpimutationsCapGenetic",
    "title": "Somatic epimutations cap genetic determinism in the human diploid chromatin epigenome",
@@ -1420,7 +1384,7 @@
    "id": "10.1016_j.ajhg.2026.09.017",
    "journal": "Am J Hum Genet",
    "p_pick": 0.266,
-   "rank": 32,
+   "rank": 30,
    "score": 3.153,
    "short_name": "AmJHumGenet_Xu_2026_GeneticArchitecturePentanucleotideRepeat",
    "title": "The genetic architecture of pentanucleotide repeat variation and disease association",
@@ -1460,7 +1424,7 @@
    "id": "10.1038_s41586-026-11119-w",
    "journal": "Nature",
    "p_pick": 0.266,
-   "rank": 33,
+   "rank": 31,
    "score": 3.152,
    "short_name": "Nature_Parada_2026_MicroexonRegulatoryCodeReveals",
    "title": "A microexon regulatory code reveals autism-linked genetic variation",
@@ -1468,25 +1432,6 @@
    "url": "https://doi.org/10.1038/s41586-026-11119-w",
    "venue": "Nature",
    "venue_name": "Nature"
-  },
-  {
-   "abstract": "",
-   "authors": [
-    "Wei Li"
-   ],
-   "date": "2026-10-01",
-   "doi": "10.1038/s41588-026-02804-7",
-   "id": "10.1038_s41588-026-02804-7",
-   "journal": "Nat Genet",
-   "p_pick": 0.258,
-   "rank": 34,
-   "score": 3.094,
-   "short_name": "NatGenet_Li_2026_PhylogenyInformedGenomicPrediction",
-   "title": "Phylogeny-informed genomic prediction with GPN-Star",
-   "type": "published",
-   "url": "https://doi.org/10.1038/s41588-026-02804-7",
-   "venue": "NG",
-   "venue_name": "Nature Genetics"
   },
   {
    "abstract": "Polygenic risk scores (PRS) are increasingly used for disease prediction, but whether their associations vary across social contexts remains poorly understood. Here, we leveraged the large and diverse All of Us cohort to examine interactions between PRS and social determinants of health (SDoH) across eight prevalent chronic diseases and developed disease-specific polysocial risk scores (PsRS). We found consistent evidence of SDoH modification of PRS- disease associations for cardiometabolic diseases, including type 2 diabetes, coronary heart disease and chronic kidney disease, with PRS associations attenuated among more socially vulnerable populations. Joint modeling of PsRS and PRS significantly improved case status prediction across all eight diseases and PsRS were predictive for most diseases in external cohorts. These findings demonstrate that social context modifies associations between genetic risk and disease and suggest that integrating genetic and social information can refine disease prediction across diverse populations. TeaserBoth genetics and the environment influence chronic disease, but whether and how they interact remains understudied. We find evidence of genetic effect modification of polygenic risk scores (PRS) by social factors for multiple cardiometabolic traits and that jointly modeling social risk improves disease prediction across a range of chronic diseases.",
@@ -1514,7 +1459,7 @@
    "id": "10.64898_2026.10.27.26366625",
    "journal": "Preprint",
    "p_pick": 0.256,
-   "rank": 35,
+   "rank": 32,
    "score": 3.084,
    "short_name": "Preprint_Hysong_2026_GeneticsContext",
    "title": "Genetics in Context: Social Factors Modify Polygenic Risk Across Multiple Cardiometabolic Diseases",

@@ -15,6 +15,10 @@ junk_title = [
 ]
 # ... or the DOI matches one of these. 10.1038/d… is Nature-family news, comment and careers.
 junk_doi = ['^10\.1038/d\d']
+# A Nature-family paper without an abstract stays only if its page gives one of these article types:
+# research highlights, research briefings, news & views, comments and columns are left out.
+nature_article_types = ["Article", "Letter", "Analysis", "Resource", "Technical Report", "Brief Communication",
+  "Review Article", "Review", "Perspective", "Matters Arising", "Registered Report", "Methods"]
 
 # Journals, fetched from OpenAlex by ISSN. `abbr` is the official title abbreviation shown in the
 # Journal column and in short names. `key` is the venue key in model/weights.json: keep it stable.
