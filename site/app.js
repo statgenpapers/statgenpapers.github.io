@@ -210,10 +210,9 @@ function render() {
 }
 
 function renderBar() {
-  // a month's list names its month at the end of the top bar, in the darker blue: "latest | past | add | 2026/10"
+  // the list's heading names its month: "Papers of 2026/10"
   const listed = state.view === "list" && state.month;
-  $("viewing-wrap").hidden = !listed;
-  $("viewing").textContent = listed ? monthName(state.month) : "";
+  $("list-month").textContent = listed ? `Papers of ${monthName(state.month)}` : "Papers";
   $("me-wrap").hidden = $("interested-wrap").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("me").href = `?user=${state.handle}`;
@@ -222,7 +221,6 @@ function renderBar() {
     a.classList.toggle("current", current);
     current ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
   }
-  $("copy-wrap").hidden = state.view !== "list";
   $("login-open").textContent = state.handle ? "logout" : "login";
   syncExpanded();
   document.title = { list: listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
@@ -693,10 +691,29 @@ function openPanel(name) {
 
 // ---------------------------------------------------------------- controls
 
-async function copyTable() {
-  const shown = visible();
-  const text = [TABLE_HEADER, ...shown.map((p) => [p.journal, p.short_name, p.title, p.url])]
+// The list as shown, as the four-column table: tab-separated, pastes into a spreadsheet.
+function tableText(shown) {
+  return [TABLE_HEADER, ...shown.map((p) => [p.journal, p.short_name, p.title, p.url])]
     .map((row) => row.map((cell) => String(cell).replace(/\s+/g, " ")).join("\t")).join("\n");
+}
+
+// The export menu beside "Papers of 2026/10": copy the table, or download it as a .tsv file.
+function toggleExport(open = $("export").hidden) {
+  $("export").hidden = !open;
+  $("export-open").setAttribute("aria-expanded", open);
+}
+
+function downloadTable() {
+  const a = Object.assign(el("a"), {
+    href: URL.createObjectURL(new Blob([`${tableText(visible())}\n`], { type: "text/tab-separated-values" })),
+    download: `statgen-papers-${state.month}.tsv`,
+  });
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+async function copyTable() {
+  const shown = visible(), text = tableText(shown);
   try {
     await navigator.clipboard.writeText(text);
     toast(`Copied ${shown.length} paper${shown.length === 1 ? "" : "s"}: ${TABLE_HEADER.join(", ")}.`);
@@ -708,7 +725,9 @@ async function copyTable() {
 async function init() {
   try { const saved = (localStorage.getItem("handle") || "").toLowerCase(); if (HANDLE.test(saved)) state.handle = saved; } catch {}
   connect();  // in parallel with the month index; listening starts once a month is shown
-  $("copy").addEventListener("click", link(copyTable));
+  $("export-open").addEventListener("click", link(() => toggleExport()));
+  $("copy").addEventListener("click", link(() => { toggleExport(false); copyTable(); }));
+  $("download").addEventListener("click", link(() => { toggleExport(false); downloadTable(); }));
   $("add-open").addEventListener("click", link(async () => {
     if (!state.months.length) return toast("There is no list to add to yet.");
     if (state.view !== "list") await go({});  // a paper is added to the month shown
@@ -731,12 +750,13 @@ async function init() {
   // a click outside a pop-up, or Escape, closes it
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".links .menu")) togglePast(false);
-    if (!e.target.closest(".pick-head .menu")) toggleScoreNote(false);
+    if (!e.target.closest("#score-note, #score-help")) toggleScoreNote(false);
+    if (!e.target.closest("#export, #export-open")) toggleExport(false);
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       // closing a pop-up puts the focus back on its link
-      for (const [pop, opener, close] of [["past", "past-open", togglePast], ["score-note", "score-help", toggleScoreNote]]) {
+      for (const [pop, opener, close] of [["past", "past-open", togglePast], ["score-note", "score-help", toggleScoreNote], ["export", "export-open", toggleExport]]) {
         if ($(pop).hidden) continue;
         const inside = $(pop).contains(document.activeElement);
         close(false);

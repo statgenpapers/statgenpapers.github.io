@@ -141,6 +141,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("authors show as first two … last two",
           row(a, 4).locator(".meta").inner_text() == "Author 1, Author 2, …, Author 6, Author 7"
           and row(a, 2).locator(".meta").inner_text() == "Author 1, Author 2, Author 3")
+    a.click("#export-open")
     a.click("#copy")
     rows = [line.split("\t") for line in a.evaluate("navigator.clipboard.readText()").split("\n")]
     check("copy table gives Journal, Short Name, Title, URL in the order shown",

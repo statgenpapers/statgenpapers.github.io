@@ -15,7 +15,7 @@
 <body>
 <header class="bar">
   <h1 class="brand"><a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a></h1>
-  <nav class="links"><a href="./" id="latest">latest</a> | <span class="menu"><a href="#" id="past-open" aria-expanded="false" aria-controls="past">past</a><span id="past" class="popover" hidden></span></span> | <a href="#" id="add-open" aria-expanded="false" aria-controls="add">add</a><span id="viewing-wrap" hidden> | <span id="viewing" class="current"></span></span></nav>
+  <nav class="links"><a href="./" id="latest">latest</a> | <span class="menu"><a href="#" id="past-open" aria-expanded="false" aria-controls="past">past</a><span id="past" class="popover" hidden></span></span> | <a href="#" id="add-open" aria-expanded="false" aria-controls="add">add</a></nav>
   <span class="account"><span id="interested-wrap" hidden><a href="#" id="interested-open">interested</a> | </span><span id="me-wrap" hidden><a href="#" id="me"></a> | </span><a href="#" id="login-open" aria-expanded="false" aria-controls="login">login</a></span>
 </header>
 
@@ -42,7 +42,7 @@
   <section id="page" class="page" hidden></section>
 
   <div id="listview">
-  <div class="pick-head"><span class="title-head">Title</span><span class="menu"><a href="#" id="score-help" class="dashed" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
+  <div class="pick-head"><span class="title-head"><span id="list-month">Papers</span><span class="menu"><a href="#" id="export-open" aria-label="Export" title="Copy or download the table" aria-expanded="false" aria-controls="export"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span id="export" class="popover" hidden><a href="#" id="copy">Copy table</a><a href="#" id="download">Download .tsv</a></span></span></span><span class="menu"><a href="#" id="score-help" class="dashed" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
     <span id="score-note" class="popover score-note" hidden>The chance that a statistical genetics lab would pick this paper for its
     monthly reading list, predicted by a model trained on a year of its past picks. Of papers scored 50%, about half
     were picked. Marks re-order the list but do not change the score. <a href="about.html">more</a></span></span></div>
@@ -51,7 +51,6 @@
 </main>
 
 <footer>
-  <span id="copy-wrap"><a href="#" id="copy" title="Copy the list as shown: Journal, Short Name, Title, URL (tab-separated, pastes into a spreadsheet)">copy table</a> | </span>
   <a href="about.html">about</a>
 </footer>
 
