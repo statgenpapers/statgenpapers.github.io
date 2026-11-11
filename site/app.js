@@ -119,9 +119,7 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-label", mine(p.id) ? "Not interested any more" : "Interested");
   q(".up").title = state.handle ? (mine(p.id) ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !state.uid;
-  q(".voters").replaceChildren(...(ups.length
-    ? ["Interested: ", ...ups.flatMap(([, handle], i) => [i ? ", " : "", handleLink(handle)])]
-    : ["No one interested yet."]));
+  q(".voters").textContent = ups.length ? `Interested: ${ups.map(([, handle]) => handle).join(", ")}` : "No one interested yet.";
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
