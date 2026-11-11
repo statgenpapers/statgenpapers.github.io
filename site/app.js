@@ -110,12 +110,12 @@ function createRow(p) {
 function updateRow(li, p) {
   const ups = upvotes(p.id), q = (sel) => li.querySelector(sel);
   q(".count").textContent = ups.length;
-  q(".count").title = `${ups.length} vote${ups.length === 1 ? "" : "s"}`;
+  q(".count").title = `${ups.length} interested`;
   q(".up").setAttribute("aria-pressed", mine(p.id));
-  q(".up").setAttribute("aria-label", mine(p.id) ? "Remove your upvote" : "Upvote");
-  q(".up").title = state.handle ? "" : "Log in with a handle to vote";
+  q(".up").setAttribute("aria-label", mine(p.id) ? "Not interested any more" : "Interested");
+  q(".up").title = state.handle ? (mine(p.id) ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !state.uid;
-  q(".voters").textContent = ups.length ? `Upvoted by ${ups.map(([, handle]) => handle).join(", ")}` : "No upvotes yet.";
+  q(".voters").textContent = ups.length ? `Interested: ${ups.map(([, handle]) => handle).join(", ")}` : "No one interested yet.";
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
@@ -217,7 +217,7 @@ async function connect() {
 function needHandle() {
   if (state.handle) return false;
   openPanel("login");
-  toast("Log in with a handle to vote or add papers.");
+  toast("Log in with a handle to mark papers or add them.");
   return true;
 }
 
