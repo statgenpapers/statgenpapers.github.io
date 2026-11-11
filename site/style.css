@@ -45,7 +45,8 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .hint { color: var(--muted); font-size: .85em; }
 
 .links a.current { font-weight: 700; }
-.pick-head { margin: .9rem 0 0; text-align: right; color: var(--muted); font-size: .8em; }
+.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: .8em; }
+.title-head { padding-left: 1.35rem; }  /* the upvote column plus its gap */
 .pick-head a { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
 .pick-head a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
 .score-note { margin: .3rem 0 .2rem auto; max-width: 30rem; padding: .5rem .7rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--body); font-size: .85em; }
