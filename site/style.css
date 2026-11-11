@@ -86,8 +86,6 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .vote { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
 .up { position: relative; border: 0; background: none; padding: .3rem 0 0; color: var(--muted); line-height: 0; }
 .up::after { content: ""; position: absolute; inset: -.5rem -1.6rem -.9rem -.5rem; }  /* a finger-sized hit area over the count */
-/* hover darkens an unmarked triangle; not a marked one (it stays blue), not one just clicked (it would look still marked), not on touch screens */
-@media (hover: hover) { .up:not([aria-pressed="true"]):not(:disabled):not(.clicked):hover { color: var(--text); } }
 .up:active:not(:disabled), .up[aria-pressed="true"] { color: var(--accent); }
 .up:disabled { opacity: .4; cursor: default; }
 .count { color: var(--muted); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }

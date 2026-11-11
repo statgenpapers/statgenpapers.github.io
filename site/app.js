@@ -131,8 +131,7 @@ function createRow(p) {
     q(".details").hidden = !open;
     q(".toggle").setAttribute("aria-expanded", open);
   }));
-  q(".up").addEventListener("click", () => { q(".up").classList.add("clicked"); vote(p.id, month); });
-  q(".up").addEventListener("pointerleave", () => q(".up").classList.remove("clicked"));  // hover shows again once the pointer has left
+  q(".up").addEventListener("click", () => vote(p.id, month));  // no hover colour: grey or blue only
   q(".remove").addEventListener("click", link(() => removeSubmission(p)));
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
