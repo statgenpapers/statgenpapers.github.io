@@ -34,12 +34,19 @@ MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928f
 OUT = ROOT / "model" / "rollforward"
 cfg = tomllib.loads((ROOT / "config" / "sources.toml").read_text())
 
-pool = pd.read_parquet(ROOT / "handoff" / "data" / "bt" / "texts.parquet").query("kind == 'pool'").reset_index(drop=True)
-month, tab = pool.month.to_numpy(), pool.pick_tab.to_numpy()  # tab: first Sheet tab listing the paper, "" if none
-venue = np.where(pool.journal.isin(["Biorxiv", "Medrxiv"]), "Preprint", pool.journal)
-names = np.unique(venue)
-emb = embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map(clean))
-X = np.hstack([emb, venue[:, None] == names])
+from pipeline.fetch import find_doi  # noqa: E402
+
+
+def features():
+    global month, tab, names, emb, X
+    pool = pd.read_parquet(ROOT / "handoff" / "data" / "bt" / "texts.parquet").query("kind == 'pool'").reset_index(drop=True)
+    month, tab = pool.month.to_numpy(), pool.pick_tab.to_numpy()  # tab: first Sheet tab listing the paper, "" if none
+    venue = np.where(pool.journal.isin(["Biorxiv", "Medrxiv"]), "Preprint", pool.journal)
+    names = np.unique(venue)
+    emb = embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map(clean))
+    X = np.hstack([emb, venue[:, None] == names])
+
+
 fit = lambda before: LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(
     X[month < before], ((tab != "") & (tab < before))[month < before])
 
@@ -60,27 +67,29 @@ def weights(M):
 # The Journal column for a pick the model missed: the Sheet's journal key, as the site shows journals
 ABBR = {j["key"]: j["abbr"] for j in cfg["journals"]} | {j["name"]: j["abbr"] for j in cfg["journals"]} | {
     "biorxiv": "bioRxiv", "medrxiv": "medRxiv", "zenodo": "Zenodo", "nat comm": "Nat Commun", "nat genet": "Nat Genet"}
-PREPRINT = re.compile(r"(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|10\.1101/|10\.5281/", re.I)
+PREPRINT = re.compile(r"(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|10\.1101/|10\.64898/|10\.5281/", re.I)
 journal = lambda j, url="": "Preprint" if PREPRINT.search(j) or PREPRINT.search(url) else ABBR.get(j) or ABBR.get(j.lower()) or j
 plain = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()
 
 
 def lab_marks(M):
-    """dev/lab_marks.py actions for M: the picks of tab M, marked where listed, else added."""
-    papers = json.loads((ROOT / "site" / "data" / f"{M}.json").read_text())["papers"]
-    by_doi, by_title = {p["doi"].lower(): p["id"] for p in papers}, {plain(p["title"]): p["id"] for p in papers}
-    marks, add = [], []
+    """dev/lab_marks.py actions for M: the picks of tab M, marked where listed (on M's list or an earlier one: a
+    paper is often picked a month or two after it appeared), else added."""
+    lists = {m: json.loads((ROOT / "site" / "data" / f"{m}.json").read_text())["papers"] for m in months("2026-01", M)}
+    by_doi = {p["doi"].lower(): (m, p["id"]) for m, ps in lists.items() for p in ps}
+    by_title = {plain(p["title"]): (m, p["id"]) for m, ps in lists.items() for p in ps}
+    marks, add = {}, []
     for r in csv.DictReader(open(ROOT / "handoff" / "data" / "sheet-picks.csv")):
         if r["tab"] != M:
             continue
-        doi = (r["doi"] or url_doi(r["url"])).lower()
+        doi = (r["doi"] or find_doi(r["url"], r["title"])).lower()  # a cell.com link has no DOI: found by PII or title
         listed = by_doi.get(doi) or by_title.get(plain(r["title"]))
         if listed:
-            marks.append(listed)
+            marks.setdefault(listed[0], set()).add(listed[1])
         elif r["url"].startswith(("http://", "https://")):
             add.append({"journal": journal(r["journal"], r["url"])[:60], "title": r["title"][:400], "url": r["url"][:500],
                         "short_name": (r["short_name"] or r["title"])[:150]})
-    return {"month": M, "marks": sorted(set(marks)), "add": add}
+    return {"month": M, "marks": sorted(marks.pop(M, [])), "marks_in": {m: sorted(ids) for m, ids in marks.items()}, "add": add}
 
 
 def months(first, last):
@@ -90,16 +99,23 @@ def months(first, last):
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
 
 
-OUT.mkdir(parents=True, exist_ok=True)
-for M in months(*sys.argv[1:3]):
-    path = OUT / f"weights-{M}.json"
-    path.write_text(json.dumps(weights(M)) + "\n")
-    subprocess.run([sys.executable, "-m", "pipeline", "--month", M, "--weights", str(path)], cwd=ROOT, check=True)
-    with tempfile.NamedTemporaryFile("w", suffix=".json") as f:
-        actions = lab_marks(M)
-        json.dump(actions, f)
-        f.flush()
-        subprocess.run([sys.executable, "dev/lab_marks.py", f.name], cwd=ROOT, check=True)
-    # the picks just added get M's leak-free Score, not a later month's
-    subprocess.run([sys.executable, "-m", "pipeline", "--month", M, "--weights", str(path), "--added-only"], cwd=ROOT, check=True)
-    print(f"== {M}: {len(actions['marks'])} picks on the list, {len(actions['add'])} added", flush=True)
+if __name__ == "__main__":
+    # --marks-only keeps the lists and weights: it only rewrites the admin marks and added papers, and scores them
+    marks_only = "--marks-only" in sys.argv
+    if not marks_only:
+        features()
+    OUT.mkdir(parents=True, exist_ok=True)
+    for M in months(*[a for a in sys.argv[1:] if not a.startswith("--")][:2]):
+        path = OUT / f"weights-{M}.json"
+        if not marks_only:
+            path.write_text(json.dumps(weights(M)) + "\n")
+            subprocess.run([sys.executable, "-m", "pipeline", "--month", M, "--weights", str(path)], cwd=ROOT, check=True)
+        with tempfile.NamedTemporaryFile("w", suffix=".json") as f:
+            actions = lab_marks(M)
+            json.dump(actions, f)
+            f.flush()
+            subprocess.run([sys.executable, "dev/lab_marks.py", f.name], cwd=ROOT, check=True)
+        # the picks just added get M's leak-free Score, not a later month's
+        subprocess.run([sys.executable, "-m", "pipeline", "--month", M, "--weights", str(path), "--added-only"], cwd=ROOT, check=True)
+        print(f"== {M}: {len(actions['marks'])} picks on the list, {sum(map(len, actions['marks_in'].values()))} on earlier "
+              f"lists, {len(actions['add'])} added", flush=True)

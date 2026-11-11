@@ -94,6 +94,47 @@ def url_doi(url):
     return ""
 
 
+def lookup(url, params=None):
+    """JSON of a GET that may fail (after request()'s retries): None on a miss or error. Cached like `cached`."""
+    try:
+        return json.loads(cached(url, params))
+    except (SystemExit, ValueError):  # request() exits on a failure it cannot retry, such as a 404
+        return None
+
+
+plain_title = lambda t: re.sub(r"[^a-z0-9]+", " ", (t or "").lower()).strip()
+
+
+def find_doi(url, title=""):
+    """A paper's DOI, "" if none is found. In order: the DOI in its URL; a bioRxiv or medRxiv id; an Elsevier PII (cell.com and
+    ScienceDirect links), which Crossref keeps as an alternative id; its exact title in OpenAlex, a journal's
+    record before a repository's; its exact title in Crossref."""
+    if doi := url_doi(url):
+        return doi
+    if m := re.search(r"/(S\d{4}-?\d{3}[\dX](?:\(\d\d\)|\d\d)\d{5}-?[\dX])(?:[/?#]|$)", url, re.I):  # any cell.com or ScienceDirect path
+        found = lookup("https://api.crossref.org/works", {"filter": f"alternative-id:{re.sub(r'[^0-9XS]', '', m.group(1).upper())}",
+                                                         "rows": 1, "select": "DOI"})
+        if items := (found or {}).get("message", {}).get("items"):
+            return norm_doi(items[0]["DOI"])
+    if m := re.search(r"(?:bio|med)rxiv\.org/.*?(\d{4}\.\d\d\.\d\d\.\d{6,8})", url):  # an "early" or PDF link: the id without its DOI prefix
+        for prefix in ("10.64898", "10.1101"):  # the prefix bioRxiv and medRxiv use since 2025, and before
+            if lookup(f"https://api.crossref.org/works/{prefix}/{m.group(1)}"):
+                return f"{prefix}/{m.group(1)}"
+    if not (want := plain_title(title)):
+        return ""
+    found = lookup("https://api.openalex.org/works", {"filter": f"title.search:{re.sub(r'[,:|]', ' ', title)}",
+                                                     "select": "doi,display_name,primary_location", "per-page": 10, "api_key": openalex_key()})
+    same = [w for w in (found or {}).get("results", []) if w.get("doi") and plain_title(w["display_name"]) == want]
+    journal = [w for w in same if ((w.get("primary_location") or {}).get("source") or {}).get("type") == "journal"]
+    if journal or same:
+        return norm_doi((journal or same)[0]["doi"])
+    found = lookup("https://api.crossref.org/works", {"query.bibliographic": title, "rows": 5, "select": "DOI,title"})
+    for item in (found or {}).get("message", {}).get("items", []):
+        if plain_title((item.get("title") or [""])[0]) == want:
+            return norm_doi(item["DOI"])
+    return ""
+
+
 def clean(text):
     """Plain text: entities decoded, inline markup removed, whitespace collapsed.
 

@@ -86,7 +86,7 @@ const mine = (id) => Boolean(state.handle) && (state.votes.get(id)?.has(state.ha
 const voteRef = (month, id, handle = state.handle) => fb.doc(db, "months", month, "votes", `${id}~${handle}`);
 
 // A preprint is a preprint: any preprint server is shown as "Preprint", by its name or its URL (10.1101: bioRxiv, medRxiv).
-const PREPRINT = /(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|authorea|qeios|10\.1101\/|10\.5281\//i;
+const PREPRINT = /(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|authorea|qeios|10\.1101\/|10\.64898\/|10\.5281\//i;
 const shownJournal = (journal, url) => (PREPRINT.test(journal) || PREPRINT.test(url) ? "Preprint" : journal);
 
 // Listed papers and added papers in one shape: an added paper shows once the monthly run has scored it (data.added: id → score)
@@ -678,11 +678,32 @@ async function metadata(doi) {
   };
 }
 
+// A link without a DOI may still name its paper: a promise of the DOI, or null. A cell.com or ScienceDirect link has
+// an Elsevier PII, which Crossref keeps, without punctuation, as an alternative id; a bioRxiv or medRxiv "early" or
+// PDF link has the id without its DOI prefix (10.64898 since 2025, 10.1101 before).
+function piiDoi(url) {
+  const get = (u) => fetch(u, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null);
+  const rxiv = url.match(/(?:bio|med)rxiv\.org\/.*?(\d{4}\.\d\d\.\d\d\.\d{6,8})/i)?.[1];
+  if (rxiv) {
+    return (async () => {
+      for (const prefix of ["10.64898", "10.1101"]) if (await get(`https://api.crossref.org/works/${prefix}/${rxiv}`)) return `${prefix}/${rxiv}`;
+      return "";
+    })();
+  }
+  const pii = url.match(/\/(S\d{4}-?\d{3}[\dX](?:\(\d\d\)|\d\d)\d{5}-?[\dX])(?:[/?#]|$)/i)?.[1];  // any cell.com or ScienceDirect path
+  if (!pii) return null;
+  const id = pii.replace(/[^\dXS]/gi, "").toUpperCase();
+  return get(`https://api.crossref.org/works?filter=alternative-id:${id},prefix:10.1016&rows=1&select=DOI`)
+    .then((d) => d?.message?.items?.[0]?.DOI?.toLowerCase() ?? "");
+}
+
 // On a pasted or changed URL: fill the empty fields from the DOI's record, and say how it went. Whatever is
 // filled can be edited; nothing found leaves the form to be typed by hand.
 async function lookUp() {
-  const url = field("url").value.trim(), doi = urlDoi(url);
-  if (doi === form.lookup.doi) return;
+  const url = field("url").value.trim(), pii = !urlDoi(url) && piiDoi(url);
+  if (pii) note("Looking up the DOI…");
+  const doi = urlDoi(url) || (pii && (await pii)) || "";
+  if (field("url").value.trim() !== url || doi === form.lookup.doi) return;
   form.lookup = { doi };
   if (!url || !doi) {
     note(url ? "No DOI in this URL: type the journal and title; the short name says NA for the author." : "");
@@ -695,7 +716,7 @@ async function lookUp() {
     note("Nothing found for this DOI: type the journal and title.");
     return refreshShortName();
   }
-  form.lookup = { doi, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
+  form.lookup = { doi, url, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
   for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
@@ -713,6 +734,8 @@ async function submitPaper(event) {
     form.lookup.date && form.lookup.doi === urlDoi(paper.url) ? { date: form.lookup.date } : {});
   if (needHandle(() => { $("add").hidden = false; $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
+  // a link without a DOI (cell.com) whose DOI the lookup found is stored as a DOI link: the run and the duplicate check use it
+  if (!urlDoi(paper.url) && form.lookup.doi && form.lookup.url === paper.url) paper.url = `https://doi.org/${form.lookup.doi}`;
   const doi = urlDoi(paper.url), title = plainTitle(paper.title), month = addMonth(), latest = state.months.at(-1);
   const same = (p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi) || plainTitle(p.title) === title;
   try {

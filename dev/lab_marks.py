@@ -20,7 +20,7 @@ import requests
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
-from pipeline.fetch import cached, openalex_key, url_doi  # noqa: E402
+from pipeline.fetch import find_doi, lookup, openalex_key, plain_title as plain, url_doi  # noqa: E402
 from pipeline.votes import documents  # noqa: E402
 
 HANDLE = "admin"
@@ -60,48 +60,66 @@ def create(token, path, fields, server_time=None):
     return True
 
 
-def details(url):
-    """Authors, abstract and date of a paper from OpenAlex, by the DOI in its URL; {} if not found."""
-    doi = url_doi(url)
-    if not doi:
-        return {}
-    try:
-        w = json.loads(cached(f"https://api.openalex.org/works/doi:{doi}",
-                              {"select": "authorships,abstract_inverted_index,publication_date", "api_key": openalex_key()}))
-    except Exception:  # not in OpenAlex: the paper shows without them
+def work(url, title):
+    """The OpenAlex record of a paper, found by fetch.find_doi; None if not found."""
+    doi = find_doi(url, title)
+    return doi and lookup(f"https://api.openalex.org/works/doi:{doi}", {"select": "doi,authorships,abstract_inverted_index,publication_date",
+                                                                       "api_key": openalex_key()})
+
+
+def details(url, title=""):
+    """DOI URL, authors, abstract and date of a paper from OpenAlex; {} if not found."""
+    w = work(url, title)
+    if not w:
         return {}
     position = {p: word for word, ps in (w.get("abstract_inverted_index") or {}).items() for p in ps}
-    out = {"authors": [a["author"]["display_name"] for a in w.get("authorships", []) if a["author"].get("display_name")][:300],
+    out = {"url": w["doi"] if not url_doi(url) and w.get("doi") else "",  # a DOI link where the Sheet had none
+           "authors": [a["author"]["display_name"] for a in w.get("authorships", []) if a["author"].get("display_name")][:300],
            "abstract": " ".join(position[i] for i in sorted(position))[:10000], "date": w.get("publication_date") or ""}
     return {k: v for k, v in out.items() if v}
 
 
 def delete(token, path):
-    requests.delete(f"https://firestore.googleapis.com/v1/{DOCS}/{path}", headers={"Authorization": f"Bearer {token}"}).raise_for_status()
+    """Delete one document; one that is gone already (the rules answer 403 for it) is fine."""
+    r = requests.delete(f"https://firestore.googleapis.com/v1/{DOCS}/{path}", headers={"Authorization": f"Bearer {token}"})
+    if r.status_code == 403 and requests.get(f"https://firestore.googleapis.com/v1/{DOCS}/{path}").status_code == 404:
+        return
+    r.raise_for_status()
 
 
 def main(actions):
-    month, uid_token = actions["month"], id_token()
-    uid, token = uid_token
-    added = {f["url"]["stringValue"]: (sid, "authors" in f or "abstract" in f)
-             for sid, f in documents(PROJECT, f"months/{month}/submissions").items() if f.get("name", {}).get("stringValue") == HANDLE}
-    mark = lambda paper: create(token, f"months/{month}/votes/{paper}~{HANDLE}", {"paper": paper, "handle": HANDLE})
-    new_marks = sum(mark(p) for p in actions["marks"])
-    new_papers = 0
+    """Write one month's actions: marks on listed papers (also of earlier months, "marks_in": {month: [ids]}), and
+    the missed picks as added papers. An added paper already there is kept if complete, else replaced; one no
+    longer in the actions (say, a pick found on an earlier list) is removed with its mark."""
+    month, (uid, token) = actions["month"], id_token()
+    mark = lambda m, paper: create(token, f"months/{m}/votes/{paper}~{HANDLE}", {"paper": paper, "handle": HANDLE})
+    new_marks = sum(mark(m, p) for m, ids in ({month: actions["marks"]} | actions.get("marks_in", {})).items() for p in ids)
+    subs = {sid: f for sid, f in documents(PROJECT, f"months/{month}/submissions").items() if f.get("name", {}).get("stringValue") == HANDLE}
+    by_key = {key: sid for sid, f in subs.items() for key in (f["url"]["stringValue"], plain(f["title"]["stringValue"]))}
+    complete = lambda f: "authors" in f or "abstract" in f
+    kept, gone, new_papers = set(), set(), 0
     for p in actions["add"]:
-        sid, complete = added.get(p["url"], (None, False))
-        if sid and not complete:  # added before papers carried authors and abstract: papers cannot be edited, so replace it
+        sid = by_key.get(p["url"]) or by_key.get(plain(p["title"]))
+        if sid in kept or sid in gone:  # two picks of one paper: one is enough
+            continue
+        if sid and not complete(subs[sid]) and (more := details(p["url"], p["title"])):  # papers cannot be edited: replace it
             delete(token, f"months/{month}/votes/{sid}~{HANDLE}")
             delete(token, f"months/{month}/submissions/{sid}")
-            sid = None
+            gone.add(sid)
+            sid, p = None, p | more
+        elif not sid:
+            p = p | details(p["url"], p["title"])
         if not sid:
-            p = p | details(p["url"])
             sid = "".join(secrets.choice(string.ascii_letters + string.digits) for _ in range(20))
             create(token, f"months/{month}/submissions/{sid}", p | {"uid": uid, "name": HANDLE}, server_time="created")
             new_papers += 1
-        new_marks += mark(sid)
-    print(f"{month}: {len(actions['marks'])} listed picks, {len(actions['add'])} missed picks; "
-          f"{new_papers} papers added, {new_marks} marks written now")
+        kept.add(sid)
+        new_marks += mark(month, sid)
+    for sid in subs.keys() - kept - gone:
+        delete(token, f"months/{month}/votes/{sid}~{HANDLE}")
+        delete(token, f"months/{month}/submissions/{sid}")
+    print(f"{month}: {len(actions['marks'])} listed picks, {sum(map(len, actions.get('marks_in', {}).values()))} on earlier lists, "
+          f"{len(actions['add'])} missed; {new_papers} papers added, {len(subs.keys() - kept - gone)} removed, {new_marks} marks written now")
 
 
 if __name__ == "__main__":
