@@ -31,6 +31,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .account #me::after { content: " |"; color: var(--muted); }
 
 .menu { position: relative; }
+.links a.current, .popover a.current { font-weight: 700; }
 .popover { position: absolute; top: calc(100% + .35rem); left: 0; z-index: 5; display: flex; flex-direction: column; min-width: 10rem;
   padding: .3rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); }
 .popover a { padding: .3rem .8rem; white-space: nowrap; }
@@ -68,7 +69,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .title:visited { color: var(--muted); }
 .source { color: var(--muted); font-size: .85em; }
 .sub { color: var(--muted); font-size: .8em; margin-top: .1rem; }
-.sub .toggle { margin-right: .6em; text-decoration: underline dashed; text-underline-offset: 2px; }
+.sub .toggle { margin-left: .6em; text-decoration: underline dashed; text-underline-offset: 2px; }
 .sub a { color: var(--muted); }
 .sub a:hover { color: var(--text); }
 .vote { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */

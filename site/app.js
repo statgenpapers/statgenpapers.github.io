@@ -144,6 +144,8 @@ function render() {
   const latest = state.month === state.months.at(-1), viewed = state.month ? ` (${monthName(state.month)})` : "";
   $("this-month").textContent = `this month${latest ? viewed : ""}`;
   $("past-open").textContent = `past${latest ? "" : viewed}`;
+  $("this-month").classList.toggle("current", latest);
+  $("past-open").classList.toggle("current", Boolean(state.month) && !latest);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("login-open").textContent = state.handle ? "logout" : "login";
@@ -273,7 +275,7 @@ function togglePast(open = $("past").hidden) {
   const past = $("past");
   if (open) {
     past.replaceChildren(...[...state.months].reverse().map((m) => {
-      const a = Object.assign(el("a", "", monthName(m)), { href: `?month=${m}`, role: "menuitem" });
+      const a = Object.assign(el("a", m === state.month ? "current" : "", monthName(m)), { href: `?month=${m}`, role: "menuitem" });
       a.addEventListener("click", link(() => { togglePast(false); loadMonth(m); }));
       return a;
     }));
