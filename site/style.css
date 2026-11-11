@@ -25,6 +25,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .home { display: flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
+.links, .account { font-size: .92em; }
 .links { color: var(--muted); }
 .account { margin-left: auto; color: var(--muted); }
 .account #me { color: var(--text); margin-right: .3rem; }
