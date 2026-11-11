@@ -144,10 +144,10 @@ function render() {
   const votes = all.reduce((sum, p) => sum + upvotes(p.id).length, 0);
   const status = $("status");
   status.textContent = d
-    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"}`
+    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"} · `
     : "";
-  $("live").textContent = state.live ? "● live" : "connecting…";
-  $("live").classList.toggle("on", state.live);
+  if (d) status.append(Object.assign(el("span", state.live ? "live" : "", state.live ? "● live" : "connecting…"),
+    { title: "Connected: votes and papers added by others appear here without reloading" }));
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("login-open").textContent = state.handle ? "logout" : "login";
