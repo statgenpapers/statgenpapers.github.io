@@ -177,7 +177,7 @@ Rewrite `README.md` as the deliverable the spec asks for (setup incl. the Fireba
 already done, how to change sources, how to trigger a run, how to retrain weights locally).
 The spec's "how to add seed papers" becomes "how to retrain the weights"; the owner
 dropped the public seeds file. Keep the spec as `docs/spec.md`. Record project terms in a
-`CLAUDE.md` Terminology section (pool, pick, shortlist, venue, lab weights, vote correction).
+`AGENTS.md` Terminology section (pool, pick, shortlist, venue, lab weights, vote correction).
 
 ## 8. Acceptance checks
 
