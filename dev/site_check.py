@@ -107,14 +107,14 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     a, b = pages
     row = lambda page, n: page.locator("li.paper", has_text=f"Test paper {n}")
     order = lambda page: [t[-1] for t in page.locator("li.paper .title").all_inner_texts()]
-    count = lambda page, n: row(page, n).locator(".count")  # "N vote(s)"
+    count = lambda page, n: row(page, n).locator(".count")  # the number under the upvote triangle
     pressed = lambda page, n: row(page, n).locator(".up").get_attribute("aria-pressed") == "true"
     check("both browsers list the month and can vote after logging in with a handle", order(a) == order(b) == list("1234") and not prompts)
 
     b.evaluate("() => { window.moves = 0; const animate = Element.prototype.animate;"
                "Element.prototype.animate = function (...args) { window.moves++; return animate.apply(this, args); }; }")
     row(a, 3).locator(".up").click()
-    dt = seen(count(b, 3), "1 vote")
+    dt = seen(count(b, 3), "1")
     check(f"an upvote in one browser shows in the other ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
     check("the other browser re-orders the list, animated", order(b)[0] == "3" and b.evaluate("window.moves") > 0)
     check("own vote is highlighted (green) only for the voter", pressed(a, 3) and not pressed(b, 3))
@@ -125,7 +125,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
 
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
-    check("votes add up, and ties are ordered by score", seen(count(a, 3), "2 votes") is not None and seen(count(a, 4), "1 vote") is not None and order(a) == list("3412"))
+    check("votes add up, and ties are ordered by score", seen(count(a, 3), "2") is not None and seen(count(a, 4), "1") is not None and order(a) == list("3412"))
     check("(journal, date) shows next to the titles",
           a.locator("li.paper .source").all_inner_texts() == ["(Nat Genet, 2020-01-03)", "(Nat Genet, 2020-01-04)", "(Nat Genet, 2020-01-01)", "(bioRxiv, 2020-01-02)"])
     check("authors show as first two … last two",
@@ -140,7 +140,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
-    check("a voter can take the upvote back", seen(count(b, 3), "0 votes") is not None and seen(count(a, 4), "0 votes") is not None
+    check("a voter can take the upvote back", seen(count(b, 3), "0") is not None and seen(count(a, 4), "0") is not None
           and not pressed(a, 3) and order(a) == order(b) == list("1234"))
 
     rules = urllib.request.Request(f"https://firestore.googleapis.com/v1/projects/statgenpapers/databases/(default)/documents/months/{MONTH}/submissions")
@@ -158,7 +158,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               seen(a.locator("#add-short"), "") is not None and a.input_value("#add-short") == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
         a.click("#add button[type=submit]")
         added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
-        dt = seen(added(b).locator(".count"), "1 vote")
+        dt = seen(added(b).locator(".count"), "1")
         check(f"a paper added in one browser shows in the other, upvoted by its submitter ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
         check("it shows its journal and who added it", added(b).locator(".source").inner_text() == "(Nature)"
               and added(b).locator(".meta").inner_text() == "added by sitecheck_a")
@@ -171,7 +171,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.click("#add-cancel")
         check("only the submitter can remove it", added(a).locator(".remove").is_visible() and not added(b).locator(".remove").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back, then remove the paper
-        seen(added(b).locator(".count"), "0 votes")
+        seen(added(b).locator(".count"), "0")
         n = len(prompts)
         added(a).locator(".remove").click()
         try:

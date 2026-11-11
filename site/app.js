@@ -110,7 +110,8 @@ function createRow(p) {
 
 function updateRow(li, p) {
   const ups = upvotes(p.id), q = (sel) => li.querySelector(sel);
-  q(".count").textContent = `${ups.length} vote${ups.length === 1 ? "" : "s"}`;
+  q(".count").textContent = ups.length;
+  q(".count").title = `${ups.length} vote${ups.length === 1 ? "" : "s"}`;
   q(".up").setAttribute("aria-pressed", mine(p.id));
   q(".up").setAttribute("aria-label", mine(p.id) ? "Remove your upvote" : "Upvote");
   q(".up").title = state.handle ? "" : "Log in with a handle to vote";
