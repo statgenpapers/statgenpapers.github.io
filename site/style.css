@@ -34,7 +34,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .home { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
-.links, .account { font-size: var(--fs-meta); color: var(--muted); }
+.links, .account { font-size: var(--fs-small); color: var(--muted); }  /* as small as "(Nat Genet, 2026/10/01)" */
 .account { margin-left: auto; }
 #me { color: var(--text); }
 #me.current { color: var(--accent-strong); }
