@@ -48,7 +48,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .panel p.error { color: #c0392b; }
 .hint { color: var(--muted); font-size: .85em; }
 
-.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: .95em; }
+.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
 .title-head { padding-left: 1.85rem; }  /* the upvote column plus its gap */
 #score-help { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
 #score-help:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
@@ -68,7 +68,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .title:visited { color: var(--muted); }
 .source { color: var(--muted); font-size: .85em; }
 .sub { color: var(--muted); font-size: .8em; margin-top: .1rem; }
-.sub .toggle::before { content: " · "; color: var(--muted); }
+.sub .toggle { margin-right: .6em; text-decoration: underline dashed; text-underline-offset: 2px; }
 .sub a { color: var(--muted); }
 .sub a:hover { color: var(--text); }
 .vote { display: flex; flex-direction: column; align-items: center; }  /* fixed-width column: a growing count moves nothing */

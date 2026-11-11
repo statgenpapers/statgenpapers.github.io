@@ -90,7 +90,6 @@ function createRow(p) {
     q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
     q(".pick").title = `Calibrated chance the lab picks this paper (raw score ${p.score.toFixed(2)})`;
   }
-  q(".toggle").textContent = p.added ? "Details" : "Abstract";
   q(".toggle").addEventListener("click", link(() => {
     const open = q(".details").hidden;
     q(".details").hidden = !open;
@@ -116,7 +115,7 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-label", mine(p.id) ? "Remove your upvote" : "Upvote");
   q(".up").title = state.handle ? "" : "Log in with a handle to vote";
   q(".up").disabled = !state.uid;
-  q(".voters").textContent = ups.length ? `Voted by ${ups.map(([, handle]) => handle).join(", ")}` : "No votes yet.";
+  q(".voters").textContent = ups.length ? `Upvoted by ${ups.map(([, handle]) => handle).join(", ")}` : "No upvotes yet.";
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
