@@ -39,7 +39,7 @@ EMULATOR = "--emulator" in sys.argv
 PORT = 8731  # fixed: a browser profile keeps its sign-in per origin
 PAPERS = [{"id": f"sitecheck-{i}", "doi": f"10.0000/sitecheck-{i}", "url": f"https://example.org/paper-{i}",
            "title": f"Test paper {i}", "authors": [f"Author {k}" for k in range(1, 2 * i)], "date": f"2020-01-0{i}",
-           "venue": "Biorxiv:genetics" if i == 2 else "NG", "venue_name": "bioRxiv · genetics" if i == 2 else "Nature Genetics",
+           "venue": "Preprint" if i == 2 else "NG", "venue_name": "bioRxiv · genetics" if i == 2 else "Nature Genetics",
            "journal": "bioRxiv" if i == 2 else "Nat Genet",
            "type": "preprint" if i == 2 else "published", "abstract": f"Abstract Body of abstract {i}.",
            "short_name": f"NatGenet_Tester_2020_TestPaper{i}", "score": 5.0 - i, "rank": i} for i in range(1, 5)]

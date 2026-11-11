@@ -1,0 +1,106 @@
+{
+ "month": "2026-02",
+ "submissions": {
+  "1kLzOMX4te0V3EuifIKR": {
+   "journal": "bioRxiv",
+   "short_name": "biorxiv_ Nguyen_2026_StructuralVariantHeritability",
+   "title": "Structural variants contribute substantially to complex trait heritability",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.28.708732v1"
+  },
+  "JGKOHuXtaphs7NUUXkkn": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Yan_2026_FattyAcidGWAS",
+   "title": "Genetic regulation of fatty acid content in adipose tissue",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00479-3"
+  },
+  "Q6ovnVwxX4yTb5ZMLQho": {
+   "journal": "Science",
+   "short_name": "Science_Tabet_2026_FunctionalCharacterizationLDLR",
+   "title": "The functional landscape of coding variation in the familial hypercholesterolemia gene LDLR",
+   "url": "https://www.science.org/doi/10.1126/science.ady7186"
+  },
+  "RJY5QtGzHB2irpehVv76": {
+   "journal": "medRxiv",
+   "short_name": "medrxiv_Taraszka_2026_Time-to-eventH2",
+   "title": "A time-to-event heritability framework for inferring the genetic architecture of longitudinal traits",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.16.26346285v1"
+  },
+  "im1o2vG8FBOJltaXvsrJ": {
+   "journal": "Nature",
+   "short_name": "Nature_Zou_2026_PhenomeWideCNVUKBB",
+   "title": "Phenome-wide analysis of copy number variants in 470,727 UK Biobank genomes",
+   "url": "https://www.nature.com/articles/s41586-025-10087-x"
+  },
+  "npazxiRRlejJYCOPvBOD": {
+   "journal": "medRxiv",
+   "short_name": "medrxiv_Dorans_2026_scTagging",
+   "title": "Distinguishing causal from tagging enhancers using single-cell multiome data",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.15.26346353v1"
+  },
+  "tqhiIVEX3DVd93MQNefP": {
+   "journal": "Cell",
+   "short_name": "Cell_Bader_2026_ProteomicsPredictsMS",
+   "title": "Large-scale proteomics across neurological disorders uncovers biomarker panel and targets in multiple sclerosis",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00104-2"
+  },
+  "w9rRRkTczMdVmE8doOve": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Liang_2026_VarianceControlTWAS",
+   "title": "A gene-specific variance-control approach corrects polygenicity-driven inflation observed in transcriptome-wide association studies",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(25)00485-9"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2026.01.003": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2026.101162": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10121-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02483-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02485-8": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02501-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02502-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02512-2": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02521-1": {
+   "8c6976e5b5410415": 1
+  },
+  "1kLzOMX4te0V3EuifIKR": {
+   "8c6976e5b5410415": 1
+  },
+  "JGKOHuXtaphs7NUUXkkn": {
+   "8c6976e5b5410415": 1
+  },
+  "Q6ovnVwxX4yTb5ZMLQho": {
+   "8c6976e5b5410415": 1
+  },
+  "RJY5QtGzHB2irpehVv76": {
+   "8c6976e5b5410415": 1
+  },
+  "im1o2vG8FBOJltaXvsrJ": {
+   "8c6976e5b5410415": 1
+  },
+  "npazxiRRlejJYCOPvBOD": {
+   "8c6976e5b5410415": 1
+  },
+  "tqhiIVEX3DVd93MQNefP": {
+   "8c6976e5b5410415": 1
+  },
+  "w9rRRkTczMdVmE8doOve": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

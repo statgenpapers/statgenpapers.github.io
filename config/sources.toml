@@ -1,7 +1,9 @@
 # Sources and list size for the monthly run. Edit, commit and push; no code changes needed.
 # A venue that is new here scores on text alone (venue weight 0) until the weights are retrained.
 
-shortlist_size = 25
+# The shortlist: every paper whose pick chance is at least this. In the leak-free roll-forward (Jan-Oct 2026),
+# 25% listed 15-39 papers a month, 254 in all, and caught 111 of 242 picks, as many as a fixed 25 a month.
+min_pick_chance = 0.25
 
 # OpenAlex work types kept from journals.
 work_types = ["article", "review", "letter", "preprint"]
@@ -83,7 +85,7 @@ abbr = "Am J Hum Genet"
 issn = "0002-9297"
 
 # Preprint servers (biorxiv or medrxiv) and their categories, as the server names them.
-# `name` is shown in the Journal column. The venue key is "Biorxiv:genetics", and so on.
+# `name` is shown in the Journal column. Every preprint has the one venue key "Preprint": a preprint is a preprint.
 [[preprints]]
 server = "biorxiv"
 name = "bioRxiv"
@@ -98,4 +100,5 @@ categories = ["genetic and genomic medicine", "health informatics"]
 [votes]
 firestore_project = "statgenpapers"
 min_upvoted = 30  # no vote correction until this many listed papers have an upvote
+lab_handle = "admin"  # its marks are the lab's picks, already in the lab weights: left out of the vote correction
 penalty = 1.0     # L2 penalty on the correction; larger keeps the scorer closer to the lab weights

@@ -1,0 +1,340 @@
+{
+ "month": "2026-08",
+ "submissions": {
+  "0rXfINfV0poiPHIzGTa3": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Mangan_2026_CisRegulatoryEvolution",
+   "title": "Sequence-to-function deep learning decodes human cis-regulatory evolution",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.24.746818v1"
+  },
+  "1DH0Q7Hne9Jj2FLWvg8B": {
+   "journal": "Science",
+   "short_name": "Science_Qiu_2026_SingleCellHypertensionCrossOrgan",
+   "title": "A cross-organ single-cell analysis of hypertension",
+   "url": "https://www.science.org/doi/10.1126/science.aea6187"
+  },
+  "2ETm4kKbZOTVaq3jGPHh": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Tomofuji_2026_CD40ContextSpecificTransEffects",
+   "title": "Identifying the causal allele in the CD40 autoimmune locus enables discovery of context-specific trans-effects in B cells",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.29.741564v1"
+  },
+  "3iywJC1e4kYVRsegVOMn": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Nadig_2026_AutismCodingMutations",
+   "title": "Estimating the contribution of coding mutations to autism",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.25.26361328v1"
+  },
+  "5d8C4mGcI41smJkelH3a": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Huang_2026_AdipocyteContextDependentRegulation",
+   "title": "Metabolic disease-relevant stimuli unmask context-dependent genetic regulation of cardiometabolic loci in human adipocytes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.12.744187v1"
+  },
+  "6QLl7XwsTZP46boEvMsq": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Messaoud_2026_SpliceosomeGeneCandidates",
+   "title": "Analysis of spliceosome-related coding and noncoding genes and pseudogenes reveals novel candidates",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.06.26358951v1"
+  },
+  "8fjCFjXfWuvC2KQWHUbX": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Naderian_2026_PolygenicRiskFamilyHistoryCHD",
+   "title": "Additive value of polygenic risk and family history for coronary heart disease risk stratification in two diverse US cohorts",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00240-5"
+  },
+  "9u9LNlxKklxeKStYdzsf": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Lassen_2026_RareVariantNonAdditivity",
+   "title": "Deviations from genetic additivity driven by rare variants at biobank scale",
+   "url": "https://www.nature.com/articles/s41467-026-76151-w"
+  },
+  "CXn62AgBa2uQZ68OKeKp": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Kazem_2026_RareVariantPleiotropyGeneDosage",
+   "title": "Determinants of functional burden pleiotropy and gene dosage responses across human traits",
+   "url": "https://www.nature.com/articles/s41467-026-76676-0"
+  },
+  "Cc97qNpNu86daF7BH6ys": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Li_2026_NeonatalBloodCellGWAS",
+   "title": "Genome-wide association study and predictors of neonatal blood cell traits in Hispanic newborns",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00234-X"
+  },
+  "I7xOjds3cF2v2kpJbw9h": {
+   "journal": "Nature",
+   "short_name": "Nature_Holley_2026_IcelandicPangenomeReference",
+   "title": "An Icelandic pangenome reference",
+   "url": "https://www.nature.com/articles/s41586-026-10924-7"
+  },
+  "JNdyK87Mw03iiy5pqaL7": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Machnik_2026_CausalInferenceGenomics",
+   "title": "Causal inference for multiple risk factors and diseases from genomics data",
+   "url": "https://www.nature.com/articles/s41467-026-76877-7"
+  },
+  "Lqfu19kv9E67wLPFmSvD": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Sun_2026_SkinProteomicsPQTLDisease",
+   "title": "Genome-wide pQTL mapping in human skin identifies specific genetic regulators and mechanistic links to skin disorders",
+   "url": "https://www.nature.com/articles/s41467-026-76575-4"
+  },
+  "MqwZh4nejptL2c1LRT4b": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Gu_2026_PredictingHighRiskDeprescribing",
+   "title": "Predicting Deprescribing of High-Risk Medications Using Provider EHR Use and Patient Characteristics",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.25.26358746v1"
+  },
+  "NFsHJdwUrPggSzJn40Y9": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Legrand_2026_SepsisAKIPlasmaProteomics",
+   "title": "Plasma proteomics defines two reproducible subphenotypes of sepsis-associated acute kidney injury with distinct outcomes",
+   "url": "https://www.nature.com/articles/s41467-026-76889-3"
+  },
+  "PZQsCLBT77HewaiVXZKV": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Chen_2026_AgeAlleleFrequencyNaturalSelection",
+   "title": "Allele frequency trajectories across age groups reveal ongoing natural selection shaping disease susceptibility",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00268-5"
+  },
+  "SxV1zWF8gaftR7Pvtozk": {
+   "journal": "Nature",
+   "short_name": "Nature_Sinha_2026_MaternalInfantGutMicrobiome",
+   "title": "Maternal influences on infant gut microbiome and health",
+   "url": "https://www.nature.com/articles/s41586-026-10922-9"
+  },
+  "T0RPv9HXle3dV1Qpiliz": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Hu_2026_AdaptiveBoostingPolygenicScores",
+   "title": "A pre-train and fine-tune framework for adaptive boosting of pre-trained polygenic risk scores",
+   "url": "https://www.nature.com/articles/s41467-026-77128-5"
+  },
+  "TRSvWQfcHll0p7CGPNVM": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Peyrot_2026_DifferentialDiagnosisPRS",
+   "title": "Distinguishing different psychiatric disorders using DDx-PRS",
+   "url": "https://www.nature.com/articles/s41588-026-02684-x"
+  },
+  "anTTxnxO7dDaFFechzP0": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Maffa_2026_PerturbSeqCancerVulnerabilities",
+   "title": "Dissecting context-dependent cancer vulnerabilities using Perturb-seq",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.24.746802v1"
+  },
+  "dMsLUqjFg9c3XMPfUhdk": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Hu_2026_LocalAncestryAssociation",
+   "title": "A unified framework for local-ancestry-aware genetic association analysis across biobanks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.09.26360047v1"
+  },
+  "ddK9sIcdkW45a2Op2gCS": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Lee_2026_ChildhoodLeukemiaMultiomics",
+   "title": "Single-cell multiomic mapping of genetic predisposition to childhood B-cell acute lymphoblastic leukemia",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.06.743308v1"
+  },
+  "e4WAW65B0XdAO1a7cQyt": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Jo_2026_GWASSingleCellPsoriasis",
+   "title": "Integration of GWAS and single-cell analysis for psoriasis identifies disease-associated cell subtypes and therapeutic targets",
+   "url": "https://www.nature.com/articles/s41467-026-77309-2"
+  },
+  "jFQJbL4AGZcL36Ba5aBv": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Rajan-Babu_2026_DiseaseTandemRepeatsAncestry",
+   "title": "Population-scale disease-associated tandem repeat analysis reveals locus and ancestry-specific insights",
+   "url": "https://www.nature.com/articles/s41467-026-75404-y"
+  },
+  "jHUfcke3VTlOn4nWWRku": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Wang_2026_PubMindGeneticVariantsLLM",
+   "title": "PubMind: literature-based genetic variant extraction and functional annotation using large language models",
+   "url": "https://www.nature.com/articles/s41467-026-76834-4"
+  },
+  "jhgCF6lSno7WdPpFfwo2": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Wagle_2026_PhenoverseDiseaseStates",
+   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1"
+  },
+  "kj5nIUOUogomyYPJ2Ix8": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Zhang_2026_SingleCellCoexpressionQTL",
+   "title": "sc-pcQTL: hurdle-based co-expression modeling for multi-gene QTL mapping in single-cell RNA-seq data",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.18.745314v1"
+  },
+  "kxZG52RMiGYJemf9SyGd": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Garcia-Salinas_2026_ParentalPostzygoticMutations",
+   "title": "Landscape of parental postzygotic mutations across >11,000 rare disease trios",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00241-7"
+  },
+  "mZkOqeax09SSOHfFliYQ": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Ivankovic_2026_RareVariantImputationReferencePanel",
+   "title": "A 515,579-Genome Reference Panel Improves Rare-Variant Imputation Across Multiple Underrepresented Populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.25.26361247v1"
+  },
+  "q6z26hbUPZ2uxC6mR9ng": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Satterstrom_2026_AutismPleiotropicRareVariants",
+   "title": "Rare variation illuminates the distinct and pleiotropic genetic architecture of autism across neuropsychiatric traits",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.24.26360398v1"
+  },
+  "sxdNSboFtgKDa3ox72Z2": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Tu_2026_SequenceToFunction",
+   "title": "A modality gap in personal-genome prediction by sequence-to-function models",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.01.702969v1"
+  },
+  "wfc3zi873tCyYxSzpspm": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Haapaniemi_2026_ShinglesImmuneLoci",
+   "title": "Shingles GWAS identifies seven immune loci and effects on stroke and autoimmunity",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.14.26360428v1"
+  },
+  "x7gHfclvgEmNSZtW3Rza": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Prokunina-Olsson_2026_GWASBladderCancer",
+   "title": "Multi-population GWAS meta-analysis identifies bladder cancer susceptibility loci and highlights genetic regulation of smoking-related risk",
+   "url": "https://www.nature.com/articles/s41467-026-76157-4"
+  }
+ },
+ "votes": {
+  "0rXfINfV0poiPHIzGTa3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.cell.2026.07.034": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41467-026-76693-z": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10577-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10864-2": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10926-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02695-8": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02705-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02712-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02722-8": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02727-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02735-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.64898_2026.08.13.26360300": {
+   "8c6976e5b5410415": 1
+  },
+  "1DH0Q7Hne9Jj2FLWvg8B": {
+   "8c6976e5b5410415": 1
+  },
+  "2ETm4kKbZOTVaq3jGPHh": {
+   "8c6976e5b5410415": 1
+  },
+  "3iywJC1e4kYVRsegVOMn": {
+   "8c6976e5b5410415": 1
+  },
+  "5d8C4mGcI41smJkelH3a": {
+   "8c6976e5b5410415": 1
+  },
+  "6QLl7XwsTZP46boEvMsq": {
+   "8c6976e5b5410415": 1
+  },
+  "8fjCFjXfWuvC2KQWHUbX": {
+   "8c6976e5b5410415": 1
+  },
+  "9u9LNlxKklxeKStYdzsf": {
+   "8c6976e5b5410415": 1
+  },
+  "CXn62AgBa2uQZ68OKeKp": {
+   "8c6976e5b5410415": 1
+  },
+  "Cc97qNpNu86daF7BH6ys": {
+   "8c6976e5b5410415": 1
+  },
+  "I7xOjds3cF2v2kpJbw9h": {
+   "8c6976e5b5410415": 1
+  },
+  "JNdyK87Mw03iiy5pqaL7": {
+   "8c6976e5b5410415": 1
+  },
+  "Lqfu19kv9E67wLPFmSvD": {
+   "8c6976e5b5410415": 1
+  },
+  "MqwZh4nejptL2c1LRT4b": {
+   "8c6976e5b5410415": 1
+  },
+  "NFsHJdwUrPggSzJn40Y9": {
+   "8c6976e5b5410415": 1
+  },
+  "PZQsCLBT77HewaiVXZKV": {
+   "8c6976e5b5410415": 1
+  },
+  "SxV1zWF8gaftR7Pvtozk": {
+   "8c6976e5b5410415": 1
+  },
+  "T0RPv9HXle3dV1Qpiliz": {
+   "8c6976e5b5410415": 1
+  },
+  "TRSvWQfcHll0p7CGPNVM": {
+   "8c6976e5b5410415": 1
+  },
+  "anTTxnxO7dDaFFechzP0": {
+   "8c6976e5b5410415": 1
+  },
+  "dMsLUqjFg9c3XMPfUhdk": {
+   "8c6976e5b5410415": 1
+  },
+  "ddK9sIcdkW45a2Op2gCS": {
+   "8c6976e5b5410415": 1
+  },
+  "e4WAW65B0XdAO1a7cQyt": {
+   "8c6976e5b5410415": 1
+  },
+  "jFQJbL4AGZcL36Ba5aBv": {
+   "8c6976e5b5410415": 1
+  },
+  "jHUfcke3VTlOn4nWWRku": {
+   "8c6976e5b5410415": 1
+  },
+  "jhgCF6lSno7WdPpFfwo2": {
+   "8c6976e5b5410415": 1
+  },
+  "kj5nIUOUogomyYPJ2Ix8": {
+   "8c6976e5b5410415": 1
+  },
+  "kxZG52RMiGYJemf9SyGd": {
+   "8c6976e5b5410415": 1
+  },
+  "mZkOqeax09SSOHfFliYQ": {
+   "8c6976e5b5410415": 1
+  },
+  "q6z26hbUPZ2uxC6mR9ng": {
+   "8c6976e5b5410415": 1
+  },
+  "sxdNSboFtgKDa3ox72Z2": {
+   "8c6976e5b5410415": 1
+  },
+  "wfc3zi873tCyYxSzpspm": {
+   "8c6976e5b5410415": 1
+  },
+  "x7gHfclvgEmNSZtW3Rza": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

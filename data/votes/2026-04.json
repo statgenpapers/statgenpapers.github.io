@@ -1,0 +1,265 @@
+{
+ "month": "2026-04",
+ "submissions": {
+  "3VHzbifRwgy7jQlrCVPE": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Yan_2026_SpaMosaic",
+   "title": "Mosaic integration of spatial multi-omics with SpaMosaic",
+   "url": "https://www.nature.com/articles/s41588-026-02573-3"
+  },
+  "5zwG2sA1LMklzRqyRI2e": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Yu_2026_SCADS",
+   "title": "Connecting polygenic disease risk to cell states and regulatory programs through single-cell chromatin accessibility",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721080v1"
+  },
+  "66RHQbqhnl3jEpOaj2sJ": {
+   "journal": "Science",
+   "short_name": "Science_Zhang_2026_iGOF-PerturbSeq",
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "F4DrzOoScZpHGWZfEUb2": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Katzourou_2026_NeurodevelopmentalConditionsCNVonCardioDisease",
+   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00107-2"
+  },
+  "IapQBHrqGAJ4bUKfD4KU": {
+   "journal": "Nature",
+   "short_name": "Nature_Chen_2026_single-cellFourOmics",
+   "title": "Gene regulatory landscape dissected by single-cell four-omics sequencing",
+   "url": "https://www.nature.com/articles/s41586-026-10322-z"
+  },
+  "Iawd0UMnbNSiM5HkAfAY": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Zhao_2026_INSPIRE",
+   "title": "Interpretable, flexible and spatially aware integration of multiple spatial transcriptomics datasets from diverse sources",
+   "url": "https://www.nature.com/articles/s41588-026-02579-x"
+  },
+  "L0QnLEhOMchL9noCe8qD": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Wang_2026_PheRS",
+   "title": "Phenome-derived polygenic scores and social determinants jointly shape context-dependent disease risk",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.16.26351039v1"
+  },
+  "PhJU3ULpkbaDvHcnt1Vb": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Guo_2026_ProtoCloud",
+   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00079-0"
+  },
+  "QOKi977UhgEigaM8vkCv": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Chaldebas_5primeUTRWithProteinImpact",
+   "title": "Genome-wide detection of human 5′ UTR variants that impact protein translation",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00106-0"
+  },
+  "Spd4ZNK1d9bpy11bOqQJ": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Rodriguez-Algarra_2026_ribosomalDNA",
+   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00075-3"
+  },
+  "Ug8PyTWhXwf2XGgig6Ec": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Sevilla-González_2026_MultiOmicT2D",
+   "title": "Multi-omic signatures of genetic mechanisms inform on type 2 diabetes biology and patient heterogeneity",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.17.26351136v1"
+  },
+  "V6zngwmNiWSrmMsVne4m": {
+   "journal": "Science",
+   "short_name": "Science_Decasien_2026_SexSpecificBrainExpression",
+   "title": "Sex effects on gene expression across the human cerebral cortex at cell type resolution",
+   "url": "https://www.science.org/doi/10.1126/science.aea9063"
+  },
+  "VgG1gjhVXm3Pt2WuhtYt": {
+   "journal": "JACC",
+   "short_name": "JACC_Misra_2026_PRSforEightCardiovascularDiseases",
+   "title": "Development and Validation of a Clinical Polygenic Risk Report in U.S.-Based Health Systems for 8 Cardiovascular Conditions",
+   "url": "https://www.jacc.org/doi/10.1016/j.jacc.2026.03.035"
+  },
+  "WKA7iiYOICqbLVCCXDco": {
+   "journal": "Cell",
+   "short_name": "Cell_Huang_2026_sSNV-AD",
+   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00341-7"
+  },
+  "X2DC6f33GSiAfKnkmMnp": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_SousaDaMota_2026_ReferencePanelAncientDNA",
+   "title": "Optimal Reference Panel Design in Ancient DNA Imputation from Coalescent Theory, Simulation, and Real Data Application with an Ancient Reference Panel",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721163v1.full"
+  },
+  "YUYeJttM29Q8G1VPMhdO": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Shen_2026_EfficientARG",
+   "title": "Highly efficient genotype compression leveraging genealogical relatedness",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.29.721594v2"
+  },
+  "ZdZ6afm7KG8B67pR6QOe": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Li_2026_CrossPlatformProteinImputation",
+   "title": "Machine learning cross-platform proteomic imputation enables protein quality scoring and replication of epidemiological associations",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.05.723059v1"
+  },
+  "ZlMHHV4U6mPSFoLzmkQE": {
+   "journal": "Nature",
+   "short_name": "Nature_Yakubovsky_2026_SpatialLiverTranscriptomics",
+   "title": "A spatial atlas of the healthy human liver from live donors",
+   "url": "https://www.nature.com/articles/s41586-026-10377-y"
+  },
+  "cqLMAL5AcRzcz8YUnWSs": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Hou_2026_cis+transPWAS",
+   "title": "Functionally informed cis and trans proteome-wide association studies prioritize disease-critical genes",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.24.26351667v1"
+  },
+  "gFECbVB06XZv1LiGD9HY": {
+   "journal": "Nature",
+   "short_name": "Nature_Xu_2026_PerturbFate",
+   "title": "Mapping convergent regulators of melanoma drug resistance by PerturbFate",
+   "url": "https://www.nature.com/articles/s41586-026-10367-0"
+  },
+  "kLYoVRDJ5izBkdOG8bm9": {
+   "journal": "Nature",
+   "short_name": "Nature_Wang_2026_1000ChinesePangenome",
+   "title": "The 1000 Chinese Pangenome empowers medical and population genetics",
+   "url": "https://www.nature.com/articles/s41586-026-10315-y"
+  },
+  "nQ1aLxHRtSkWtbjdPbH7": {
+   "journal": "Nature",
+   "short_name": "Nature_Dumoulin_2026_SpatialDKD",
+   "title": "Spatial atlas of diabetic kidney disease reveals a B cell-rich subgroup",
+   "url": "https://www.nature.com/articles/s41586-026-10363-4"
+  },
+  "syQk9K45OOZyndpcyEk5": {
+   "journal": "Nature",
+   "short_name": "Nature_Arends_2026_GeneticDynamicsAgeing",
+   "title": "Dynamics of genetic and somatic trade-offs in ageing and mortality",
+   "url": "https://www.nature.com/articles/s41586-026-10407-9"
+  },
+  "uRhwNhK7rd6lOHglelNd": {
+   "journal": "Nat Commun",
+   "short_name": "NatComm_Sakaue_2026_eQTLearly+late",
+   "title": "Early and late RNA eQTL are driven by different genetic mechanisms",
+   "url": "https://www.nature.com/articles/s41467-026-72139-8"
+  },
+  "wXePW3elmtvzO0WTeSkP": {
+   "journal": "Cell",
+   "short_name": "Cell_Billmann_2026_PPI",
+   "title": "Global genetic interaction network of a human cell maps conserved principles and informs functional interpretation of gene co-essentiality profiles",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00345-4"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2026.03.004": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.03.008": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.04.007": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2026.101218": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2026.101219": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10326-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02543-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02564-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02576-0": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02578-y": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02582-2": {
+   "8c6976e5b5410415": 1
+  },
+  "3VHzbifRwgy7jQlrCVPE": {
+   "8c6976e5b5410415": 1
+  },
+  "5zwG2sA1LMklzRqyRI2e": {
+   "8c6976e5b5410415": 1
+  },
+  "66RHQbqhnl3jEpOaj2sJ": {
+   "8c6976e5b5410415": 1
+  },
+  "F4DrzOoScZpHGWZfEUb2": {
+   "8c6976e5b5410415": 1
+  },
+  "IapQBHrqGAJ4bUKfD4KU": {
+   "8c6976e5b5410415": 1
+  },
+  "Iawd0UMnbNSiM5HkAfAY": {
+   "8c6976e5b5410415": 1
+  },
+  "L0QnLEhOMchL9noCe8qD": {
+   "8c6976e5b5410415": 1
+  },
+  "PhJU3ULpkbaDvHcnt1Vb": {
+   "8c6976e5b5410415": 1
+  },
+  "QOKi977UhgEigaM8vkCv": {
+   "8c6976e5b5410415": 1
+  },
+  "Spd4ZNK1d9bpy11bOqQJ": {
+   "8c6976e5b5410415": 1
+  },
+  "Ug8PyTWhXwf2XGgig6Ec": {
+   "8c6976e5b5410415": 1
+  },
+  "V6zngwmNiWSrmMsVne4m": {
+   "8c6976e5b5410415": 1
+  },
+  "VgG1gjhVXm3Pt2WuhtYt": {
+   "8c6976e5b5410415": 1
+  },
+  "WKA7iiYOICqbLVCCXDco": {
+   "8c6976e5b5410415": 1
+  },
+  "X2DC6f33GSiAfKnkmMnp": {
+   "8c6976e5b5410415": 1
+  },
+  "YUYeJttM29Q8G1VPMhdO": {
+   "8c6976e5b5410415": 1
+  },
+  "ZdZ6afm7KG8B67pR6QOe": {
+   "8c6976e5b5410415": 1
+  },
+  "ZlMHHV4U6mPSFoLzmkQE": {
+   "8c6976e5b5410415": 1
+  },
+  "cqLMAL5AcRzcz8YUnWSs": {
+   "8c6976e5b5410415": 1
+  },
+  "gFECbVB06XZv1LiGD9HY": {
+   "8c6976e5b5410415": 1
+  },
+  "kLYoVRDJ5izBkdOG8bm9": {
+   "8c6976e5b5410415": 1
+  },
+  "nQ1aLxHRtSkWtbjdPbH7": {
+   "8c6976e5b5410415": 1
+  },
+  "syQk9K45OOZyndpcyEk5": {
+   "8c6976e5b5410415": 1
+  },
+  "uRhwNhK7rd6lOHglelNd": {
+   "8c6976e5b5410415": 1
+  },
+  "wXePW3elmtvzO0WTeSkP": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

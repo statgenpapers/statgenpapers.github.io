@@ -96,7 +96,7 @@ picks and writes `model/weights.json`:
 
 ```json
 {"model": "minishlab/potion-base-32M", "revision": "1e5a03f…", "text": "title\nabstract",
- "bias": 0.0, "embedding": [512 floats], "venue": {"NG": 0.0, "Biorxiv:genetics": 0.0},
+ "bias": 0.0, "embedding": [512 floats], "venue": {"NG": 0.0, "Preprint": 0.0},
  "trained": "2026-11-10", "train_months": ["2025-11", "…", "2026-10"]}
 ```
 

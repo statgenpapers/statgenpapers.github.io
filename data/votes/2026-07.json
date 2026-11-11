@@ -1,0 +1,214 @@
+{
+ "month": "2026-07",
+ "submissions": {
+  "2aN1eW8bFSB6Rr27U4Zc": {
+   "journal": "Nature",
+   "short_name": "Nature_Luquez_2026_AlzheimersCellTypeSignatures",
+   "title": "Cell-type signatures of Alzheimer’s disease shared across population groups",
+   "url": "https://www.nature.com/articles/s41586-026-10793-0"
+  },
+  "6HtvUAm2PtFWF6Ai4oBo": {
+   "journal": "Science",
+   "short_name": "Science_Fei_2026_HormoneCellAtlas",
+   "title": "A Hormone Cell Atlas maps the human endocrine system at cellular resolution",
+   "url": "https://www.science.org/doi/10.1126/science.aeb2672"
+  },
+  "77wZLoopPSKPQNsW3N8f": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Baya_2026_PolygenicExpectationRareVariants",
+   "title": "Individuals who deviate from polygenic expectation are enriched for damaging variants in genes linked to rare disease",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00200-4"
+  },
+  "7ea0Mo1QC7gKkOqaNU4r": {
+   "journal": "Nature",
+   "short_name": "Nature_Rosen_2026_UniversalCellEmbedding",
+   "title": "Universal cell embedding provides a foundation model for cell biology",
+   "url": "https://www.nature.com/articles/s41586-026-10689-z"
+  },
+  "CrXK2CyDlA084s567mpf": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Baderna_2026_EnhancerActivationFrequency",
+   "title": "Cumulative transcription factor binding and p300-mediated histone acetylation drive enhancer activation frequency",
+   "url": "https://www.nature.com/articles/s41588-026-02703-x"
+  },
+  "HCZN5mMz5PTy14uaaYsM": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Hasebe_2026_T2Dsubtypes",
+   "title": "Type 2 Diabetes Partitioned Polygenic Scores Are Differentially Associated with Aging Hallmarks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.06.26357294v1.full"
+  },
+  "JrExn0ZEy7UbREZ7nCfJ": {
+   "journal": "Science",
+   "short_name": "Science_Zhang_2026_invivoPerturbSeqBrain",
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "LSyOIVCbyOr42q6rg1QI": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Wagle_2026_DeepLearningDiseaseState",
+   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1.full"
+  },
+  "MhMBpgjaWWR5Q34pbNUY": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Milind_2026_GeneDosageTraitBuffering",
+   "title": "Buffering of gene dosage response curves for human complex traits",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00083-2"
+  },
+  "Mogudffj5HqQpHYEeSjT": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Brunton_2026_Genome-wideRegulatoryEffectsontheTranscriptome",
+   "title": "Leveraging genome-wide effects on gene expression to identify disease-critical genes with trans -genetic components",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.23.26346922v1"
+  },
+  "TU5CuB93NNKH7pi865Lt": {
+   "journal": "Science",
+   "short_name": "Science_Pearce_2026_TranscriptFormerCellAtlas",
+   "title": "TranscriptFormer: A generative cell atlas across 1.5 billion years of evolution",
+   "url": "https://www.science.org/doi/10.1126/science.aec8514"
+  },
+  "WJmxFmWECCjsKRQF6n2M": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Koska_2026_PromoterCompetition",
+   "title": "Promoter strength and position govern promoter competition through transcript-dependent insulation",
+   "url": "https://www.nature.com/articles/s41588-026-02691-y"
+  },
+  "XS0InI40Cm4XasS2XIg4": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Nazeen_2026_NERINERareVariantGeneNetworks",
+   "title": "NERINE reveals rare variant associations in gene networks across multiple phenotypes and implicates an SNCA-PRL-LRRK2 subnetwork in Parkinson’s disease",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00146-1"
+  },
+  "jUr9k5omVCHhK2BGAV8U": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Signer_2026_BMIGenomeGeneExpressionInteractions",
+   "title": "BMI-genome interactions regulate global gene expression with emphasis in brain and gut",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00142-4"
+  },
+  "x1UfsKkgp1KLNrcUmqqL": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Shi_2026_GWASMeniereDisease",
+   "title": "Genome-wide analysis implicates inner ear development in Ménière disease",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00198-9"
+  },
+  "xdAQjMRQAeVEaObbHHpn": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Ruan_2026_DiscoDivasPRStransferability",
+   "title": "DiscoDivas: Leveraging genetic-ancestry continuum information to interpolate PRS for admixed populations",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00193-X"
+  },
+  "yKUVSdcf4sBZpCFnRuuU": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Jamison_2026_GeneExpressionDispersion",
+   "title": "Beyond the mean: genetic control of gene expression fidelity and dispersion",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.01.715853v2"
+  },
+  "yzIcX6HtPLd1LnDzxF0h": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Krätschmer_2026_DirectIndirectParentOfOriginGeneticEffects",
+   "title": "Separating direct, indirect, and parent-of-origin genetic effects in the human population",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00139-4"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2026.06.002": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.06.003": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.06.005": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10780-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10781-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02640-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02649-0": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02654-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02665-0": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02674-z": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02677-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02689-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02697-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02704-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1126_science.adx2989": {
+   "8c6976e5b5410415": 1
+  },
+  "2aN1eW8bFSB6Rr27U4Zc": {
+   "8c6976e5b5410415": 1
+  },
+  "6HtvUAm2PtFWF6Ai4oBo": {
+   "8c6976e5b5410415": 1
+  },
+  "77wZLoopPSKPQNsW3N8f": {
+   "8c6976e5b5410415": 1
+  },
+  "7ea0Mo1QC7gKkOqaNU4r": {
+   "8c6976e5b5410415": 1
+  },
+  "CrXK2CyDlA084s567mpf": {
+   "8c6976e5b5410415": 1
+  },
+  "HCZN5mMz5PTy14uaaYsM": {
+   "8c6976e5b5410415": 1
+  },
+  "JrExn0ZEy7UbREZ7nCfJ": {
+   "8c6976e5b5410415": 1
+  },
+  "LSyOIVCbyOr42q6rg1QI": {
+   "8c6976e5b5410415": 1
+  },
+  "MhMBpgjaWWR5Q34pbNUY": {
+   "8c6976e5b5410415": 1
+  },
+  "Mogudffj5HqQpHYEeSjT": {
+   "8c6976e5b5410415": 1
+  },
+  "TU5CuB93NNKH7pi865Lt": {
+   "8c6976e5b5410415": 1
+  },
+  "WJmxFmWECCjsKRQF6n2M": {
+   "8c6976e5b5410415": 1
+  },
+  "XS0InI40Cm4XasS2XIg4": {
+   "8c6976e5b5410415": 1
+  },
+  "jUr9k5omVCHhK2BGAV8U": {
+   "8c6976e5b5410415": 1
+  },
+  "x1UfsKkgp1KLNrcUmqqL": {
+   "8c6976e5b5410415": 1
+  },
+  "xdAQjMRQAeVEaObbHHpn": {
+   "8c6976e5b5410415": 1
+  },
+  "yKUVSdcf4sBZpCFnRuuU": {
+   "8c6976e5b5410415": 1
+  },
+  "yzIcX6HtPLd1LnDzxF0h": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

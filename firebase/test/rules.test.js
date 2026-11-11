@@ -53,6 +53,13 @@ test("the uid-keyed papers collection of the first version is closed", async () 
   await assertFails(setDoc(doc(db("uid-a"), `${M}/papers/${P}`), { votes: { "uid-a": { v: 1 } } }));
   await assertFails(getDoc(doc(db(null), `${M}/papers/${P}`)));
 });
+test("the handle admin is reserved for the lab's user", async () => {
+  const LAB = "Yo7cchMxl7X4zHq5vOE9VmS2dOp1";
+  await assertFails(vote("uid-b", "admin"));
+  await assertSucceeds(vote(LAB, "admin"));
+  await assertFails(deleteDoc(doc(db("uid-b"), `${M}/votes/${P}~admin`)));
+  await assertSucceeds(deleteDoc(doc(db(LAB), `${M}/votes/${P}~admin`)));
+});
 test("cannot write elsewhere", () => assertFails(setDoc(doc(db("uid-a"), "other/x"), { a: 1 })));
 
 // Papers added by visitors
@@ -62,6 +69,10 @@ const paper = (uid, extra = {}) => ({ journal: "PNAS", title: "A paper the pipel
 const submit = (uid, extra, path = SUB) => setDoc(doc(db(uid), path), paper(uid, extra));
 
 test("signed-in visitor submits a paper under a handle", () => assertSucceeds(submit("bob")));
+test("only the lab's user adds papers as admin", async () => {
+  await assertFails(submit("bob", { name: "admin" }));
+  await assertSucceeds(submit("Yo7cchMxl7X4zHq5vOE9VmS2dOp1", { name: "admin" }));
+});
 test("anyone can read submissions without signing in", () => assertSucceeds(getDoc(doc(db(null), SUB))));
 test("unauthenticated cannot submit", () => assertFails(setDoc(doc(db(null), SUB), paper("bob"))));
 test("cannot submit under another uid", () => assertFails(setDoc(doc(db("bob"), SUB), paper("alice"))));

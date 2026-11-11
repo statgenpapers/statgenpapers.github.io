@@ -27,11 +27,10 @@ MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928f
 
 pool = pd.read_parquet(ROOT / "handoff" / "data" / "bt" / "texts.parquet").query("kind == 'pool'").reset_index(drop=True)
 month, tab = pool.month.to_numpy(), pool.pick_tab.to_numpy()  # tab: first Sheet tab listing the paper, "" if none
-venue = np.where(pool.journal.isin(["Biorxiv", "Medrxiv"]), pool.journal + ":" + pool.category, pool.journal)
+venue = np.where(pool.journal.isin(["Biorxiv", "Medrxiv"]), "Preprint", pool.journal)  # a preprint is a preprint
 names = np.unique(venue)
 cfg = tomllib.loads((ROOT / "config" / "sources.toml").read_text())
-assert set(names) == {j["key"] for j in cfg["journals"]} | {
-    f"{s['server'].capitalize()}:{c}" for s in cfg["preprints"] for c in s["categories"]}, "pool venues differ from config/sources.toml"
+assert set(names) == {j["key"] for j in cfg["journals"]} | {"Preprint"}, "pool venues differ from config/sources.toml"
 
 emb = embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map(clean))
 X = np.hstack([emb, venue[:, None] == names])

@@ -1,0 +1,142 @@
+{
+ "month": "2026-01",
+ "submissions": {
+  "1Nm0D6KX0IILhw7xP9zK": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Krebs_2026_PhenotypevsGenotypeComponentsOfLiabilityInPsy",
+   "title": "The relationship between genotype- and phenotype-based estimates of genetic liability to psychiatric disorders, in practice and in theory",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(25)00467-7"
+  },
+  "7ZJNSJ38dQrGiq638DYM": {
+   "journal": "medRxiv",
+   "short_name": "medrxiv_Jiang_2026_AgeDependentPRS",
+   "title": "Exposure accumulation drives age-dependent disease architectures and polygenic risk scores",
+   "url": "https://www.medrxiv.org/content/10.1101/2025.08.29.25334745v3"
+  },
+  "EkNYg3x7jfaH826WHUge": {
+   "journal": "bioRxiv",
+   "short_name": "biorxiv_McHale_2026_ConstraintMeasuresAcrossGenome",
+   "title": "The performance of genetic-constraint metrics varies significantly across the human noncoding genome",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.01.28.701168v1"
+  },
+  "H19eEXQFlhuPFKqTcSMP": {
+   "journal": "Nature",
+   "short_name": "Nature_Kamitaki_2026_HumanGeneticsOnOralMicrobiome",
+   "title": "Human and bacterial genetic variation shape oral microbiomes and health",
+   "url": "https://www.nature.com/articles/s41586-025-10037-7"
+  },
+  "PBKyYEfTUdRXqY8zfUlP": {
+   "journal": "Nature",
+   "short_name": "Nature_Hujoel_2026_SomaticDNARepeatExpansions",
+   "title": "Insights into DNA repeat expansions among 900,000 biobank participants",
+   "url": "https://www.nature.com/articles/s41586-025-09886-z"
+  },
+  "W2lWGNknGKfo1swcVPV3": {
+   "journal": "bioRxiv",
+   "short_name": "biorxiv_Constantino_2026_PhenotypeScaleGxE",
+   "title": "Choice of phenotype scale is critical in biobank-based G×E tests",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.01.20.694695v1"
+  },
+  "XmoRdskyVUrudz4LAdFE": {
+   "journal": "medRxiv",
+   "short_name": "medrxiv_Rossen_2026_AfricanMAFForVariantDeleteriousness",
+   "title": "Per-allele disease and complex trait effect sizes are predominantly African MAF-dependent in European populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2025.12.31.25343290v2"
+  },
+  "aESX1Ut7Ox0T8xMdINmL": {
+   "journal": "bioRxiv",
+   "short_name": "biorxiv_Connally_2026_FarmAnimalEvolution",
+   "title": "Farm animal evolution demonstrates hidden molecular basis of human traits",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.02.703413v1"
+  },
+  "cVVIRFMpgXkDekw04u99": {
+   "journal": "Science",
+   "short_name": "Science_Shenhar_2026_HeritabilityOfLongevity",
+   "title": "Heritability of intrinsic human life span is about 50% when confounding factors are addressed",
+   "url": "https://www.science.org/doi/10.1126/science.adz1187"
+  },
+  "eNd99pjheQoYyUQ92cLO": {
+   "journal": "medRxiv",
+   "short_name": "biorxiv_Warmerdam_2026_QTLGenPhase2",
+   "title": "Trans-eQTLs reveal the architecture of human gene regulatory networks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.04.26343575v1"
+  },
+  "m1V0shEnT5CAy9q3FLP0": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Han_2026_MIRAGE",
+   "title": "MIRAGE: A Bayesian statistical method for gene-level rare-variant analysis incorporating functional annotations",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(25)00438-0"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2025.12.005": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2025.12.014": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2025.101130": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.xgen.2025.101138": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-025-10000-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-025-10054-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02449-y": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02450-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02454-1": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02470-1": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02479-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-025-02480-z": {
+   "8c6976e5b5410415": 1
+  },
+  "1Nm0D6KX0IILhw7xP9zK": {
+   "8c6976e5b5410415": 1
+  },
+  "7ZJNSJ38dQrGiq638DYM": {
+   "8c6976e5b5410415": 1
+  },
+  "EkNYg3x7jfaH826WHUge": {
+   "8c6976e5b5410415": 1
+  },
+  "H19eEXQFlhuPFKqTcSMP": {
+   "8c6976e5b5410415": 1
+  },
+  "PBKyYEfTUdRXqY8zfUlP": {
+   "8c6976e5b5410415": 1
+  },
+  "W2lWGNknGKfo1swcVPV3": {
+   "8c6976e5b5410415": 1
+  },
+  "XmoRdskyVUrudz4LAdFE": {
+   "8c6976e5b5410415": 1
+  },
+  "aESX1Ut7Ox0T8xMdINmL": {
+   "8c6976e5b5410415": 1
+  },
+  "cVVIRFMpgXkDekw04u99": {
+   "8c6976e5b5410415": 1
+  },
+  "eNd99pjheQoYyUQ92cLO": {
+   "8c6976e5b5410415": 1
+  },
+  "m1V0shEnT5CAy9q3FLP0": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

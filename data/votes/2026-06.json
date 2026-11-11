@@ -1,0 +1,199 @@
+{
+ "month": "2026-06",
+ "submissions": {
+  "3XBDtToLcB4Sc1mP4hum": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Hu_2026_CellTypeSpecificPRS",
+   "title": "Cell-type-specific polygenic risk scores reveal adipocyte-related interactions with lipids in coronary artery disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.07.26357510v1"
+  },
+  "5l9s2OGnCSoHRoB5XMYo": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Garg_2026_CNVPhewas",
+   "title": "A phenome-wide association study of CNVs genotyped from genome sequencing read depth in the UK Biobank",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00162-X"
+  },
+  "9pIzFFKFvmWLI9LkWf7C": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Sun_2026_MultiAncestryADTWAS",
+   "title": "Multi-ancestry transcriptome-wide association study reveals shared and population-specific genetic effects in Alzheimer disease",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00157-6"
+  },
+  "HUUEl59DSrqiaqZuFNYY": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Nason_2026_VariantPathogenicity3DProtein",
+   "title": "Systematic identification of disease-associated 3D neighborhoods in protein structures",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.29.26354366v1"
+  },
+  "OjFW4Yc7ARjtXb2yn39j": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Aguirre_2026_GeneticArchitectureGeneExpression",
+   "title": "Regulatory network topology and the genetic architecture of gene expression",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00081-9"
+  },
+  "RPChhUOehirrBblS2aCm": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Starr_2025_SelectionFromVariantEffectPrediction",
+   "title": "A framework to detect positive selection using variant effect predictions reveals widespread adaptive evolution of human neurons",
+   "url": "https://www.biorxiv.org/content/10.1101/2025.09.11.675696v1"
+  },
+  "SFS5qvsVlOZxIXMb4YPz": {
+   "journal": "Nature",
+   "short_name": "Nature_Yue_2026_MultiTissueProteomeResource",
+   "title": "Spatial distribution of the proteome in the human body and in cancers",
+   "url": "https://www.nature.com/articles/s41586-026-10660-y"
+  },
+  "d2TmqeZfvwqZCv1KrdcV": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Krockenberger_2026_ContextSpecificeQTL",
+   "title": "FastGxC: Fast and powerful context-specific eQTL mapping in bulk and single-cell data",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00112-6"
+  },
+  "eVUvPfn7HuM34ahYl6Xo": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Liu_2026_CellCellInteractionFromSpatialTranscriptomics",
+   "title": "CytoSignal detects locations and dynamics of ligand–receptor signaling at cellular resolution from spatial transcriptomic data",
+   "url": "https://www.nature.com/articles/s41588-026-02624-9"
+  },
+  "jSQ0i5dXI3CEjERw8ZGc": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Lassen_2026_RecessiveInheritance",
+   "title": "Meta-analysis across six global biobanks identifies recessive coding associations with complex traits and diseases",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00155-2"
+  },
+  "jmOOodLptBm8FzDezU04": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Wang_2026_DishToBiobankProteome",
+   "title": "A dish-to-biobank framework links β-cell nutrient-stress programs to genetic and dietary risk for Type 2 Diabetes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.12.731989v1"
+  },
+  "lSCT80RZSiuL8LWjt264": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Das_2026_BayesianRVAT",
+   "title": "An empirical Bayes framework for burden and dispersion association tests helps prioritize rare variants associated with Alzheimer’s disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26354742v1"
+  },
+  "mWBvzVzJhi70rJ14Cbrv": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Zou_2026_scEPS",
+   "title": "scEPS integrates genetic and single-cell disease atlas data to provide granular mechanistic insights into complex human diseases",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.26.26356714v1"
+  },
+  "mti8J6ze2skNr4mZXVBP": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Liu_2026_InflammagingEpigeneticAgeing",
+   "title": "Interferon-related inflammaging links epigenetic age acceleration to multimorbidity",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00080-7"
+  },
+  "nxB04yVL9pU3ERXVV5kW": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Kwon_2026_VariantPathogenicityScoringProteomics",
+   "title": "Human Proteome-wide Mechanistic Interpretation of Missense Variants through Protein Feature Enrichment Score",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.26.726248v1.full"
+  },
+  "onQqXWqbchH7xTa4L59A": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_ENCODE_2026_EncyclopediaOfDNAElements",
+   "title": "The Encyclopedia of DNA Elements",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.06.731365v1"
+  },
+  "wBtVpwGydAeL9qsvS2wM": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Zhang_2026_LLMforPPI",
+   "title": "Learning residue-level context for modeling protein-protein interactions",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.01.729118v1"
+  },
+  "zX5rzZhoYzeG4Se7dv8n": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_O'Connor_2026_Polygenicity",
+   "title": "Principled measures and estimates of trait polygenicity",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00159-X"
+  }
+ },
+ "votes": {
+  "10.1038_s41586-026-10627-z": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10667-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02601-2": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02607-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02617-8": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02619-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02634-7": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02637-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02638-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02646-3": {
+   "8c6976e5b5410415": 1
+  },
+  "3XBDtToLcB4Sc1mP4hum": {
+   "8c6976e5b5410415": 1
+  },
+  "5l9s2OGnCSoHRoB5XMYo": {
+   "8c6976e5b5410415": 1
+  },
+  "9pIzFFKFvmWLI9LkWf7C": {
+   "8c6976e5b5410415": 1
+  },
+  "HUUEl59DSrqiaqZuFNYY": {
+   "8c6976e5b5410415": 1
+  },
+  "OjFW4Yc7ARjtXb2yn39j": {
+   "8c6976e5b5410415": 1
+  },
+  "RPChhUOehirrBblS2aCm": {
+   "8c6976e5b5410415": 1
+  },
+  "SFS5qvsVlOZxIXMb4YPz": {
+   "8c6976e5b5410415": 1
+  },
+  "d2TmqeZfvwqZCv1KrdcV": {
+   "8c6976e5b5410415": 1
+  },
+  "eVUvPfn7HuM34ahYl6Xo": {
+   "8c6976e5b5410415": 1
+  },
+  "jSQ0i5dXI3CEjERw8ZGc": {
+   "8c6976e5b5410415": 1
+  },
+  "jmOOodLptBm8FzDezU04": {
+   "8c6976e5b5410415": 1
+  },
+  "lSCT80RZSiuL8LWjt264": {
+   "8c6976e5b5410415": 1
+  },
+  "mWBvzVzJhi70rJ14Cbrv": {
+   "8c6976e5b5410415": 1
+  },
+  "mti8J6ze2skNr4mZXVBP": {
+   "8c6976e5b5410415": 1
+  },
+  "nxB04yVL9pU3ERXVV5kW": {
+   "8c6976e5b5410415": 1
+  },
+  "onQqXWqbchH7xTa4L59A": {
+   "8c6976e5b5410415": 1
+  },
+  "wBtVpwGydAeL9qsvS2wM": {
+   "8c6976e5b5410415": 1
+  },
+  "zX5rzZhoYzeG4Se7dv8n": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

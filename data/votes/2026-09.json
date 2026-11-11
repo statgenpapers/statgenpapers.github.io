@@ -1,5 +1,393 @@
 {
  "month": "2026-09",
- "submissions": {},
- "votes": {}
+ "submissions": {
+  "4FHTUdyqCcMZ8LR2a42C": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Liu_2026_ComorbidityRiskScore",
+   "title": "Predicting COVID-19 hospitalisation and common disease risk from comorbid diagnoses in 13 million individuals",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.27.26361302v1"
+  },
+  "5O4MH0EX4QNsqLimNIoQ": {
+   "journal": "Nat Rev Genet",
+   "short_name": "NatRevGenet_Skoglund_2026_NaturalSelectionHumanHistory",
+   "title": "Genomic insights into natural selection in recent human history",
+   "url": "https://www.nature.com/articles/s41576-026-01010-9"
+  },
+  "8O0rtNnCiTsC5py0vyDk": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Chandrashekar_2026_AlzheimersPersonalizedSingleCell",
+   "title": "Personalized single-cell transcriptomics reveals molecular diversity in Alzheimer’s disease",
+   "url": "https://www.nature.com/articles/s41467-026-72310-1"
+  },
+  "B4CtLJ0aViUXgotbha6p": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Dutta_2026_CancerPRSPlasmaProteomics",
+   "title": "Polygenic risk scores and plasma proteomics identify cancer-related proteins and trans-regulated protein networks",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00184-9"
+  },
+  "B5iMoOnvHdAAjwU6Iv1w": {
+   "journal": "Cell",
+   "short_name": "Cell_Zhang_2026_Tahoe100MDrugPerturbationAtlas",
+   "title": "Tahoe-100M: Mapping drug-induced molecular phenotypes at single-cell resolution",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)01008-1"
+  },
+  "Bz6xwYwYKi9eL5HXsqs2": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Pu_2026_OrganAgingProteomicGenetics",
+   "title": "Atlas of genetic architecture and exploratory temporal interaction networks of plasma protein-based organ and system aging",
+   "url": "https://www.nature.com/articles/s41467-026-77365-8"
+  },
+  "DPmQj9KR30JiSgduY2hD": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Cheng_2026_AlphaGenomeAtlas",
+   "title": "AlphaGenome Atlas: in silico mutagenesis of the entire human genome improves prioritization and interpretation of non-coding variants",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.09.16.26363192v1"
+  },
+  "ECK4D5WNaOB1OjuFD9Lo": {
+   "journal": "Cell",
+   "short_name": "Cell_Adduri_2026_StatePerturbationPrediction",
+   "title": "Predicting cellular responses to perturbation across diverse contexts with State",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00921-9"
+  },
+  "Fy14cpEEk82HDNElqhod": {
+   "journal": "Sci Transl Med",
+   "short_name": "SciTranslMed_Carrasco-Zanini_2026_ProteomicsGeneticDiagnosis",
+   "title": "Proteomics identify disease-associated variants in patients with rare diseases undiagnosed after genome sequencing",
+   "url": "https://www.science.org/doi/epdf/10.1126/scitranslmed.aeb1331"
+  },
+  "GFp7LWWwNJFrx79Yhv2Z": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Hoffman_2026_CrumblrCellularComposition",
+   "title": "Fast, flexible analysis of differences in cellular composition with crumblr",
+   "url": "https://www.nature.com/articles/s41467-026-75681-7"
+  },
+  "GmHCNYZdEYsXjwntAC2r": {
+   "journal": "Cell Genom",
+   "short_name": "CG_SalehiNowbandegani_2026_PangenomeGraphVariants",
+   "title": "Defining and cataloging variants in pangenome graphs",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00189-8"
+  },
+  "JUiNfu2B1O0V58H6fq0d": {
+   "journal": "Science",
+   "short_name": "Science_LoPiccolo_2026_EGFRLungCancer",
+   "title": "Germline EGFR T790M mutation and lung cancer risk",
+   "url": "https://www.science.org/doi/abs/10.1126/science.aec0473"
+  },
+  "Jy5VxgoSzM1adf0A6Zzw": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Hansen_2026_SubSaharanAfricanTraits",
+   "title": "Anthropometric and cardio-metabolic trait variation and genetic associations in sub-Saharan Africa",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00272-7"
+  },
+  "Q4peSf6HRtFrltuhMdo9": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Hou_2026_MotifAEProteinLanguageModel",
+   "title": "Unsupervised discovery of functional sequence patterns from protein language model with MotifAE",
+   "url": "https://www.nature.com/articles/s41467-026-77333-2"
+  },
+  "VFIWN8bBRSTEeaL2qzdB": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Peree_2026_IBDCellTypeEQTL",
+   "title": "Cell-type specific analyses in blood and gut identify cis-eQTL matching 140 IBD risk loci and entrectinib as repurposing candidate",
+   "url": "https://www.nature.com/articles/s41467-026-76672-4"
+  },
+  "YGeYqXX3YsYzNCbu6LO0": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Xue_2026_CellTypeExpressionVariabilityQTL",
+   "title": "Genetic variants associated with cell-type-specific intra-individual gene expression variability reveal mechanisms of genome regulation",
+   "url": "https://www.nature.com/articles/s41467-026-77453-9"
+  },
+  "ZwHCOUTgovARXBInlBw6": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Hanson_2026_CellFitnessGenetics",
+   "title": "Cell villages and Dirichlet modeling map human cell fitness genetics",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00271-5"
+  },
+  "bVxhYlYANi9QMcEucJ9s": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Richmond_2026_PlasmaProteomicsGenetics",
+   "title": "Genome-wide analysis of 439 mass spectrometry-based proteomic profiles in a population of 15,035 Scottish individuals",
+   "url": "https://www.nature.com/articles/s41467-026-76474-8"
+  },
+  "dk1eDXCeZP8YvIvqVIJ4": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Verplaetse_2026_SchizophreniaDeepLearningRisk",
+   "title": "End-to-end deep learning methods for genetic risk prediction of schizophrenia",
+   "url": "https://www.nature.com/articles/s41467-026-76663-5"
+  },
+  "emqzeJZYkFjiU9biOyqg": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Dickson_2026_ChildhoodAdiposityPlasmaProteome",
+   "title": "Evaluating the consequences of childhood adiposity on the human plasma proteome at four timepoints across the lifecourse",
+   "url": "https://www.nature.com/articles/s41467-026-77097-9"
+  },
+  "fKO3t61iFr13H4WIQ9EE": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Joly-Smith_2026_SingleCellRibosomeStructure",
+   "title": "Single-Cell Inference of Structural States Of Ribosomes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.29.747780v1.full"
+  },
+  "gvNAheAuc5VjBIbiJril": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Aponte_2026_SyndromicFacialVariation",
+   "title": "Shared genetic basis and structure of syndromic and normal facial variation",
+   "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(26)00280-6"
+  },
+  "iBRdecUWlo3YEFlvycbT": {
+   "journal": "PNAS",
+   "short_name": "PNAS_Liu_2026_LocalizedFeatureSelection",
+   "title": "Uncovering heterogeneous effects via localized feature selection",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2527033123"
+  },
+  "iYnTRzuzh1hxuQVIPDAT": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Chang_2026_SCIGMASpatialMultiomics",
+   "title": "Scalable, generalizable and uncertainty-aware integration of spatial multiomics across diverse modalities and platforms with SCIGMA",
+   "url": "https://www.nature.com/articles/s41588-026-02706-8"
+  },
+  "jXPUxWhTAbF0pjOKiBLL": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Guckelberger_2026_CohesinEnhancerPromoterContacts",
+   "title": "Quantitative changes in 3D contact predict changes in enhancer-promoter regulation upon cohesin depletion",
+   "url": "https://www.nature.com/articles/s41467-026-77582-1"
+  },
+  "kN6YyrOEXgLx7pdIKC5I": {
+   "journal": "Nat Med",
+   "short_name": "NatMed_Straub_2026_OurFutureHealthPhenome",
+   "title": "Phenomic profiles and disease patterns of 1.9 million participants from Our Future Health",
+   "url": "https://www.nature.com/articles/s41591-026-04602-4"
+  },
+  "mKNHn3JlEUrBwVfw9jmW": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Caseras_2026_BrainConnectivityCommonAlleles",
+   "title": "Common alleles associated with connectivity within and across the brain’s main functional networks",
+   "url": "https://www.nature.com/articles/s41467-026-77476-2"
+  },
+  "okrp7eR70Vr59FIPkaGW": {
+   "journal": "Nat Rev Genet",
+   "short_name": "NatRevGenet_Engelhardt_2026_MolecularQTLMethods",
+   "title": "Machine learning and statistical methods for molecular quantitative trait loci",
+   "url": "https://www.nature.com/articles/s41576-026-00990-y"
+  },
+  "rsu3LG9jITxGTUMFym9k": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Kim_2026_CausalCellTypeFineMapping",
+   "title": "Identifying independent causal cell types for human diseases and risk variants",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00187-4"
+  },
+  "sQr8E0yy4pJ03wdolWwF": {
+   "journal": "Nat Commun",
+   "short_name": "NatCommun_Woollard_2026_SpatialTranscriptomicsDimensionalityReduction",
+   "title": "Weighted sliced inverse regression for scalable supervised dimensionality reduction of spatial transcriptomics data",
+   "url": "https://www.nature.com/articles/s41467-026-76871-z"
+  },
+  "w1mtAZnUVFJu0ekLPLtK": {
+   "journal": "PNAS",
+   "short_name": "PNAS_Zhu_2026_BrainTraitGeneticArchitectureSelection",
+   "title": "Genetic architectures of brain-related traits are shaped by strong selective constraints",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2609814123"
+  },
+  "wJSfHrQTl65xanI3SSC6": {
+   "journal": "Nature",
+   "short_name": "Nature_Yang_2026_HumanPrefrontalCortexAtlas",
+   "title": "Lifespan single-cell transcriptomic atlas of the human prefrontal cortex",
+   "url": "https://www.nature.com/articles/s41586-026-10271-7"
+  },
+  "z3OO2KCBTmRe6WyYVoJo": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Sealock_2026_RareVariantSchizophrenia",
+   "title": "Analysis of Rare Coding Variation Identifies New Genetic Contributors to Schizophrenia",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.09.18.752670v1"
+  },
+  "za5bygpMVr0jd7wFb2UQ": {
+   "journal": "Nature",
+   "short_name": "Nature_Guo_2026_FetalHemoglobinBACH2NRF2",
+   "title": "Human genetics implicates a BACH2–NRF2 axis in fetal haemoglobin activation",
+   "url": "https://www.nature.com/articles/s41586-026-11113-2"
+  },
+  "zi96sIcJnBZv4xPtOxrG": {
+   "journal": "PNAS",
+   "short_name": "PNAS_Caballero_2026_LocalMutationRateGenetics",
+   "title": "Genetic control of local mutation rates",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2625619123"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2026.09.007": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.cell.2026.08.010": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.cell.2026.08.025": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10836-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-10992-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-11005-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41586-026-11078-2": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02713-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02725-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02731-7": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02732-6": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02733-5": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02734-4": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02741-5": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02747-z": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02748-y": {
+   "5973eb2c7b245313": 1
+  },
+  "10.1038_s41588-026-02751-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02753-1": {
+   "5973eb2c7b245313": 1,
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02755-z": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02756-y": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02758-w": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02772-y": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02774-w": {
+   "8c6976e5b5410415": 1
+  },
+  "4FHTUdyqCcMZ8LR2a42C": {
+   "8c6976e5b5410415": 1
+  },
+  "5O4MH0EX4QNsqLimNIoQ": {
+   "8c6976e5b5410415": 1
+  },
+  "8O0rtNnCiTsC5py0vyDk": {
+   "8c6976e5b5410415": 1
+  },
+  "B4CtLJ0aViUXgotbha6p": {
+   "8c6976e5b5410415": 1
+  },
+  "B5iMoOnvHdAAjwU6Iv1w": {
+   "8c6976e5b5410415": 1
+  },
+  "Bz6xwYwYKi9eL5HXsqs2": {
+   "8c6976e5b5410415": 1
+  },
+  "DPmQj9KR30JiSgduY2hD": {
+   "8c6976e5b5410415": 1
+  },
+  "ECK4D5WNaOB1OjuFD9Lo": {
+   "8c6976e5b5410415": 1
+  },
+  "Fy14cpEEk82HDNElqhod": {
+   "8c6976e5b5410415": 1
+  },
+  "GFp7LWWwNJFrx79Yhv2Z": {
+   "8c6976e5b5410415": 1
+  },
+  "GmHCNYZdEYsXjwntAC2r": {
+   "8c6976e5b5410415": 1
+  },
+  "JUiNfu2B1O0V58H6fq0d": {
+   "8c6976e5b5410415": 1
+  },
+  "Jy5VxgoSzM1adf0A6Zzw": {
+   "8c6976e5b5410415": 1
+  },
+  "Q4peSf6HRtFrltuhMdo9": {
+   "8c6976e5b5410415": 1
+  },
+  "VFIWN8bBRSTEeaL2qzdB": {
+   "8c6976e5b5410415": 1
+  },
+  "YGeYqXX3YsYzNCbu6LO0": {
+   "8c6976e5b5410415": 1
+  },
+  "ZwHCOUTgovARXBInlBw6": {
+   "8c6976e5b5410415": 1
+  },
+  "bVxhYlYANi9QMcEucJ9s": {
+   "8c6976e5b5410415": 1
+  },
+  "dk1eDXCeZP8YvIvqVIJ4": {
+   "8c6976e5b5410415": 1
+  },
+  "emqzeJZYkFjiU9biOyqg": {
+   "8c6976e5b5410415": 1
+  },
+  "fKO3t61iFr13H4WIQ9EE": {
+   "8c6976e5b5410415": 1
+  },
+  "gvNAheAuc5VjBIbiJril": {
+   "8c6976e5b5410415": 1
+  },
+  "iBRdecUWlo3YEFlvycbT": {
+   "8c6976e5b5410415": 1
+  },
+  "iYnTRzuzh1hxuQVIPDAT": {
+   "8c6976e5b5410415": 1
+  },
+  "jXPUxWhTAbF0pjOKiBLL": {
+   "8c6976e5b5410415": 1
+  },
+  "kN6YyrOEXgLx7pdIKC5I": {
+   "8c6976e5b5410415": 1
+  },
+  "mKNHn3JlEUrBwVfw9jmW": {
+   "8c6976e5b5410415": 1
+  },
+  "okrp7eR70Vr59FIPkaGW": {
+   "8c6976e5b5410415": 1
+  },
+  "rsu3LG9jITxGTUMFym9k": {
+   "8c6976e5b5410415": 1
+  },
+  "sQr8E0yy4pJ03wdolWwF": {
+   "8c6976e5b5410415": 1
+  },
+  "w1mtAZnUVFJu0ekLPLtK": {
+   "8c6976e5b5410415": 1
+  },
+  "wJSfHrQTl65xanI3SSC6": {
+   "8c6976e5b5410415": 1
+  },
+  "z3OO2KCBTmRe6WyYVoJo": {
+   "8c6976e5b5410415": 1
+  },
+  "za5bygpMVr0jd7wFb2UQ": {
+   "8c6976e5b5410415": 1
+  },
+  "zi96sIcJnBZv4xPtOxrG": {
+   "8c6976e5b5410415": 1
+  }
+ }
 }

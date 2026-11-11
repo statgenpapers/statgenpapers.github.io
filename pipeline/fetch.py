@@ -27,7 +27,7 @@ class Paper:
     url: str
     title: str
     authors: list[str]
-    venue: str  # key of the venue weight: a journal key, or "Server:category" for preprints
+    venue: str  # key of the venue weight: a journal key, or "Preprint" for every preprint
     venue_name: str
     journal: str  # official title abbreviation, as shown in the Journal column
     date: str
@@ -180,7 +180,7 @@ def fetch_preprints(cfg, start, end):
                         title=clean(p["title"]),
                         # "Harvey, D. Y.; Smith, J." -> ["D. Y. Harvey", "J. Smith"]
                         authors=[" ".join(reversed(a.split(",", 1))).strip() for a in p["authors"].split(";") if a.strip()],
-                        venue=f"{src['server'].capitalize()}:{category}",
+                        venue="Preprint",
                         venue_name=f"{src['name']} · {category}",
                         journal=src["name"],
                         date=p["date"],
@@ -218,10 +218,10 @@ def fill_abstracts(papers):
 def fetch_pool(cfg, start, end):
     """The month's candidates from every configured source, junk removed, abstracts filled."""
     papers = fetch_journals(cfg, start, end) + fetch_preprints(cfg, start, end)
-    total = Counter(p.venue for p in papers)
-    for venue in [j["key"] for j in cfg["journals"]] + [f"{s['server'].capitalize()}:{c}" for s in cfg["preprints"] for c in s["categories"]]:
-        if not total[venue]:  # a silent API change would otherwise shrink the list
-            warn(f"no papers from {venue} between {start} and {end}")
+    total, sources = Counter(p.venue for p in papers), Counter(p.venue_name for p in papers)
+    for source in [j["name"] for j in cfg["journals"]] + [f"{s['name']} · {c}" for s in cfg["preprints"] for c in s["categories"]]:
+        if not sources[source]:  # a silent API change would otherwise shrink the list
+            warn(f"no papers from {source} between {start} and {end}")
     junk_title = re.compile(rf"(?:{'|'.join(cfg['junk_title'])})\b", re.I)
     junk_doi = re.compile("|".join(cfg["junk_doi"]))
     papers = list({p.doi: p for p in papers if not junk_title.match(p.title) and not junk_doi.search(p.doi)}.values())

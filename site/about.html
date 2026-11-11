@@ -14,7 +14,8 @@
 
 <main class="prose">
 <h2>About StatGen Papers</h2>
-<p>Each month, StatGen Papers lists ~30 statistical genetics papers, prioritized by a model from about 2,000
+<p>Each month, StatGen Papers lists the statistical genetics papers that a model rates likely to interest a
+lab: every paper with a Score of at least 25%. The model chooses them from about 2,000
 candidates in journals such as Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in
 preprints. Anyone can add papers the model missed, including to earlier months. The code is in the
 <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
@@ -38,7 +39,8 @@ preprints. Anyone can add papers the model missed, including to earlier months. 
   <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It was fitted
   to a year of a statistical genetics lab's monthly reading list: the papers the lab picked are the positives, all
   other candidates the negatives.</li>
-  <li>The raw score is calibrated into a probability, and the top 25 papers are listed.</li>
+  <li>The raw score is calibrated into a probability, the Score. Every paper at 25% or more is listed, so a month
+  with more promising papers has a longer list.</li>
   <li>Readers' marks re-order the list. Once 30 listed papers have marks, they also fit a small monthly correction to
   the model.</li>
 </ol>
@@ -58,8 +60,8 @@ the months before it.</p>
   <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
   August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
   picks in the top 25, at no cost.</li>
-  <li>The weights in use were fitted on all months up to October 2026, so the lists of those months look better than
-  future ones will.</li>
+  <li>From 2026/01 to 2026/10, the 25% cutoff listed 15 to 39 papers a month and caught 111 of the 242 picks, as
+  many as a fixed 25 a month.</li>
 </ol>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Picks in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
@@ -67,6 +69,12 @@ the months before it.</p>
 </table>
 <p class="caption">The reading list itself is private; only the fitted weights and these totals are published. The
 backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated <span data-v="generated"></span>.</p>
+
+<h2>Why do the months before 2026/11 already have marks?</h2>
+<p>The lists for 2026/01 to 2026/10 were made as if the site had run then: each month by a model trained only on
+the months before it. The lab's actual picks for each month are shown as marks: a listed pick has one, and a pick
+the model missed was added ("added by the lab"). From 2026/11 the lists are made live, and the weights are refitted
+each month as the lab's picks come in.</p>
 
 <h2>How do I give feedback?</h2>
 <p>Open an issue on <a href="https://github.com/statgenpapers/statgenpapers.github.io/issues">GitHub</a>: a bug, a

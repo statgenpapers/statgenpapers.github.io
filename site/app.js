@@ -75,6 +75,7 @@ export function shortName(journal, surname, year, title) {
 // A handle is the reader's login: no password, so anyone who types it marks as its owner. Handles are
 // lower case, so one handle has one mark per paper on any device: months/{m}/votes/{paper}~{handle}.
 const HANDLE = /^[A-Za-z0-9_]{2,20}$/;
+const LAB = "admin";  // the handle whose marks are the lab's picks (dev/rollforward.py); its added papers say so
 const count = (id) => state.votes.get(id)?.size ?? 0;
 const mine = (id) => Boolean(state.handle) && (state.votes.get(id)?.has(state.handle) ?? false);
 const voteRef = (month, id, handle = state.handle) => fb.doc(db, "months", month, "votes", `${id}~${handle}`);
@@ -120,7 +121,7 @@ function createRow(p) {
   q(".source").textContent = source(p);
   q(".source").title = p.venue_name || "";
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
-  q(".meta").textContent = p.added ? "added by a reader"
+  q(".meta").textContent = p.added ? (p.name === LAB || p.lab ? "added by the lab" : "added by a reader")
     : a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   if (p.p_pick != null) {
     q(".pick").textContent = `${Math.round(100 * p.p_pick)}%`;
@@ -308,7 +309,7 @@ function saveMarks() {
   if (state.waiting.size) return;  // not before both snapshots are in
   const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, handles.size]));
   const own = [...state.votes].filter(([, handles]) => handles.has(state.handle)).map(([id]) => id);
-  const subs = state.subs.map(({ name, ...s }) => s);
+  const subs = state.subs.map(({ name, ...s }) => (name === LAB ? { ...s, lab: true } : s));  // no reader's handle; the lab is no secret
   try { localStorage.setItem(`marks:${state.month}`, JSON.stringify({ counts, own, handle: state.handle, subs })); } catch {}
 }
 
@@ -453,8 +454,8 @@ function handleChanged(event) {
 function login(event) {
   event.preventDefault();
   const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one Firestore query
-  if (!HANDLE.test(handle)) {
-    $("login-note").textContent = "A handle is 2–20 letters, digits or _.";
+  if (!HANDLE.test(handle) || handle === LAB) {
+    $("login-note").textContent = handle === LAB ? "This handle is reserved." : "A handle is 2–20 letters, digits or _.";
     $("login-note").classList.add("error");
     return $("login-handle").focus();
   }

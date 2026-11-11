@@ -1,0 +1,193 @@
+{
+ "month": "2026-03",
+ "submissions": {
+  "4Ka1Yl9Xl90Chiw8QZW2": {
+   "journal": "Nature",
+   "short_name": "Nature_Akbari_2026_AncientDNASelection",
+   "title": "Ancient DNA reveals pervasive directional selection across West Eurasia",
+   "url": "https://www.nature.com/articles/s41586-026-10358-1"
+  },
+  "5R4DJVxki29wq6y0VgGh": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Lawrence_2026_Proxitropy",
+   "title": "Focus on single-gene effects limits discovery and interpretation of",
+   "url": "https://www.cell.com/ajhg/pdfExtended/S0002-9297(26)00108-4"
+  },
+  "9NBLIT1XK7fVcgzcvKGS": {
+   "journal": "Am J Hum Genet",
+   "short_name": "AJHG_Cudic_2026_PRScontext",
+   "title": "Putting polygenic scores in context: How intersectional factors affect relative and absolute genetic risk",
+   "url": "https://www.cell.com/ajhg/abstract/S0002-9297(26)00123-0"
+  },
+  "AzXsQS8Imu3lFvqUqQWk": {
+   "journal": "Nat Commun",
+   "short_name": "NatComm_Yang_2026_GenomicModelCAD",
+   "title": "An integrated germline and somatic genomic model for coronary artery disease",
+   "url": "https://www.nature.com/articles/s41467-026-70379-2"
+  },
+  "EgCvscgOsjDJ7rJIETKt": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Huisheng_2026_BrainDiseaseArchitecture",
+   "title": "Genetic architectures of brain-related traits are shaped by strong selective constraints",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.03.22.713538v1"
+  },
+  "M3r4aLNldwz080ohAlpu": {
+   "journal": "Cell Genom",
+   "short_name": "CG_Mortazavi_2026_AutismSV",
+   "title": "Long-read genome sequencing improves detection and functional interpretation of structural and repeat variants in autism",
+   "url": "https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00048-0"
+  },
+  "MmjxNnCxX9JbPatSSQA1": {
+   "journal": "bioRxiv",
+   "short_name": "Biorxiv_Maravall-Lopez_2026_ImmuneEvolution",
+   "title": "Ancient DNA reveals that natural selection has upregulated the immune system over the last 10,000 years",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.14.718409v1"
+  },
+  "TYUdDOzEKAbj9zOcliaI": {
+   "journal": "Nat Rev Genet",
+   "short_name": "NatRevGenet_Poeschla_2026_ReviewHematopoiesis",
+   "title": "Genetic influences on haematopoiesis",
+   "url": "https://www.nature.com/articles/s41576-026-00947-1"
+  },
+  "Tyrpp2piKJtBNI1lkOET": {
+   "journal": "Cell",
+   "short_name": "Cell_Shrestha_2026_ProteomeNeurodegeneration",
+   "title": "Pan-neurodegeneration proteomics reveals disease subtypes and molecular signatures",
+   "url": "https://www.cell.com/cell/fulltext/S0092-8674(26)00233-3"
+  },
+  "ZKCNBJuka1UfZKxW5vZf": {
+   "journal": "Nat Genet",
+   "short_name": "NG_Zhou_2026_JointFM",
+   "title": "Fast and flexible joint fine-mapping of multiple traits via the Sum of Single Effects model",
+   "url": "https://www.nature.com/articles/s41588-025-02486-7"
+  },
+  "afRBFTx7y0M4rnpQ11i4": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Lapinska_2026_GIRA",
+   "title": "Implementation of the genome-informed risk assessment (GIRA) may lead to large disruptions to the health system",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.25.26347123v1"
+  },
+  "bjlhW1lxotg82zuC0vRz": {
+   "journal": "Nature",
+   "short_name": "Nature_Lu_2026_AIScientist",
+   "title": "Towards end-to-end automation of AI research",
+   "url": "https://www.nature.com/articles/s41586-026-10265-5"
+  },
+  "fg1vqyNrcLGnohfu0l4O": {
+   "journal": "Nature",
+   "short_name": "Nature_Brixi_2026_Evo2",
+   "title": "Genome modelling and design across all domains of life with Evo 2",
+   "url": "https://www.nature.com/articles/s41586-026-10176-5"
+  },
+  "nGYy5wjh1QfoC3zYX1Ya": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Puerta_2026_ProteogenomicsCSF",
+   "title": "Human CSF proteogenomics links genetic variation to neurodegenerative disease proteins",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.12.26345733v1.full"
+  },
+  "oYLARXpgwJw6cKF6kZ8a": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Guez_2026_gnomADv4",
+   "title": "Integrating 730,947 exome sequences with clinical literature improves gene discovery",
+   "url": "https://www.medrxiv.org/content/medrxiv/early/2026/03/25/2026.03.23.26349081.full.pdf"
+  },
+  "pwEf4njn9IfpVLX1kxhq": {
+   "journal": "medRxiv",
+   "short_name": "Medrxiv_Urbut_2026_ALADYNOULLI",
+   "title": "ALADYNOULLI: A Bayesian approach to disease progression modeling for genomic discovery and clinical prediction",
+   "url": "https://www.medrxiv.org/content/10.1101/2024.09.29.24314557v4"
+  },
+  "tLk19i9Kr0k74wC9COBD": {
+   "journal": "Nature",
+   "short_name": "Nature_Kamitaki_2026_OralMicrobiomeGWAS",
+   "title": "Human and bacterial genetic variation shape oral microbiomes and health",
+   "url": "https://www.nature.com/articles/s41586-025-10037-7"
+  },
+  "tk7sh5keyVYFt5Xdtxk7": {
+   "journal": "Nat Commun",
+   "short_name": "NatComm_Lin_2026_EPInformer",
+   "title": "EPInformer: scalable and integrative prediction of gene expression from promoter-enhancer sequences with multimodal epigenomic profiles",
+   "url": "https://www.nature.com/articles/s41467-026-70535-8?utm_source=Active+Broad+Users&utm_campaign=9aad602b46-EMAIL_CAMPAIGN_2026_03_11_08_03_COPY_01&utm_medium=email&utm_term=0_-05c0f6f783-483411726&mc_cid=9aad602b46"
+  }
+ },
+ "votes": {
+  "10.1016_j.ajhg.2026.02.011": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.ajhg.2026.02.015": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1016_j.cell.2026.03.007": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02535-9": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02541-x": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02544-8": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02549-3": {
+   "8c6976e5b5410415": 1
+  },
+  "10.1038_s41588-026-02553-7": {
+   "8c6976e5b5410415": 1
+  },
+  "4Ka1Yl9Xl90Chiw8QZW2": {
+   "8c6976e5b5410415": 1
+  },
+  "5R4DJVxki29wq6y0VgGh": {
+   "8c6976e5b5410415": 1
+  },
+  "9NBLIT1XK7fVcgzcvKGS": {
+   "8c6976e5b5410415": 1
+  },
+  "AzXsQS8Imu3lFvqUqQWk": {
+   "8c6976e5b5410415": 1
+  },
+  "EgCvscgOsjDJ7rJIETKt": {
+   "8c6976e5b5410415": 1
+  },
+  "M3r4aLNldwz080ohAlpu": {
+   "8c6976e5b5410415": 1
+  },
+  "MmjxNnCxX9JbPatSSQA1": {
+   "8c6976e5b5410415": 1
+  },
+  "TYUdDOzEKAbj9zOcliaI": {
+   "8c6976e5b5410415": 1
+  },
+  "Tyrpp2piKJtBNI1lkOET": {
+   "8c6976e5b5410415": 1
+  },
+  "ZKCNBJuka1UfZKxW5vZf": {
+   "8c6976e5b5410415": 1
+  },
+  "afRBFTx7y0M4rnpQ11i4": {
+   "8c6976e5b5410415": 1
+  },
+  "bjlhW1lxotg82zuC0vRz": {
+   "8c6976e5b5410415": 1
+  },
+  "fg1vqyNrcLGnohfu0l4O": {
+   "8c6976e5b5410415": 1
+  },
+  "nGYy5wjh1QfoC3zYX1Ya": {
+   "8c6976e5b5410415": 1
+  },
+  "oYLARXpgwJw6cKF6kZ8a": {
+   "8c6976e5b5410415": 1
+  },
+  "pwEf4njn9IfpVLX1kxhq": {
+   "8c6976e5b5410415": 1
+  },
+  "tLk19i9Kr0k74wC9COBD": {
+   "8c6976e5b5410415": 1
+  },
+  "tk7sh5keyVYFt5Xdtxk7": {
+   "8c6976e5b5410415": 1
+  }
+ }
+}

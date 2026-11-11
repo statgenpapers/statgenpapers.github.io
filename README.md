@@ -1,7 +1,7 @@
 # StatGen Papers
 
-<https://statgenpapers.github.io> lists about 25 new statistical genetics papers each month, ranked by a
-model trained on a lab's reading list. Readers mark papers they are interested in and add papers the model
+<https://statgenpapers.github.io> lists each month's statistical genetics papers with a pick chance of at least
+25%, from a model trained on a lab's reading list. Readers mark papers they are interested in and add papers the model
 missed. It costs $0 and needs no monthly work. Requirements: [`docs/spec.md`](docs/spec.md); design and
 evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md).
 
@@ -26,7 +26,11 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
 3. **Retrain** (needs the private files in `handoff/data/`, never committed):
    `uv run --group train python dev/backtest/prep.py && uv run --group train python dev/train.py`, then commit
    `model/weights.json`.
-4. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
+4. **Each month's lab picks** (in `handoff/data/sheet-picks.csv`): `uv run --group train python dev/rollforward.py M M`
+   for one month M refits leak-free weights, rebuilds M and adds the picks as marks of the handle `admin`, which
+   `firebase/firestore.rules` reserves for one Firebase user (`~/.config/statgenpapers/lab.json`, never committed).
+   Then retrain `model/weights.json` on everything (task 3) for the next month.
+5. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
 
 ## Checks
 
