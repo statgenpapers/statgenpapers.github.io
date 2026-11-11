@@ -706,7 +706,7 @@ function toggleExport(open = $("export").hidden) {
 function downloadTable() {
   const a = Object.assign(el("a"), {
     href: URL.createObjectURL(new Blob([`${tableText(visible())}\n`], { type: "text/tab-separated-values" })),
-    download: `statgen-papers-${state.month}.tsv`,
+    download: `statgenpapers-${state.month}.tsv`,
   });
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
