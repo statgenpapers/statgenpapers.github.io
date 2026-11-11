@@ -75,11 +75,11 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 /* the list */
 #listview { min-height: 100vh; }  /* the footer stays put while the list loads */
 .pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
-.title-head { padding-left: 2.45rem; }  /* the vote column (2.2rem) plus the gap (.25rem) */
+.title-head { padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
-.paper { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
+.paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 3.5rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
@@ -120,7 +120,7 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
   .account { margin-left: 0; flex-basis: 100%; }  /* its own line from the start: the bar does not grow later */
-  .paper { grid-template-columns: 2.2rem minmax(0, 1fr) 2.6rem; }
+  .paper { grid-template-columns: 1.8rem minmax(0, 1fr) 2.6rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }
   input { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
