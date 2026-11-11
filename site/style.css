@@ -34,7 +34,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .home { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
-.links, .account { font-size: var(--fs-small); color: var(--muted); }  /* as small as "(Nat Genet, 2026/10/01)" */
+.links, .account { color: var(--muted); }  /* 14px, the body size: a step above the 13px they once had */
 .account { margin-left: auto; }
 #me { color: var(--text); }
 #me.current { color: var(--accent-strong); }
@@ -116,7 +116,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .user a { justify-self: start; color: var(--text); }
 .page p { margin: .8rem 0 0; }
 
-footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: var(--fs-small); text-align: center; }
+footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); text-align: center; }  /* "about" at 14px, as the bar links */
 
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
