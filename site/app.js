@@ -223,8 +223,15 @@ function renderBar() {
   }
   $("login-open").textContent = state.handle ? "logout" : "login";
   syncExpanded();
+  syncAccountSep();
   document.title = { list: listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
     user: "Your handle · StatGen Papers", interested: "Interested · StatGen Papers" }[state.view];
+}
+
+// When the account block wraps onto two lines, the "|" after "interested" ends a line: hide it.
+function syncAccountSep() {
+  $("account-sep").hidden = false;
+  $("account-sep").hidden = $("login-open").parentElement.offsetTop > $("interested-wrap").offsetTop;
 }
 
 // The "add" and "login" links say whether their form is open.
@@ -782,6 +789,7 @@ async function init() {
   }
   addEventListener("popstate", route);
   addEventListener("storage", handleChanged);
+  addEventListener("resize", syncAccountSep, { passive: true });
   await route();
 }
 

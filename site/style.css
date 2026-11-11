@@ -35,7 +35,12 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
 .links, .account { color: var(--muted); }  /* 14px, the body size: a step above the 13px they once had */
-.account { margin-left: auto; }
+/* the account block shares the second row with the links; if it is too long it wraps within itself, right-aligned:
+   "interested" above "handle | logout" */
+.links { flex: none; }
+.account { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; justify-content: flex-end; }
+.account > span { white-space: nowrap; }
+#account-sep { white-space: pre; }  /* keeps the space after "|", which a flex item would drop */
 #me { color: var(--text); }
 #me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
@@ -116,7 +121,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .user a { justify-self: start; color: var(--text); }
 .page p { margin: .8rem 0 0; }
 
-footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); text-align: center; }  /* "about" at 14px, as the bar links */
+footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); text-align: center; }  /* "about" at 14px, as the bar links */
 
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
@@ -126,7 +131,7 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 }
 
 /* About page */
-.prose { padding-top: .5rem; padding-bottom: 0; color: var(--body); font-size: 1rem; line-height: 1.6; }
+.prose { padding-top: .5rem; padding-bottom: .6rem; color: var(--body); font-size: 1rem; line-height: 1.6; }
 .prose > * { max-width: 48rem; }  /* readable lines, starting at the bar's left edge */
 .prose h2 { margin: 2.2rem 0 .6rem; font-size: 1.2rem; color: var(--text); }
 .prose strong { color: var(--text); }
