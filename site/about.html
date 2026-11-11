@@ -40,7 +40,7 @@ for everyone within seconds, and the list re-orders itself by them. The code and
   <li>A logistic regression on that vector, plus one indicator per journal or preprint category, gives the score.
   Its weights (<code>model/weights.json</code>) were fitted to twelve months of picks from a statistical genetics
   group's reading list: the papers the group chose are the positives, every other candidate a negative.</li>
-  <li>The whole pool is ranked and the top <span data-v="shortlist">25</span> are shown.</li>
+  <li>The whole pool is ranked and the top 25 are shown.</li>
   <li><strong>Score</strong>, the percentage beside each paper, is the model output turned into a probability that the group lists the paper. The
   conversion (stored with the weights) was fitted to the scores of the rolling test below, where each month was
   scored by a model that had not seen it. There, papers given about 50% were picked about half the time, and the
@@ -74,7 +74,7 @@ that was not picked.</p>
   against <span data-v="haiku.rows.0.top25">43</span> picks in the top 25, and a lower AUC in two of three months.
   It costs nothing to run.</li>
   <li>It finds fewer than half of the picks. Tastes differ from month to month, and about one pick in ten comes
-  from a source that is not scanned at all. Voting and adding papers are there to fill that gap.</li>
+  from a source that is not scanned at all. Marking and adding papers are there to fill that gap.</li>
   <li>Venue carries about half the signal: the same model on text alone finds half as many picks.</li>
   <li>Scoring by similarity to past picks is clearly worse than a classifier.</li>
   <li>A single learned coefficient on each venue's past pick rate was worse than one indicator per venue
@@ -112,12 +112,14 @@ Numbers generated <span data-v="generated"></span>.</p>
   The site never shows handles: others see only how many readers are interested, and only you see your own list.</li>
   <li>"add" takes a journal, a title and a URL. The short name
   (<code>Journal_FirstAuthor_Year_Keyword</code>) is generated; the first author and year are looked up at
-  <a href="https://www.crossref.org">Crossref</a> from the DOI in the URL. Adding a paper marks you as interested in it. You can remove a paper you added.</li>
+  <a href="https://www.crossref.org">Crossref</a> from the DOI in the URL. Adding a paper marks you as interested in it. You can remove a paper you added, from the same browser.</li>
   <li>"copy table", at the bottom of the list, copies the list as shown, as four tab-separated columns (Journal, Short Name, Title, URL)
   that paste into a spreadsheet.</li>
   <li>Interest marks are stored in Google Firebase and copied into the repository each month, with the handles hashed.</li>
 </ol>
 </main>
+
+<footer><a href="./">list</a></footer>
 
 <script type="module">
 const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => r.json());

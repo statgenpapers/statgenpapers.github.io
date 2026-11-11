@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StatGen Papers</title>
-<meta name="description" content="A monthly shortlist of statistical genetics papers, ranked live by votes.">
+<meta name="description" content="A monthly shortlist of statistical genetics papers, ranked live by readers' interest.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M5%201.5h16.5l5.5%205.5v23.5H5z'%20fill='%23fff'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cpath%20d='M21.5%201.5V7H27'%20fill='%23c9d6f7'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cg%20font-family='Arial,Helvetica,sans-serif'%20font-weight='700'%20font-size='9'%20fill='%2310204f'%20text-anchor='middle'%3E%3Ctext%20x='16'%20y='15.3'%3EStat%3C/text%3E%3Ctext%20x='16'%20y='24'%3EGen%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js" crossorigin>
@@ -15,16 +15,17 @@
 <body>
 <header class="bar">
   <a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a>
-  <nav class="links"><a href="./" id="this-month">this month</a> | <span class="menu"><a href="#" id="past-open" aria-haspopup="true" aria-expanded="false">past</a><span id="past" class="popover" role="menu" hidden></span></span> | <a href="#" id="add-open">add</a><span id="viewing-wrap" hidden> | <span id="viewing" class="current"></span></span></nav>
-  <span class="account"><span id="interested-wrap" hidden><a href="#" id="interested-open">interested</a> | </span><a href="#" id="me" hidden></a><a href="#" id="login-open">login</a></span>
+  <nav class="links"><a href="./" id="this-month">this month</a> | <span class="menu"><a href="#" id="past-open" aria-haspopup="true" aria-expanded="false">past</a><span id="past" class="popover" hidden></span></span> | <a href="#" id="add-open">add</a><span id="viewing-wrap" hidden> | <span id="viewing" class="current"></span></span></nav>
+  <span class="account"><span id="interested-wrap" hidden><a href="#" id="interested-open">interested</a> | </span><span id="me-wrap" hidden><a href="#" id="me"></a> | </span><a href="#" id="login-open">login</a></span>
 </header>
 
 <main>
 
-  <form id="login" class="panel" hidden autocomplete="off">
+  <form id="login" class="panel" hidden>
     <label>handle <input id="login-handle" type="text" required minlength="2" maxlength="20" pattern="[A-Za-z0-9_]{2,20}" autocapitalize="none" spellcheck="false" autocomplete="nickname"></label>
     <button type="submit">login</button> <button type="button" id="login-cancel">cancel</button>
     <p class="hint">Pick a handle and remember it; no password needed.</p>
+    <p id="login-note" class="hint" role="status"></p>
   </form>
 
   <form id="add" class="panel" hidden autocomplete="off">
@@ -41,10 +42,10 @@
   <section id="page" class="page" hidden></section>
 
   <div id="listview">
-  <div class="pick-head"><span class="title-head">Title</span><span class="menu"><a href="#" id="score-help" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
+  <div class="pick-head"><span class="title-head">Title</span><span class="menu"><a href="#" id="score-help" class="dashed" aria-expanded="false" aria-controls="score-note" title="What is the score?">Score</a>
     <span id="score-note" class="popover score-note" hidden>The chance that a statistical genetics lab would pick this paper for its
     monthly reading list, predicted by a model trained on a year of its past picks. Of papers scored 50%, about half
-    were picked. Votes re-order the list but do not change the score. <a href="about.html">More</a></span></span></div>
+    were picked. Marks re-order the list but do not change the score. <a href="about.html">More</a></span></span></div>
   <ol id="list" class="list"></ol>
   </div>
 </main>
@@ -54,14 +55,14 @@
   <a href="about.html">about</a>
 </footer>
 
-<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <template id="row">
   <li class="paper">
     <span class="vote"><button class="up" aria-label="Interested" aria-pressed="false"><svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z" fill="currentColor"/></svg></button><span class="count"></span></span>
     <div class="main">
       <a class="title" target="_blank" rel="noopener noreferrer"></a> <span class="source"></span>
-      <div class="sub"><span class="meta"></span><a href="#" class="toggle" aria-expanded="false">Details</a><span class="remove-wrap" hidden> · <a href="#" class="remove">remove</a></span></div>
+      <div class="sub"><span class="meta"></span><a href="#" class="toggle dashed" aria-expanded="false">Details</a><span class="remove-wrap" hidden> · <a href="#" class="remove">remove</a></span></div>
       <div class="details" hidden></div>
     </div>
     <span class="pick"></span>
