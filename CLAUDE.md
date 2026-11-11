@@ -10,9 +10,9 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 3. Push workflow files over SSH; the local `gh` token lacks the `workflow` scope.
 4. Publish a change to `firebase/firestore.rules` with `cd firebase && npx firebase deploy --only firestore:rules
    --project statgenpapers` (the owner's CLI login), only after `npm test` and `dev/site_check.py --emulator` pass.
-5. Do not open the site in fresh browser profiles in a loop: every new profile creates an
-   anonymous Firebase user, and Firebase refuses sign-ups from an IP address after about 100 an
-   hour. `dev/site_check.py` reuses two saved profiles for this reason.
+5. Do not mark or add papers on the live site from fresh browser profiles in a loop: a profile's
+   first write creates an anonymous Firebase user, and Firebase refuses sign-ups from an IP address
+   after about 100 an hour. Reading creates none. `dev/site_check.py` reuses two saved profiles for this reason.
 
 ## Terminology
 

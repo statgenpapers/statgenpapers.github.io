@@ -19,7 +19,7 @@ const state = {
 };
 const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a mark write in flight: a second click must wait for it
-let fb = null, db = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load
+let fb = null, db = null, signer = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load
 let dbReady, afterLogin = null;  // afterLogin: the action that asked for a handle, run once one is given
 const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
@@ -149,7 +149,7 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-pressed", own);
   q(".up").setAttribute("aria-label", own ? "Not interested any more" : "Interested");
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
-  q(".up").disabled = !state.uid;
+  q(".up").disabled = !db;
   q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
 }
 
@@ -298,16 +298,14 @@ async function connect() {
     const [app, auth, firestore] = await Promise.all(["app", "auth", "firestore"].map((m) => import(`${SDK}/firebase-${m}.js`)));
     fb = { ...auth, ...firestore };
     const instance = app.initializeApp(firebaseConfig), user = fb.getAuth(instance);
+    signer = user;  // the Auth instance, for the sign-in on the first write
     // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
     // another browser's mark more than half a minute late after about 1 page load in 50.
     db = fb.initializeFirestore(instance, { experimentalForceLongPolling: true });
     dbReady();
-    listen();  // marks are public: read them at once, while this browser signs in (needed only to write)
+    listen();  // marks are public: reading needs no sign-in
     fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
-    await user.authStateReady();
-    if (!user.currentUser) {  // silent: no prompt; the handle, not this id, is what marks
-      await fb.signInAnonymously(user).catch((e) => { console.warn(e); toast("Marking is unavailable right now; the list is still readable."); });
-    }
+    render();  // the triangles work from here on
   } catch (e) {
     dbReady();
     offline = true;
@@ -320,6 +318,22 @@ async function connect() {
 
 // ---------------------------------------------------------------- writes
 
+// Writes need a signed-in browser. The anonymous sign-in happens on the first write, not on load, so a
+// reader who only reads never creates a Firebase user. Silent: no prompt; the handle, not this id, is what marks.
+async function signedIn() {
+  if (!signer) return toast("Still connecting; try again in a moment."), false;
+  await signer.authStateReady();
+  if (signer.currentUser) return true;
+  try {
+    state.uid = (await fb.signInAnonymously(signer)).user.uid;
+    return true;
+  } catch (e) {
+    console.warn(e);
+    toast("Marking is unavailable right now; try again later.");
+    return false;
+  }
+}
+
 // Without a handle, open the login form and remember what to do once one is given.
 function needHandle(action) {
   if (state.handle) return false;
@@ -331,11 +345,11 @@ function needHandle(action) {
 
 // Mark a paper, or take the mark back if this handle already gave one.
 async function vote(id) {
-  if (!state.uid) return toast("Still connecting; try again in a moment.");
   if (needHandle(() => vote(id).then(() => rows.get(id)?.scrollIntoView({ block: "center" })))) return;
   if (voting.has(id)) return;
   voting.add(id);
   try {
+    if (!(await signedIn())) return;
     if (mine(id)) await fb.deleteDoc(voteRef(state.month, id));
     else await fb.setDoc(voteRef(state.month, id), { paper: id, handle: state.handle });
   } catch (e) {
@@ -498,6 +512,7 @@ async function showInterested() {
     undo.addEventListener("click", link(async () => {
       const ref = voteRef(month, p.id, handle);
       try {
+        if (!(await signedIn())) return;
         await fb.deleteDoc(ref);
         li.hidden = true;
         toast("Removed.", async () => {
@@ -561,12 +576,12 @@ async function lookUp() {
 async function submitPaper(event) {
   event.preventDefault();
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: field("url").value.trim(), short_name: field("short").value.trim() };
-  if (!state.uid) return note("Still connecting; try again in a moment.", true);
   if (needHandle(() => { openPanel("add"); })) return;
   if (!httpUrl(paper.url)) return note("The URL must start with http:// or https://.", true);
   const doi = urlDoi(paper.url);
   if (items().some((p) => p.url === paper.url || (doi && (p.doi || urlDoi(p.url)) === doi))) return note("This paper is already on the list.", true);
   try {
+    if (!(await signedIn())) return;
     const ref = await fb.addDoc(fb.collection(db, "months", state.month, "submissions"),
       { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
     closeForm();

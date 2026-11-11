@@ -15,7 +15,7 @@ the design decisions and their evidence are in [`docs/PLAN.md`](docs/PLAN.md).
    through the logistic-regression weights in `model/weights.json`. The site's About page shows
    how well it works and where it falls short; `dev/backtest/` holds the code behind those numbers.
 3. **Site.** `site/` is plain HTML, CSS and JavaScript. Marks and reader-added papers live in
-   Firebase Firestore behind a silent anonymous sign-in. Readers mark under a handle, without a
+   Firebase Firestore; a silent anonymous sign-in happens on a browser's first mark or added paper, never just for reading. Readers mark under a handle, without a
    password: one vote document per mark (`months/{m}/votes/{paper}~{handle}`), one mark per handle and
    paper. `firebase/firestore.rules` checks the shape of every write and lets a browser remove only its
    own added papers.

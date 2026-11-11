@@ -104,15 +104,13 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .details .authors { color: var(--muted); font-size: var(--fs-small); }
 .pick { text-align: right; color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
 
-/* the interested page: titles start where the list's do */
+/* the user and interested pages: no vote column, so everything starts at the bar's left edge, as on About */
 .page { margin-top: .9rem; }
-.page-head, .marks .mark { padding-left: 2.45rem; }
 .page-head { color: var(--muted); margin: 0 0 .6rem; }
 .marks .mark { padding-top: .35rem; padding-bottom: .45rem; }
-.user { padding-left: 2.45rem; }
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
 .user .label { color: var(--muted); }
-.page p { margin: .8rem 0 0 2.45rem; }
+.page p { margin: .8rem 0 0; }
 
 footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: var(--fs-small); text-align: center; }
 
