@@ -200,7 +200,7 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-pressed", own);
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
-  q(".remove-wrap").hidden = !p.added || p.uid !== state.uid;
+  q(".remove-wrap").hidden = !p.added || p.uid !== state.uid || !upcoming();  // removable until the run lists it
 }
 
 // The list: (1) shows at once, in the order last seen in this browser or else by score; (2) when marks

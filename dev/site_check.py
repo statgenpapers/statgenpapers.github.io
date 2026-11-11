@@ -20,6 +20,7 @@ and leaves the live project alone. The emulators need Java and `npm install` in 
     "cd .. && uv run --with playwright python dev/site_check.py --emulator"
 """
 import functools
+import os
 import http.server
 import json
 import shutil
@@ -127,7 +128,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check(f"an upvote in one browser shows in the other ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
     check("the other browser re-orders the list, animated", order(b)[0] == "3" and b.evaluate("window.moves") > 0)
     check("own mark is highlighted (blue) only for the voter", pressed(a, 3) and not pressed(b, 3))
-    check("there is no downvote", a.locator("li.paper button:not(.added-icon)").count() == 4)
+    check("there is no downvote", a.locator("li.paper button:not(.added-icon, .remove)").count() == 4)
     row(b, 3).locator(".toggle").click()
     check("the abstract opens without its heading, and no handle shows",
           row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
@@ -246,9 +247,18 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         added(b).locator(".added-icon").click()
         check("a tap on the icon says, next to it, that the paper was added",
               seen(added(b).locator(".tip"), "Added by a reader, not chosen by the model.") is not None)
-        check("only the submitter can remove it", added(a).locator(".remove").is_visible() and not added(b).locator(".remove").is_visible())
-        added(a).locator(".up").click()  # take the automatic upvote back, then remove the paper
+        check("once listed, nobody can remove it", added(a).locator(".remove").is_hidden() and added(b).locator(".remove").is_hidden())
+        added(a).locator(".up").click()  # take the automatic upvote back
         seen(added(b).locator(".count"), "0")
+
+        # back before the run (the month unlisted again): its submitter removes it from the next month's page
+        (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH]}))
+        for page in pages:
+            page.goto(f"{url}?month=2020-02")
+        expect(added(b)).to_have_count(1, timeout=15000)
+        if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the submitter's row, for review
+            added(a).screenshot(path=f"{shots}/own-added-row.png")
+        check("before the run, only its submitter can remove it", added(a).locator(".remove").is_visible() and added(b).locator(".remove").is_hidden())
         n = len(prompts)
         added(a).locator(".remove").click()
         try:
