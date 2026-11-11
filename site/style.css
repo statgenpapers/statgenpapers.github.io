@@ -82,7 +82,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .vote { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
 .count { color: var(--muted); font-size: .75em; font-variant-numeric: tabular-nums; }
 .up[aria-pressed="true"] + .count { color: var(--accent); }
-.details { margin: .4rem 0 .3rem; font-size: .9em; line-height: 1.6; color: var(--body); max-width: 80ch; }
+.details { margin: .4rem 0 .3rem; font-size: .9em; line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details .who { color: var(--muted); font-size: .9em; }
 .pick { text-align: right; color: var(--muted); font-size: .9em; font-variant-numeric: tabular-nums; }
