@@ -15,10 +15,11 @@ const state = {
   uid: null,
   handle: "",        // the reader's handle, lower case; "" when logged out
   view: "list",      // "list" (a month), "user" or "interested" (pages of the logged-in handle)
+  waiting: new Set(),  // first snapshots a month's first draw waits for: "votes", "submissions"
 };
 const rows = new Map();  // paper id -> <li>
 const voting = new Set();  // paper ids with a mark write in flight: a second click must wait for it
-let fb = null, db = null, unsubscribe = [];
+let fb = null, db = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load
 let dbReady, afterLogin = null;  // afterLogin: the action that asked for a handle, run once one is given
 const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
@@ -48,7 +49,7 @@ function hideToast() {
 const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
 const httpUrl = (url) => (/^https?:\/\/\S+$/i.test(url) ? url : null);
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-const source = (p) => `(${[p.journal, p.date].filter(Boolean).join(", ")})`;
+const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
 
 // DOI shown in a paper URL, without a preprint version; "" if none
 function urlDoi(url) {
@@ -153,16 +154,23 @@ function updateRow(li, p) {
 
 function render() {
   const list = $("list");
-  if (state.view === "list" && !state.data) return renderBar();  // the list shows as soon as its file is in; marks glide in
+  if (state.view === "list" && (!state.data || state.waiting.size)) return renderBar();
   const before = new Map([...list.children].map((li) => [li, li.getBoundingClientRect().top]));
   const nodes = visible().map((p) => {
     if (!rows.has(p.id)) rows.set(p.id, createRow(p));
     updateRow(rows.get(p.id), p);
     return rows.get(p.id);
   });
+  const sameRows = nodes.length === list.children.length && [...list.children].every((li) => li.isConnected && nodes.includes(li));
+  const reorder = nodes.some((n, i) => n !== list.children[i]);
+  if (sameRows && reorder && reading()) {  // counts are updated in place; the order follows once the reader pauses
+    clearTimeout(render.held);
+    render.held = setTimeout(render, 1000);
+    return renderBar();
+  }
   if (!nodes.length) {
     list.replaceChildren(el("li", "empty", "No list for this month yet."));
-  } else if (nodes.length !== list.children.length || nodes.some((n, i) => n !== list.children[i])) {
+  } else if (!sameRows || reorder) {
     const focused = document.activeElement;
     list.replaceChildren(...nodes);
     if (focused && list.contains(focused)) focused.focus({ preventScroll: true });
@@ -180,8 +188,13 @@ function render() {
   renderBar();
 }
 
+// Someone is reading: a details panel is open, or the page was scrolled, or the list pointed at or
+// typed in, within the last 3 s. Re-ordering then would move the row being read.
+let lastInput = 0;
+const reading = () => Date.now() - lastInput < 3000 || Boolean($("list").querySelector(".details:not([hidden])"));
+
 function renderBar() {
-  // a month's list names its month at the end of the top bar, in the darker blue: "this month | past | add | 2026/10"
+  // a month's list names its month at the end of the top bar, in the darker blue: "latest | past | add | 2026/10"
   const listed = state.view === "list" && state.month;
   $("viewing-wrap").hidden = !listed;
   $("viewing").textContent = listed ? monthName(state.month) : "";
@@ -201,9 +214,15 @@ async function loadMonth(month) {
   $("page").hidden = true;
   state.month = month;
   state.data = null;
-  state.votes = new Map();
-  state.subs = [];
   rows.clear();
+  // Stale-while-revalidate: a month seen before shows at once in its last-seen order, and only changes
+  // glide in. A first visit waits for the marks (at most 3 s), so it too opens already in order.
+  const saved = readMarks(month);
+  state.votes = saved?.votes ?? new Map();
+  state.subs = saved?.subs ?? [];
+  state.waiting = new Set(saved || offline ? [] : ["votes", "submissions"]);
+  clearTimeout(loadMonth.timer);
+  loadMonth.timer = setTimeout(() => { state.waiting.clear(); render(); }, 3000);
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
   listen();
@@ -226,15 +245,48 @@ function listen() {
       if (!state.votes.has(paper)) state.votes.set(paper, new Set());
       state.votes.get(paper).add(handle);
     }
-    render();
-  }, (e) => { console.warn("votes", e); toast("Marking is unavailable right now; the list is still readable."); }));
+    arrived("votes");
+  }, (e) => { console.warn("votes", e); arrived("votes"); toast("Marking is unavailable right now; the list is still readable."); }));
   unsubscribe.push(fb.onSnapshot(at("submissions"), (snap) => {
     state.subs = snap.docs.map((d) => {
       const s = d.data({ serverTimestamps: "estimate" });
       return { ...s, id: d.id, created: s.created?.toMillis() ?? Date.now() };
     });
-    render();
-  }, (e) => console.warn("submissions", e)));
+    arrived("submissions");
+  }, (e) => { console.warn("submissions", e); arrived("submissions"); }));
+}
+
+function arrived(name) {
+  state.waiting.delete(name);
+  saveMarks();
+  render();
+}
+
+// The month's marks as last seen, in this browser only: counts and this handle's own marks, never other
+// handles; added papers without the adder's handle. Placeholder entries stand in for others' marks
+// until the first snapshot replaces them.
+function saveMarks() {
+  if (state.waiting.size) return;  // not before both snapshots are in
+  const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, handles.size]));
+  const own = [...state.votes].filter(([, handles]) => handles.has(state.handle)).map(([id]) => id);
+  const subs = state.subs.map(({ name, ...s }) => s);
+  try { localStorage.setItem(`marks:${state.month}`, JSON.stringify({ counts, own, handle: state.handle, subs })); } catch {}
+}
+
+function readMarks(month) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(`marks:${month}`));
+    if (!saved) return null;
+    const own = new Set(saved.handle === state.handle ? saved.own : []);
+    const votes = new Map(Object.entries(saved.counts).map(([id, n]) => {
+      const handles = new Set(own.has(id) ? [state.handle] : []);
+      while (handles.size < n) handles.add(`\u0000${handles.size}`);  // not a valid handle: never matches or deletes
+      return [id, handles];
+    }));
+    return { votes, subs: saved.subs };
+  } catch {
+    return null;
+  }
 }
 
 async function connect() {
@@ -254,6 +306,9 @@ async function connect() {
     }
   } catch (e) {
     dbReady();
+    offline = true;
+    state.waiting.clear();
+    render();
     console.warn(e);
     toast("Marking is unavailable right now; the list is still readable.");
   }
@@ -291,7 +346,7 @@ async function vote(id) {
 async function removeSubmission(p) {
   if (!confirm(`Remove "${p.title}" from the list?`)) return;
   try {
-    await Promise.all([...(state.votes.get(p.id) ?? [])].map((handle) => fb.deleteDoc(voteRef(state.month, p.id, handle))));
+    await Promise.all([...(state.votes.get(p.id) ?? [])].filter((h) => HANDLE.test(h)).map((handle) => fb.deleteDoc(voteRef(state.month, p.id, handle))));
     await fb.deleteDoc(fb.doc(db, "months", state.month, "submissions", p.id));
   } catch (e) {
     console.warn(e);
@@ -571,7 +626,7 @@ async function init() {
   $("past-open").addEventListener("click", link(() => togglePast()));
   $("me").addEventListener("click", link(() => go({ user: state.handle })));
   $("interested-open").addEventListener("click", link(() => go({ interested: state.handle })));
-  $("this-month").addEventListener("click", link(() => go({})));
+  $("latest").addEventListener("click", link(() => go({})));
   $("score-help").addEventListener("click", link(() => toggleScoreNote()));
   // a click outside a pop-up, or Escape, closes it
   document.addEventListener("click", (e) => {
@@ -579,6 +634,8 @@ async function init() {
     if (!e.target.closest(".pick-head .menu")) toggleScoreNote(false);
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { togglePast(false); toggleScoreNote(false); } });
+  for (const type of ["pointermove", "pointerdown", "keydown"]) $("list").addEventListener(type, () => { lastInput = Date.now(); }, { passive: true });
+  addEventListener("scroll", () => { lastInput = Date.now(); }, { passive: true });
   // the toast stays while the pointer or focus is on it
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());

@@ -107,6 +107,15 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     a, b = pages
     row = lambda page, n: page.locator("li.paper", has_text=f"Test paper {n}")
     order = lambda page: [t[-1] for t in page.locator("li.paper .title").all_inner_texts()]
+
+    def settles(page, expected, timeout=8):
+        """The list reaches `expected` order; the page holds re-ordering while its reader is active (about 3 s)."""
+        t0 = time.time()
+        while time.time() - t0 < timeout:
+            if order(page) == list(expected):
+                return True
+            page.wait_for_timeout(200)
+        return False
     count = lambda page, n: row(page, n).locator(".count")  # the number under the upvote triangle
     pressed = lambda page, n: row(page, n).locator(".up").get_attribute("aria-pressed") == "true"
     check("both browsers list the month and can vote after logging in with a handle", order(a) == order(b) == list("1234") and not prompts)
@@ -122,12 +131,13 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".toggle").click()
     check("the abstract opens without its heading, and no handle shows",
           row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
+    row(b, 3).locator(".toggle").click()  # closed again: an open panel holds re-ordering
 
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
-    check("votes add up, and ties are ordered by score", seen(count(a, 3), "2") is not None and seen(count(a, 4), "1") is not None and order(a) == list("3412"))
+    check("votes add up, and ties are ordered by score", seen(count(a, 3), "2") is not None and seen(count(a, 4), "1") is not None and settles(a, "3412"))
     check("(journal, date) shows next to the titles",
-          a.locator("li.paper .source").all_inner_texts() == ["(Nat Genet, 2020-01-03)", "(Nat Genet, 2020-01-04)", "(Nat Genet, 2020-01-01)", "(bioRxiv, 2020-01-02)"])
+          a.locator("li.paper .source").all_inner_texts() == ["(Nat Genet, 2020/01/03)", "(Nat Genet, 2020/01/04)", "(Nat Genet, 2020/01/01)", "(bioRxiv, 2020/01/02)"])
     check("authors show as first two … last two",
           row(a, 4).locator(".meta").inner_text() == "Author 1, Author 2, …, Author 6, Author 7"
           and row(a, 2).locator(".meta").inner_text() == "Author 1, Author 2, Author 3")
@@ -141,7 +151,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
     check("a voter can take the upvote back", seen(count(b, 3), "0") is not None and seen(count(a, 4), "0") is not None
-          and not pressed(a, 3) and order(a) == order(b) == list("1234"))
+          and not pressed(a, 3) and settles(a, "1234") and settles(b, "1234"))
 
     rules = urllib.request.Request(f"https://firestore.googleapis.com/v1/projects/statgenpapers/databases/(default)/documents/months/{MONTH}/submissions")
     try:

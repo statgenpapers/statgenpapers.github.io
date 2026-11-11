@@ -75,6 +75,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .title-head { padding-left: 2.45rem; }  /* the vote column (2.2rem) plus the gap (.25rem) */
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
+.paper .main { max-width: 44rem; }  /* titles and abstracts: about 85–95 characters a line at most */
 .paper { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
 .paper.lift { position: relative; z-index: 1; background: var(--bg); }  /* a row moving far glides over the others */
