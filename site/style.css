@@ -47,7 +47,10 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .status { margin: 1rem 0 0; color: var(--muted); font-size: .9em; }
 .status b { color: var(--text); margin-right: .3rem; }
 .status .live { color: var(--green); }
-.pick-head { margin: .2rem 0 0; text-align: right; color: var(--muted); font-size: .8em; cursor: help; }
+.pick-head { margin: .2rem 0 0; text-align: right; color: var(--muted); font-size: .8em; }
+.pick-head a { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
+.pick-head a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.score-note { margin: .3rem 0 .2rem auto; max-width: 30rem; padding: .5rem .7rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--body); font-size: .85em; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }

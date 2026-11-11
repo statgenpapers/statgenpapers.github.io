@@ -377,6 +377,10 @@ async function init() {
   $("login-cancel").addEventListener("click", link(() => { $("login").hidden = true; }));
   $("login").addEventListener("submit", login);
   $("past-open").addEventListener("click", link(showPast));
+  $("score-help").addEventListener("click", link(() => {
+    $("score-note").hidden = !$("score-note").hidden;
+    $("score-help").setAttribute("aria-expanded", !$("score-note").hidden);
+  }));
   $("this-month").addEventListener("click", link(() => loadMonth(state.months.at(-1))));
   field("url").addEventListener("change", lookUp);
   field("journal").addEventListener("input", refreshShortName);
