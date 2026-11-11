@@ -57,7 +57,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .panel p.error { color: var(--error); }
 #login { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
 #login label { margin: 0; }
-#login .hint { flex-basis: 100%; }
+#login p { flex-basis: 100%; margin: 0; }  /* the hint sits one row-gap under the field */
 #add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); }
 #add input { width: 100%; }
 .hint { color: var(--muted); font-size: var(--fs-small); }
@@ -78,7 +78,6 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .paper .main { max-width: 44rem; }  /* titles and abstracts: about 85–95 characters a line at most */
 .paper { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
-.paper.lift { position: relative; z-index: 1; background: var(--bg); }  /* a row passing others glides above them */
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
 .vote { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
@@ -124,11 +123,6 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
   #add label { grid-template-columns: 1fr; gap: .2rem; }
   input { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
-
-/* TEMPORARY animation trial (#anim) */
-.anim-trial { position: fixed; right: 1rem; bottom: 1rem; z-index: 10; padding: .5rem .8rem; background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); box-shadow: var(--shadow); color: var(--muted); font-size: var(--fs-meta); }
-.anim-trial .current { color: var(--accent-strong); font-weight: 700; }
 
 /* About page */
 .prose { padding-top: .5rem; padding-bottom: 3rem; color: var(--body); font-size: 1rem; line-height: 1.6; }

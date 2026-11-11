@@ -27,4 +27,5 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 - *Short name:* the label `Journal_FirstAuthor_Year_Keyword`, generated for every paper.
 - *Submission:* a paper a visitor added on the site (`months/YYYY-MM/submissions` in Firestore).
 - *Handle:* a visitor's login name, without a password. Votes are keyed by the lower-case handle.
+- *Mark:* a reader's "interested" on a paper, shown as ▲ and a count. Stored as a vote document; the site says mark, the code and data say vote.
 - *Pick chance:* shown on the site as "Score"; the calibrated probability that the lab picks a paper, `sigmoid(a + b·score)`, with `a` and `b` stored in the lab weights.
