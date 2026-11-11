@@ -12,7 +12,7 @@ const state = {
   months: [], month: null, data: null,
   votes: new Map(),  // paper id -> { handle key: handle as typed }
   subs: [],          // papers added by visitors
-  uid: null, live: false,
+  uid: null,
   handle: "",       // the visitor's handle as typed; "" when logged out
 };
 const rows = new Map();  // paper id -> <li>
@@ -140,14 +140,12 @@ function render() {
       }
     }
   }
-  const d = state.data, all = items(), added = all.length - (d?.papers.length || 0);
-  const votes = all.reduce((sum, p) => sum + upvotes(p.id).length, 0);
-  const status = $("status");
-  status.textContent = d
-    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"} · `
-    : "";
-  if (d) status.append(Object.assign(el("span", state.live ? "live" : "", state.live ? "● live" : "connecting…"),
-    { title: "Connected: votes and papers added by others appear here without reloading" }));
+  // the month shown, in the top bar: "this month (October 2026)", or "past (September 2026)" for an earlier one
+  const latest = state.month === state.months.at(-1), viewed = state.month ? ` (${monthName(state.month)})` : "";
+  $("this-month").textContent = `this month${latest ? viewed : ""}`;
+  $("past-open").textContent = `past${latest ? "" : viewed}`;
+  $("this-month").classList.toggle("current", latest);
+  $("past-open").classList.toggle("current", !latest);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("login-open").textContent = state.handle ? "logout" : "login";
@@ -161,7 +159,6 @@ async function loadMonth(month) {
   state.votes = new Map();
   state.subs = [];
   rows.clear();
-  $("month-name").textContent = monthName(month);
   $("past").hidden = true;
   history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
   closeForm();
@@ -184,9 +181,8 @@ function listen() {
       const { paper, handle } = d.data();
       state.votes.set(paper, { ...state.votes.get(paper), [handle.toLowerCase()]: handle });
     }
-    state.live = true;
     render();
-  }, (e) => { state.live = false; console.warn("votes", e); render(); }));
+  }, (e) => { console.warn("votes", e); toast("Votes are unavailable right now; the list is still readable."); }));
   unsubscribe.push(fb.onSnapshot(at("submissions"), (snap) => {
     state.subs = snap.docs.map((d) => {
       const s = d.data({ serverTimestamps: "estimate" });
@@ -391,7 +387,7 @@ async function init() {
   const index = await fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
   state.months = index.months;
   if (!state.months.length) {
-    $("status").textContent = "No lists yet.";
+    $("list").replaceChildren(el("li", "empty", "No lists yet."));
     return;
   }
   const asked = new URLSearchParams(location.search).get("month");
