@@ -235,7 +235,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               and added(b).locator(".pick").inner_text() == "42%" and added(b).locator(".added-icon").is_visible() and row(b, 4).locator(".added-icon").is_hidden()
               and "sitecheck" not in added(b).inner_text())
         added(b).locator(".added-icon").click()
-        check("a tap on the icon says the paper was added", seen(b.locator("#toast"), "Added by a reader, not chosen by the model.") is not None)
+        check("a tap on the icon says, next to it, that the paper was added",
+              seen(added(b).locator(".tip"), "Added by a reader, not chosen by the model.") is not None)
         check("only the submitter can remove it", added(a).locator(".remove").is_visible() and not added(b).locator(".remove").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back, then remove the paper
         seen(added(b).locator(".count"), "0")

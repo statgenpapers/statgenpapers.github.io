@@ -107,13 +107,15 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 /* an added paper: a small person-plus icon left of its Score, so the Score is not read as the model's choice */
 .pick .added-icon { position: relative; top: 1px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; line-height: 0; }  /* an added paper: at the Score column's left edge, the same place in every row */
 .pick .pct { margin-left: auto; }
+.tip { position: absolute; top: calc(100% + .3rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); color: var(--body); }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details p:last-child { margin-bottom: 0; }
 /* a thin line in the gutter, from the first line's text to the last: the text stays where it was */
 .details::before { content: ""; position: absolute; left: -.5rem; top: .4em; bottom: .5em; width: 2px; background: var(--border); }
 .details .authors { color: var(--muted); font-size: var(--fs-small); }
-.pick { display: flex; align-items: baseline; color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
+.pick { position: relative; display: flex; align-items: baseline; color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
 
 /* the user and interested pages: no vote column, so everything starts at the bar's left edge, as on About */
 .page { margin-top: .9rem; }

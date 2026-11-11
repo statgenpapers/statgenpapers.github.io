@@ -97,11 +97,11 @@ function items() {
       p_pick: scored[s.id] }))];
 }
 
-// By marks. On equal marks an added paper comes first, oldest first: a reader chose it; then by score.
+// By marks. On equal marks an added paper comes first (a reader chose it), then the listed ones; each group by
+// Score, highest first. Unscored added papers (the next month's page) go oldest first.
 function visible() {
-  const age = (p) => p.created ?? 0;
-  return items().sort((a, b) => count(b.id) - count(a.id) || Number(Boolean(b.added)) - Number(Boolean(a.added))
-    || (a.added ? age(a) - age(b) : b.score - a.score));
+  const rank = (p) => (p.added ? p.p_pick ?? -(p.created ?? 0) / 1e15 : p.score);
+  return items().sort((a, b) => count(b.id) - count(a.id) || Number(Boolean(b.added)) - Number(Boolean(a.added)) || rank(b) - rank(a));
 }
 
 // A link that acts in the page. Ctrl, Cmd or Shift on a link to another page opens that page as the browser would.
@@ -123,6 +123,22 @@ function monthData(m) {
 
 // ---------------------------------------------------------------- rendering
 
+// A short note just under a control, for a tap where a hover title cannot show; one at a time, gone after
+// 3 s or at the next click elsewhere.
+function showTip(anchor, text) {
+  document.querySelector(".tip")?.remove();
+  const tip = el("span", "tip", text);
+  tip.setAttribute("role", "status");
+  anchor.after(tip);
+  const close = (event) => {
+    if (event?.target === anchor) return;
+    tip.remove();
+    document.removeEventListener("click", close, true);
+  };
+  setTimeout(() => document.addEventListener("click", close, true));
+  setTimeout(close, 3000);
+}
+
 function createRow(p) {
   const month = state.month;  // a row belongs to one month: a late click never marks a paper of another
   const li = $("row").content.firstElementChild.cloneNode(true);
@@ -135,7 +151,7 @@ function createRow(p) {
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
-  q(".added-icon").addEventListener("click", () => toast("Added by a reader, not chosen by the model."));  // a tap says so on phones
+  q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
