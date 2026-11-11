@@ -217,6 +217,14 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.fill("#add-title", PAPERS[0]["title"])
         a.click("#add button[type=submit]")
         check("nor a paper of the latest list", seen(a.locator("#add-note"), "This paper is on the 2020/01 list already.") is not None)
+        paste = ("([name, text]) => { const input = document.getElementById(name); input.value = ''; input.focus();"
+                 " const data = new DataTransfer(); data.setData('text/plain', text);"
+                 " input.dispatchEvent(new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true })); }")
+        a.evaluate(paste, ["add-title", "AlphaGenome 2: deciphering how cells\nread DNA to better under-\nstand disease"])
+        a.evaluate(paste, ["add-authors", "Žiga Avsec1,2,*, Natasha Latysheva1\nJun Cheng† and Pushmeet Kohli1"])
+        check("text pasted from a PDF goes in tidied: lines joined, author markers dropped",
+              a.input_value("#add-title") == "AlphaGenome 2: deciphering how cells read DNA to better understand disease"
+              and a.input_value("#add-authors") == "Žiga Avsec, Natasha Latysheva, Jun Cheng, Pushmeet Kohli")
         a.click("#add-cancel")
 
         # the run for 2020-02: it lists the month, with the added paper scored

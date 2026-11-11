@@ -660,10 +660,13 @@ function note(message, error = false) {
   $("add-note").classList.toggle("error", error);
 }
 
+// The first author's surname from the authors typed or pasted, when no DOI record gave one: "Žiga Avsec, …" -> "Avsec"
+const typedSurname = () => field("authors").value.split(",")[0].trim().split(/\s+/).at(-1) || undefined;
+
 function refreshShortName() {
   if (form.edited) return;
   field("short").value = field("journal").value.trim() && field("title").value.trim()
-    ? shortName(field("journal").value.trim(), form.lookup.surname, form.lookup.year || state.month.slice(0, 4), field("title").value)
+    ? shortName(field("journal").value.trim(), form.lookup.surname || typedSurname(), form.lookup.year || state.month.slice(0, 4), field("title").value)
     : "";
 }
 
@@ -711,6 +714,17 @@ function piiDoi(url) {
   return get(`https://api.crossref.org/works?filter=alternative-id:${id},prefix:10.1016&rows=1&select=DOI`)
     .then((d) => d?.message?.items?.[0]?.DOI?.toLowerCase() ?? "");
 }
+
+// Text pasted from a PDF: lines joined, a word broken by a hyphen at a line end rejoined (only before a lower-case
+// letter, so "single-\ncell" loses its hyphen too: rare in titles and abstracts, and easy to fix).
+const joinLines = (t) => t.replace(/\u00ad/g, "").replace(/(\p{Ll})-[ \t]*\r?\n\s*(?=\p{Ll})/gu, "$1").replace(/\s+/g, " ").trim();
+const PASTED = {
+  title: joinLines,
+  abstract: (t) => joinLines(t).replace(/^abstract[\s.:]*/i, ""),
+  // "Žiga Avsec1,2,*, Natasha Latysheva1 and Jun Cheng†" -> "Žiga Avsec, Natasha Latysheva, Jun Cheng"
+  authors: (t) => t.replace(/(\p{L}\.?)[\d⁰¹²³⁴-⁹*†‡§¶#✉]+(?:,[\d⁰¹²³⁴-⁹*†‡§¶#✉]+)*/gu, "$1")
+    .split(/\s*(?:[,;\n]|\band\b|&)\s*/).map((a) => a.replace(/\s+/g, " ").trim()).filter(Boolean).join(", "),
+};
 
 // On a pasted or changed URL: fill the empty fields from the DOI's record, and say how it went. Whatever is
 // filled can be edited; nothing found leaves the form to be typed by hand.
@@ -866,10 +880,21 @@ async function init() {
   for (const [type, handler] of [["mouseenter", () => clearTimeout(toast.timer)], ["focusin", () => clearTimeout(toast.timer)],
     ["mouseleave", startToast], ["focusout", startToast]]) $("toast").addEventListener(type, () => $("toast").childNodes.length && handler());
   // a lookup in flight is awaited by submitPaper, so its last note cannot overwrite the submit's
+  for (const [name, tidy] of Object.entries(PASTED)) {  // text pasted from a PDF goes in tidied
+    field(name).addEventListener("paste", (event) => {
+      const text = event.clipboardData?.getData("text/plain");
+      if (!text) return;
+      event.preventDefault();
+      const input = field(name);
+      input.setRangeText(tidy(text), input.selectionStart, input.selectionEnd, "end");
+      input.dispatchEvent(new Event("input", { bubbles: true }));  // the short name follows the title
+    });
+  }
   field("url").addEventListener("change", () => { form.pending = lookUp(); });
   field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
   field("journal").addEventListener("input", refreshShortName);
   field("title").addEventListener("input", refreshShortName);
+  field("authors").addEventListener("input", refreshShortName);
   field("short").addEventListener("input", () => { form.edited = field("short").value !== ""; });
 
   const index = await fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
