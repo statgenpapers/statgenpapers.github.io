@@ -74,13 +74,13 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 /* the list */
 #listview { min-height: 100vh; }  /* the footer stays put while the list loads */
 .pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
-.title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.3rem; }  /* the vote column (2rem) plus the gap (.3rem) */
+.title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
 #export-open { display: flex; padding: .3rem .2rem; color: var(--muted); }  /* the export icon: as muted as the heading, a larger hit area */
 #export-open:hover, #export-open[aria-expanded="true"] { color: var(--text); }
 #score-help { color: inherit; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
-.paper { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 3.5rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: start; }
+.paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 3.5rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
@@ -120,7 +120,7 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
-  .paper { grid-template-columns: 2rem minmax(0, 1fr) 2.6rem; }
+  .paper { grid-template-columns: 1.8rem minmax(0, 1fr) 2.6rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }
   input { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
@@ -144,7 +144,7 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 .prose .caption { color: var(--muted); font-size: var(--fs-meta); }
 
 /* Wide screens: the vote column hangs in the left margin, so "Papers of …", the titles and the bar's rule share one left edge */
-@media (min-width: 60rem) {  /* the 54rem column plus room for the 2.3rem hang on each side */
+@media (min-width: 60rem) {  /* the 54rem column plus room for the 2.1rem hang on each side */
   .title-head { padding-left: 0; }
-  .paper { margin-left: -2.3rem; }
+  .paper { margin-left: -2.1rem; }
 }
