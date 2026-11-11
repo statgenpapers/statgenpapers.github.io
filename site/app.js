@@ -1,7 +1,7 @@
 // StatGen Papers: static list from data/*.json, live upvotes and visitor-added papers from Firestore.
 import { firebaseConfig } from "./config.js";
 
-const SDK = "https://www.gstatic.com/firebasejs/11.10.0";
+const SDK = "https://www.gstatic.com/firebasejs/11.10.0";  // also preloaded in index.html: change both
 const TABLE_HEADER = ["Journal", "Short Name", "Title", "URL"];
 const STOPWORDS = new Set("a an and are as at by for from in into is of on or the to via with across between through using".split(" "));
 const $ = (id) => document.getElementById(id);
@@ -233,17 +233,16 @@ async function connect() {
     const [app, auth, firestore] = await Promise.all(["app", "auth", "firestore"].map((m) => import(`${SDK}/firebase-${m}.js`)));
     fb = { ...auth, ...firestore };
     const instance = app.initializeApp(firebaseConfig), user = fb.getAuth(instance);
-    // Sign in before the first listener, so the connection opens once, as this visitor.
-    await user.authStateReady();
-    if (!user.currentUser) {  // silent: no prompt; the handle, not this id, is what votes
-      await fb.signInAnonymously(user).catch((e) => { console.warn(e); toast("Voting is unavailable right now; the list is still live."); });
-    }
-    fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
     // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
     // another browser's vote more than half a minute late after about 1 page load in 50.
     db = fb.initializeFirestore(instance, { experimentalForceLongPolling: true });
     dbReady();
-    listen();
+    listen();  // marks are public: read them at once, while this browser signs in (needed only to write)
+    fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
+    await user.authStateReady();
+    if (!user.currentUser) {  // silent: no prompt; the handle, not this id, is what votes
+      await fb.signInAnonymously(user).catch((e) => { console.warn(e); toast("Voting is unavailable right now; the list is still live."); });
+    }
   } catch (e) {
     dbReady();
     offline = true;
