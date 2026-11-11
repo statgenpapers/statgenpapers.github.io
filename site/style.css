@@ -1,13 +1,13 @@
 :root {
   --bg: #f6f6ef; --surface: #fff; --subtle: #eeeee6; --text: #15171c; --body: #333843; --muted: #6b6f78; --border: #dcdcd2;
-  --accent: #2355d8; --accent-soft: #e9effd;
+  --accent: #2355d8; --accent-strong: #0f2a73; --accent-soft: #e9effd;
   --font: Arial, Helvetica, sans-serif;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #121418; --surface: #181b21; --subtle: #1d2129; --text: #eceef2; --body: #c9cdd6; --muted: #98a0af; --border: #2a2f3a;
-    --accent: #86a6ff; --accent-soft: #1d2947;
+    --accent: #86a6ff; --accent-strong: #d3deff; --accent-soft: #1d2947;
   }
 }
 * { box-sizing: border-box; }
@@ -20,7 +20,7 @@ input { background: var(--surface); border: 1px solid var(--border); border-radi
 button { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: .15rem .7rem; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.bar, main, footer { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+.bar, main, footer { max-width: 56rem; margin: 0 auto; padding: 0 1rem; }  /* one centred column: bar, list and footer share both edges */
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; padding-top: 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--accent); }
 .home { display: flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
 .home:hover { text-decoration: none; }
@@ -31,8 +31,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .account #me::after { content: "|"; display: inline-block; margin-left: .35em; color: var(--muted); }  /* inline-block: not underlined with the link */
 
 .menu { position: relative; }
-.links a.current, .popover a.current { font-weight: 700; }
-#listview { max-width: 54rem; }  /* keeps Score near the titles on wide screens */
+.links a.current, .popover a.current { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
 .page { margin-top: 1rem; }
 .page-head { color: var(--muted); margin: 0 0 .6rem; }
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
@@ -103,7 +102,8 @@ footer p { margin: .6rem 0 0; }
 }
 
 /* About page */
-.prose { max-width: 48rem; padding-bottom: 3rem; color: var(--body); font-size: 1rem; line-height: 1.6; }
+.prose > * { max-width: 48rem; }  /* readable lines, starting at the bar's left edge */
+.prose { padding-bottom: 3rem; color: var(--body); font-size: 1rem; line-height: 1.6; }
 .prose h2 { margin: 2.2rem 0 .6rem; font-size: 1.2rem; color: var(--text); }
 .prose strong { color: var(--text); }
 .prose table { border-collapse: collapse; margin: 1rem 0; font-size: .9rem; display: block; overflow-x: auto; max-width: 100%; width: max-content;

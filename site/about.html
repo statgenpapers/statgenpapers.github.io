@@ -10,7 +10,7 @@
 <body>
 <header class="bar">
   <a class="home" href="./"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 1.5h16.5l5.5 5.5v23.5H5z" fill="#fff" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><path d="M21.5 1.5V7H27" fill="#c9d6f7" stroke="#10204f" stroke-width="1.4" stroke-linejoin="round"/><g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="9" fill="#10204f" text-anchor="middle"><text x="16" y="15.3">Stat</text><text x="16" y="24">Gen</text></g></svg><b>StatGen Papers</b></a>
-  <nav class="links"><a href="./" id="this-month">this month</a> | <a href="./">past</a></nav>
+  <nav class="links"><a href="./">this month</a> | <a href="./">past</a></nav>
 </header>
 
 <main class="prose">
@@ -121,10 +121,6 @@ Numbers generated <span data-v="generated"></span>.</p>
 </main>
 
 <script type="module">
-fetch("data/index.json", { cache: "no-cache" }).then((r) => r.json()).then(({ months }) => {
-  const when = Object.assign(document.createElement("span"), { className: "when", textContent: `(${months.at(-1).replace("-", "/")})` });
-  document.getElementById("this-month").append(" ", when);  // as on the list page: "this month (2026/10)"
-}, () => {});
 const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => r.json());
 data.n_months = data.months.length;
 const cell = (text, cls) => Object.assign(document.createElement("td"), { textContent: text, className: cls || "" });
