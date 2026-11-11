@@ -142,3 +142,9 @@ footer { margin-top: 1.5rem; padding-top: .8rem; padding-bottom: 2.5rem; border-
 .prose tr.chosen td { font-weight: 700; color: var(--text); background: var(--accent-soft); }
 .prose code { font-family: inherit; font-size: .92em; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .05em .3em; }
 .prose .caption { color: var(--muted); font-size: var(--fs-meta); }
+
+/* Wide screens: the vote column hangs in the left margin, so "Papers of …", the titles and the bar's rule share one left edge */
+@media (min-width: 60rem) {  /* the 54rem column plus room for the 2.3rem hang on each side */
+  .title-head { padding-left: 0; }
+  .paper { margin-left: -2.3rem; }
+}
