@@ -29,7 +29,7 @@ function toast(message) {
   toast.timer = setTimeout(() => { t.hidden = true; }, 3500);
 }
 
-const monthName = (m) => new Date(+m.slice(0, 4), +m.slice(5) - 1).toLocaleString("en", { month: "long", year: "numeric" });
+const monthName = (m) => m.replace("-", "/");  // 2026-10 -> 2026/10
 const httpUrl = (url) => (/^https?:\/\/\S+$/i.test(url) ? url : null);
 const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
@@ -144,8 +144,6 @@ function render() {
   const latest = state.month === state.months.at(-1), viewed = state.month ? ` (${monthName(state.month)})` : "";
   $("this-month").textContent = `this month${latest ? viewed : ""}`;
   $("past-open").textContent = `past${latest ? "" : viewed}`;
-  $("this-month").classList.toggle("current", latest);
-  $("past-open").classList.toggle("current", !latest);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("login-open").textContent = state.handle ? "logout" : "login";
@@ -265,12 +263,17 @@ function login(event) {
   $("login").hidden = true;
 }
 
+function toggleScoreNote(open = $("score-note").hidden) {
+  $("score-note").hidden = !open;
+  $("score-help").setAttribute("aria-expanded", open);
+}
+
 // "past": a drop-down of all months under the link; it covers the page instead of moving it.
 function togglePast(open = $("past").hidden) {
   const past = $("past");
   if (open) {
     past.replaceChildren(...[...state.months].reverse().map((m) => {
-      const a = Object.assign(el("a", m === state.month ? "current" : "", monthName(m)), { href: `?month=${m}`, role: "menuitem" });
+      const a = Object.assign(el("a", "", monthName(m)), { href: `?month=${m}`, role: "menuitem" });
       a.addEventListener("click", link(() => { togglePast(false); loadMonth(m); }));
       return a;
     }));
@@ -377,12 +380,13 @@ async function init() {
   $("login-cancel").addEventListener("click", link(() => { $("login").hidden = true; }));
   $("login").addEventListener("submit", login);
   $("past-open").addEventListener("click", link(() => togglePast()));
-  document.addEventListener("click", (e) => { if (!e.target.closest(".menu")) togglePast(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") togglePast(false); });
-  $("score-help").addEventListener("click", link(() => {
-    $("score-note").hidden = !$("score-note").hidden;
-    $("score-help").setAttribute("aria-expanded", !$("score-note").hidden);
-  }));
+  // a click outside a pop-up, or Escape, closes it
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".links .menu")) togglePast(false);
+    if (!e.target.closest(".pick-head .menu")) toggleScoreNote(false);
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { togglePast(false); toggleScoreNote(false); } });
+  $("score-help").addEventListener("click", link(() => toggleScoreNote()));
   $("this-month").addEventListener("click", link(() => loadMonth(state.months.at(-1))));
   field("url").addEventListener("change", lookUp);
   field("journal").addEventListener("input", refreshShortName);

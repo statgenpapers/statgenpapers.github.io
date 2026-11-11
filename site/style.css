@@ -35,7 +35,6 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
   padding: .3rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); }
 .popover a { padding: .3rem .8rem; white-space: nowrap; }
 .popover a:hover { background: var(--subtle); text-decoration: none; }
-.popover a.current { font-weight: 700; }
 .panel { margin: .9rem 0 0; padding: .7rem .8rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
 .panel label { display: flex; align-items: center; gap: .6rem; margin: .3rem 0; color: var(--muted); }
 #login { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
@@ -49,12 +48,13 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .panel p.error { color: #c0392b; }
 .hint { color: var(--muted); font-size: .85em; }
 
-.links a.current { font-weight: 700; }
-.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: .8em; }
+.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: .95em; }
 .title-head { padding-left: 1.35rem; }  /* the upvote column plus its gap */
-.pick-head a { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
-.pick-head a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-.score-note { margin: .3rem 0 .2rem auto; max-width: 30rem; padding: .5rem .7rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--body); font-size: .85em; }
+#score-help { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
+#score-help:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.popover.score-note { left: auto; right: 0; display: block; width: min(26rem, calc(100vw - 2rem)); padding: .55rem .75rem; color: var(--body); font-size: .9em; line-height: 1.45; text-align: left; }
+.popover.score-note a { padding: 0; }
+.popover.score-note a:hover { background: none; text-decoration: underline; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr) 3.5rem; column-gap: .25rem; padding: .35rem 0 .45rem; align-items: start; }
 .paper.new { animation: flash 1.8s ease-out; }
