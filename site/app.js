@@ -144,9 +144,10 @@ function render() {
   const votes = all.reduce((sum, p) => sum + upvotes(p.id).length, 0);
   const status = $("status");
   status.textContent = d
-    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"} · `
+    ? `top ${d.papers.length} of ${d.pool.toLocaleString("en")} candidates${added ? `, plus ${added} added` : ""} · ${votes} vote${votes === 1 ? "" : "s"}`
     : "";
-  if (d) status.append(el("span", state.live ? "live" : "", state.live ? "● live" : "connecting…"));
+  $("live").textContent = state.live ? "● live" : "connecting…";
+  $("live").classList.toggle("on", state.live);
   $("me").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("login-open").textContent = state.handle ? "logout" : "login";

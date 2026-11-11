@@ -28,6 +28,8 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .links { color: var(--muted); }
 .account { margin-left: auto; color: var(--muted); }
 .account #me { color: var(--text); margin-right: .3rem; }
+.conn { margin-right: .9rem; font-size: .85em; }
+.conn.on { color: var(--green); }
 .account #me::after { content: " |"; color: var(--muted); }
 
 .past { margin: .8rem 0 0; color: var(--muted); }
@@ -46,7 +48,6 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 
 .status { margin: 1rem 0 0; color: var(--muted); font-size: .9em; }
 .status b { color: var(--text); margin-right: .3rem; }
-.status .live { color: var(--green); }
 .pick-head { margin: .2rem 0 0; text-align: right; color: var(--muted); font-size: .8em; }
 .pick-head a { display: inline-block; width: 1.25em; height: 1.25em; line-height: 1.25em; text-align: center; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); }
 .pick-head a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
