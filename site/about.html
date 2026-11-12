@@ -15,63 +15,52 @@
 
 <main class="prose">
 <h2>About StatGen Papers</h2>
-<p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will mark: every
-paper with a Score of at least 30%. The model chooses them from about 2,000 candidates in journals such as
-Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in preprints. Anyone can add papers
-the model missed: they join the next list, scored like the others, with a person icon beside the Score. The code is in the
-<a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
+<p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will mark, out of
+about 2,000 new papers in journals and preprints. Anyone can add a paper the model missed; it shows a person icon.
+The code is in the <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
 
 <h2>Where do the papers come from?</h2>
 <ol>
   <li><strong>Journals</strong> (through <a href="https://openalex.org">OpenAlex</a>): Nature, Nature Genetics, Nature
   Communications, Nature Reviews Genetics, Nature Medicine, Nature Human Behaviour, Science, Science
-  Translational Medicine, Cell, Cell Genomics, American Journal of Human Genetics. Corrections, editorials and news
-  items are left out.</li>
+  Translational Medicine, Cell, Cell Genomics, American Journal of Human Genetics. No corrections, editorials or news.</li>
   <li><strong>Preprints</strong>: bioRxiv genetics and genomics; medRxiv genetic and genomic medicine and health
-  informatics. A preprint whose published version appears in the same month is left out in favor of the published one.</li>
-  <li>A paper listed in an earlier month is not listed again; the journal version of an earlier preprint can be.</li>
+  informatics. A preprint published in the same month shows as the published paper.</li>
+  <li>A paper is listed once; the journal version of an earlier preprint can be listed again.</li>
 </ol>
-<p>Each month's list is built on the 10th of the following month.</p>
+<p>A month's list is built on the 10th of the next month.</p>
 
 <h2>What's the score?</h2>
-<p>The score is the model's prediction of how likely a paper is to be marked. Marks re-order the list but do not change
-the score. To test it, each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a
-model trained only on the months before it.</p>
+<p>The model's estimate of the chance that a paper is marked; every paper at 30% or more is listed. Tested on
+<span data-v="n_months">8</span> past months (March to October 2026), each scored by a model trained only on the
+months before it:</p>
 <ol>
   <li>Papers at about 50% were marked about half the time.</li>
-  <li>A marked paper outranks an unmarked one <span data-v="auc_pct">96%</span> of the time (AUC), and the
-  top 25 hold <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> marked papers: fewer than
-  half. Tastes differ from month to month, and about one marked paper in ten comes from a source that is not
-  scanned. Adding papers fills that gap.</li>
-  <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
-  August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
-  marked papers in the top 25, at no cost.</li>
-  <li>From 2026/03 to 2026/10, the 30% cutoff listed 14 to 36 papers a month and caught 107 of the 258 marked papers;
-  a list of a fixed 24 a month caught 95.</li>
+  <li>A marked paper outranks an unmarked one <span data-v="auc_pct">96%</span> of the time (AUC); the top 25 hold
+  <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> marked papers. About one marked paper
+  in ten comes from a source that is not scanned; adding papers fills that gap.</li>
+  <li>It comes close to Claude Haiku grading each paper: <span data-v="haiku.rows.1.top25">38</span> against
+  <span data-v="haiku.rows.0.top25">43</span> marked papers in the top 25 (August to October), at no cost.</li>
+  <li>The 30% cutoff listed 14 to 36 papers a month and caught 107 of 258 marked papers; a fixed 24 a month caught 95.</li>
 </ol>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Marked papers in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
   <tbody></tbody>
 </table>
-<p class="caption">The backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated
-<span data-v="generated"></span>.</p>
+<p class="caption">Backtest code: <code>dev/backtest/</code>. Numbers generated <span data-v="generated"></span>.</p>
 
 <h2>How does the score work?</h2>
 <ol>
-  <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
-  (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
-  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It is fitted
-  again before each list, on the candidates of the 12 months before it: papers marked on the site are the positives,
-  all other candidates the negatives, and recent months count more (a month's weight halves every 6 months), so it
-  follows tastes as they change. The first marks were made before the site opened.</li>
-  <li>The raw score is calibrated into a probability, the Score. Every paper at 30% or more is listed, so a month
-  with more promising papers has a longer list.</li>
-  <li>Marks re-order the list at once, and the next month's model learns from them.</li>
+  <li>The title and abstract become a vector of 512 numbers from a small embedding model,
+  <a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>.</li>
+  <li>A logistic regression on the vector and the journal gives a raw score, calibrated into the Score.</li>
+  <li>The model is refitted before each list on the candidates of the 12 months before it: marked papers are
+  positives, the rest negatives, and a month's weight halves every 6 months.</li>
+  <li>Marks re-order the list at once but do not change the Score; the next month's model learns from them.</li>
 </ol>
 
 <h2>How do I give feedback?</h2>
-<p>Open an issue on <a href="https://github.com/statgenpapers/statgenpapers.github.io/issues">GitHub</a>: a bug, a
-journal or preprint category to add, or anything else.</p>
+<p>Open an issue on <a href="https://github.com/statgenpapers/statgenpapers.github.io/issues">GitHub</a>.</p>
 </main>
 
 <footer>
