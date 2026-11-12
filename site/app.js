@@ -124,18 +124,25 @@ function monthData(m) {
 
 // A short note just under a control, for a tap where a hover title cannot show; one at a time, gone after
 // 3 s or at the next click elsewhere.
-function showTip(anchor, text) {
+// A short note under `anchor`; with an action ({ label, run }), a button for it, and the note stays until a click elsewhere
+function showTip(anchor, text, action) {
   document.querySelector(".tip")?.remove();
   const tip = el("span", "tip", text);
   tip.setAttribute("role", "status");
+  if (action) {
+    const button = el("button", "remove", action.label);
+    button.type = "button";
+    button.addEventListener("click", () => { close(); action.run(); });
+    tip.append(button);
+  }
   anchor.after(tip);
   const close = (event) => {
-    if (event?.target === anchor) return;
+    if (event && (event.target === anchor || (action && tip.contains(event.target)))) return;
     tip.remove();
     document.removeEventListener("click", close, true);
   };
   setTimeout(() => document.addEventListener("click", close, true));
-  setTimeout(close, 3000);
+  if (!action) setTimeout(close, 3000);
 }
 
 function createRow(p) {
@@ -150,7 +157,9 @@ function createRow(p) {
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
-  q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
+  q(".added-icon").addEventListener("click", (event) => (ownAdded(li.paper)  // its handle may remove it until the run lists it
+    ? showTip(event.currentTarget, "Added by you, not chosen by the model.", { label: "remove", run: () => removeSubmission(li.paper) })
+    : showTip(event.currentTarget, "Added by a reader, not chosen by the model.")));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
@@ -165,7 +174,6 @@ function createRow(p) {
     q(".toggle").setAttribute("aria-expanded", open);
   }));
   q(".up").addEventListener("click", () => vote(p.id, month));  // no hover colour: grey or blue only
-  q(".remove").addEventListener("click", link(() => removeSubmission(p)));
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
   const details = q(".details");
@@ -200,8 +208,14 @@ function updateRow(li, p) {
   q(".up").setAttribute("aria-pressed", own);
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
-  q(".remove-wrap").hidden = !p.added || !state.handle || p.name !== state.handle || !upcoming();  // its handle, until the run lists it
+  li.paper = p;  // the latest copy: the saved one first shows without handles
+  const icon = q(".added-icon"), label = ownAdded(p) ? "Added by you; tap to remove" : "Added by a reader";
+  icon.title = label;
+  icon.setAttribute("aria-label", label);
 }
+
+// A paper the logged-in handle added to the month in progress: it may remove it until the run lists it
+const ownAdded = (p) => p.added && !!state.handle && p.name === state.handle && upcoming();
 
 // The list: (1) shows at once, in the order last seen in this browser or else by score; (2) when marks
 // arrive or change, re-sorts at once: passed rows ease aside, a paper whose count changed fades in at
@@ -775,6 +789,7 @@ async function lookUp() {
   for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
+  fitAbstract();
   note(m.abstract ? "Filled from the DOI; edit anything that is off." : "Filled from the DOI, which has no abstract: paste it from the paper.");
   const copy = await findCopy({ url, doi, title: field("title").value }).catch(() => null);  // warn before the rest is typed
   if (copy && form.lookup.doi === doi) note(`Filled from the DOI. ${copy.message}`, true);
@@ -795,6 +810,13 @@ async function findCopy({ url, doi, title }) {
 function resetAnyway() {
   form.anyway = null;
   $("add").querySelector("button[type=submit]").textContent = "add";
+}
+
+// The abstract box grows with its text, filled, pasted or typed, up to 60% of the screen; then it scrolls
+function fitAbstract() {
+  const box = field("abstract");
+  box.style.height = "";
+  if (box.value) box.style.height = `${Math.min(box.scrollHeight + box.offsetHeight - box.clientHeight, innerHeight * 0.6)}px`;
 }
 
 // A paper on an earlier list may still be added: the first "add" warns, a second one adds it
@@ -842,6 +864,7 @@ function closeForm() {
   $("add").reset();
   form.lookup = {};
   resetAnyway();
+  fitAbstract();
   note("");
   syncExpanded();
 }
@@ -938,8 +961,10 @@ async function init() {
       event.preventDefault();
       const input = field(name);
       input.setRangeText(tidy(text), input.selectionStart, input.selectionEnd, "end");
+      if (name === "abstract") fitAbstract();
     });
   }
+  field("abstract").addEventListener("input", fitAbstract);
   $("add").addEventListener("input", () => form.anyway && resetAnyway());  // an edited form is checked afresh
   field("url").addEventListener("change", () => { form.pending = lookUp(); });
   field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
