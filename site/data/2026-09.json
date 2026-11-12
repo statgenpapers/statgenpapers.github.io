@@ -37,6 +37,152 @@
   "vnAToTZKF6dGp7LJt99W": 0.067,
   "x8k6TD9Zlkzr1aACHgwI": 0.012
  },
+ "added_papers": {
+  "3CahI4B2wiNWRFYOmJCy": {
+   "title": "Atlas of genetic architecture and exploratory temporal interaction networks of plasma protein-based organ and system aging",
+   "url": "https://www.nature.com/articles/s41467-026-77365-8"
+  },
+  "3dld03dXYYK7e4l4h5iE": {
+   "title": "Evaluating the consequences of childhood adiposity on the human plasma proteome at four timepoints across the lifecourse",
+   "url": "https://www.nature.com/articles/s41467-026-77097-9"
+  },
+  "5y3Dr8C6Vk47QGE5OlLa": {
+   "title": "Cell villages and Dirichlet modeling map human cell fitness genetics",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.07.005"
+  },
+  "64abPVQgeDahoOzXuvuF": {
+   "title": "Genomic insights into natural selection in recent human history",
+   "url": "https://www.nature.com/articles/s41576-026-01010-9"
+  },
+  "Cfc3E7gbVcXeK5YBWTi5": {
+   "title": "Defining and cataloging variants in pangenome graphs",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101327"
+  },
+  "DqN0pIxEVDVWnTuZgYp7": {
+   "title": "Machine learning and statistical methods for molecular quantitative trait loci",
+   "url": "https://www.nature.com/articles/s41576-026-00990-y"
+  },
+  "E7uM0jOTRNIeR72RlUDq": {
+   "title": "Weighted sliced inverse regression for scalable supervised dimensionality reduction of spatial transcriptomics data",
+   "url": "https://www.nature.com/articles/s41467-026-76871-z"
+  },
+  "F6Xkswi1q9U5S8Iz9njz": {
+   "title": "Type 1 interferon perturbates clonal competition by reshaping human blood development",
+   "url": "https://www.nature.com/articles/s41588-026-02751-3"
+  },
+  "HV213aAtbVNA6VWa7W9e": {
+   "title": "Unsupervised discovery of functional sequence patterns from protein language model with MotifAE",
+   "url": "https://www.nature.com/articles/s41467-026-77333-2"
+  },
+  "KVDraqEkQWeQTG2RZzS2": {
+   "title": "AlphaGenome Atlas: in silico mutagenesis of the entire human genome improves prioritization and interpretation of non-coding variants",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.09.16.26363192v1"
+  },
+  "Khgly7sKBJmCLrdTjfRz": {
+   "title": "Analysis of Rare Coding Variation Identifies New Genetic Contributors to Schizophrenia",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.09.18.752670v1"
+  },
+  "O3ADc6e8Ew0DjotC5j6i": {
+   "title": "Lifespan single-cell transcriptomic atlas of the human prefrontal cortex",
+   "url": "https://www.nature.com/articles/s41586-026-10271-7"
+  },
+  "OSRcyFXPkvxEEJCtS6uD": {
+   "title": "End-to-end deep learning methods for genetic risk prediction of schizophrenia",
+   "url": "https://www.nature.com/articles/s41467-026-76663-5"
+  },
+  "PQ822l0gVDa6vuqt82I5": {
+   "title": "A single-cell atlas of multiple myeloma defines malignant archetypes and proliferative states",
+   "url": "https://www.nature.com/articles/s41588-026-02725-5"
+  },
+  "PTGgaESWU2W38tXLGkbu": {
+   "title": "Genetic variants associated with cell-type-specific intra-individual gene expression variability reveal mechanisms of genome regulation",
+   "url": "https://www.nature.com/articles/s41467-026-77453-9"
+  },
+  "Pg4yKc88FEfiiqqnrPL6": {
+   "title": "Predicting COVID-19 hospitalisation and common disease risk from comorbid diagnoses in 13 million individuals",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.27.26361302v1"
+  },
+  "RQaM8elbdD01FvUpaoZS": {
+   "title": "Genome-wide analysis of 439 mass spectrometry-based proteomic profiles in a population of 15,035 Scottish individuals",
+   "url": "https://www.nature.com/articles/s41467-026-76474-8"
+  },
+  "ScHJtj5Wmip6LAKceDDd": {
+   "title": "Quantitative changes in 3D contact predict changes in enhancer-promoter regulation upon cohesin depletion",
+   "url": "https://www.nature.com/articles/s41467-026-77582-1"
+  },
+  "VMEad6DGGvcaxGjvuYaO": {
+   "title": "Common alleles associated with connectivity within and across the brain’s main functional networks",
+   "url": "https://www.nature.com/articles/s41467-026-77476-2"
+  },
+  "VtPrqPbTYU4I9KsBjHND": {
+   "title": "Fast, flexible analysis of differences in cellular composition with crumblr",
+   "url": "https://www.nature.com/articles/s41467-026-75681-7"
+  },
+  "W4qrtEVu8Y3uK5uGHL2r": {
+   "title": "scBaseCount: An AI agent-curated, standardized, auto-updated single-cell data repository",
+   "url": "https://doi.org/10.1016/j.cell.2026.08.025"
+  },
+  "XqOSmLV8dRYlIeVYU4lD": {
+   "title": "Phenomic profiles and disease patterns of 1.9 million participants from Our Future Health",
+   "url": "https://www.nature.com/articles/s41591-026-04602-4"
+  },
+  "YrcNaD5UdemOG0hb13Xh": {
+   "title": "Human genetics implicates a BACH2–NRF2 axis in fetal haemoglobin activation",
+   "url": "https://www.nature.com/articles/s41586-026-11113-2"
+  },
+  "ambVCTLKv8ZRNGzEoX3e": {
+   "title": "Cell-type specific analyses in blood and gut identify cis-eQTL matching 140 IBD risk loci and entrectinib as repurposing candidate",
+   "url": "https://www.nature.com/articles/s41467-026-76672-4"
+  },
+  "dagPLn0Y8lJBFU3PJ077": {
+   "title": "Germline EGFR T790M mutation and lung cancer risk",
+   "url": "https://www.science.org/doi/abs/10.1126/science.aec0473"
+  },
+  "dlgwczwiVatPY28vtR8t": {
+   "title": "Uncovering heterogeneous effects via localized feature selection",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2527033123"
+  },
+  "eLUlsGRhZZlq2MEmn69o": {
+   "title": "Genetic architectures of brain-related traits are shaped by strong selective constraints",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2609814123"
+  },
+  "gaNzdqsasZhK3MYYobwb": {
+   "title": "Predicting genome-wide functional constraints with GPN-Star",
+   "url": "https://www.nature.com/articles/s41586-026-11005-5"
+  },
+  "gwdphdukH1h64Zc4UYVn": {
+   "title": "Single-Cell Inference of Structural States Of Ribosomes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.29.747780v1.full"
+  },
+  "hOATZAiBBxOO6oxC1Wtu": {
+   "title": "Genetic control of local mutation rates",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2625619123"
+  },
+  "k9lx7QnM0yXcGx7X5vFY": {
+   "title": "Tahoe-100M: Mapping drug-induced molecular phenotypes at single-cell resolution",
+   "url": "https://doi.org/10.1016/j.cell.2026.08.035"
+  },
+  "ldPLerXwhzfPMUP6fbrx": {
+   "title": "Scalable, generalizable and uncertainty-aware integration of spatial multiomics across diverse modalities and platforms with SCIGMA",
+   "url": "https://www.nature.com/articles/s41588-026-02706-8"
+  },
+  "oSeNRy0sZA6ULAgF04Zm": {
+   "title": "Personalized single-cell transcriptomics reveals molecular diversity in Alzheimer’s disease",
+   "url": "https://www.nature.com/articles/s41467-026-72310-1"
+  },
+  "uXNAV15ulZIqlAtvvmMX": {
+   "title": "Predicting cellular responses to perturbation across diverse contexts with State",
+   "url": "https://doi.org/10.1016/j.cell.2026.07.052"
+  },
+  "vnAToTZKF6dGp7LJt99W": {
+   "title": "Polygenic risk scores and plasma proteomics identify cancer-related proteins and trans-regulated protein networks",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101322"
+  },
+  "x8k6TD9Zlkzr1aACHgwI": {
+   "title": "Proteomics identify disease-associated variants in patients with rare diseases undiagnosed after genome sequencing",
+   "url": "https://www.science.org/doi/epdf/10.1126/scitranslmed.aeb1331"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-09",
  "papers": [

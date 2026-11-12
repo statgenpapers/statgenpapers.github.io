@@ -13,6 +13,56 @@
   "vlEOvEB9hdyQgvO35SF9": 0.146,
   "xOmzmYaLDTXQuJw0fG9Q": 0.15
  },
+ "added_papers": {
+  "0JxixlpUpx1QU9NcmqVf": {
+   "title": "Exposure accumulation drives age-dependent disease architectures and polygenic risk scores",
+   "url": "https://www.medrxiv.org/content/10.1101/2025.08.29.25334745v3"
+  },
+  "5cyFdpNjBWZgFXZTKyJq": {
+   "title": "Trans-eQTLs reveal the architecture of human gene regulatory networks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.04.26343575v1"
+  },
+  "62bbViSMuEHm9MYmS641": {
+   "title": "ChromBERT: A foundation model for learning interpretable representations for context-specific transcriptional regulatory networks",
+   "url": "https://doi.org/10.1016/j.xgen.2025.101130"
+  },
+  "AZ5CsxI2zUsiGrZRQIqu": {
+   "title": "Farm animal evolution demonstrates hidden molecular basis of human traits",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.02.703413v1"
+  },
+  "SFIdjpnPjWy4tgOt9mMX": {
+   "title": "Per-allele disease and complex trait effect sizes are predominantly African MAF-dependent in European populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2025.12.31.25343290v2"
+  },
+  "ZponsETifhASaEazo4iV": {
+   "title": "The performance of genetic-constraint metrics varies significantly across the human noncoding genome",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.01.28.701168v1"
+  },
+  "dAXnXvPTRzlLCdfBH4yX": {
+   "title": "MIRAGE: A Bayesian statistical method for gene-level rare-variant analysis incorporating functional annotations",
+   "url": "https://doi.org/10.1016/j.ajhg.2025.11.013"
+  },
+  "fvKRkhj2RiPnAhpS4lEG": {
+   "title": "Insights into DNA repeat expansions among 900,000 biobank participants",
+   "url": "https://www.nature.com/articles/s41586-025-09886-z"
+  },
+  "gnWS9IwnJ8DncyVi9Fbs": {
+   "title": "Choice of phenotype scale is critical in biobank-based G×E tests",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.01.20.694695v1"
+  },
+  "mSld67wWJvQyuPtpIVQw": {
+   "title": "Heritability of intrinsic human life span is about 50% when confounding factors are addressed",
+   "url": "https://www.science.org/doi/10.1126/science.adz1187"
+  },
+  "vlEOvEB9hdyQgvO35SF9": {
+   "title": "Human and bacterial genetic variation shape oral microbiomes and health",
+   "url": "https://www.nature.com/articles/s41586-025-10037-7"
+  },
+  "xOmzmYaLDTXQuJw0fG9Q": {
+   "title": "The relationship between genotype- and phenotype-based estimates of genetic liability to psychiatric disorders, in practice and in theory",
+   "url": "https://doi.org/10.1016/j.ajhg.2025.11.016"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-01",
  "papers": [

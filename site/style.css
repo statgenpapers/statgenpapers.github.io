@@ -131,6 +131,12 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
 .user .label { color: var(--muted); }
 .user a { justify-self: start; color: var(--text); }
+.user .change { margin-left: .6em; color: var(--muted); }
+.handle-form { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .4rem; }
+.handle-form input { width: 10rem; }
+.handle-form .hint { flex-basis: 100%; }
+.handle-form .hint:empty { display: none; }
+.handle-form .hint.error { color: var(--error); }
 .page p { margin: .8rem 0 0; }
 
 footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: 15px; text-align: center; }  /* "about" at 15px, as the bar links */

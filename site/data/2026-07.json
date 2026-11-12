@@ -14,6 +14,60 @@
   "rmzdRlSxktsPDR9E5Rw1": 0.099,
   "tjHhP8caeQXS8kimvzJR": 0.109
  },
+ "added_papers": {
+  "6PWv7GqEqgmtb6hL2H1o": {
+   "title": "Single-cell spatial mapping of human kidney development implicates the microenvironment in guiding cell fate decisions",
+   "url": "https://www.nature.com/articles/s41588-026-02665-0"
+  },
+  "BHanbu1GAy3RzW2prxgX": {
+   "title": "TranscriptFormer: A generative cell atlas across 1.5 billion years of evolution",
+   "url": "https://www.science.org/doi/10.1126/science.aec8514"
+  },
+  "EKonbnIhO6ne3ubfhgK4": {
+   "title": "Type 2 Diabetes Partitioned Polygenic Scores Are Differentially Associated with Aging Hallmarks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.06.26357294v1.full"
+  },
+  "FIZm3rXfiBXy0RyE11qq": {
+   "title": "Leveraging genome-wide effects on gene expression to identify disease-critical genes with trans -genetic components",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.23.26346922v1"
+  },
+  "HtVdAFNMfrwKAXi9dkF8": {
+   "title": "Promoter strength and position govern promoter competition through transcript-dependent insulation",
+   "url": "https://www.nature.com/articles/s41588-026-02691-y"
+  },
+  "KhvKVDOopzF3UNPX8cZL": {
+   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1.full"
+  },
+  "calTSdoahFVGBhex81Zz": {
+   "title": "Beyond the mean: genetic control of gene expression fidelity and dispersion",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.01.715853v2"
+  },
+  "iqABHQEAWSmdzoHiZkK7": {
+   "title": "NERINE reveals rare variant associations in gene networks across multiple phenotypes and implicates an SNCA-PRL-LRRK2 subnetwork in Parkinson’s disease",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101284"
+  },
+  "itbLEgRxKv9oUSibuXqM": {
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "qgBOtyMMzpaElc79ru97": {
+   "title": "Cell-type signatures of Alzheimer’s disease shared across population groups",
+   "url": "https://www.nature.com/articles/s41586-026-10793-0"
+  },
+  "qvI7tEoPcDjz41R6XcWb": {
+   "title": "A Hormone Cell Atlas maps the human endocrine system at cellular resolution",
+   "url": "https://www.science.org/doi/10.1126/science.aeb2672"
+  },
+  "rmzdRlSxktsPDR9E5Rw1": {
+   "title": "Universal cell embedding provides a foundation model for cell biology",
+   "url": "https://www.nature.com/articles/s41586-026-10689-z"
+  },
+  "tjHhP8caeQXS8kimvzJR": {
+   "title": "Cumulative transcription factor binding and p300-mediated histone acetylation drive enhancer activation frequency",
+   "url": "https://www.nature.com/articles/s41588-026-02703-x"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-07",
  "papers": [

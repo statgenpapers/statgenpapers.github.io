@@ -33,6 +33,136 @@
   "xVj9mNyyxBkQlImL69jE": 0.011,
   "zsf07kneZkFD7kayAdET": 0.021
  },
+ "added_papers": {
+  "90QC1RbKjbQTTSrexeoX": {
+   "title": "A modality gap in personal-genome prediction by sequence-to-function models",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.01.702969v1"
+  },
+  "B7FS5Lwca8nvTpBmmCHl": {
+   "title": "Dissecting context-dependent cancer vulnerabilities using Perturb-seq",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.24.746802v1"
+  },
+  "CiUT66dcIPlx59YMdbM5": {
+   "title": "Multi-population GWAS meta-analysis identifies bladder cancer susceptibility loci and highlights genetic regulation of smoking-related risk",
+   "url": "https://www.nature.com/articles/s41467-026-76157-4"
+  },
+  "DeO8I9XpkqKDTIVKQeea": {
+   "title": "Metabolic disease-relevant stimuli unmask context-dependent genetic regulation of cardiometabolic loci in human adipocytes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.12.744187v1"
+  },
+  "DpD9lZlZs9Nv4drCTOxt": {
+   "title": "An Icelandic pangenome reference",
+   "url": "https://www.nature.com/articles/s41586-026-10924-7"
+  },
+  "FGXZ5It83umb3Hy1t3aA": {
+   "title": "Population-scale disease-associated tandem repeat analysis reveals locus and ancestry-specific insights",
+   "url": "https://www.nature.com/articles/s41467-026-75404-y"
+  },
+  "Fyqvpfu7I138dwcwlddc": {
+   "title": "Deviations from genetic additivity driven by rare variants at biobank scale",
+   "url": "https://www.nature.com/articles/s41467-026-76151-w"
+  },
+  "GURJ9J9VCpuCleC9uPV5": {
+   "title": "Scalable context-dependent single-cell eQTL mapping reveals disease-relevant regulatory variation beyond static models",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.13.26360300v1"
+  },
+  "HRzD9N9cRqK3ChGQX0Ko": {
+   "title": "Genome-wide pQTL mapping in human skin identifies specific genetic regulators and mechanistic links to skin disorders",
+   "url": "https://www.nature.com/articles/s41467-026-76575-4"
+  },
+  "LIKzbtG7hZVnChAqC8Kq": {
+   "title": "Predicting Deprescribing of High-Risk Medications Using Provider EHR Use and Patient Characteristics",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.25.26358746v1"
+  },
+  "LKziPX3f0hEj3FAXoUUu": {
+   "title": "Integration of GWAS and single-cell analysis for psoriasis identifies disease-associated cell subtypes and therapeutic targets",
+   "url": "https://www.nature.com/articles/s41467-026-77309-2"
+  },
+  "LpNqTglpKOFQhCM0EUcK": {
+   "title": "Rare variation illuminates the distinct and pleiotropic genetic architecture of autism across neuropsychiatric traits",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.24.26360398v1"
+  },
+  "LrG7aVAatcqg1afvLTcR": {
+   "title": "Maternal influences on infant gut microbiome and health",
+   "url": "https://www.nature.com/articles/s41586-026-10922-9"
+  },
+  "NDEggw3sLft6XGgPtVlD": {
+   "title": "PubMind: literature-based genetic variant extraction and functional annotation using large language models",
+   "url": "https://www.nature.com/articles/s41467-026-76834-4"
+  },
+  "Nfe6PrbggYzXTA0vCgbB": {
+   "title": "Causal inference for multiple risk factors and diseases from genomics data",
+   "url": "https://www.nature.com/articles/s41467-026-76877-7"
+  },
+  "OFJhuBL8wkjrDunMro3a": {
+   "title": "A 515,579-Genome Reference Panel Improves Rare-Variant Imputation Across Multiple Underrepresented Populations",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.25.26361247v1"
+  },
+  "TKFp7dX8gshrNrSPzjIH": {
+   "title": "A unified framework for local-ancestry-aware genetic association analysis across biobanks",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.09.26360047v1"
+  },
+  "UfoELP9DcU4MF7hi9r3X": {
+   "title": "Determinants of functional burden pleiotropy and gene dosage responses across human traits",
+   "url": "https://www.nature.com/articles/s41467-026-76676-0"
+  },
+  "WaUuEJ1VuVld5Xu4sbPa": {
+   "title": "sc-pcQTL: hurdle-based co-expression modeling for multi-gene QTL mapping in single-cell RNA-seq data",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.18.745314v1"
+  },
+  "Z07rIg1AZGPzKg8ogDYa": {
+   "title": "A pre-train and fine-tune framework for adaptive boosting of pre-trained polygenic risk scores",
+   "url": "https://www.nature.com/articles/s41467-026-77128-5"
+  },
+  "ZnC5b0zP5lSpt0NLmE5B": {
+   "title": "Distinguishing different psychiatric disorders using DDx-PRS",
+   "url": "https://www.nature.com/articles/s41588-026-02684-x"
+  },
+  "aiq2ZCto1914wYBGpi3U": {
+   "title": "Identifying the causal allele in the CD40 autoimmune locus enables discovery of context-specific trans-effects in B cells",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.29.741564v1"
+  },
+  "cMBc6HDquoMBHXEHxTPc": {
+   "title": "Landscape of parental postzygotic mutations across >11,000 rare disease trios",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.06.015"
+  },
+  "d6xXnxup8hQysJ30gzI9": {
+   "title": "Genome-wide association study and predictors of neonatal blood cell traits in Hispanic newborns",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.06.008"
+  },
+  "dpfRveKoDafGOqJvyEC6": {
+   "title": "Plasma proteomics defines two reproducible subphenotypes of sepsis-associated acute kidney injury with distinct outcomes",
+   "url": "https://www.nature.com/articles/s41467-026-76889-3"
+  },
+  "fBwbnOXOtBpVomgSEngw": {
+   "title": "Single-cell multiomic mapping of genetic predisposition to childhood B-cell acute lymphoblastic leukemia",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.06.743308v1"
+  },
+  "k3MKrZQtMIcgjni1UeYE": {
+   "title": "Deep interpretable learning of sample representations for characterizing disease states in single-cell transcriptomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.21.738207v1"
+  },
+  "rnKhrNavR0ildoFPmKp6": {
+   "title": "Estimating the contribution of coding mutations to autism",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.25.26361328v1"
+  },
+  "tFw4p1XiYxjp9pnsOxDm": {
+   "title": "Shingles GWAS identifies seven immune loci and effects on stroke and autoimmunity",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.14.26360428v1"
+  },
+  "w9hniqJl7xn1oX6DQjnG": {
+   "title": "Sequence-to-function deep learning decodes human cis-regulatory evolution",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.08.24.746818v1"
+  },
+  "xVj9mNyyxBkQlImL69jE": {
+   "title": "Analysis of spliceosome-related coding and noncoding genes and pseudogenes reveals novel candidates",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.08.06.26358951v1"
+  },
+  "zsf07kneZkFD7kayAdET": {
+   "title": "A cross-organ single-cell analysis of hypertension",
+   "url": "https://www.science.org/doi/10.1126/science.aea6187"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-08",
  "papers": [

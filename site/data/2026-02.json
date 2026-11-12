@@ -8,6 +8,36 @@
   "w8EQmWkvdVtGst2CezAO": 0.021,
   "x2tETCxvNN569natbCxs": 0.277
  },
+ "added_papers": {
+  "09rznOvTAAoQDOkzO92d": {
+   "title": "Structural variants contribute substantially to complex trait heritability",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.02.28.708732v1"
+  },
+  "6NC3MQvr0WImsqKfhXNY": {
+   "title": "The functional landscape of coding variation in the familial hypercholesterolemia gene LDLR",
+   "url": "https://www.science.org/doi/10.1126/science.ady7186"
+  },
+  "NvrhFwLzroabZ2gF4nOE": {
+   "title": "Large-scale proteomics across neurological disorders uncovers biomarker panel and targets in multiple sclerosis",
+   "url": "https://doi.org/10.1016/j.cell.2026.01.017"
+  },
+  "VPFFf1gTRQ4DPBcC0owl": {
+   "title": "Improved polygenic risk prediction models for breast cancer subtypes in women of African ancestry",
+   "url": "https://www.nature.com/articles/s41588-026-02501-5"
+  },
+  "XY5HcblyPnNkKcesVESp": {
+   "title": "A time-to-event heritability framework for inferring the genetic architecture of longitudinal traits",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.16.26346285v1"
+  },
+  "w8EQmWkvdVtGst2CezAO": {
+   "title": "Distinguishing causal from tagging enhancers using single-cell multiome data",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.02.15.26346353v1"
+  },
+  "x2tETCxvNN569natbCxs": {
+   "title": "Phenome-wide analysis of copy number variants in 470,727 UK Biobank genomes",
+   "url": "https://www.nature.com/articles/s41586-025-10087-x"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-02",
  "papers": [

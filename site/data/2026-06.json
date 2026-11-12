@@ -13,6 +13,56 @@
   "vhpK7vbHuETyZnWKdgEP": 0.015,
   "wtq0jub6ptEhARbkmRPU": 0.002
  },
+ "added_papers": {
+  "8cxFSTb9RTuZJjYNPq63": {
+   "title": "Spatial distribution of the proteome in the human body and in cancers",
+   "url": "https://www.nature.com/articles/s41586-026-10660-y"
+  },
+  "B2lskTY9BDYHE6CNZCS7": {
+   "title": "A dish-to-biobank framework links β-cell nutrient-stress programs to genetic and dietary risk for Type 2 Diabetes",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.12.731989v1"
+  },
+  "GldfRggLWJXhYurlmxOd": {
+   "title": "A framework to detect positive selection using variant effect predictions reveals widespread adaptive evolution of human neurons",
+   "url": "https://www.biorxiv.org/content/10.1101/2025.09.11.675696v1"
+  },
+  "R8kR79gNvQLL5dgQFElV": {
+   "title": "Cell-type-specific polygenic risk scores reveal adipocyte-related interactions with lipids in coronary artery disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.07.07.26357510v1"
+  },
+  "TIs4iduyWCpiumTfuuTI": {
+   "title": "scEPS integrates genetic and single-cell disease atlas data to provide granular mechanistic insights into complex human diseases",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.26.26356714v1"
+  },
+  "ZiByDx3fTEwUgrrtPUzG": {
+   "title": "CytoSignal detects locations and dynamics of ligand–receptor signaling at cellular resolution from spatial transcriptomic data",
+   "url": "https://www.nature.com/articles/s41588-026-02624-9"
+  },
+  "cw1twnGs2doPnWkky7FO": {
+   "title": "The Encyclopedia of DNA Elements",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.07.06.731365v1"
+  },
+  "dMW6v1dgS5OXPfhxJyS4": {
+   "title": "Systematic identification of disease-associated 3D neighborhoods in protein structures",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.29.26354366v1"
+  },
+  "hLqVP71tbIg8lCpVgxLL": {
+   "title": "Human Proteome-wide Mechanistic Interpretation of Missense Variants through Protein Feature Enrichment Score",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.26.726248v1.full"
+  },
+  "pHpbVAXX7N5AE3r2Aj9t": {
+   "title": "Interferon-related inflammaging links epigenetic age acceleration to multimorbidity",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101218"
+  },
+  "vhpK7vbHuETyZnWKdgEP": {
+   "title": "An empirical Bayes framework for burden and dispersion association tests helps prioritize rare variants associated with Alzheimer’s disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26354742v1"
+  },
+  "wtq0jub6ptEhARbkmRPU": {
+   "title": "Learning residue-level context for modeling protein-protein interactions",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.01.729118v1"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-06",
  "papers": [

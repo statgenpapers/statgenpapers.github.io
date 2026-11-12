@@ -590,7 +590,10 @@ async function showUser() {
   // the count is the link to the papers: "3 papers", dashed like Details
   const handle = state.handle, total = Object.assign(el("a", "dashed", "…"), { href: `?interested=${handle}` }), table = el("div", "user");
   total.addEventListener("click", link(() => go({ interested: handle })));
-  for (const [label, value] of [["handle:", el("span", "", handle)], ["interested in:", total]]) {
+  const change = Object.assign(el("a", "dashed change", "change"), { href: "#" }), name = el("span", "", handle);
+  change.addEventListener("click", link(() => name.replaceWith(handleForm(handle, name))));
+  name.append(" ", change);
+  for (const [label, value] of [["handle:", name], ["interested in:", total]]) {
     const row = el("div", "row");
     row.append(el("span", "label", label), value);
     table.append(row);
@@ -604,6 +607,67 @@ async function showUser() {
     console.warn(e);
     total.replaceWith(el("span", "", "unavailable"));
   }
+}
+
+// The user page's form for a new handle: on save, the marks and added papers move to it
+function handleForm(from, shown) {
+  const form = el("form", "handle-form"), input = Object.assign(el("input"), { value: from, maxLength: 20, ariaLabel: "New handle" });
+  const save = Object.assign(el("button", "", "save"), { type: "submit" }), cancel = Object.assign(el("a", "dashed", "cancel"), { href: "#" });
+  const say = el("span", "hint");
+  cancel.addEventListener("click", link(() => form.replaceWith(shown)));
+  form.append(input, " ", save, " ", cancel, say);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const to = input.value.trim().toLowerCase();
+    const problem = to === from ? "That is your handle already." : to === RESERVED ? "This handle is reserved."
+      : !HANDLE.test(to) ? "A handle is 2–20 letters, digits or _." : "";
+    if (problem) return (say.textContent = problem), say.classList.add("error");
+    save.disabled = true;
+    say.classList.remove("error");
+    say.textContent = "Moving your marks…";
+    try {
+      const moved = await changeHandle(from, to);
+      if (moved === null) return (say.textContent = "Someone uses this handle already."), say.classList.add("error");
+      setHandle(to);
+      go({ user: to });
+      toast(`Your handle is now ${to}: ${moved} mark${moved === 1 ? "" : "s"} moved.`);
+    } catch (e) {
+      console.warn(e);
+      say.textContent = "The handle was not changed. Please try again later.";
+      say.classList.add("error");
+    } finally {
+      save.disabled = false;
+    }
+  });
+  setTimeout(() => input.select());
+  return form;
+}
+
+// Move a handle's marks (created under the new handle, deleted under the old) and rename its added papers, month by
+// month; null if the new handle has a mark or a paper already. A failure halfway can be retried: what moved is gone.
+async function changeHandle(from, to) {
+  await connected;
+  if (!db) throw new Error("Firestore is unavailable");
+  const months = [...state.months, addMonth()], col = (m, c) => fb.collection(db, "months", m, c);
+  const mine = (m, c, h) => fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", h)));
+  const used = await Promise.all(months.flatMap((m) => ["votes", "submissions"].map((c) =>
+    fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", to), fb.limit(1))))));
+  if (used.some((snap) => !snap.empty)) return null;
+  if (!(await signedIn())) throw new Error("not signed in");
+  let moved = 0;
+  for (const m of months) {
+    const [votes, subs] = await Promise.all([mine(m, "votes", from), mine(m, "submissions", from)]);
+    if (votes.empty && subs.empty) continue;
+    const batch = fb.writeBatch(db);  // one month at once
+    for (const d of votes.docs) {
+      batch.set(voteRef(m, d.data().paper, to), { paper: d.data().paper, handle: to });
+      batch.delete(d.ref);
+    }
+    for (const d of subs.docs) batch.update(d.ref, { name: to });
+    await batch.commit();
+    moved += votes.size;
+  }
+  return moved;
 }
 
 async function showInterested() {
@@ -790,13 +854,14 @@ async function lookUp() {
 
 // Where this paper is already: on any month's list (its added papers included) or added to the month in progress,
 // matched by link, DOI or title (ignoring case and punctuation). null if nowhere; `here`: added to the month in progress.
+// Listed months come from their static files (data.added_papers): only the month in progress is read from Firestore.
 async function findCopy({ url, doi, title }) {
   const t = plainTitle(title), months = [...state.months].reverse(), next = addMonth();  // newest list first
   const same = (p) => (url && p.url === url) || (doi && (p.doi || urlDoi(p.url)) === doi) || (t && plainTitle(p.title) === t);
   const added = async (m) => (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs.map((d) => d.data());
   if ((await added(next)).some(same)) return { here: true, message: `Someone has added this paper to ${monthName(next)} already: mark it below.` };
-  const [lists, subs] = await Promise.all([Promise.all(months.map(monthData)), Promise.all(months.map(added))]);
-  const i = months.findIndex((m, k) => lists[k].papers.some(same) || subs[k].some(same));
+  const lists = await Promise.all(months.map(monthData));
+  const i = months.findIndex((m, k) => lists[k].papers.some(same) || Object.values(lists[k].added_papers || {}).some(same));
   return i < 0 ? null : { message: `This paper is on the ${monthName(months[i])} list already.` };
 }
 

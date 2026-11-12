@@ -103,10 +103,21 @@ test("cannot submit under a malformed month or id", async () => {
   await assertFails(submit("bob", {}, "months/junk/submissions/abc"));
   await assertFails(submit("bob", {}, `${M}/submissions/10.1038_x`));
 });
-test("nobody can edit a submission", async () => {
+test("nobody can edit a submission, but for its handle", async () => {
   await assertSucceeds(submit("bob"));
   await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed", name: "robert" }));
   await assertFails(submit("bob", { title: "Changed" }));
+});
+test("a changed handle renames its added papers: to a valid handle, signed in, never to or from admin", async () => {
+  await assertSucceeds(submit("bob"));
+  await assertFails(updateDoc(doc(db(null), SUB), { name: "robert" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { name: "Robert Smith" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { name: "admin" }));
+  await assertSucceeds(updateDoc(doc(db("bob"), SUB), { name: "robert" }));
+  await env.clearFirestore();
+  await assertSucceeds(submit("Yo7cchMxl7X4zHq5vOE9VmS2dOp1", { name: "admin" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { name: "bob" }));
 });
 test("any signed-in browser may remove a reader's added paper (handles have no password); the site shows the x to its handle", async () => {
   await assertSucceeds(submit("bob"));

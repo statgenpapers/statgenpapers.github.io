@@ -27,6 +27,11 @@ def write_json(path, obj):
     path.write_text(json.dumps(obj, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+def added_papers(submissions):
+    """{submission id: {url, title}} of a month's added papers: the site's duplicate check reads them here, not from Firestore."""
+    return {sid: {"url": s["url"], "title": s["title"]} for sid, s in submissions.items()}
+
+
 def score_added(weights, model, cfg, submissions):
     """{submission id: pick chance} of added papers, scored as pool papers are; the venue from the journal shown."""
     if not submissions:
@@ -63,6 +68,7 @@ def main():
         data, subs = json.loads(path.read_text()), read_submissions(cfg["votes"]["firestore_project"], month)
         data["added"] = {sid: p for sid, p in data.get("added", {}).items() if sid in subs} | score_added(
             weights, model, cfg, {sid: s for sid, s in subs.items() if sid not in data.get("added", {})})
+        data["added_papers"] = added_papers(subs)
         write_json(path, data)
         return print(f"{month}: {len(data['added'])} added papers scored")
 
@@ -119,10 +125,10 @@ def main():
     for m in sorted(m for m in added if m < month and m in listed):
         data = json.loads((DATA / f"{m}.json").read_text())
         new = score_added(weights, model, cfg, {sid: s for sid, s in added[m].items() if sid not in data.get("added", {})})
-        if new:
-            write_json(DATA / f"{m}.json", data | {"added": data.get("added", {}) | new})
+        write_json(DATA / f"{m}.json", data | {"added": data.get("added", {}) | new, "added_papers": added_papers(added[m])})
     write_json(DATA / f"{month}.json", {"month": month, "generated": date.today().isoformat(), "pool": len(papers),
-                                         "papers": out, "added": score_added(weights, model, cfg, added.get(month, {}))}
+                                         "papers": out, "added": score_added(weights, model, cfg, added.get(month, {})),
+                                         "added_papers": added_papers(added.get(month, {}))}
                | ({"words": weights["words"]} if "words" in weights else {}))
     write_json(DATA / "index.json", {"months": sorted(listed.keys() | {month})})
     table = "\n".join("\t".join(row) for row in [TABLE_HEADER] + [table_row(p) for p in shortlist]) + "\n"

@@ -29,6 +29,120 @@
   "whyuCmQpTKxW9FgwWa8a": 0.025,
   "wuEyQqVSopCg6UwivO4T": 0.024
  },
+ "added_papers": {
+  "1UsVgWwuoOQq8lxNUow2": {
+   "title": "Dissecting Alzheimer’s disease heterogeneity by cross-trait polygenic prediction",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.15.725551v1"
+  },
+  "3VuoVeV6ANL0szxOLiGH": {
+   "title": "When can whole-genome SNP heritability be reliably estimated from summary statistics?",
+   "url": "https://doi.org/10.64898/2026.05.13.724972"
+  },
+  "4tjUym5fNtjyclrS69EV": {
+   "title": "Age distinguishes selection from causation in cancer genomes",
+   "url": "https://www.nature.com/articles/s41588-026-02593-z"
+  },
+  "76mzKH1NurrXPFry1SLw": {
+   "title": "Accelerating scientific discovery with Co-Scientist",
+   "url": "https://www.nature.com/articles/s41586-026-10644-y"
+  },
+  "8y8iIRq1E2ErgpKPU4kn": {
+   "title": "Evaluating anonymized genome re-identification using polygenic predictions and its implications for data privacy",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.06.10.731306v1"
+  },
+  "90WloFfyyj2oCxd8iWkm": {
+   "title": "A multi-agent system for automating scientific discovery",
+   "url": "https://www.nature.com/articles/s41586-026-10652-y"
+  },
+  "AVB9gCGw1Puh9Sl86mRR": {
+   "title": "Universal transcriptomic hallmarks of mammalian ageing and mortality",
+   "url": "https://www.nature.com/articles/s41586-026-10542-3"
+  },
+  "BYLsJWlzULu9LEzeqYlv": {
+   "title": "Optimizing phenotype scale improves genetic analyses in large-scale biobanks",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.04.722531v1"
+  },
+  "HqXPr5Q9f0hrVp1azcUX": {
+   "title": "The Human Pleiotropic Map of GWAS Associations and Therapeutic Implications",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.28.721048v1"
+  },
+  "NJCb7cL4oYY9lDERShGi": {
+   "title": "PRISMA: A tensor-based framework for deconstructing the genetic architecture of complex diseases, with application to diabetic retinopathy",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.25.727382v2"
+  },
+  "TTXupYEm8S3Lqj7wgeGo": {
+   "title": "Genetic variants affect diurnal glucose levels throughout the day",
+   "url": "https://www.nature.com/articles/s41467-026-72432-6"
+  },
+  "UT0jt7R7Qf7k0G2EmmA6": {
+   "title": "Expanding the human proteome with microproteins and peptideins",
+   "url": "https://www.nature.com/articles/s41586-026-10459-x"
+  },
+  "WAt3wiI3uWZgBO3TXnD9": {
+   "title": "Ultra-rare functional variants reveal early-onset breast cancer risk genes and pathways in the UK Biobank and All of Us Research Program",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.03.005"
+  },
+  "WL6WmVlQfAmbJ6N8C7Rz": {
+   "title": "A community machine learning challenge to predict the effects of gene perturbations on T cell differentiation for cancer immunotherapy",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.21.726863v1"
+  },
+  "X8Zf99BVvB47vYK0BENY": {
+   "title": "Pleiotropic effects of cis-regulatory mutations",
+   "url": "https://www.nature.com/articles/s41576-026-00981-z"
+  },
+  "aiMniwfCjxTCivQDfAH7": {
+   "title": "Exome sequencing directly implicates 68 genes in inflammatory bowel disease",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.08.26352648v1"
+  },
+  "eJYNuP4Qo2IIVdk6vD9I": {
+   "title": "Quantifying direct genetic signal captured by principal component adjustment",
+   "url": "https://www.pnas.org/doi/10.1073/pnas.2525790123?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed"
+  },
+  "fBHKezGsUyL9ZehkfDkv": {
+   "title": "Genetic architecture of high-dimensional liver radiomic phenotypes and their role in common metabolic diseases",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.19.26353617v1"
+  },
+  "h3txsLXrsFpBHy2lQVvn": {
+   "title": "An AI system to help scientists write expert-level empirical software",
+   "url": "https://www.nature.com/articles/s41586-026-10658-6"
+  },
+  "iZEaDKklX16nyWugAMW9": {
+   "title": "The Biobank Rare Variant consortium powers the discovery of rare genetic associations through global collaboration",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.21.26353759v1"
+  },
+  "nC0TLWk5KnpdWQVCC8XR": {
+   "title": "Modeling rare coding variation on chromosome X provides insight into the genetics and differential sex prevalence of autism spectrum disorder",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.04.26352380v1"
+  },
+  "qzQ9ZiGyCR7XUlnnu2oG": {
+   "title": "Patterns and drivers of 43,617 mosaic chromosomal alterations in blood",
+   "url": "https://www.nature.com/articles/s41588-026-02592-0"
+  },
+  "scizRxD0XbqKpwZ1XbKD": {
+   "title": "Putting polygenic scores in context: How intersectional factors affect relative and absolute genetic risk",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.03.013"
+  },
+  "tdt7o5ELeWWxwKTQEpMy": {
+   "title": "Genotype epigenome phenotype integration reveals peripheral immune contributions to type I bipolar disorder",
+   "url": "https://www.nature.com/articles/s41467-026-72543-0?utm_source=Active+Broad+Users&utm_campaign=ee3e9475f1-EMAIL_CAMPAIGN_2026_05_12_03_10&utm_medium=email&utm_term=0_-ee3e9475f1-483412034&mc_cid=ee3e9475f1&mc_eid=8210b24b38"
+  },
+  "thdLOe4ifOm2fdYWlyjB": {
+   "title": "Characterizing the Uncertainty, Misclassification and Inconsistency of Polygenic Prediction",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.11.26352897v1"
+  },
+  "v6Dpp3UNrsRmW1YIbWxf": {
+   "title": "Genomic-Relatedness Matching Expands Population Coverage, Improves Power, and Reduces Bias in Genetic Association Analyses",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.14.26353140v1"
+  },
+  "whyuCmQpTKxW9FgwWa8a": {
+   "title": "TranscriptFormer: A generative cell atlas across 1.5 billion years of evolution",
+   "url": "https://www.science.org/doi/10.1126/science.aec8514"
+  },
+  "wuEyQqVSopCg6UwivO4T": {
+   "title": "Systematic common and rare variant association testing in 392,030 whole genomes in All of Us",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.05.08.26350964v1"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-05",
  "papers": [

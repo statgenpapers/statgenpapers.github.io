@@ -179,6 +179,24 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         for n in (1, 2):
             row(c, n).locator(".up").click()
         check("and the marks can be taken back", seen(count(a, 1), "0") is not None and seen(count(a, 2), "0") is not None)
+        row(c, 1).locator(".up").click()
+        seen(count(a, 1), "1")
+        c.goto(f"{url}?user=sitecheck_c")
+        c.click(".user .change")
+        c.fill(".handle-form input", "sitecheck_a")  # browser a's handle, which has marks
+        if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the form, for review
+            c.locator("main").screenshot(path=f"{shots}/change-handle.png")
+        c.click(".handle-form button")
+        taken = seen(c.locator(".handle-form .hint"), "Someone uses this handle already.") is not None
+        c.fill(".handle-form input", "sitecheck_d")
+        c.click(".handle-form button")
+        check("a handle can be changed to an unused one; its marks move with it",
+              taken and seen(c.locator(".user .row").first, "handle:sitecheck_d change") is not None
+              and c.evaluate("localStorage.getItem('handle')") == "sitecheck_d" and seen(count(a, 1), "1") is not None)
+        c.goto(url)
+        expect(row(c, 1).locator(".up")).to_have_attribute("aria-pressed", "true", timeout=15000)
+        row(c, 1).locator(".up").click()
+        check("and the moved mark is the new handle's", seen(count(a, 1), "0") is not None)
         c.context.close()
 
     row(a, 3).locator(".up").click()

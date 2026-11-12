@@ -27,6 +27,112 @@
   "vflN8teyMt20kzIgYMKd": 0.031,
   "zqL2wYD44mf2CoydNZkk": 0.218
  },
+ "added_papers": {
+  "0HCHXzAsXB9dtnpQtPIq": {
+   "title": "Sex effects on gene expression across the human cerebral cortex at cell type resolution",
+   "url": "https://www.science.org/doi/10.1126/science.aea9063"
+  },
+  "2xhIgX1K8kJ8X7Ubanht": {
+   "title": "Genome-wide detection of human 5′ UTR variants that impact protein translation",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.02.020"
+  },
+  "6YOvvS4AiArRjfXbKzP9": {
+   "title": "Machine learning cross-platform proteomic imputation enables protein quality scoring and replication of epidemiological associations",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.05.05.723059v1"
+  },
+  "D2nWvIWsLCUkzFmiYtwd": {
+   "title": "Dynamics of genetic and somatic trade-offs in ageing and mortality",
+   "url": "https://www.nature.com/articles/s41586-026-10407-9"
+  },
+  "DLl0mkDEyx6aNH39Opum": {
+   "title": "Early and late RNA eQTL are driven by different genetic mechanisms",
+   "url": "https://www.nature.com/articles/s41467-026-72139-8"
+  },
+  "HVm6JqAReaVyRG1hVIAp": {
+   "title": "Gene regulatory landscape dissected by single-cell four-omics sequencing",
+   "url": "https://www.nature.com/articles/s41586-026-10322-z"
+  },
+  "JJAWgQf4YbUz25Ll0Cea": {
+   "title": "Mosaic integration of spatial multi-omics with SpaMosaic",
+   "url": "https://www.nature.com/articles/s41588-026-02573-3"
+  },
+  "NgAbhcvyuLkLCGQtbpNe": {
+   "title": "Neurodevelopmental copy-number variants increase risk of internalizing and cardiometabolic multimorbidity: Findings from the UK Biobank",
+   "url": "https://doi.org/10.1016/j.ajhg.2026.02.021"
+  },
+  "OURqrCUnY1xQESkx3hrN": {
+   "title": "Multi-omic signatures of genetic mechanisms inform on type 2 diabetes biology and patient heterogeneity",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.17.26351136v1"
+  },
+  "R5R5Kg9kfwQ3ShaRCWQY": {
+   "title": "Optimal Reference Panel Design in Ancient DNA Imputation from Coalescent Theory, Simulation, and Real Data Application with an Ancient Reference Panel",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721163v1.full"
+  },
+  "Uc9Ytyww7Y99KxbG9y1C": {
+   "title": "Connecting polygenic disease risk to cell states and regulatory programs through single-cell chromatin accessibility",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.27.721080v1"
+  },
+  "WpkxuD9i4DKIeTuNgEgt": {
+   "title": "Highly efficient genotype compression leveraging genealogical relatedness",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.04.29.721594v2"
+  },
+  "YAKxSVIEne7TqFk48Y3q": {
+   "title": "A spatial atlas of the healthy human liver from live donors",
+   "url": "https://www.nature.com/articles/s41586-026-10377-y"
+  },
+  "bw4JeuWUYcwqoY45Gx4n": {
+   "title": "The 1000 Chinese Pangenome empowers medical and population genetics",
+   "url": "https://www.nature.com/articles/s41586-026-10315-y"
+  },
+  "dLXLdWIAqSDHrmztsLiG": {
+   "title": "Mapping convergent regulators of melanoma drug resistance by PerturbFate",
+   "url": "https://www.nature.com/articles/s41586-026-10367-0"
+  },
+  "gTBQhwdHtMWOgtb4AvYc": {
+   "title": "Functionally informed cis and trans proteome-wide association studies prioritize disease-critical genes",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.24.26351667v1"
+  },
+  "gbwUDIH2Gc4iQUgMhHRm": {
+   "title": "Development and Validation of a Clinical Polygenic Risk Report in U.S.-Based Health Systems for 8 Cardiovascular Conditions",
+   "url": "https://www.jacc.org/doi/10.1016/j.jacc.2026.03.035"
+  },
+  "gwC1bBhixAcecjKlq25W": {
+   "title": "Germline sequence variation within the ribosomal DNA is associated with human complex traits",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101213"
+  },
+  "nieZ3NBFmZUuQpB8NVEj": {
+   "title": "Interferon-related inflammaging links epigenetic age acceleration to multimorbidity",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101218"
+  },
+  "oHrf0unZ8z1aLjqzat0W": {
+   "title": "Mapping transcription factor functions in astrocytes using in vivo gain-of-function Perturb-seq",
+   "url": "https://www.science.org/doi/10.1126/science.adw2156"
+  },
+  "obySejWq6MC3U9wAncxh": {
+   "title": "Global genetic interaction network of a human cell maps conserved principles and informs functional interpretation of gene co-essentiality profiles",
+   "url": "https://doi.org/10.1016/j.cell.2026.03.044"
+  },
+  "qIdqD1E8KO5dlfovtCnI": {
+   "title": "ProtoCloud: A prototypical self-explaining model for single-cell analysis",
+   "url": "https://doi.org/10.1016/j.xgen.2026.101217"
+  },
+  "rexnBOiihv77kN5QEi8v": {
+   "title": "Spatial atlas of diabetic kidney disease reveals a B cell-rich subgroup",
+   "url": "https://www.nature.com/articles/s41586-026-10363-4"
+  },
+  "vWiv61EjNQoBAlyHpzoB": {
+   "title": "Phenome-derived polygenic scores and social determinants jointly shape context-dependent disease risk",
+   "url": "https://www.medrxiv.org/content/10.64898/2026.04.16.26351039v1"
+  },
+  "vflN8teyMt20kzIgYMKd": {
+   "title": "Somatic cancer variants enriched in Alzheimer’s disease microglia-like cells drive inflammatory and proliferative states",
+   "url": "https://doi.org/10.1016/j.cell.2026.03.040"
+  },
+  "zqL2wYD44mf2CoydNZkk": {
+   "title": "Interpretable, flexible and spatially aware integration of multiple spatial transcriptomics datasets from diverse sources",
+   "url": "https://www.nature.com/articles/s41588-026-02579-x"
+  }
+ },
  "generated": "2026-11-11",
  "month": "2026-04",
  "papers": [
