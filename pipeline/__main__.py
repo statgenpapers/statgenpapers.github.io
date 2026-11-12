@@ -47,8 +47,8 @@ def score_added(weights, model, cfg, submissions):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--month", default=(date.today().replace(day=1) - timedelta(days=1)).strftime("%Y-%m"))
-    ap.add_argument("--weights", help="score with these weights instead of refitting (dev/rollforward.py passes each month's)")
-    ap.add_argument("--pool-out", help="also write the deduped pool here as JSON lines, in the format dev/backtest/prep.py reads")
+    ap.add_argument("--weights", help="score with these weights instead of refitting (dev/coldstart/rollforward.py passes each month's)")
+    ap.add_argument("--pool-out", help="also write the deduped pool here as JSON lines, in the format dev/coldstart/backtest/prep.py reads")
     ap.add_argument("--pool-only", action="store_true", help="only fetch the pool and write --pool-out: training data for past months")
     ap.add_argument("--added-only", action="store_true", help="only score the month's added papers that have no score yet")
     args = ap.parse_args()
@@ -115,7 +115,7 @@ def main():
                   f"{weights['marked']} marked of {weights['papers']} papers", flush=True)
     emb, venues = embed(model, [p.title for p in papers], [p.abstract for p in papers]), [p.venue for p in papers]
     score = linear(weights, emb, venues)
-    if not args.weights:  # dev/rollforward.py passes --weights; its months' pools come from dev/backfill_pools.py
+    if not args.weights:  # dev/coldstart/rollforward.py passes --weights; its months' pools come from dev/coldstart/backfill_pools.py
         # the calibration's data: scores out of sample (this month's marks come later), so only from a model refitted for it
         save_pool(month, model, [p.doi for p in papers], [p.title for p in papers], [p.abstract for p in papers], venues, emb,
                   score if refit else np.full(len(papers), np.nan))

@@ -13,8 +13,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
-D = Path(__file__).parents[2] / "handoff" / "data" / "bt"
-KEYS = Path(__file__).parents[2] / "handoff" / "llm-scoring-experiment" / "keys"
+D = Path(__file__).parents[3] / "handoff" / "data" / "bt"
+KEYS = Path(__file__).parents[3] / "handoff" / "llm-scoring-experiment" / "keys"
 MONTHS = [f"2026-{m:02d}" for m in range(3, 11)]
 JOURNALS = ["Nature", "NG", "NatCommun", "NRG", "NatMed", "NatHumBehav", "Science", "SciTranslMed", "Cell", "CG", "AJHG"]
 FROZEN_AT = "2026-06"

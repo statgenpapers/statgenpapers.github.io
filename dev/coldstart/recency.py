@@ -1,4 +1,4 @@
-"""How training weighs months, shared by dev/train.py and dev/rollforward.py.
+"""How training weighs months, shared by dev/coldstart/train.py and dev/coldstart/rollforward.py.
 
 A model for month M is fitted on the 12 months before M, each weighted 0.5 ** (age / 6): last month 0.89, a year
 back 0.25. The leak-free backtest of 2026-01..10 (data from 2025-01) chose it over equal weights, other half-lives

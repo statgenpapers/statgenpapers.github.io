@@ -5,7 +5,7 @@
 
 The rules let nobody edit a paper, so it writes as the project's owner, with the Firebase CLI's login (run any
 `npx firebase` command first if that login has expired). Safe to rerun: it touches only papers without an abstract.
-Run it after dev/rollforward.py, or whenever a paper shows "No abstract available".
+Run it after dev/coldstart/rollforward.py, or whenever a paper shows "No abstract available".
 """
 import json
 import re

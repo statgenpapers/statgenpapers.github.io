@@ -26,7 +26,7 @@ earlier section, section 10 holds.
 | `firebase/firestore.rules` | Handle votes, one document per upvote (2026-11-10). 27 emulator tests pass (`cd firebase && npm install && npm test`); `dev/site_check.py --emulator` passes 18/18. Published 2026-11-10 with the Firebase CLI; `live-check.mjs` 17/17 and `dev/site_check.py` 18/18 pass live. |
 | `firebase/live-check.mjs` | End-to-end check against the live project, for handle votes; 17/17 pass (`node firebase/live-check.mjs`). |
 | `site/config.js` | Live Firebase web config (public by design). |
-| `dev/backtest/` | Backtest harness and README. Results in `handoff/data/bt/results/`. |
+| `dev/coldstart/backtest/` | Backtest harness and README. Results in `handoff/data/bt/results/`. |
 | `.github/workflows/monthly.yml` | Monthly run, manual run, and deploy (section 6). Replaced `pages.yml`. |
 | Firebase project `statgenpapers` | Spark plan, Anonymous sign-in on (auto clean-up off), Firestore in production mode, `statgenpapers.github.io` authorized. |
 | Actions secret `OPENALEX_API_KEY` | Set. |
@@ -49,7 +49,7 @@ decision function. No regex scope prefilter: rank the whole pool and take the to
 ### Backtest evidence
 
 Leak-free rolling backtest, full pool of about 2,100 papers a month, March–October 2026
-(210 picks; 200 top-25 slots). Protocol in `dev/backtest/README.md`.
+(210 picks; 200 top-25 slots). Protocol in `dev/coldstart/backtest/README.md`.
 
 | Scorer | Mean AUC | Picks in top 25 (of 210) |
 |---|---|---|
@@ -80,18 +80,18 @@ Findings to state honestly on the About page:
    month (58 against 59 top-25 hits of 132 picks). Frozen weights are therefore safe.
 6. Ranking the full pool finds as many picks as ranking the regex shortlist, so the regex
    filter is dropped.
-7. Alternative scorers on the same embeddings (`dev/backtest/strategies.py`: RBF and linear
+7. Alternative scorers on the same embeddings (`dev/coldstart/backtest/strategies.py`: RBF and linear
    SVM, MLP, gradient boosting, kNN features, two-stage text-then-venue, recency weighting,
    separate title embedding, other penalties) did not beat logistic regression consistently:
    most land within six top-25 hits of it out of 191, and the best on one embedding is
    mid-table on the other. Venue written into the embedded text was worse than the indicator.
 8. Larger transformer embeddings (PubMedBERT, bge-base, SciNCL, MedCPT, …) find up to 6 more
    of 210 picks, none more on the held-out month, at about 1/1,000 of potion's speed; potion
-   stays. Table and speeds in `dev/LOG.md` (2026-11-10).
+   stays. Table and speeds in `dev/coldstart/LOG.md` (2026-11-10).
 
 ### Weights file
 
-`dev/train.py` (to write; local only) fits the classifier on all 12 pool months with all
+`dev/coldstart/train.py` (to write; local only) fits the classifier on all 12 pool months with all
 picks and writes `model/weights.json`:
 
 ```json
@@ -157,8 +157,8 @@ Entry point: `uv run python -m pipeline --month YYYY-MM` (default: previous cale
    all/published/preprint, abstract on click, optional name kept in `localStorage`,
    own vote highlighted, animated re-order, responsive layout, no login prompt anywhere.
 5. `about.html`: what the site is, how papers are collected and scored, the backtest tables
-   of section 3 with their caveats, and a pointer to `dev/backtest/`. Numbers come from
-   `site/data/backtest.json`, written by `dev/backtest/summary.py` (extend it to export).
+   of section 3 with their caveats, and a pointer to `dev/coldstart/backtest/`. Numbers come from
+   `site/data/backtest.json`, written by `dev/coldstart/backtest/summary.py` (extend it to export).
 
 ## 6. Automation (built as proposed)
 
@@ -228,14 +228,14 @@ the commit that added this section.
    included, trains the monthly model (item 7). The Score is the calibrated prediction that a paper gets marked.
    "Picks" in the evidence above means those cold-start positives.
 6. **Recency (2026-11-11).** A model for month M is fitted on the 12 months before M, each weighted
-   0.5^(age/6) (`dev/recency.py`), with pools from 2025-01. Leak-free over 2026-01..10 (239 picks), against
+   0.5^(age/6) (`dev/coldstart/recency.py`), with pools from 2025-01. Leak-free over 2026-01..10 (239 picks), against
    equal weights from 2025-11: AUC 0.971 vs 0.969, 110 vs 108 picks in the top 25. Equal weights from 2025-01
    did worse (105); a 6-month half-life without the cutoff did best (112), within noise of the chosen one.
 7. **Monthly refit, no vote correction (2026-11-11).** The owner chose to assume readers look through the whole pool:
    each run refits the model (`pipeline/train.py`) on the stored pools of the 12 months before the list, a paper
    marked on the site positive, every other pool paper negative; the vote correction is gone. On the cold start,
    labels from the site's marks reproduce the picks (all 319, plus 20 reader marks or other versions of picks); the
-   refit for 2026-11 matches `dev/train.py` (score correlation 0.993 on the 2026-10 pool, 23 of the top 25). Pools
+   refit for 2026-11 matches `dev/coldstart/train.py` (score correlation 0.993 on the 2026-10 pool, 23 of the top 25). Pools
    are stored as int8 embeddings (leak-free 2026-07..10: AUC 0.9693 vs 0.9694 at full precision, 51 of 115 in the
    top 25 either way) on the branch `training`, which keeps 12 months in one commit (14 MB). The calibration (a, b)
    is refitted each run too, on the scores each stored month got from its own model, weighted the same way. A

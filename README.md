@@ -22,7 +22,7 @@ monthly work.
 2. **Change sources or the cutoff:** edit `config/sources.toml` and push.
 3. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
 4. **Fill missing abstracts of added papers:** `uv run python dev/fill_abstracts.py --write`.
-5. **Cold start** (done 2026-11-11, needs the private `handoff/data/`): `dev/rollforward.py 2026-01 2026-10` built
+5. **Cold start** (done 2026-11-11, needs the private `handoff/data/`): `dev/coldstart/rollforward.py 2026-01 2026-10` built
    those months leak-free; `dev/lab_marks.py` wrote their marks as the handle `admin`
    (its Firebase user is in `~/.config/statgenpapers/lab.json`, never committed).
 
@@ -46,4 +46,4 @@ python3 -m http.server -d site 8000                # preview
 | `site/` | The website; `site/data/` has each month's list |
 | `data/votes/` | Monthly snapshots of marks (handles hashed) |
 | `firebase/` | Firestore rules and tests |
-| `dev/` | Local only: backtest, rollforward, site check |
+| `dev/` | Local only: site check, admin marks, abstracts; `coldstart/`: the finished cold start and its backtest |

@@ -3,7 +3,7 @@
 A pool paper marked on the site (on a list, or added and marked, in any month) is a positive; every other pool
 paper a negative, as if readers had looked through the whole pool. A marked added paper found in no stored pool is
 one more positive, in the month it was added to. Month M of a model for month L weighs 0.5 ** (age / 6), age = L - M
-in months, 1 to 12: the setting the leak-free backtest of 2026-01..10 chose (dev/recency.py, dev/train.py).
+in months, 1 to 12: the setting the leak-free backtest of 2026-01..10 chose (dev/coldstart/recency.py, dev/coldstart/train.py).
 
 The Score is sigmoid(a + b·score). The model is fitted with balanced class weights, which ranks best but makes its own
 probability far too high, so a and b are refitted too, on the scores each stored month got from its own model (out of

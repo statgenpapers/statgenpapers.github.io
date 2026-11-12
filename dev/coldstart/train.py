@@ -1,10 +1,10 @@
 """Fit the base weights for the next month and write model/weights.json: the 12 months before it, each weighted by
-age with a 6-month half-life (dev/recency.py).
+age with a 6-month half-life (dev/coldstart/recency.py).
 
-Local only: reads handoff/data/bt/texts.parquet (built by dev/backtest/prep.py), which is never
-committed. Run from the repository root: uv run --group train python dev/train.py
+Local only: reads handoff/data/bt/texts.parquet (built by dev/coldstart/backtest/prep.py), which is never
+committed. Run from the repository root: uv run --group train python dev/coldstart/train.py
 
-Before fitting, it repeats the leak-free rolling backtest (dev/backtest/README.md) through the
+Before fitting, it repeats the leak-free rolling backtest (dev/coldstart/backtest/README.md) through the
 production code path, to check that the embedding call, text cleaning and venue keys of the
 monthly run reproduce the published numbers.
 """
@@ -19,9 +19,9 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).parents[1]
+ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "dev"))
+sys.path.insert(0, str(ROOT / "dev" / "coldstart"))
 from pipeline.fetch import clean  # noqa: E402
 from pipeline.score import embed, load_model  # noqa: E402
 from recency import rows_and_weights  # noqa: E402

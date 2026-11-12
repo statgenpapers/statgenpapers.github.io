@@ -9,7 +9,7 @@ The score is the decision function of a logistic regression fitted with balanced
 so `sigmoid(score)` overstates the chance of a pick (a score of 8.8 reads as 99.98%). An
 unpenalized logistic fit to the out-of-sample scores of the rolling backtest (Mar–Oct 2026,
 17,000 papers, 210 picks) gives `P(pick) = sigmoid(-3.378 + 0.716 · score)`, stored as
-`calibration` in `model/weights.json` by `dev/train.py`.
+`calibration` in `model/weights.json` by `dev/coldstart/train.py`.
 
 | Score | Papers | Picked | Calibrated |
 |---|---|---|---|
@@ -27,7 +27,7 @@ predicts lab picks, not upvotes.
 
 ## 2026-11-10: Other embedding models
 
-Rolling backtest (`dev/backtest/`), full pool, logistic regression on embedding + venue
+Rolling backtest (`dev/coldstart/backtest/`), full pool, logistic regression on embedding + venue
 one-hot, title + abstract. Top 25: picks found in the top 25 of each month, Mar–Oct 2026
 (210 picks); October was held out from model selection.
 

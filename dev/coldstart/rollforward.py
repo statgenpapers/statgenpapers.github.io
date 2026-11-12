@@ -1,16 +1,16 @@
-"""Roll the site forward through past months as if it had run live: python dev/rollforward.py 2026-01 2026-10
+"""Roll the site forward through past months as if it had run live: python dev/coldstart/rollforward.py 2026-01 2026-10
 
 For each month M, in order:
 1. Fit lab weights on the pool months before M, with the picks known before M (leak-free), and a
-   calibration on out-of-sample scores of earlier months; write model/rollforward/weights-M.json.
+   calibration on out-of-sample scores of earlier months; write dev/coldstart/weights/weights-M.json.
 2. Run the monthly pipeline for M with those weights (it fetches M's pool and writes site/data/M.*).
 3. Put the lab's picks for M on the site as marks of the handle "admin" (dev/lab_marks.py): a
    listed pick is marked, a missed pick is added as a paper and marked. The next month's run then
    sees them, as it would see readers' marks.
 
 Local only: reads the private handoff/data/ files (picks and the labelled pools from 2025-01). Months are
-weighted as dev/recency.py says.
-Run from the repository root with: uv run --group train python dev/rollforward.py 2026-01 2026-10
+weighted as dev/coldstart/recency.py says.
+Run from the repository root with: uv run --group train python dev/coldstart/rollforward.py 2026-01 2026-10
 """
 import csv
 import json
@@ -26,17 +26,17 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
-ROOT = Path(__file__).parents[1]
+ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 from pipeline.fetch import clean, url_doi  # noqa: E402
 from pipeline.score import embed, load_model  # noqa: E402
 
 MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928fbbd846f22f816360919f"}
-OUT = ROOT / "model" / "rollforward"
+OUT = ROOT / "dev" / "coldstart" / "weights"
 cfg = tomllib.loads((ROOT / "config" / "sources.toml").read_text())
 
 from pipeline.fetch import find_doi  # noqa: E402
-sys.path.insert(0, str(ROOT / "dev"))
+sys.path.insert(0, str(ROOT / "dev" / "coldstart"))
 from recency import rows_and_weights  # noqa: E402
 
 
@@ -51,7 +51,7 @@ def features():
 
 
 def fit(before):
-    """The model for month `before`: the picks known before it, on the rows and weights of dev/recency.py."""
+    """The model for month `before`: the picks known before it, on the rows and weights of dev/coldstart/recency.py."""
     rows, weight = rows_and_weights(month, before)
     y = (tab != "") & (tab < before)
     return LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X[rows], y[rows], sample_weight=weight)

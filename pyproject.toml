@@ -7,7 +7,7 @@ dependencies = ["model2vec>=0.6", "numpy>=2", "requests>=2.32", "scikit-learn>=1
 
 [dependency-groups]
 dev = ["pytest>=8"]
-# local only: dev/train.py and dev/backtest/summary.py
+# local only: dev/coldstart/train.py and dev/coldstart/backtest/summary.py
 train = ["pandas>=2.2", "pyarrow>=17"]
 
 [tool.uv]

@@ -1,8 +1,8 @@
 """Store the pools of the cold start (2025-11..2026-10) in data/pools/, from which the monthly run's model learns.
 
-    uv run --group train python dev/backfill_pools.py
+    uv run --group train python dev/coldstart/backfill_pools.py
 
-Local only: reads handoff/data/bt/texts.parquet (dev/backtest/prep.py). The monthly run stores each later month's
+Local only: reads handoff/data/bt/texts.parquet (dev/coldstart/backtest/prep.py). The monthly run stores each later month's
 pool itself. What is stored holds no picks and no abstracts (pipeline/train.py).
 """
 import json
@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).parents[1]
+ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 from pipeline.fetch import clean, norm_doi  # noqa: E402
 from pipeline.score import embed, linear, load_model  # noqa: E402
@@ -24,7 +24,7 @@ for month, p in pool.groupby("month"):
     titles, abstracts = p.title.map(clean).tolist(), p.abstract.map(clean).tolist()
     venues = np.where(p.journal.isin(["Biorxiv", "Medrxiv"]), "Preprint", p.journal)  # a preprint is a preprint
     emb = embed(model, titles, abstracts)
-    rolled = ROOT / "model" / "rollforward" / f"weights-{month}.json"  # the month's own leak-free model, if it has one
+    rolled = ROOT / "dev" / "coldstart" / "weights" / f"weights-{month}.json"  # the month's own leak-free model, if it has one
     score = linear(json.loads(rolled.read_text()), emb, venues) if rolled.exists() else np.full(len(p), np.nan)
     save_pool(month, model, p.doi.map(norm_doi).tolist(), titles, abstracts, venues, emb, score)
     print(month, len(p))

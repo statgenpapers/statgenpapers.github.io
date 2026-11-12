@@ -7,7 +7,7 @@ A listed pick gets a mark; a missed pick is added as a paper and marked. What is
 so a second run adds nothing twice. The writes go through the Firestore REST API under the public
 rules, as one fixed anonymous Firebase user: firebase/firestore.rules lets only that user write as "admin".
 Its sign-in is kept in ~/.config/statgenpapers/lab.json (private: never commit it). Run by
-dev/rollforward.py, or by hand for a new month's picks.
+dev/coldstart/rollforward.py, or by hand for a new month's picks.
 """
 import json
 import re
