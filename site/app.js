@@ -151,7 +151,7 @@ function createRow(p) {
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
   q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
-  q(".remove-own").addEventListener("click", () => removeSubmission(li.paper));
+  q(".remove-own").addEventListener("click", link(() => removeSubmission(li.paper)));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
@@ -201,8 +201,7 @@ function updateRow(li, p) {
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
   li.paper = p;  // the latest copy: the saved one first shows without handles
-  q(".added-icon").hidden = !p.added || ownAdded(p);  // one's own added paper: an × in the icon's place, until the run lists it
-  q(".remove-own").hidden = !ownAdded(p);
+  q(".remove-own").hidden = !ownAdded(p);  // one's own added paper, until the run lists it
 }
 
 // A paper the logged-in handle added to the month in progress: it may remove it until the run lists it
@@ -252,7 +251,10 @@ function render() {
 function renderBar() {
   // the list's heading names its month: "Papers of 2026/10"
   const listed = state.view === "list" && state.month;
-  $("list-month").textContent = upcoming() ? `Added to ${monthName(state.month)} so far` : listed ? `Papers of ${monthName(state.month)}` : "Papers";
+  $("list-month").replaceChildren(...(upcoming()
+    ? [`Added to ${monthName(state.month)} so far `, el("span", "head-note", "(Score will be provided when the list is published)")]
+    : [listed ? `Papers of ${monthName(state.month)}` : "Papers"]));
+  $("listview").classList.toggle("upcoming", upcoming());  // no Score column before the run
   $("me-wrap").hidden = $("interested-wrap").hidden = !state.handle;
   $("me").textContent = state.handle;
   $("me").href = `?user=${state.handle}`;

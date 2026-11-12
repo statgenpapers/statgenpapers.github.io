@@ -110,9 +110,13 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .pick .pct { margin-left: auto; }
 .tip { position: absolute; top: calc(100% + .3rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); color: var(--body); }
-/* the submitter's own added paper: an × in the added icon's place, until the run lists it */
-.pick .remove-own { padding: 0 .1rem; border: 0; background: none; color: var(--muted); font: inherit; font-size: 1.8em; line-height: .5; cursor: pointer; }
-.pick .remove-own:hover, .pick .remove-own:focus-visible { color: var(--error); }
+/* the submitter's own added paper: "Remove" after Details, until the run lists it */
+.sub .remove-own { margin-left: .6em; }
+.sub .remove-own:hover, .sub .remove-own:focus-visible { color: var(--error); }
+/* the "add to next month" page: no Score column before the run scores its papers */
+#listview.upcoming .paper { grid-template-columns: 1.8rem minmax(0, 1fr); }
+#listview.upcoming .pick, #listview.upcoming .pick-head .menu { display: none; }
+.head-note { font-size: .8em; }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details p:last-child { margin-bottom: 0; }

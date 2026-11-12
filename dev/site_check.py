@@ -206,7 +206,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               seen(a.locator("#toast"), "Added to 2020/02; it gets a Score on 2020/03/10.") is not None
               and added(b).count() == 0)
         check("the add page lists it, unscored, under its form",
-              a.inner_text("#list-month") == "Added to 2020/02 so far" and seen(added(a).locator(".pct"), "–") is not None
+              a.inner_text("#list-month") == "Added to 2020/02 so far (Score will be provided when the list is published)"
+              and added(a).locator(".pick").is_hidden() and a.locator("#score-help").is_hidden()
               and a.locator("#add").is_visible())
         a.click("#add-open")
         a.fill("#add-url", ADD_URL.removeprefix("https://doi.org/"))  # a bare DOI
@@ -270,12 +271,11 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
             expect(added(page).locator(".up")).to_be_enabled(timeout=15000)
         try:  # once the live submissions, with handles, are in
             expect(added(a).locator(".remove-own")).to_be_visible(timeout=15000)
-            check("before the run, its handle sees an × in the icon's place; others see the icon",
-                  added(a).locator(".added-icon").is_hidden() and added(b).locator(".remove-own").is_hidden() and added(b).locator(".added-icon").is_visible())
-            if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the submitter's row, for review
-                added(a).screenshot(path=f"{shots}/own-added-row.png")
+            check("before the run, only its handle sees Remove", added(b).locator(".remove-own").is_hidden())
+            if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the add page's list, with the submitter's row, for review
+                a.locator("#listview").screenshot(path=f"{shots}/own-added-row.png")
         except AssertionError:
-            check("before the run, its handle sees an × in the icon's place; others see the icon", False)
+            check("before the run, only its handle sees Remove", False)
         n = len(prompts)
         added(a).locator(".remove-own").click()
         try:
