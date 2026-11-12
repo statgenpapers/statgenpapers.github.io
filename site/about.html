@@ -33,19 +33,6 @@ the model missed: they join the next list, scored like the others, with a person
 </ol>
 <p>Each month's list is built on the 10th of the following month.</p>
 
-<h2>How does the score work?</h2>
-<ol>
-  <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
-  (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
-  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It is fitted
-  again before each list, on the candidates of the 12 months before it: papers marked on the site are the positives,
-  all other candidates the negatives, and recent months count more (a month's weight halves every 6 months), so it
-  follows tastes as they change. The first marks were made before the site opened.</li>
-  <li>The raw score is calibrated into a probability, the Score. Every paper at 30% or more is listed, so a month
-  with more promising papers has a longer list.</li>
-  <li>Marks re-order the list at once, and the next month's model learns from them.</li>
-</ol>
-
 <h2>What's the score?</h2>
 <p>The score is the model's prediction of how likely a paper is to be marked. Marks re-order the list but do not change
 the score. To test it, each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a
@@ -68,6 +55,19 @@ model trained only on the months before it.</p>
 </table>
 <p class="caption">The backtest code is in <code>dev/backtest/</code> of the repository. Numbers generated
 <span data-v="generated"></span>.</p>
+
+<h2>How does the score work?</h2>
+<ol>
+  <li>The title and abstract become a vector of 512 numbers, from a small text-embedding model
+  (<a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>) that runs on an ordinary CPU.</li>
+  <li>A logistic regression on that vector and the journal or preprint category gives a raw score. It is fitted
+  again before each list, on the candidates of the 12 months before it: papers marked on the site are the positives,
+  all other candidates the negatives, and recent months count more (a month's weight halves every 6 months), so it
+  follows tastes as they change. The first marks were made before the site opened.</li>
+  <li>The raw score is calibrated into a probability, the Score. Every paper at 30% or more is listed, so a month
+  with more promising papers has a longer list.</li>
+  <li>Marks re-order the list at once, and the next month's model learns from them.</li>
+</ol>
 
 <h2>How do I give feedback?</h2>
 <p>Open an issue on <a href="https://github.com/statgenpapers/statgenpapers.github.io/issues">GitHub</a>: a bug, a
