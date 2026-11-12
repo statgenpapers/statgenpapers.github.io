@@ -25,5 +25,5 @@ def linear(w, emb, venues):
 
 
 def probability(w, score):
-    """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b from dev/train.py."""
+    """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b refitted each month (pipeline/train.py)."""
     return expit(w["calibration"]["a"] + w["calibration"]["b"] * np.asarray(score))

@@ -85,7 +85,8 @@ def main():
 
     print(f"pool: {start} to {end}", flush=True)
     pool = fetch_pool(cfg, start.isoformat(), end.isoformat())
-    papers = dedupe(pool, submitted | {p["doi"] for m, ps in listed.items() if m != month for p in ps})
+    # Added papers stay in the pool, the model's training data, and are left off the list below: they show as added papers
+    papers = dedupe(pool, {p["doi"] for m, ps in listed.items() if m != month for p in ps})
     papers.sort(key=lambda p: p.doi)
     print(f"dedupe: {len(pool)} -> {len(papers)}", flush=True)
     if not papers:
@@ -99,7 +100,8 @@ def main():
     if args.pool_only:
         return
 
-    model = load_model(weights)
+    model, refit = load_model(weights), None
+    newest = not listed or month >= max(listed)  # a rerun of a past month leaves the current model as it is
     if not args.weights:  # the model of this month: refitted on the pools of the 12 months before it
         marked = {m: [(url_doi(s["url"]), s["title"], s) for sid, s in subs.items() if votes[m].get(sid)] for m, subs in added.items()}
         marked = {m: [(doi, title, e) for (doi, title, _), e in zip(ps, embed(model, [s["title"] for *_, s in ps], [s["abstract"] for *_, s in ps]))]
@@ -107,14 +109,19 @@ def main():
         names = {j["key"] for j in cfg["journals"]} | {"Preprint"}
         if refit := fit(month, names, keys, marked, base=weights, model=model):
             weights = refit
-            write_json(current, weights)
-            print(f"model refitted on {', '.join(weights['train_months'][::len(weights['train_months']) - 1])}: "
+            if newest:
+                write_json(current, weights)
+            print(f"model refitted on {weights['train_months'][0]} to {weights['train_months'][-1]}: "
                   f"{weights['marked']} marked of {weights['papers']} papers", flush=True)
     emb, venues = embed(model, [p.title for p in papers], [p.abstract for p in papers]), [p.venue for p in papers]
-    score = linear(weights, emb, venues)  # out of sample: this month's marks come later; the calibration's data
-    save_pool(month, model, [p.doi for p in papers], [p.title for p in papers], [p.abstract for p in papers], venues, emb, score)
-    order = np.argsort(-score, kind="stable")
-    top = order[:int((probability(weights, score) >= cfg["min_pick_chance"]).sum())]
+    score = linear(weights, emb, venues)
+    if not args.weights:  # dev/rollforward.py passes --weights; its months' pools come from dev/backfill_pools.py
+        # the calibration's data: scores out of sample (this month's marks come later), so only from a model refitted for it
+        save_pool(month, model, [p.doi for p in papers], [p.title for p in papers], [p.abstract for p in papers], venues, emb,
+                  score if refit else np.full(len(papers), np.nan))
+    shown = np.array([p.doi not in submitted for p in papers])  # an added paper is listed as one, not twice
+    order = np.argsort(-np.where(shown, score, -np.inf), kind="stable")
+    top = order[:int(((probability(weights, score) >= cfg["min_pick_chance"]) & shown).sum())]
 
     shortlist = [full_authors(papers[i]) for i in top]
     out = [{k: v for k, v in asdict(p).items() if k != "published_doi"}

@@ -49,7 +49,7 @@ def main(write):
     if write and found:
         token = json.loads((Path.home() / ".config" / "configstore" / "firebase-tools.json").read_text())["tokens"]["access_token"]
         for path, text in found.items():
-            requests.patch(f"https://firestore.googleapis.com/v1/{DOCS}/{path}", params={"updateMask.fieldPaths": "abstract"},
+            requests.patch(f"https://firestore.googleapis.com/v1/{DOCS}/{path}", params={"updateMask.fieldPaths": "abstract", "currentDocument.exists": "true"},
                            json={"fields": {"abstract": {"stringValue": text}}},
                            headers={"Authorization": f"Bearer {token}"}).raise_for_status()
     print(f"{len(found)} abstracts found{', written' if write and found else ''}")

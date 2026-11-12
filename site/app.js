@@ -62,7 +62,7 @@ const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boole
 function urlDoi(url) {
   const nature = url.match(/nature\.com\/articles\/([^\s?#/]+)/i), arxiv = url.match(/arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})/i);
   const doi = nature ? `10.1038/${nature[1]}` : arxiv ? `10.48550/arxiv.${arxiv[1]}` : url.match(/10\.\d{4,9}\/[^\s?#]+/)?.[0];
-  return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
+  return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf\+html|\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
 }
 const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
@@ -452,6 +452,7 @@ async function vote(id, month) {
 async function removeSubmission(p) {
   const month = state.month, handles = [...(state.votes.get(p.id) ?? [])].filter((h) => HANDLE.test(h));
   if (!confirm(`Remove "${p.title}" from the list?`)) return;
+  if (!(await signedIn())) return;
   try {
     // the paper first: if its marks then fail to go, nobody sees them
     await fb.deleteDoc(fb.doc(db, "months", month, "submissions", p.id));
@@ -463,6 +464,15 @@ async function removeSubmission(p) {
 }
 
 // ---------------------------------------------------------------- login, past months
+
+// localStorage, which may be off: read with one argument, write with two (null removes)
+function store(key, value) {
+  try {
+    if (value === undefined) return localStorage.getItem(key);
+    value === null ? localStorage.removeItem(key) : localStorage.setItem(key, value);
+  } catch {}
+  return null;
+}
 
 function setHandle(handle) {
   state.handle = handle;
@@ -653,23 +663,31 @@ async function changeHandle(from, to) {
   if (!db) throw new Error("Firestore is unavailable");
   const months = [...state.months, addMonth()], col = (m, c) => fb.collection(db, "months", m, c);
   const mine = (m, c, h) => fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", h)));
-  const used = await Promise.all(months.flatMap((m) => ["votes", "submissions"].map((c) =>
-    fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", to), fb.limit(1))))));
-  if (used.some((snap) => !snap.empty)) return null;
+  // a change cut short (closed tab, lost connection) leaves the new handle in use; trying the same change again finishes it
+  const pending = JSON.stringify({ from, to }), resuming = store("handleChange") === pending;
+  if (!resuming) {
+    const used = await Promise.all(months.flatMap((m) => ["votes", "submissions"].map((c) =>
+      fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", to), fb.limit(1))))));
+    if (used.some((snap) => !snap.empty)) return null;
+  }
   if (!(await signedIn())) throw new Error("not signed in");
+  store("handleChange", pending);
   let moved = 0;
   for (const m of months) {
     const [votes, subs] = await Promise.all([mine(m, "votes", from), mine(m, "submissions", from)]);
-    if (votes.empty && subs.empty) continue;
-    const batch = fb.writeBatch(db);  // one month at once
-    for (const d of votes.docs) {
-      batch.set(voteRef(m, d.data().paper, to), { paper: d.data().paper, handle: to });
-      batch.delete(d.ref);
+    const ops = [
+      ...votes.docs.flatMap((d) => [(b) => b.set(voteRef(m, d.data().paper, to), { paper: d.data().paper, handle: to }),
+        (b) => b.delete(d.ref)]),
+      ...subs.docs.map((d) => (b) => b.update(d.ref, { name: to })),
+    ];
+    for (let i = 0; i < ops.length; i += 400) {  // a batch holds at most 500 writes; a mark's two stay in one batch
+      const batch = fb.writeBatch(db);
+      ops.slice(i, i + 400).forEach((op) => op(batch));
+      await batch.commit();
     }
-    for (const d of subs.docs) batch.update(d.ref, { name: to });
-    await batch.commit();
     moved += votes.size;
   }
+  store("handleChange", null);
   return moved;
 }
 

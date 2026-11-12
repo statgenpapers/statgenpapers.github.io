@@ -87,12 +87,17 @@ def norm_doi(doi):
 
 
 def url_doi(url):
-    """DOI in a paper URL, or "" if it shows none."""
-    if m := re.search(r"10\.\d{4,9}/[^\s?#]+", url):
-        return norm_doi(re.sub(r"(\.full|\.abstract|/full|/abstract)$", "", m.group(0)))
-    if m := re.search(r"nature\.com/articles/([a-z0-9-]+)", url):
-        return f"10.1038/{m.group(1)}"
-    return ""
+    """DOI in a paper URL, or "" if it shows none. Keep in step with urlDoi() in site/app.js."""
+    if m := re.search(r"nature\.com/articles/([^\s?#/]+)", url, re.I):
+        doi = f"10.1038/{m.group(1)}"
+    elif m := re.search(r"arxiv\.org/(?:abs|pdf)/(\d{4}\.\d{4,5})", url, re.I):
+        doi = f"10.48550/arxiv.{m.group(1)}"
+    elif m := re.search(r"10\.\d{4,9}/[^\s?#]+", url):
+        doi = m.group(0)
+    else:
+        return ""
+    doi = re.sub(r"[.,;)\]]+$", "", doi)
+    return norm_doi(re.sub(r"(\.full\.pdf\+html|\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|/full|/abstract)$", "", doi))
 
 
 def lookup(url, params=None):

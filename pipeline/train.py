@@ -14,7 +14,7 @@ Each month's pool is stored in data/pools/YYYY-MM.npz: DOIs, plain titles, venue
 gave (for the calibration), embeddings as int8 (with a
 scale per dimension; the leak-free backtest of 2026-07..10 scored the same as with full precision) and how many papers
 each token of the embedding model's vocabulary appears in (for the words of the About page). No abstracts. The files
-live on the branch `pools`, which keeps the last 12 months in one commit (.github/workflows/monthly.yml).
+live on the branch `training`, which keeps the last 12 months in one commit (.github/workflows/monthly.yml).
 """
 import re
 from datetime import date
@@ -23,6 +23,7 @@ import numpy as np
 
 from . import ROOT
 from .fetch import plain_title, url_doi
+from .output import paper_id
 
 POOLS = ROOT / "data" / "pools"
 WINDOW, HALF_LIFE = 12, 6  # months
@@ -52,7 +53,8 @@ def load_pool(month):
 
 
 def marked_keys(listed, votes, submissions):
-    """DOIs and plain titles of every paper marked on the site: listed papers by id, added papers by submission id.
+    """DOIs and plain titles of every paper marked on the site: listed papers by id, added papers by submission id;
+    a mark on a paper no list has (any more: a month rebuilt) by its id, which `labels` matches to pool DOIs.
     listed: {month: [paper]}; votes: {month: {paper id: marks}}; submissions: {month: {submission id: paper}}."""
     keys = set()
     for m, marks in votes.items():
@@ -62,7 +64,15 @@ def marked_keys(listed, votes, submissions):
                 keys |= {ids[pid]["doi"], plain_title(ids[pid]["title"])}
             elif pid in subs:
                 keys |= {url_doi(subs[pid]["url"]), plain_title(subs[pid]["title"])}
+            else:
+                keys.add(pid)
     return keys - {""}
+
+
+def labels(pool, keys):
+    """Which papers of a stored pool are marked: by DOI, plain title or paper id."""
+    keys = list(keys)
+    return np.isin(pool["doi"], keys) | np.isin(pool["title"], keys) | np.isin([paper_id(d) for d in pool["doi"]], keys)
 
 
 def fit(month, venue_names, keys, added=None, base=None, model=None):
@@ -81,7 +91,7 @@ def fit(month, venue_names, keys, added=None, base=None, model=None):
     X, y, w = [], [], []
     for m, p in pools.items():
         X.append(np.hstack([p["emb"], p["venue"][:, None] == names]))
-        y.append(np.isin(p["doi"], list(keys)) | np.isin(p["title"], list(keys)))
+        y.append(labels(p, keys))
         w.append(np.full(len(p["doi"]), 0.5 ** ((index(month) - index(m)) / HALF_LIFE)))
     for m, papers in (added or {}).items():  # marked added papers no pool holds; no venue: they may come from any journal
         emb = np.array([e for doi, title, e in papers if m in pools and not {doi, plain_title(title)} & found])
@@ -90,6 +100,8 @@ def fit(month, venue_names, keys, added=None, base=None, model=None):
             y.append(np.ones(len(emb), bool))
             w.append(np.full(len(emb), 0.5 ** ((index(month) - index(m)) / HALF_LIFE)))
     X, y, w = np.vstack(X), np.concatenate(y), np.concatenate(w)
+    if y.sum() < MIN_MARKED:  # too few marks to learn from: the caller keeps its weights
+        return None
     lr = LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X, y, sample_weight=w)
     coef, k = lr.coef_[0], X.shape[1] - len(names)
     out = {key: base[key] for key in ("model", "revision", "text", "calibration") if base and key in base} | (calibrate(month, keys, pools) or {}) | {
@@ -111,7 +123,7 @@ def calibrate(month, keys, pools):
     if not scored:
         return None
     s = np.concatenate([p["score"] for p in scored.values()]).astype(float)
-    y = np.concatenate([np.isin(p["doi"], list(keys)) | np.isin(p["title"], list(keys)) for p in scored.values()])
+    y = np.concatenate([labels(p, keys) for p in scored.values()])
     w = np.concatenate([np.full(len(p["doi"]), 0.5 ** ((index(month) - index(m)) / HALF_LIFE)) for m, p in scored.items()])
     if y.sum() < MIN_MARKED:
         return None

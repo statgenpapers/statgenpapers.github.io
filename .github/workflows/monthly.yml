@@ -11,6 +11,10 @@ on:
       month:
         description: "Month to build, YYYY-MM (empty: the previous month)"
         required: false
+      dry_run:
+        description: "Build and commit in the runner only: push nothing, deploy nothing"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ["site/**", ".github/workflows/monthly.yml"]
@@ -33,6 +37,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main  # a manual run from another branch still builds and deploys main
       - if: github.event_name != 'push'
         uses: astral-sh/setup-uv@v10.3.3  # this action publishes no moving major tag
       - if: github.event_name != 'push'
@@ -58,27 +64,35 @@ jobs:
         if: github.event_name != 'push'
         env:
           MONTH: ${{ inputs.month }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data data/votes model/weights.json
           git diff --cached --quiet || git commit -m "List for ${MONTH:-$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)}"
-          git pull --rebase
-          git push
+          git log --oneline -1 && git show --stat HEAD | tail -n 5
+          [ "$DRY_RUN" = true ] || { git pull --rebase && git push; }
+      - uses: actions/configure-pages@v6
+        if: inputs.dry_run != true
+      - uses: actions/upload-pages-artifact@v5
+        if: inputs.dry_run != true
+        with:
+          path: site
+      - id: deployment
+        if: inputs.dry_run != true
+        uses: actions/deploy-pages@v5
+      # after the deploy: a failure here leaves the list published; the next run stores this month's pool again
       - name: Keep the last 12 months of pools on the branch training, in one commit
         if: github.event_name != 'push'
         working-directory: data/pools
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          ls 20??-??.npz | sort | head -n -12 | xargs -r git rm -q
+          ls 20??-??.npz | sort | head -n -12 | xargs -r rm -f
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -q --orphan latest
           git add -A
           git commit -q -m "Pools of $(ls 20??-??.npz | head -1 | cut -c1-7) to $(ls 20??-??.npz | tail -1 | cut -c1-7)"
-          git push -q -f origin latest:training
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: site
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          git show --stat HEAD | tail -n 15
+          [ "$DRY_RUN" = true ] || git push -q -f origin latest:training

@@ -241,7 +241,7 @@ the commit that added this section.
    is refitted each run too, on the scores each stored month got from its own model, weighted the same way. A
    leak-free grid over 2026-01..10 kept the balanced model plus a, b: one unbalanced model whose probability is the
    Score did worse on AUC (0.969 vs 0.972) and log loss (0.0337 to 0.0389 vs 0.0331) at every C from 3 to 100.
-5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
+8. **No sort or filter controls, no published/preprint label.** The list is always ordered by
    votes, equal votes by score. The Journal column shows official title abbreviations
    (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).
 
@@ -273,9 +273,5 @@ the commit that added this section.
 
 1. Section 9, item 2: backtests of the larger models.
 2. Section 9, item 3: the stale test document.
-3. Submissions feed dedupe but not learning. A submission is a strong signal that the scorer
-   missed a paper; it has a title but no abstract.
-4. The upvote-only learning rule above, and its penalty (`penalty = 1.0`), have no data behind
-   them yet. Revisit when the first few hundred votes exist.
-5. Anyone can add a paper, so spam is possible. The rules limit field sizes and URL schemes;
+3. Anyone can add a paper, so spam is possible. The rules limit field sizes and URL schemes;
    removal is by hand in the Firebase console.

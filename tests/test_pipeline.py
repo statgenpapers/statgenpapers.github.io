@@ -47,6 +47,9 @@ def test_clean_and_url_doi():
     assert url_doi("https://www.biorxiv.org/content/10.1101/2026.01.02.123456v2.full") == "10.1101/2026.01.02.123456"
     assert url_doi("https://www.nature.com/articles/s41588-026-00001-1") == "10.1038/s41588-026-00001-1"
     assert url_doi("https://www.cell.com/ajhg/fulltext/S0002-9297(26)00001-1") == ""
+    assert url_doi("https://www.medrxiv.org/content/10.1101/2026.01.02.26300001v1.full.pdf+html") == "10.1101/2026.01.02.26300001"
+    assert url_doi("https://doi.org/10.1016/j.ajhg.2026.01.001.") == "10.1016/j.ajhg.2026.01.001"
+    assert url_doi("https://arxiv.org/abs/2601.01234v2") == "10.48550/arxiv.2601.01234"
 
 
 def test_score_from_a_weights_file():
