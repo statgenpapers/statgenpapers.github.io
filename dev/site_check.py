@@ -128,7 +128,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check(f"an upvote in one browser shows in the other ({dt and round(dt, 2)} s)", dt is not None and dt < 5)
     check("the other browser re-orders the list, animated", order(b)[0] == "3" and b.evaluate("window.moves") > 0)
     check("own mark is highlighted (blue) only for the voter", pressed(a, 3) and not pressed(b, 3))
-    check("there is no downvote", a.locator("li.paper button:not(.added-icon)").count() == 4)
+    check("there is no downvote", a.locator("li.paper button:not(.added-icon, .remove-own)").count() == 4)
     row(b, 3).locator(".toggle").click()
     check("the abstract opens without its heading, and no handle shows",
           row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
@@ -255,10 +255,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         added(b).locator(".added-icon").click()
         check("a tap on the icon says, next to it, that the paper was added",
               seen(added(b).locator(".tip"), "Added by a reader, not chosen by the model.") is not None)
-        added(a).locator(".added-icon").click()
         check("once listed, nobody can remove it, not even its handle",
-              seen(added(a).locator(".tip"), "Added by a reader, not chosen by the model.") is not None and added(a).locator(".tip .remove").count() == 0)
-        a.locator("h1").click()  # closes the tip
+              added(a).locator(".remove-own").is_hidden() and added(a).locator(".added-icon").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back
         seen(added(b).locator(".count"), "0")
 
@@ -271,18 +269,15 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         for page in pages:  # the list first shows the browser's saved copy, without handles; then the live one
             expect(added(page).locator(".up")).to_be_enabled(timeout=15000)
         try:  # once the live submissions, with handles, are in
-            expect(added(a).locator(".added-icon")).to_have_attribute("title", "Added by you; tap to remove", timeout=15000)
-            added(b).locator(".added-icon").click()
-            others = seen(added(b).locator(".tip"), "Added by a reader, not chosen by the model.") is not None and added(b).locator(".tip .remove").count() == 0
-            added(a).locator(".added-icon").click()
-            check("before the run, only its handle can remove it, from the icon's tip",
-                  others and seen(added(a).locator(".tip"), "Added by you, not chosen by the model.remove") is not None)
-            if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the submitter's row and its tip, for review
+            expect(added(a).locator(".remove-own")).to_be_visible(timeout=15000)
+            check("before the run, its handle sees an × in the icon's place; others see the icon",
+                  added(a).locator(".added-icon").is_hidden() and added(b).locator(".remove-own").is_hidden() and added(b).locator(".added-icon").is_visible())
+            if shots := os.environ.get("SITE_CHECK_SHOTS"):  # a picture of the submitter's row, for review
                 added(a).screenshot(path=f"{shots}/own-added-row.png")
         except AssertionError:
-            check("before the run, only its handle can remove it, from the icon's tip", False)
+            check("before the run, its handle sees an × in the icon's place; others see the icon", False)
         n = len(prompts)
-        added(a).locator(".tip .remove").click()
+        added(a).locator(".remove-own").click()
         try:
             expect(added(b)).to_have_count(0, timeout=15000)
             check("removing it removes it everywhere, after a confirmation", len(prompts) == n + 1)

@@ -124,25 +124,18 @@ function monthData(m) {
 
 // A short note just under a control, for a tap where a hover title cannot show; one at a time, gone after
 // 3 s or at the next click elsewhere.
-// A short note under `anchor`; with an action ({ label, run }), a button for it, and the note stays until a click elsewhere
-function showTip(anchor, text, action) {
+function showTip(anchor, text) {
   document.querySelector(".tip")?.remove();
   const tip = el("span", "tip", text);
   tip.setAttribute("role", "status");
-  if (action) {
-    const button = el("button", "remove", action.label);
-    button.type = "button";
-    button.addEventListener("click", () => { close(); action.run(); });
-    tip.append(button);
-  }
   anchor.after(tip);
   const close = (event) => {
-    if (event && (event.target === anchor || (action && tip.contains(event.target)))) return;
+    if (event?.target === anchor) return;
     tip.remove();
     document.removeEventListener("click", close, true);
   };
   setTimeout(() => document.addEventListener("click", close, true));
-  if (!action) setTimeout(close, 3000);
+  setTimeout(close, 3000);
 }
 
 function createRow(p) {
@@ -157,9 +150,8 @@ function createRow(p) {
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
-  q(".added-icon").addEventListener("click", (event) => (ownAdded(li.paper)  // its handle may remove it until the run lists it
-    ? showTip(event.currentTarget, "Added by you, not chosen by the model.", { label: "remove", run: () => removeSubmission(li.paper) })
-    : showTip(event.currentTarget, "Added by a reader, not chosen by the model.")));
+  q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
+  q(".remove-own").addEventListener("click", () => removeSubmission(li.paper));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
@@ -209,9 +201,8 @@ function updateRow(li, p) {
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
   li.paper = p;  // the latest copy: the saved one first shows without handles
-  const icon = q(".added-icon"), label = ownAdded(p) ? "Added by you; tap to remove" : "Added by a reader";
-  icon.title = label;
-  icon.setAttribute("aria-label", label);
+  q(".added-icon").hidden = !p.added || ownAdded(p);  // one's own added paper: an × in the icon's place, until the run lists it
+  q(".remove-own").hidden = !ownAdded(p);
 }
 
 // A paper the logged-in handle added to the month in progress: it may remove it until the run lists it
