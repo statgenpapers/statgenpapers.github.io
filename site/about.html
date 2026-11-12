@@ -50,16 +50,6 @@ the model missed: they join the next list, scored like the others, with a person
 <p>The model's prediction of how likely a paper is to be marked. In the test below, papers at about 50% were marked about half the
 time. Marks re-order the list but do not change the score.</p>
 
-<h2>Which words count?</h2>
-<p>Each word of a title or abstract pushes the raw score up or down by its own amount. In the
-model of <span id="words-month">the latest list</span>:</p>
-<ol id="words">
-  <li>Words that raise the score most: <span id="words-up"></span>.</li>
-  <li>Words that lower it most: <span id="words-down"></span>.</li>
-  <li id="words-change">Compared with the month before, it counts more: <span id="words-more"></span>; and less:
-  <span id="words-less"></span>.</li>
-</ol>
-
 <h2>Does the score work?</h2>
 <p>Each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a model trained only on
 the months before it.</p>
@@ -95,19 +85,6 @@ journal or preprint category to add, or anything else.</p>
   <a href="about.html" class="current" aria-current="page">about</a>
 </footer>
 
-<script type="module">
-// The words of the latest list's model (data/YYYY-MM.json, written by the monthly run)
-const get = (path) => fetch(path, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null), () => null);
-const latest = (await get("data/index.json"))?.months?.at(-1), words = latest && (await get(`data/${latest}.json`))?.words;
-if (words) {
-  document.getElementById("words-month").textContent = latest.replace("-", "/");
-  for (const key of ["up", "down", "more", "less"]) document.getElementById(`words-${key}`).textContent = (words[key] || []).join(", ");
-  document.getElementById("words-change").hidden = !words.more;
-} else {
-  document.getElementById("words").previousElementSibling.textContent = "The words of the latest model are unavailable right now.";
-  document.getElementById("words").hidden = true;
-}
-</script>
 <script type="module">
 const data = await fetch("data/backtest.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null), () => null);
 if (!data) {  // the text keeps its written-in numbers; the table says why it is empty

@@ -13,10 +13,9 @@ whose probability is the Score on both ranking (AUC 0.972 vs 0.969) and log loss
 Each month's pool is stored in data/pools/YYYY-MM.npz: DOIs, plain titles, venue keys, the score its month's model
 gave (for the calibration), embeddings as int8 (with a
 scale per dimension; the leak-free backtest of 2026-07..10 scored the same as with full precision) and how many papers
-each token of the embedding model's vocabulary appears in (for the words of the About page). No abstracts. The files
+each token of the embedding model's vocabulary appears in (for word analyses). No abstracts. The files
 live on the branch `training`, which keeps the last 12 months in one commit (.github/workflows/monthly.yml).
 """
-import re
 from datetime import date
 
 import numpy as np
@@ -28,7 +27,6 @@ from .output import paper_id
 POOLS = ROOT / "data" / "pools"
 WINDOW, HALF_LIFE = 12, 6  # months
 MIN_MARKED = 30  # fewer marked papers with an out-of-sample score: the calibration stays as it was
-MIN_PAPERS, MIN_PAPERS_CHANGE = 30, 100  # a word shown on About is in at least this many papers of the training pools
 
 index = lambda m: int(m[:4]) * 12 + int(m[5:7]) - 1
 month_at = lambda i: f"{i // 12}-{i % 12 + 1:02d}"
@@ -75,11 +73,11 @@ def labels(pool, keys):
     return np.isin(pool["doi"], keys) | np.isin(pool["title"], keys) | np.isin([paper_id(d) for d in pool["doi"]], keys)
 
 
-def fit(month, venue_names, keys, added=None, base=None, model=None):
+def fit(month, venue_names, keys, added=None, base=None):
     """Weights for month `month` ("2026-11") in the shape `score.linear` takes, or None if no pool is stored.
 
     keys: marked_keys(); added: {month: [(doi, title, embedding)]} of the marked added papers; base: the current
-    weights, whose model, calibration and text recipe are kept; model: the embedding model, for the words."""
+    weights, whose model, calibration and text recipe are kept."""
     from sklearn.linear_model import LogisticRegression
 
     months = [month_at(index(month) - age) for age in range(1, WINDOW + 1)]
@@ -109,8 +107,6 @@ def fit(month, venue_names, keys, added=None, base=None, model=None):
         "venue": dict(zip(names.tolist(), coef[k:].round(6).tolist())), "trained": date.today().isoformat(),
         "train_months": sorted(pools), "half_life_months": HALF_LIFE, "marked": int(y.sum()), "papers": len(y),
     }
-    if model is not None:
-        out["words"] = words(model, out, pools, base)
     return out
 
 
@@ -131,27 +127,3 @@ def calibrate(month, keys, pools):
     return {"calibration": {"a": round(float(cal.intercept_[0]), 4), "b": round(float(cal.coef_[0, 0]), 4)},
             "calibrated_on": {"months": sorted(scored), "marked": int(y.sum())}}
 
-
-def words(model, weights, pools, previous=None, n=15):
-    """The words that raise and lower the score most, and those the model weighs more and less than `previous`.
-
-    The embedding is the normalized mean of its tokens' vectors, so a token adds (its vector · the weights) to the
-    score of every paper it is in, divided by that paper's norm: the ranking of tokens is exact. Only words of 4
-    letters or more, in at least MIN_PAPERS papers of the training pools; MIN_PAPERS_CHANGE for the change from
-    `previous`, which is small, so rare word pieces would lead it."""
-    vectors, vocab = np.asarray(model.embedding), model.tokenizer.get_vocab()
-    papers = np.zeros(len(vectors), int)
-    for p in pools.values():
-        np.add.at(papers, p["token"], p["papers"])
-    names = np.empty(len(vectors), object)
-    for token, i in vocab.items():
-        if i < len(names):
-            names[i] = token
-    word = np.array([bool(t) and bool(re.fullmatch(r"[a-z][a-z-]{3,}", t)) for t in names])
-    rank = lambda c, ok, k: [str(t) for t in names[ok][np.argsort(-c[ok], kind="stable")[:k]]]
-    effect, ok = vectors @ np.asarray(weights["embedding"]), word & (papers >= MIN_PAPERS)
-    out = {"up": rank(effect, ok, n), "down": rank(-effect, ok, n)}
-    if previous and len(previous.get("embedding", [])) == vectors.shape[1]:
-        change, ok = effect - vectors @ np.asarray(previous["embedding"]), word & (papers >= MIN_PAPERS_CHANGE)
-        out |= {"more": rank(change, ok, 10), "less": rank(-change, ok, 10)}
-    return out

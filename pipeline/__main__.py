@@ -107,7 +107,7 @@ def main():
         marked = {m: [(doi, title, e) for (doi, title, _), e in zip(ps, embed(model, [s["title"] for *_, s in ps], [s["abstract"] for *_, s in ps]))]
                   for m, ps in marked.items() if ps}
         names = {j["key"] for j in cfg["journals"]} | {"Preprint"}
-        if refit := fit(month, names, keys, marked, base=weights, model=model):
+        if refit := fit(month, names, keys, marked, base=weights):
             weights = refit
             if newest:
                 write_json(current, weights)
@@ -135,8 +135,7 @@ def main():
         write_json(DATA / f"{m}.json", data | {"added": data.get("added", {}) | new, "added_papers": added_papers(added[m])})
     write_json(DATA / f"{month}.json", {"month": month, "generated": date.today().isoformat(), "pool": len(papers),
                                          "papers": out, "added": score_added(weights, model, cfg, added.get(month, {})),
-                                         "added_papers": added_papers(added.get(month, {}))}
-               | ({"words": weights["words"]} if "words" in weights else {}))
+                                         "added_papers": added_papers(added.get(month, {}))})
     write_json(DATA / "index.json", {"months": sorted(listed.keys() | {month})})
     table = "\n".join("\t".join(row) for row in [TABLE_HEADER] + [table_row(p) for p in shortlist]) + "\n"
     (DATA / f"{month}.tsv").write_text(table)

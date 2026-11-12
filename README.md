@@ -13,8 +13,7 @@ evidence: [`docs/PLAN.md`](docs/PLAN.md); setup: [`docs/setup.md`](docs/setup.md
    and listed with a person icon beside the Score; until then they are not shown. Readers always add to the month in progress.
 2. **Scorer.** A `potion-base-32M` embedding of title and abstract plus the venue, through a logistic regression
    the run fits again each month (`pipeline/train.py`): on the pools of the 12 months before the list, weight
-   halving every 6 months, marked papers positive and the rest negative. It writes `model/weights.json` and the
-   words that move the score most (About). The pools are kept, as int8 embeddings without abstracts, on the
+   halving every 6 months, marked papers positive and the rest negative. It writes `model/weights.json`. The pools are kept, as int8 embeddings without abstracts, on the
    branch `training` (last 12 months, one commit). `dev/backtest/` holds the numbers on the About page.
 3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Marks and added papers live in Firestore
    (`months/{m}/votes/{paper}~{handle}`, `months/{m}/submissions`), checked by `firebase/firestore.rules`. A
