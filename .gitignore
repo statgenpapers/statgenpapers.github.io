@@ -8,6 +8,8 @@ __pycache__/
 .cache/
 
 # Local data and secrets
+# data/pools/: the branch training, checked out here by the monthly run (pipeline/train.py)
+data/pools/
 *.sqlite
 *.sqlite-journal
 .env

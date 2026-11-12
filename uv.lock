@@ -937,6 +937,7 @@ dependencies = [
     { name = "model2vec" },
     { name = "numpy" },
     { name = "requests" },
+    { name = "scikit-learn" },
     { name = "scipy" },
 ]
 
@@ -947,7 +948,6 @@ dev = [
 train = [
     { name = "pandas" },
     { name = "pyarrow" },
-    { name = "scikit-learn" },
 ]
 
 [package.metadata]
@@ -955,6 +955,7 @@ requires-dist = [
     { name = "model2vec", specifier = ">=0.6" },
     { name = "numpy", specifier = ">=2" },
     { name = "requests", specifier = ">=2.32" },
+    { name = "scikit-learn", specifier = ">=1.5" },
     { name = "scipy", specifier = ">=1.14" },
 ]
 
@@ -963,7 +964,6 @@ dev = [{ name = "pytest", specifier = ">=8" }]
 train = [
     { name = "pandas", specifier = ">=2.2" },
     { name = "pyarrow", specifier = ">=17" },
-    { name = "scikit-learn", specifier = ">=1.5" },
 ]
 
 [[package]]

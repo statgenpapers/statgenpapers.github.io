@@ -100,8 +100,6 @@ server = "medrxiv"
 name = "medRxiv"
 categories = ["genetic and genomic medicine", "health informatics"]
 
-# Learning from votes (docs/PLAN.md, section 3).
+# Marks: the labels of the monthly model (pipeline/train.py)
 [votes]
 firestore_project = "statgenpapers"
-min_upvoted = 30  # no vote correction until this many listed papers have an upvote
-penalty = 1.0     # L2 penalty on the correction; larger keeps the scorer closer to the base weights

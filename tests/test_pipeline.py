@@ -3,7 +3,8 @@ import numpy as np
 from pipeline.dedupe import dedupe
 from pipeline.fetch import Paper, clean, url_doi
 from pipeline.output import paper_id, short_name, table_row
-from pipeline.score import linear, probability, vote_correction
+from pipeline.score import linear, probability
+from pipeline import train
 from pipeline import votes as votes_module
 
 
@@ -55,48 +56,29 @@ def test_score_from_a_weights_file():
     np.testing.assert_allclose(linear(weights, emb, ["NG", "PNAS", "NG"]), [1.5, -1.0, -1.5])
 
 
-def votes(n, seed=0):
-    """n listed papers: the upvoted half lies along +u, the rest along -u; all have lab score 0."""
-    rng = np.random.default_rng(seed)
-    upvoted = np.arange(n) % 2 == 0
-    emb = rng.normal(size=(n, 8)) * 0.3 + np.where(upvoted, 1, -1)[:, None] * np.eye(8)[0]
-    return emb / np.linalg.norm(emb, axis=1, keepdims=True), ["NG"] * n, upvoted
+def test_marks_on_lists_and_added_papers_are_the_labels():
+    listed = {"2026-01": [{"id": "a", "doi": "10.1/a", "title": "Listed A"}, {"id": "b", "doi": "10.1/b", "title": "Listed B"}]}
+    votes = {"2026-01": {"a": {"h": 1}}, "2026-02": {"s1": {"h": 1}}}
+    subs = {"2026-02": {"s1": {"url": "https://example.org/x", "title": "An Added Paper!"}, "s2": {"url": "https://doi.org/10.1/c", "title": "Unmarked"}}}
+    assert train.marked_keys(listed, votes, subs) == {"10.1/a", "listed a", "an added paper"}
 
 
-NEW = np.array([[1.0], [-1.0]]) * np.eye(8)[0]  # one new paper like the upvoted ones, one like the others
-
-
-def test_no_votes_leaves_the_lab_scores():
-    emb, venues, upvoted = votes(58)  # 29 upvoted papers: below min_upvoted
-    for delta in [vote_correction(emb, venues, upvoted, np.zeros(58), 1.0, 30),
-                  vote_correction(np.zeros((0, 8)), [], np.zeros(0, bool), np.zeros(0), 1.0, 30),
-                  vote_correction(emb, venues, np.ones(58, bool), np.zeros(58), 1.0, 30)]:  # all upvoted: no contrast
-        assert not np.any(delta["embedding"]) and not delta["venue"]
-        np.testing.assert_array_equal(linear(delta, NEW, ["NG", "NG"]), 0)
-
-
-def test_consistent_votes_move_scores():
-    emb, venues, upvoted = votes(80)
-    up, down = linear(vote_correction(emb, venues, upvoted, np.zeros(80), 1.0, 30), NEW, ["Cell", "Cell"])
-    assert up > 0.5 and down < -0.5
-    # more votes move the scores further; a stronger penalty keeps them closer to the lab weights
-    more = linear(vote_correction(*votes(800), np.zeros(800), 1.0, 30), NEW, ["Cell", "Cell"])[0]
-    stiff = linear(vote_correction(emb, venues, upvoted, np.zeros(80), 100.0, 30), NEW, ["Cell", "Cell"])[0]
-    assert more > up > stiff > 0
-
-
-def test_votes_that_agree_with_the_lab_score_change_little():
-    emb, venues, upvoted = votes(80)
-    agree = vote_correction(emb, venues, upvoted, np.where(upvoted, 6.0, -6.0), 1.0, 30)  # lab score predicts every vote
-    surprise = vote_correction(emb, venues, upvoted, np.where(upvoted, -6.0, 6.0), 1.0, 30)
-    assert 10 * np.linalg.norm(agree["embedding"]) < np.linalg.norm(surprise["embedding"])
-
-
-def test_correction_ignores_how_popular_voting_is():
-    # the same preference with a shifted lab score (an overall upvote rate the lab score gets wrong) gives the same correction
-    emb, venues, upvoted = votes(80)
-    a, b = (vote_correction(emb, venues, upvoted, np.full(80, shift), 1.0, 30)["embedding"] for shift in (0.0, 5.0))
-    np.testing.assert_allclose(a, b, atol=1e-3)
+def test_monthly_fit_learns_marks_weighting_recent_months_more(tmp_path, monkeypatch):
+    monkeypatch.setattr(train, "POOLS", tmp_path)
+    rng, u = np.random.default_rng(0), np.eye(8)[0]
+    model = type("M", (), {"tokenizer": type("T", (), {"encode_batch": lambda self, texts, add_special_tokens: [
+        type("E", (), {"ids": [i % 5]})() for i, _ in enumerate(texts)]})()})()
+    for i, m in enumerate(["2025-10", "2025-11", "2026-10"]):  # 2025-10 is 13 months before 2026-11: outside the window
+        marked = np.arange(200) < 20
+        emb = rng.normal(size=(200, 8)) * 0.3 + np.where(marked, 1, -1)[:, None] * u
+        train.save_pool(m, model, [f"10.1/{m}-{j}" for j in range(200)], [f"T {m} {j}" for j in range(200)], [""] * 200, ["NG"] * 200,
+                        emb / np.linalg.norm(emb, axis=1, keepdims=True))
+    keys = {f"10.1/{m}-{j}" for m in ("2025-10", "2025-11", "2026-10") for j in range(20)}
+    w = train.fit("2026-11", {"NG", "Preprint"}, keys, base={"calibration": {"a": -3, "b": 1}})
+    assert w["train_months"] == ["2025-11", "2026-10"] and w["marked"] == 40 and w["calibration"] == {"a": -3, "b": 1}
+    up, down = linear(w, np.array([u, -u]), ["NG", "NG"])
+    assert up > 0 > down
+    assert train.fit("2027-11", {"NG"}, keys) is None  # no stored pool in the window: the caller keeps its weights
 
 
 def test_pick_chance_is_calibrated_and_monotone():

@@ -1,6 +1,5 @@
-"""Scorer: static text embedding plus venue, linear base weights, and a correction learned from votes."""
+"""Scorer: static text embedding plus venue, and the month's linear weights (pipeline/train.py)."""
 import numpy as np
-from scipy.optimize import minimize
 from scipy.special import expit
 
 
@@ -28,27 +27,3 @@ def linear(w, emb, venues):
 def probability(w, score):
     """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b from dev/train.py."""
     return expit(w["calibration"]["a"] + w["calibration"]["b"] * np.asarray(score))
-
-
-def vote_correction(emb, venues, upvoted, offset, penalty, min_upvoted):
-    """Correction Δ to the base weights, learned from votes, in the shape `linear` takes.
-
-    Rows are the listed papers of the months that got votes; `upvoted` says which of them have
-    an upvote. Logistic regression of `upvoted` on [embedding, venue one-hot], with the base
-    score as a fixed `offset`, a free intercept (listed papers are upvoted at another rate than
-    pool papers were marked in the training data) and the penalty penalty/2 · |Δ|². Few votes, or votes the base score
-    already predicts, leave Δ near 0, so the scorer stays at the base weights. Δ is exactly 0
-    below `min_upvoted` upvoted papers, and when every paper is upvoted.
-    """
-    names, k = sorted(set(venues)), emb.shape[1]
-    if upvoted.sum() < min_upvoted or upvoted.all():
-        return {"embedding": np.zeros(k), "venue": {}}
-    X = np.hstack([emb, np.array(venues)[:, None] == np.array(names), np.ones((len(emb), 1))])
-    weight = np.r_[np.full(X.shape[1] - 1, penalty), 0.0]  # the intercept, last, is not penalized
-
-    def loss(d):
-        z = offset + X @ d
-        return np.logaddexp(0, z).sum() - upvoted @ z + weight @ d**2 / 2, X.T @ (expit(z) - upvoted) + weight * d
-
-    d = minimize(loss, np.zeros(X.shape[1]), jac=True, method="L-BFGS-B").x
-    return {"embedding": d[:k], "venue": dict(zip(names, d[k:-1]))}

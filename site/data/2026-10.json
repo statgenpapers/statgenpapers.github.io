@@ -1239,5 +1239,65 @@
   }
  ],
  "pool": 1992,
- "upvoted_papers_used": 129
+ "upvoted_papers_used": 129,
+ "words": {
+  "down": [
+   "tunneling",
+   "reconstituted",
+   "vortex",
+   "tunnel",
+   "switches",
+   "transplanted",
+   "superconducting",
+   "reactivation",
+   "intern",
+   "ammonium",
+   "methanol",
+   "resist",
+   "restores",
+   "ablation",
+   "protects"
+  ],
+  "less": [
+   "methyl",
+   "doping",
+   "facilitated",
+   "governing",
+   "polymerase",
+   "secreted",
+   "methylation",
+   "pooled",
+   "independently",
+   "drives"
+  ],
+  "more": [
+   "clustering",
+   "proteomics",
+   "connectivity",
+   "analyze",
+   "prognostic",
+   "reshape",
+   "probabilistic",
+   "prognosis",
+   "patterns",
+   "correlate"
+  ],
+  "up": [
+   "genes",
+   "confounding",
+   "predictors",
+   "predict",
+   "traits",
+   "predictor",
+   "genetics",
+   "dataset",
+   "comorbidities",
+   "genomics",
+   "estimating",
+   "estimation",
+   "pedigree",
+   "trait",
+   "predicting"
+  ]
+ }
 }

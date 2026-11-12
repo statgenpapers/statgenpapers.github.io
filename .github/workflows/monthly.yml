@@ -36,10 +36,15 @@ jobs:
       - if: github.event_name != 'push'
         uses: astral-sh/setup-uv@v10.3.3  # this action publishes no moving major tag
       - if: github.event_name != 'push'
+        uses: actions/checkout@v7  # the stored pools of the last 12 months: the monthly model's training data
+        with:
+          ref: training
+          path: data/pools
+      - if: github.event_name != 'push'
         uses: actions/cache@v6
         with:
           path: ~/.cache/huggingface
-          key: embedding-model-${{ hashFiles('model/weights.json') }}
+          key: embedding-model-potion-base-32M-1e5a03f8  # the model and revision pinned in model/weights.json
       - name: Build the list
         if: github.event_name != 'push'
         env:
@@ -49,17 +54,28 @@ jobs:
           uv sync --locked
           uv run pytest -q
           uv run python -m pipeline ${MONTH:+--month "$MONTH"}
-      - name: Commit the list and the vote snapshot
+      - name: Commit the list, the vote snapshot and the model
         if: github.event_name != 'push'
         env:
           MONTH: ${{ inputs.month }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data data/votes
+          git add site/data data/votes model/weights.json
           git diff --cached --quiet || git commit -m "List for ${MONTH:-$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)}"
           git pull --rebase
           git push
+      - name: Keep the last 12 months of pools on the branch training, in one commit
+        if: github.event_name != 'push'
+        working-directory: data/pools
+        run: |
+          ls 20??-??.npz | sort | head -n -12 | xargs -r git rm -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q --orphan latest
+          git add -A
+          git commit -q -m "Pools of $(ls 20??-??.npz | head -1 | cut -c1-7) to $(ls 20??-??.npz | tail -1 | cut -c1-7)"
+          git push -q -f origin latest:training
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

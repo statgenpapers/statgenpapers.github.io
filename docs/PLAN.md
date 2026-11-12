@@ -105,6 +105,8 @@ pick list (owner approved).
 
 ### Learning from votes
 
+Replaced on 2026-11-11 by the monthly refit: "Changes the owner asked for during the build", item 7.
+
 Each monthly run, before scoring:
 
 1. Read all votes with an unauthenticated REST call
@@ -223,12 +225,20 @@ the commit that added this section.
 5. **No lab picks (2026-11-11).** The site has no concept of a lab or picks. The reading-list picks of 2025-11 to
    2026-10 were the cold start: they fitted the base weights and are on the site as marks and added papers of the
    handle `admin`, which only `dev/lab_marks.py` writes, through the API. From 2026-11 every mark, `admin`'s
-   included, trains the vote correction. The Score is the calibrated prediction that a paper gets marked.
+   included, trains the monthly model (item 7). The Score is the calibrated prediction that a paper gets marked.
    "Picks" in the evidence above means those cold-start positives.
 6. **Recency (2026-11-11).** A model for month M is fitted on the 12 months before M, each weighted
    0.5^(age/6) (`dev/recency.py`), with pools from 2025-01. Leak-free over 2026-01..10 (239 picks), against
    equal weights from 2025-11: AUC 0.971 vs 0.969, 110 vs 108 picks in the top 25. Equal weights from 2025-01
    did worse (105); a 6-month half-life without the cutoff did best (112), within noise of the chosen one.
+7. **Monthly refit, no vote correction (2026-11-11).** The owner chose to assume readers look through the whole pool:
+   each run refits the model (`pipeline/train.py`) on the stored pools of the 12 months before the list, a paper
+   marked on the site positive, every other pool paper negative; the vote correction is gone. On the cold start,
+   labels from the site's marks reproduce the picks (all 319, plus 20 reader marks or other versions of picks); the
+   refit for 2026-11 matches `dev/train.py` (score correlation 0.993 on the 2026-10 pool, 23 of the top 25). Pools
+   are stored as int8 embeddings (leak-free 2026-07..10: AUC 0.9693 vs 0.9694 at full precision, 51 of 115 in the
+   top 25 either way) on the branch `training`, which keeps 12 months in one commit (14 MB). The calibration (a, b)
+   stays the one `dev/train.py` fitted.
 5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
    votes, equal votes by score. The Journal column shows official title abbreviations
    (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).
