@@ -1,9 +1,10 @@
 # Sources and list size for the monthly run. Edit, commit and push; no code changes needed.
 # A venue that is new here scores on text alone (venue weight 0) until the weights are retrained.
 
-# The shortlist: every paper whose pick chance is at least this. In the leak-free roll-forward (Jan-Oct 2026),
-# 25% listed 15-39 papers a month, 254 in all, and caught 111 of 242 picks, as many as a fixed 25 a month.
-min_pick_chance = 0.25
+# The shortlist: every paper whose Score is at least this. Leak-free, with each month calibrated on the months before
+# it (2026-03..10): 30% listed 14-36 papers a month, 188 in all, and caught 107 of 258 marked papers; a fixed 24 a
+# month caught 95; 25% listed 220 and caught 116.
+min_pick_chance = 0.30
 
 # OpenAlex work types kept from journals.
 work_types = ["article", "review", "letter", "preprint"]

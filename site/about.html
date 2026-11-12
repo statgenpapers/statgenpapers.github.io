@@ -17,7 +17,7 @@
 <main class="prose">
 <h2>About StatGen Papers</h2>
 <p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will mark: every
-paper with a Score of at least 25%. The model chooses them from about 2,000 candidates in journals such as
+paper with a Score of at least 30%. The model chooses them from about 2,000 candidates in journals such as
 Nature Genetics, the American Journal of Human Genetics and Cell Genomics, and in preprints. Anyone can add papers
 the model missed: they join the next list, scored like the others, with a person icon beside the Score. The code is in the
 <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
@@ -42,7 +42,7 @@ the model missed: they join the next list, scored like the others, with a person
   again before each list, on the candidates of the 12 months before it: papers marked on the site are the positives,
   all other candidates the negatives, and recent months count more (a month's weight halves every 6 months), so it
   follows tastes as they change. The first marks were made before the site opened.</li>
-  <li>The raw score is calibrated into a probability, the Score. Every paper at 25% or more is listed, so a month
+  <li>The raw score is calibrated into a probability, the Score. Every paper at 30% or more is listed, so a month
   with more promising papers has a longer list.</li>
   <li>Marks re-order the list at once, and the next month's model learns from them.</li>
 </ol>
@@ -72,8 +72,8 @@ the months before it.</p>
   <li>It comes close to a language model (Claude Haiku) that read and graded each paper: on the same papers in
   August to October, <span data-v="haiku.rows.1.top25">38</span> against <span data-v="haiku.rows.0.top25">43</span>
   marked papers in the top 25, at no cost.</li>
-  <li>From 2026/01 to 2026/10, the 25% cutoff listed 10 to 28 papers a month and caught 111 of the 239 marked papers,
-  as many as a fixed 25 a month, with fewer papers.</li>
+  <li>From 2026/03 to 2026/10, the 30% cutoff listed 14 to 36 papers a month and caught 107 of the 258 marked papers;
+  a list of a fixed 24 a month caught 95.</li>
 </ol>
 <table id="scorers">
   <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Marked papers in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
