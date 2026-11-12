@@ -111,7 +111,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .tip { position: absolute; top: calc(100% + .3rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); color: var(--body); }
 /* the submitter's own added paper: "Remove" after Details, until the run lists it */
-.sub .remove-own { margin-left: .6em; }
+.sub a.remove-own { float: right; margin-left: .6em; padding: 0; text-decoration-style: dashed; }  /* at the line's right end */
 .sub .remove-own:hover, .sub .remove-own:focus-visible { color: var(--error); }
 /* the "add to next month" page: no Score column before the run scores its papers */
 #listview.upcoming .paper { grid-template-columns: 1.8rem minmax(0, 1fr); }
