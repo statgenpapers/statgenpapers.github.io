@@ -78,7 +78,7 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 @keyframes fade-in { from { opacity: 0; } }
 
 /* the list */
-#listview { min-height: 100vh; }  /* the footer stays put while the list loads */
+#listview:has(#list:empty) { min-height: 100vh; }  /* the footer stays put while the list loads; a short list then pulls it up */
 .pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
 .title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
 .title-head .icon { display: flex; padding: .3rem .15rem; color: var(--muted); }  /* copy and download: as muted as the heading, a larger hit area */
