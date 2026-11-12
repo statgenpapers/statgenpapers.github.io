@@ -46,14 +46,12 @@ the model missed: they join the next list, scored like the others, with a person
   <li>Marks re-order the list at once, and the next month's model learns from them.</li>
 </ol>
 
-<h2>What is the score?</h2>
-<p>The model's prediction of how likely a paper is to be marked. In the test below, papers at about 50% were marked about half the
-time. Marks re-order the list but do not change the score.</p>
-
-<h2>Does the score work?</h2>
-<p>Each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a model trained only on
-the months before it.</p>
+<h2>What is the score, and does it work?</h2>
+<p>The score is the model's prediction of how likely a paper is to be marked. Marks re-order the list but do not change
+the score. To test it, each of <span data-v="n_months">8</span> past months (March to October 2026) was scored by a
+model trained only on the months before it.</p>
 <ol>
+  <li>Papers at about 50% were marked about half the time.</li>
   <li>A marked paper outranks an unmarked one <span data-v="auc_pct">96%</span> of the time (AUC), and the
   top 25 hold <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> marked papers: fewer than
   half. Tastes differ from month to month, and about one marked paper in ten comes from a source that is not
