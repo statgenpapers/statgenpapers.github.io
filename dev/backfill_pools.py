@@ -15,7 +15,7 @@ import pandas as pd
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline.fetch import clean, norm_doi  # noqa: E402
-from pipeline.score import embed, load_model  # noqa: E402
+from pipeline.score import embed, linear, load_model  # noqa: E402
 from pipeline.train import save_pool  # noqa: E402
 
 pool = pd.read_parquet(ROOT / "handoff" / "data" / "bt" / "texts.parquet").query("kind == 'pool' and month >= '2025-11'")
@@ -23,5 +23,8 @@ model = load_model(json.loads((ROOT / "model" / "weights.json").read_text()))
 for month, p in pool.groupby("month"):
     titles, abstracts = p.title.map(clean).tolist(), p.abstract.map(clean).tolist()
     venues = np.where(p.journal.isin(["Biorxiv", "Medrxiv"]), "Preprint", p.journal)  # a preprint is a preprint
-    save_pool(month, model, p.doi.map(norm_doi).tolist(), titles, abstracts, venues, embed(model, titles, abstracts))
+    emb = embed(model, titles, abstracts)
+    rolled = ROOT / "model" / "rollforward" / f"weights-{month}.json"  # the month's own leak-free model, if it has one
+    score = linear(json.loads(rolled.read_text()), emb, venues) if rolled.exists() else np.full(len(p), np.nan)
+    save_pool(month, model, p.doi.map(norm_doi).tolist(), titles, abstracts, venues, emb, score)
     print(month, len(p))

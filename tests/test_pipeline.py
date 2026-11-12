@@ -72,12 +72,14 @@ def test_monthly_fit_learns_marks_weighting_recent_months_more(tmp_path, monkeyp
         marked = np.arange(200) < 20
         emb = rng.normal(size=(200, 8)) * 0.3 + np.where(marked, 1, -1)[:, None] * u
         train.save_pool(m, model, [f"10.1/{m}-{j}" for j in range(200)], [f"T {m} {j}" for j in range(200)], [""] * 200, ["NG"] * 200,
-                        emb / np.linalg.norm(emb, axis=1, keepdims=True))
+                        emb / np.linalg.norm(emb, axis=1, keepdims=True), np.where(marked, 2.0, -2.0) + rng.normal(size=200))
     keys = {f"10.1/{m}-{j}" for m in ("2025-10", "2025-11", "2026-10") for j in range(20)}
     w = train.fit("2026-11", {"NG", "Preprint"}, keys, base={"calibration": {"a": -3, "b": 1}})
-    assert w["train_months"] == ["2025-11", "2026-10"] and w["marked"] == 40 and w["calibration"] == {"a": -3, "b": 1}
+    assert w["train_months"] == ["2025-11", "2026-10"] and w["marked"] == 40
     up, down = linear(w, np.array([u, -u]), ["NG", "NG"])
     assert up > 0 > down
+    cal = w["calibration"]  # refitted on the stored scores: marked papers score higher, so b > 0
+    assert w["calibrated_on"] == {"months": ["2025-11", "2026-10"], "marked": 40} and cal["b"] > 0 and cal != {"a": -3, "b": 1}
     assert train.fit("2027-11", {"NG"}, keys) is None  # no stored pool in the window: the caller keeps its weights
 
 

@@ -191,7 +191,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         c.fill(".handle-form input", "sitecheck_d")
         c.click(".handle-form button")
         check("a handle can be changed to an unused one; its marks move with it",
-              taken and seen(c.locator(".user .row").first, "handle:sitecheck_d change") is not None
+              taken and seen(c.locator(".user .row").first, "handlesitecheck_d change") is not None
               and c.evaluate("localStorage.getItem('handle')") == "sitecheck_d" and seen(count(a, 1), "1") is not None)
         c.goto(url)
         expect(row(c, 1).locator(".up")).to_have_attribute("aria-pressed", "true", timeout=15000)

@@ -3,7 +3,7 @@
   --accent: #2355d8; --accent-strong: #0f2a73; --accent-soft: #e9effd; --error: #c0392b;
   --shadow: 0 4px 16px rgba(0, 0, 0, .12);
   --radius: 4px;
-  --fs-small: 12px; --fs-meta: 13px;  /* type scale of the list: 12 / 13 / 14 (body) / 15 (titles); About adds 16 and 19 */
+  --fs-small: 12px; --fs-meta: 13px; --fs-body: 14px; --fs-title: 15px;  /* type scale of the list: 12 / 13 / 14 (body) / 15 (titles); About adds 16 and 19 */
   --font: Arial, Helvetica, sans-serif;
   color-scheme: light dark;
 }
@@ -16,13 +16,16 @@
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { margin: 0; padding: 0 1rem; background: var(--bg); color: var(--text); font: 14px/1.45 var(--font); }
+body { margin: 0; padding: 0 1rem; background: var(--bg); color: var(--text); font: var(--fs-body)/1.45 var(--font); }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 a, button { touch-action: manipulation; }
 button, input, textarea { font: inherit; color: inherit; }
 input, textarea { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
-button { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .15rem .7rem; cursor: pointer; }
+button { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .7rem; cursor: pointer; }
+form button:hover:not(:disabled) { background: var(--subtle); }
+button:disabled { opacity: .4; cursor: default; }
+::placeholder { color: var(--muted); opacity: 1; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* dashed underline: opens something in place (Details, Score) */
 .dashed, .dashed:hover { text-decoration: underline dashed 1px; text-decoration-color: color-mix(in srgb, currentColor 60%, transparent); text-underline-offset: 3px; }
@@ -31,10 +34,10 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .bar, main, footer { max-width: 54rem; margin: 0 auto; }  /* one centred column: the bar's and footer's rules end where the list does */
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .9rem; padding-top: 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--accent); }
 .brand { flex-basis: 100%; margin: 0; font: inherit; }  /* the name alone on the first row; links and login on the second */  /* the h1 of every page, styled as the logo link */
-.home { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1.05rem; }
+.home { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: 1rem; }
 .home:hover { text-decoration: none; }
 .home svg { flex: none; }
-.links, .account { font-size: 15px; color: var(--muted); }  /* as large as the paper titles */
+.links, .account { font-size: var(--fs-title); color: var(--muted); }  /* as large as the paper titles */
 /* the account block shares the second row with the links; if it is too long it wraps within itself, right-aligned:
    "interested" above "handle | logout" */
 .links { flex: none; }
@@ -45,11 +48,11 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 #me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
 .menu { position: relative; }
-.bar .current, .popover a.current { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
+.bar .current, .popover a.current, footer [aria-current] { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
 
 /* overlays: one family (surface, 1px border, radius); a shadow only on what floats */
-.popover, .panel, .toast { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-.popover, .toast { box-shadow: var(--shadow); }
+.popover, .panel, .toast, .tip { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.popover, .toast, .tip { box-shadow: var(--shadow); }
 .popover { position: absolute; top: calc(100% + .35rem); left: 0; z-index: 5; display: flex; flex-direction: column; padding: .3rem 0; }
 .popover a { padding: .3rem .8rem; white-space: nowrap; font-size: var(--fs-meta); }
 .popover a:hover { background: var(--subtle); text-decoration: none; }
@@ -59,31 +62,34 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .panel { margin: .9rem 0 0; padding: .6rem .8rem; }
 .panel label { display: flex; align-items: center; gap: .6rem; margin: .3rem 0; color: var(--muted); }
 .panel p { margin: .4rem 0; }
-.panel p:empty { display: none; }
-.panel p.error { color: var(--error); }
+.hint:empty { display: none; }
+.hint.error { color: var(--error); }
 #login { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
 #login label { margin: 0; }
 #login p { flex-basis: 100%; margin: 0; }  /* the hint sits one row-gap under the field */
-#add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); }
-#add input, #add textarea { width: 100%; font: inherit; resize: vertical; }
-#add div { display: flex; gap: .6rem; }
+#add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); align-items: baseline; }
+#add input, #add textarea { width: 100%; resize: vertical; }
+#add textarea { line-height: 1.45; }
+.actions { display: flex; gap: .6rem; }
+#login-handle, .handle-form input { width: 12rem; }
 #add > .hint, #add > div { margin-left: calc(6.5rem + .6rem); }  /* under the fields, not the labels */
 .hint { color: var(--muted); font-size: var(--fs-small); }
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); z-index: 10; width: max-content; max-width: calc(100vw - 2rem);
   padding: .6rem .8rem; color: var(--text); font-size: var(--fs-meta); }
 .toast:empty { display: none; }
-.toast .undo { border: 0; background: none; padding: 0 0 0 .5rem; color: var(--accent); }
+.toast .undo { border: 0; background: none; padding: .6rem 0 .6rem .5rem; margin: -.6rem 0; color: var(--accent); }  /* a finger-sized target */
 .toast .undo:hover { text-decoration: underline; }
 @media (prefers-reduced-motion: no-preference) { .toast { animation: fade-in .15s ease-out; } }
 @keyframes fade-in { from { opacity: 0; } }
 
 /* the list */
 #listview:has(#list:empty) { min-height: 100vh; }  /* the footer stays put while the list loads; a short list then pulls it up */
-.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; color: var(--muted); font-size: 1.1em; }
+.pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; }
+.pick-head, .page-head { color: var(--muted); font-size: var(--fs-title); }
 .title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
-.title-head .icon { display: flex; padding: .3rem .15rem; color: var(--muted); }  /* copy and download: as muted as the heading, a larger hit area */
-.title-head .icon:hover { color: var(--text); }
+.title-head .icon { display: flex; padding: .5rem .35rem; margin: -.2rem; color: var(--muted); }  /* copy and download: as muted as the heading, a larger hit area */
 #score-help { color: inherit; }
+.title-head .icon:hover, #score-help:hover { color: var(--text); }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .mark { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
 .paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 4.2rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: first baseline; }  /* triangle, count and Score sit on the title's first line */
@@ -94,28 +100,27 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 .up { position: relative; border: 0; background: none; padding: .3rem 0 0; color: var(--muted); line-height: 0; }
 .up::after { content: ""; position: absolute; inset: -.5rem -1.6rem -.9rem -.5rem; }  /* a finger-sized hit area over the count */
 .up:active:not(:disabled), .up[aria-pressed="true"] { color: var(--accent); }
-.up:disabled { opacity: .4; cursor: default; }
 .count { color: var(--muted); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
 .up[aria-pressed="true"] + .count { color: var(--accent); }
-.title { color: var(--text); font-size: 15px; }  /* a paper title: one step above the body text */
+.title { color: var(--text); font-size: var(--fs-title); }  /* a paper title: one step above the body text */
 .title:visited { color: var(--muted); }
 .source { display: inline-block; color: var(--muted); font-size: var(--fs-small); }  /* moves to the next line whole when it does not fit */
 .sub { color: var(--muted); font-size: var(--fs-small); margin-top: .1rem; }
 .sub a { color: var(--muted); padding: .25rem 0 .55rem; }
-.sub a:not(.toggle) { text-decoration: underline; }
+.sub a:not(.dashed) { text-decoration: underline; }
 .sub a:hover { color: var(--text); }
 .sub .toggle { margin-left: .6em; }
 /* an added paper: a small person-plus icon left of its Score, so the Score is not read as the model's choice */
 .pick .added-icon { position: relative; top: 1px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; line-height: 0; }  /* an added paper: at the Score column's left edge, the same place in every row */
 .pick .pct { margin-left: auto; }
-.tip { position: absolute; top: calc(100% + .3rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap;
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); color: var(--body); }
+.pick .added-icon::after { content: ""; position: absolute; inset: -.6rem; }
+.tip { position: absolute; top: calc(100% + .35rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap; color: var(--body); }
 /* the submitter's own added paper: "Remove" in the Score column, centred on the row, until the run lists it */
-.paper .remove-own { grid-column: 3; grid-row: 1; align-self: center; justify-self: end; padding: .4rem 0; color: var(--muted); font-size: 14px; }
+.paper .remove-own { grid-column: 3; grid-row: 1; align-self: center; justify-self: end; padding: .4rem 0; color: var(--muted); font-size: var(--fs-body); }
 .paper .remove-own:hover, .paper .remove-own:focus-visible { color: var(--error); }
 /* the "add to next month" page: no Scores before the run (the column holds Remove) */
 #listview.upcoming .pick, #listview.upcoming .pick-head .menu { display: none; }
-.head-note { font-size: .8em; }
+.head-note { font-size: var(--fs-small); }
 .details { position: relative; margin: .4rem 0 .3rem; font-size: var(--fs-meta); line-height: 1.6; color: var(--body); }
 .details p { margin: 0 0 .5rem; }
 .details p:last-child { margin-bottom: 0; }
@@ -126,45 +131,43 @@ button { background: var(--surface); border: 1px solid var(--border); border-rad
 
 /* the user and interested pages: no vote column, so everything starts at the bar's left edge, as on About */
 .page { margin-top: .9rem; }
-.page-head { color: var(--muted); margin: 0 0 .6rem; }
+.page-head { margin: 0; }
 .marks .mark { padding-top: .35rem; padding-bottom: .45rem; }
 .user .row { display: grid; grid-template-columns: 8rem 1fr; padding: .15rem 0; }
 .user .label { color: var(--muted); }
-.user a { justify-self: start; color: var(--text); }
+.user a { justify-self: start; }
 .user .change { margin-left: .6em; color: var(--muted); }
-.handle-form { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .4rem; }
-.handle-form input { width: 10rem; }
+.user .change:hover { color: var(--text); }
+.handle-form { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
 .handle-form .hint { flex-basis: 100%; }
-.handle-form .hint:empty { display: none; }
-.handle-form .hint.error { color: var(--error); }
-.page p { margin: .8rem 0 0; }
 
-footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: 15px; text-align: center; }  /* "about" at 15px, as the bar links */
+footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-top: 2px solid var(--accent); color: var(--muted); font-size: var(--fs-title); text-align: center; }  /* "about" at 15px, as the bar links */
 
 @media (max-width: 640px) {
   body { padding: 0 .6rem; }
   .paper { grid-template-columns: 1.8rem minmax(0, 1fr) 3.4rem; }
   #add label { grid-template-columns: 1fr; gap: .2rem; }
   #add > .hint, #add > div { margin-left: 0; }
-  input, textarea { font-size: 16px; }  /* iOS zooms into smaller inputs */
+  input, textarea, form button { font-size: 16px; }  /* iOS zooms into smaller inputs */
 }
 
 /* About page */
 .prose { padding-top: .5rem; padding-bottom: .6rem; color: var(--body); font-size: 1rem; line-height: 1.6; }
 .prose > * { max-width: 48rem; }  /* readable lines, starting at the bar's left edge */
 .prose h2 { margin: 2.2rem 0 .6rem; font-size: 1.2rem; color: var(--text); }
+.prose h2:first-child { margin-top: .4rem; }
 .prose strong { color: var(--text); }
 .prose li { margin: .35rem 0; }
 .prose > :last-child { margin-bottom: 0; }  /* the closing rule follows the text as it does the list */
-.prose table { border-collapse: collapse; margin: 1rem 0; font-size: 14px; display: block; overflow-x: auto; max-width: 100%; width: max-content;
+.prose table { border-collapse: collapse; margin: 1rem 0; font-size: var(--fs-body); display: block; overflow-x: auto; max-width: 100%; width: max-content;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .prose th, .prose td { text-align: left; padding: .5rem .9rem; white-space: nowrap; }
-.prose th { background: var(--subtle); color: var(--body); font-size: var(--fs-small); }
+.prose th { background: var(--subtle); color: var(--body); font-size: var(--fs-small); white-space: normal; }
 .prose tr + tr td { border-top: 1px solid var(--border); }
 .prose td:first-child, .prose th:first-child { white-space: normal; }
 .prose td.num, .prose th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .prose tr.chosen td { font-weight: 700; color: var(--text); background: var(--accent-soft); }
-.prose code { font-family: inherit; font-size: .92em; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .05em .3em; }
+.prose code { font-family: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .05em .3em; }
 .prose .caption { color: var(--muted); font-size: var(--fs-meta); }
 
 /* Wide screens: the vote column hangs in the left margin, so "Papers of …", the titles and the bar's rule share one left edge */

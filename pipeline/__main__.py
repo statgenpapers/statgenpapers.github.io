@@ -111,8 +111,8 @@ def main():
             print(f"model refitted on {', '.join(weights['train_months'][::len(weights['train_months']) - 1])}: "
                   f"{weights['marked']} marked of {weights['papers']} papers", flush=True)
     emb, venues = embed(model, [p.title for p in papers], [p.abstract for p in papers]), [p.venue for p in papers]
-    save_pool(month, model, [p.doi for p in papers], [p.title for p in papers], [p.abstract for p in papers], venues, emb)
-    score = linear(weights, emb, venues)
+    score = linear(weights, emb, venues)  # out of sample: this month's marks come later; the calibration's data
+    save_pool(month, model, [p.doi for p in papers], [p.title for p in papers], [p.abstract for p in papers], venues, emb, score)
     order = np.argsort(-score, kind="stable")
     top = order[:int((probability(weights, score) >= cfg["min_pick_chance"]).sum())]
 

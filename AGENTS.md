@@ -34,7 +34,8 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 - *Journal:* the abbreviation shown (`Nat Genet`, `bioRxiv`).
 - *Model:* refitted by each monthly run (`pipeline/train.py`) on the pools of the 12 months before the list, weight
   halving every 6 months; marked papers are positives, all other pool papers negatives (as if readers read the whole
-  pool). Written to `model/weights.json`. There is no vote correction.
+  pool). Written to `model/weights.json`, with the calibration (a, b), refitted on the stored out-of-sample scores.
+  There is no vote correction.
 - *Training branch:* `training`, the stored pools (int8 embeddings, no abstracts) of the last 12 months, one commit.
 - *Table:* the columns `Journal`, `Short Name`, `Title`, `URL`. *Short name:* `Journal_FirstAuthor_Year_Keyword`.
 - *Submission:* a paper a reader added. *Handle:* a password-free login, lower case.

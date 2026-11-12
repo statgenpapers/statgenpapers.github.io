@@ -5,7 +5,13 @@ paper a negative, as if readers had looked through the whole pool. A marked adde
 one more positive, in the month it was added to. Month M of a model for month L weighs 0.5 ** (age / 6), age = L - M
 in months, 1 to 12: the setting the leak-free backtest of 2026-01..10 chose (dev/recency.py, dev/train.py).
 
-Each month's pool is stored in data/pools/YYYY-MM.npz: DOIs, plain titles, venue keys, embeddings as int8 (with a
+The Score is sigmoid(a + b·score). The model is fitted with balanced class weights, which ranks best but makes its own
+probability far too high, so a and b are refitted too, on the scores each stored month got from its own model (out of
+sample: before its marks), with the same months and weights. In the leak-free backtest this beat one unbalanced model
+whose probability is the Score on both ranking (AUC 0.972 vs 0.969) and log loss (0.0331 vs 0.0337 at best).
+
+Each month's pool is stored in data/pools/YYYY-MM.npz: DOIs, plain titles, venue keys, the score its month's model
+gave (for the calibration), embeddings as int8 (with a
 scale per dimension; the leak-free backtest of 2026-07..10 scored the same as with full precision) and how many papers
 each token of the embedding model's vocabulary appears in (for the words of the About page). No abstracts. The files
 live on the branch `pools`, which keeps the last 12 months in one commit (.github/workflows/monthly.yml).
@@ -20,13 +26,14 @@ from .fetch import plain_title, url_doi
 
 POOLS = ROOT / "data" / "pools"
 WINDOW, HALF_LIFE = 12, 6  # months
+MIN_MARKED = 30  # fewer marked papers with an out-of-sample score: the calibration stays as it was
 MIN_PAPERS, MIN_PAPERS_CHANGE = 30, 100  # a word shown on About is in at least this many papers of the training pools
 
 index = lambda m: int(m[:4]) * 12 + int(m[5:7]) - 1
 month_at = lambda i: f"{i // 12}-{i % 12 + 1:02d}"
 
 
-def save_pool(month, model, dois, titles, abstracts, venues, emb):
+def save_pool(month, model, dois, titles, abstracts, venues, emb, score):
     """Store a month's pool: the training data of the next 12 months' models."""
     tokens = model.tokenizer.encode_batch([f"{t}\n{a}" for t, a in zip(titles, abstracts)], add_special_tokens=False)
     ids, counts = np.unique(np.concatenate([np.unique(t.ids) for t in tokens] or [np.zeros(0, int)]), return_counts=True)
@@ -35,7 +42,7 @@ def save_pool(month, model, dois, titles, abstracts, venues, emb):
     POOLS.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(POOLS / f"{month}.npz", doi=np.array(dois, str), title=np.array([plain_title(t) for t in titles], str),
                         venue=np.array(venues, str), emb=np.round(emb / scale).astype(np.int8), scale=scale,
-                        token=ids.astype(np.int32), papers=counts.astype(np.int32))
+                        score=np.asarray(score, np.float32), token=ids.astype(np.int32), papers=counts.astype(np.int32))
 
 
 def load_pool(month):
@@ -85,7 +92,7 @@ def fit(month, venue_names, keys, added=None, base=None, model=None):
     X, y, w = np.vstack(X), np.concatenate(y), np.concatenate(w)
     lr = LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X, y, sample_weight=w)
     coef, k = lr.coef_[0], X.shape[1] - len(names)
-    out = {key: base[key] for key in ("model", "revision", "text", "calibration") if base and key in base} | {
+    out = {key: base[key] for key in ("model", "revision", "text", "calibration") if base and key in base} | (calibrate(month, keys, pools) or {}) | {
         "bias": round(float(lr.intercept_[0]), 6), "embedding": coef[:k].round(6).tolist(),
         "venue": dict(zip(names.tolist(), coef[k:].round(6).tolist())), "trained": date.today().isoformat(),
         "train_months": sorted(pools), "half_life_months": HALF_LIFE, "marked": int(y.sum()), "papers": len(y),
@@ -93,6 +100,24 @@ def fit(month, venue_names, keys, added=None, base=None, model=None):
     if model is not None:
         out["words"] = words(model, out, pools, base)
     return out
+
+
+def calibrate(month, keys, pools):
+    """{"calibration": {a, b}} fitted (unpenalized, weighted by age) to the out-of-sample scores of the pools that have
+    them, or None with fewer than MIN_MARKED marked papers among them."""
+    from sklearn.linear_model import LogisticRegression
+
+    scored = {m: p for m, p in pools.items() if "score" in p and np.isfinite(p["score"]).all()}  # the cold start's first months have none
+    if not scored:
+        return None
+    s = np.concatenate([p["score"] for p in scored.values()]).astype(float)
+    y = np.concatenate([np.isin(p["doi"], list(keys)) | np.isin(p["title"], list(keys)) for p in scored.values()])
+    w = np.concatenate([np.full(len(p["doi"]), 0.5 ** ((index(month) - index(m)) / HALF_LIFE)) for m, p in scored.items()])
+    if y.sum() < MIN_MARKED:
+        return None
+    cal = LogisticRegression(C=np.inf, max_iter=1000).fit(s[:, None], y, sample_weight=w)
+    return {"calibration": {"a": round(float(cal.intercept_[0]), 4), "b": round(float(cal.coef_[0, 0]), 4)},
+            "calibrated_on": {"months": sorted(scored), "marked": int(y.sum())}}
 
 
 def words(model, weights, pools, previous=None, n=15):

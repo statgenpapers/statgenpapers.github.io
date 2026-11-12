@@ -587,13 +587,13 @@ function showPage(view, ...content) {
 }
 
 async function showUser() {
-  // the count is the link to the papers: "3 papers", dashed like Details
-  const handle = state.handle, total = Object.assign(el("a", "dashed", "…"), { href: `?interested=${handle}` }), table = el("div", "user");
+  // the count is the link to the papers: "3 papers", a plain link, as it goes to another page
+  const handle = state.handle, total = Object.assign(el("a", "", "…"), { href: `?interested=${handle}` }), table = el("div", "user");
   total.addEventListener("click", link(() => go({ interested: handle })));
   const change = Object.assign(el("a", "dashed change", "change"), { href: "#" }), name = el("span", "", handle);
   change.addEventListener("click", link(() => name.replaceWith(handleForm(handle, name))));
   name.append(" ", change);
-  for (const [label, value] of [["handle:", name], ["interested in:", total]]) {
+  for (const [label, value] of [["handle", name], ["interested in", total]]) {
     const row = el("div", "row");
     row.append(el("span", "label", label), value);
     table.append(row);
@@ -612,10 +612,13 @@ async function showUser() {
 // The user page's form for a new handle: on save, the marks and added papers move to it
 function handleForm(from, shown) {
   const form = el("form", "handle-form"), input = Object.assign(el("input"), { value: from, maxLength: 20, ariaLabel: "New handle" });
-  const save = Object.assign(el("button", "", "save"), { type: "submit" }), cancel = Object.assign(el("a", "dashed", "cancel"), { href: "#" });
+  const save = Object.assign(el("button", "", "save"), { type: "submit" }), cancel = Object.assign(el("button", "", "cancel"), { type: "button" });
   const say = el("span", "hint");
-  cancel.addEventListener("click", link(() => form.replaceWith(shown)));
-  form.append(input, " ", save, " ", cancel, say);
+  say.setAttribute("role", "status");
+  cancel.addEventListener("click", () => form.replaceWith(shown));
+  const actions = el("span", "actions");
+  actions.append(save, " ", cancel);
+  form.append(input, " ", actions, say);
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const to = input.value.trim().toLowerCase();
@@ -690,7 +693,7 @@ async function showInterested() {
     if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
     const monthLink = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });
     monthLink.addEventListener("click", link(() => go({ month })));
-    const undo = Object.assign(el("a", "", "not interested"), { href: "#" });
+    const undo = Object.assign(el("a", "dashed", "not interested"), { href: "#" });
     undo.addEventListener("click", link(async () => {
       const ref = voteRef(month, p.id, handle);
       try {
@@ -976,14 +979,14 @@ async function init() {
     $("add").hidden = false;
     field("url").focus();
   }));
-  $("add-cancel").addEventListener("click", link(() => { closeForm(); field("url").focus(); }));  // clears the form
+  $("add-cancel").addEventListener("click", () => { closeForm(); field("url").focus(); });  // clears the form
   $("add").addEventListener("submit", submitPaper);
   $("login-open").addEventListener("click", link(() => {
     if (!state.handle) return openPanel("login");
     setHandle("");
     if (state.view !== "list") go({});  // the handle's own pages close with it
   }));
-  $("login-cancel").addEventListener("click", link(closeLogin));
+  $("login-cancel").addEventListener("click", closeLogin);
   $("login").addEventListener("submit", login);
   $("past-open").addEventListener("click", link(() => togglePast()));
   $("me").addEventListener("click", link(() => go({ user: state.handle })));

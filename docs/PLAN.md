@@ -238,7 +238,9 @@ the commit that added this section.
    refit for 2026-11 matches `dev/train.py` (score correlation 0.993 on the 2026-10 pool, 23 of the top 25). Pools
    are stored as int8 embeddings (leak-free 2026-07..10: AUC 0.9693 vs 0.9694 at full precision, 51 of 115 in the
    top 25 either way) on the branch `training`, which keeps 12 months in one commit (14 MB). The calibration (a, b)
-   stays the one `dev/train.py` fitted.
+   is refitted each run too, on the scores each stored month got from its own model, weighted the same way. A
+   leak-free grid over 2026-01..10 kept the balanced model plus a, b: one unbalanced model whose probability is the
+   Score did worse on AUC (0.969 vs 0.972) and log loss (0.0337 to 0.0389 vs 0.0331) at every C from 3 to 100.
 5. **No sort or filter controls, no published/preprint label.** The list is always ordered by
    votes, equal votes by score. The Journal column shows official title abbreviations
    (`Nat Genet`, `Am J Hum Genet`, `bioRxiv`); short names start with them (`NatGenet_…`).
