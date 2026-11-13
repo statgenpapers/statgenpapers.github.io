@@ -155,7 +155,7 @@ function createRow(p) {
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
-  q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
+  q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added manually, not by the model."));
   q(".edit-own").addEventListener("click", link(() => editSubmission(li.paper)));
   q(".remove-own").addEventListener("click", link(() => removeSubmission(li.paper)));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
@@ -163,7 +163,7 @@ function createRow(p) {
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
   } else if (p.p_pick != null) {
     q(".pct").textContent = `${Math.round(100 * p.p_pick)}%`;
-    q(".pick").title = p.added ? "Added by a reader, not chosen by the model; the model's prediction of how likely it is to be marked"
+    q(".pick").title = p.added ? "Added manually, not by the model; the model's prediction of how likely it is to be marked"
       : `The model's prediction of how likely this paper is to be marked (raw score ${p.score.toFixed(2)})`;
   }
   q(".toggle").addEventListener("click", link(() => {

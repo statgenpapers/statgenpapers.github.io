@@ -1,7 +1,7 @@
 import numpy as np
 
 from pipeline.dedupe import dedupe
-from pipeline.fetch import Paper, clean, url_doi
+from pipeline.fetch import Paper, author_names, clean, url_doi
 from pipeline.output import paper_id, short_name, table_row
 from pipeline.score import linear, probability
 from pipeline import train
@@ -11,6 +11,12 @@ from pipeline import votes as votes_module
 def paper(doi, title, type="published", journal="Nat Genet", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
     return Paper(doi=doi, url=f"https://doi.org/{doi}", title=title, authors=list(authors), venue="NG", venue_name="",
                  journal=journal, date=date, type=type, abstract="", published_doi=published_doi)
+
+
+def test_authors_are_the_names_printed_on_the_paper():
+    profile = lambda name, raw=None: {"author": {"display_name": name}, **({"raw_author_name": raw} if raw else {})}
+    assert author_names([profile("Masayuki NAGAI", "Masayuki Nagai"), profile("J. Li", "Jinghui  Li"), profile("Peter K. Koo"),
+                         profile("Emma Dann", "Dann, Emma"), {"author": {}}]) == ["Masayuki Nagai", "Jinghui Li", "Peter K. Koo", "Emma Dann"]
 
 
 def test_dedupe_keeps_published_version_within_month():

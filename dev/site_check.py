@@ -293,7 +293,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
               and "sitecheck" not in added(b).inner_text())
         added(b).locator(".added-icon").click()
         check("a tap on the icon says, next to it, that the paper was added",
-              seen(added(b).locator(".tip"), "Added by a reader, not chosen by the model.") is not None)
+              seen(added(b).locator(".tip"), "Added manually, not by the model.") is not None)
         check("once listed, nobody can remove it, not even its handle",
               added(a).locator(".remove-own").is_hidden() and added(a).locator(".added-icon").is_visible())
         added(a).locator(".up").click()  # take the automatic upvote back

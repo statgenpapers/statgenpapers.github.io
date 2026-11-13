@@ -20,7 +20,7 @@ import requests
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
-from pipeline.fetch import abstract_elsewhere, find_doi, lookup, openalex_key, plain_title as plain, url_doi  # noqa: E402
+from pipeline.fetch import abstract_elsewhere, author_names, find_doi, lookup, openalex_key, plain_title as plain, url_doi  # noqa: E402
 from pipeline.votes import documents  # noqa: E402
 
 HANDLE = "admin"
@@ -77,7 +77,7 @@ def details(url, title=""):
     if not abstract:
         print(f"no abstract found for {w.get('doi') or url}: run dev/fill_abstracts.py later, or add it by hand")
     out = {"url": w["doi"] if not url_doi(url) and w.get("doi") else "",  # a DOI link where the Sheet had none
-           "authors": [a["author"]["display_name"] for a in w.get("authorships", []) if a["author"].get("display_name")][:300],
+           "authors": author_names(w.get("authorships"))[:300],
            "abstract": abstract[:10000], "date": w.get("publication_date") or ""}
     return {k: v for k, v in out.items() if v}
 

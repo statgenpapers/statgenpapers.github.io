@@ -157,6 +157,14 @@ def openalex_key():
     return key or sys.exit("no OpenAlex API key: set OPENALEX_API_KEY (see docs/setup.md)")
 
 
+def author_names(authorships):
+    """The authors as printed on the paper (raw_author_name); OpenAlex's author profile name only where it has none.
+    A profile merges people and spellings: "Masayuki NAGAI", "J. Li" for Jinghui Li, even another author's name.
+    A printed "Dann, Emma" is turned to "Emma Dann"."""
+    names = [" ".join((a.get("raw_author_name") or a["author"].get("display_name") or "").split()) for a in authorships or []]
+    return [" ".join(reversed(n.split(", "))) if n.count(", ") == 1 else n for n in names if n]
+
+
 def fetch_journals(cfg, start, end):
     """Works of the configured journals published in [start, end]; cursor paging, about one call per 200 works."""
     global openalex_usd
@@ -186,7 +194,7 @@ def fetch_journals(cfg, start, end):
                 doi=norm_doi(w["doi"]),
                 url=w["doi"],
                 title=clean(w["title"]),
-                authors=[a["author"]["display_name"] for a in w.get("authorships") or [] if a["author"].get("display_name")],
+                authors=author_names(w.get("authorships")),
                 venue=journal["key"],
                 venue_name=journal["name"],
                 journal=journal["abbr"],
@@ -207,7 +215,7 @@ def full_authors(paper):
     if paper.type != "published" or len(paper.authors) != OPENALEX_AUTHOR_CAP:
         return paper
     w = json.loads(cached(f"https://api.openalex.org/works/doi:{paper.doi}", {"select": "authorships", "api_key": openalex_key()}))
-    return replace(paper, authors=[a["author"]["display_name"] for a in w["authorships"] if a["author"].get("display_name")])
+    return replace(paper, authors=author_names(w["authorships"]))
 
 
 def fetch_preprints(cfg, start, end):
