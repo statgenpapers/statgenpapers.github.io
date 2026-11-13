@@ -8,7 +8,7 @@ from datetime import date
 from pathlib import Path
 import pandas as pd
 
-ROOT = Path(__file__).parents[3]
+ROOT = Path(__file__).parents[2]
 D = ROOT / "handoff" / "data" / "bt" / "results"
 r = pd.concat(map(pd.read_csv, glob.glob(str(D / "*.csv"))))
 pd.set_option("display.width", 250, "display.max_rows", 200)

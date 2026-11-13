@@ -28,7 +28,7 @@ MODELS = {
 }
 key = sys.argv[1]
 hf, pooling, prefix, kw = MODELS[key]
-D = Path(__file__).parents[3] / "handoff" / "data" / "bt"
+D = Path(__file__).parents[2] / "handoff" / "data" / "bt"
 (D / "emb").mkdir(exist_ok=True)
 df = pd.read_parquet(D / "texts.parquet")
 device = "cpu"  # production runs on a CPU-only GitHub Actions runner

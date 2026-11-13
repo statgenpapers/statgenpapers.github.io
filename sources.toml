@@ -6,6 +6,9 @@
 # month caught 95; 25% listed 220 and caught 116.
 min_pick_chance = 0.30
 
+# The Firebase project whose interest counts and added papers label the monthly model (pipeline/train.py)
+firestore_project = "statgenpapers"
+
 # OpenAlex work types kept from journals.
 work_types = ["article", "review", "letter", "preprint"]
 
@@ -22,7 +25,7 @@ nature_article_types = ["Article", "Letter", "Analysis", "Resource", "Technical 
   "Review Article", "Review", "Perspective", "Matters Arising", "Registered Report", "Methods"]
 
 # Journals, fetched from OpenAlex by ISSN. `abbr` is the official title abbreviation shown in the
-# Journal column and in short names. `key` is the venue key in model/weights.json: keep it stable.
+# Journal column and in short names. `key` is the venue key in data/model.json: keep it stable.
 [[journals]]
 key = "Nature"
 name = "Nature"
@@ -100,7 +103,3 @@ categories = ["genetics", "genomics"]
 server = "medrxiv"
 name = "medRxiv"
 categories = ["genetic and genomic medicine", "health informatics"]
-
-# Marks: the labels of the monthly model (pipeline/train.py)
-[votes]
-firestore_project = "statgenpapers"

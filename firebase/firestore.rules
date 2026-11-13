@@ -1,72 +1,102 @@
 rules_version = '2';
-// Publish with `npx firebase deploy --only firestore:rules --project statgenpapers` in firebase/, after `npm test`.
+// Publish after `npm test` and dev/site_check.py --emulator pass:
+//   cd firebase && npx firebase deploy --only firestore:rules --project statgenpapers
 //
-// Upvotes: one document per upvote, months/{YYYY-MM}/votes/{paperId}~{handle, lower case}
-//   { paper: "<paper id>", handle: "<handle, lower case>" }
-// The document existing is the upvote; there are no downvotes. The id fixes one upvote per
-// handle and paper. Handles have no password: any signed-in (anonymous) browser may add or
-// remove the upvote of any handle, which is the accepted trade-off of password-free handles.
-// Upvotes are never edited, only added and removed.
+// months/{YYYY-MM}: { counts: {paper id: handles interested}, paper: "<the id the last write changed>" }
+//   Public. A write moves one paper's count by one, never below the frozen interest of the handle admin (the cold
+//   start), or drops the count of an added paper removed in the same batch.
 //
-// Papers added by visitors: months/{YYYY-MM}/submissions/{id}
-//   { journal, title, url, short_name, uid, created, name: "<handle>", and optionally authors: [..], abstract, date }
-// A signed-in browser may add a paper under its own uid. After, its `name` can change when its handle is changed
-// (the site moves the handle's marks too), and its content (journal, title, url, short_name, authors, abstract, date)
-// can be edited; uid and created never change. Like an upvote, any signed-in browser may delete, edit or rename a
-// reader's paper: the site offers edit and removal to the paper's handle only, until the monthly run lists it.
-// Upvotes of an added paper are votes like any other, with the submission id.
+// months/{YYYY-MM}/interests/{handle}: { papers: [ids], added: [ids of papers the handle added], paper: "<id changed>" }
+//   A handle's interest in one month. Read by its exact handle only, never listed: the site shows only counts.
+//   Handles have no password, so any signed-in browser may write any handle's (the site writes the logged-in one's).
+//   A change adds or removes one paper, with its count in the same batch; a new document may also hold the interest
+//   of a changed handle. The handle admin is frozen.
 //
-// The handle "admin" is reserved: its marks and added papers are the cold start (dev/lab_marks.py), written,
-// and removed, only by one Firebase user.
+// months/{YYYY-MM}/submissions/{id}: { journal, title, url, short_name, created, and optionally authors, abstract, date }
+//   A paper a reader added; it names no reader. Public. Added, edited and removed until the 15th of the next month:
+//   the monthly run lists the month on the 10th.
 //
-// Everything else, including the uid-keyed months/{YYYY-MM}/papers of the first version,
-// is closed.
+// Everything else is closed.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /months/{month}/votes/{id} {
-      allow read: if true;
-      allow create: if request.auth != null
-        && month.matches('^20[0-9]{2}-(0[1-9]|1[0-2])$')
-        && validVote(request.resource.data, id)
-        && mayUse(request.resource.data.handle);
-      allow delete: if request.auth != null && mayUse(resource.data.handle);
+    function signedIn() { return request.auth != null; }
+    function validMonth(m) { return m.matches('^20[0-9]{2}-(0[1-9]|1[0-2])$'); }
+    function validPaper(p) { return p is string && p.matches('^[A-Za-z0-9._-]{1,150}$'); }
+    function monthDoc(m) { return /databases/$(database)/documents/months/$(m); }
+    function submission(m, id) { return /databases/$(database)/documents/months/$(m)/submissions/$(id); }
+    function adminInterest(m) { return /databases/$(database)/documents/months/$(m)/interests/admin; }
+
+    match /months/{month} {
+      allow get: if true;
+      allow create, update: if signedIn() && validMonth(month) && countChange(month);
     }
+    // One count up or down by one, not below admin's interest; or an added paper's count dropped with the paper
+    function countChange(m) {
+      let after = request.resource.data;
+      let before = resource == null ? {} : resource.data.get('counts', {});
+      let p = after.get('paper', '');
+      return after.keys().hasOnly(['counts', 'paper']) && after.counts is map && after.counts.size() <= 1000
+        && validPaper(p) && after.counts.diff(before).affectedKeys().hasOnly([p])
+        && (p in after.counts
+          ? after.counts[p] is int && (after.counts[p] == before.get(p, 0) + 1
+            || (after.counts[p] == before.get(p, 0) - 1 && after.counts[p] >= floor(m, p)))
+          : exists(submission(m, p)) && !existsAfter(submission(m, p)));
+    }
+    function floor(m, p) {
+      return (exists(adminInterest(m)) && p in get(adminInterest(m)).data.papers) ? 1 : 0;
+    }
+
+    match /months/{month}/interests/{handle} {
+      allow get: if true;
+      allow create: if signedIn() && validMonth(month) && mayWrite(handle) && validInterest(request.resource.data);
+      allow update: if signedIn() && mayWrite(handle) && validInterest(request.resource.data) && oneChange(month);
+      allow delete: if signedIn() && mayWrite(handle);
+    }
+    function mayWrite(h) { return h.matches('^[a-z0-9_]{2,20}$') && h != 'admin'; }
+    function validInterest(d) {
+      return d.keys().hasOnly(['papers', 'added', 'paper'])
+        && d.get('papers', []) is list && d.get('papers', []).size() <= 1000
+        && d.get('added', []) is list && d.get('added', []).size() <= 100
+        && (!('paper' in d) || validPaper(d.paper));
+    }
+    // One paper more or fewer, its count moved in the same batch; or a paper the handle added, created or removed with it
+    function oneChange(m) {
+      let p = request.resource.data.paper;
+      let one = [p].toSet();
+      let papers = request.resource.data.get('papers', []).toSet();
+      let was = resource.data.get('papers', []).toSet();
+      let added = request.resource.data.get('added', []).toSet();
+      let wasAdded = resource.data.get('added', []).toSet();
+      return (added == wasAdded && papers == was.union(one) && !(p in was) && counted(m, p, 1))
+        || (added == wasAdded && papers == was.difference(one) && p in was && counted(m, p, -1))
+        || (added == wasAdded.union(one) && !(p in wasAdded) && papers == was.union(one) && !(p in was)
+          && !exists(submission(m, p)) && existsAfter(submission(m, p)) && counted(m, p, 1))
+        || (added == wasAdded.difference(one) && p in wasAdded && papers == was.difference(one)
+          && !existsAfter(submission(m, p)));
+    }
+    function counted(m, p, step) {
+      let before = exists(monthDoc(m)) ? get(monthDoc(m)).data.get('counts', {}).get(p, 0) : 0;
+      return getAfter(monthDoc(m)).data.get('counts', {}).get(p, 0) == before + step;
+    }
+
     match /months/{month}/submissions/{id} {
       allow read: if true;
-      allow create: if request.auth != null
-        && month.matches('^20[0-9]{2}-(0[1-9]|1[0-2])$')
-        && id.matches('^[A-Za-z0-9]{1,40}$')
-        && validSubmission(request.resource.data)
-        && mayUse(request.resource.data.name);
-      // like a mark: any signed-in browser (a handle has no password); the site offers it to the paper's handle only
-      allow delete: if request.auth != null && mayUse(resource.data.name);
-      // a handle changed: only the name, to another valid handle; admin neither gives nor takes one.
-      // Or an edit: only the content, still valid.
-      allow update: if request.auth != null && mayUse(resource.data.name) && (
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
-          && validHandle(request.resource.data.name) && mayUse(request.resource.data.name))
-        || (request.resource.data.diff(resource.data).affectedKeys()
-              .hasOnly(['journal', 'title', 'url', 'short_name', 'authors', 'abstract', 'date'])
-          && validContent(request.resource.data)));
+      allow create: if signedIn() && validMonth(month) && open(month) && id.matches('^[A-Za-z0-9]{1,40}$')
+        && validSubmission(request.resource.data) && request.resource.data.created == request.time;
+      allow update: if signedIn() && open(month) && validSubmission(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['journal', 'title', 'url', 'short_name', 'authors', 'abstract', 'date']);
+      allow delete: if signedIn() && open(month);
     }
-    function mayUse(h) {
-      return h != 'admin' || request.auth.uid == 'Yo7cchMxl7X4zHq5vOE9VmS2dOp1';  // the lab's user: ~/.config/statgenpapers/lab.json
-    }
-    function validHandle(h) {
-      return h is string && h.matches('^[a-z0-9_]{2,20}$');
-    }
-    function validVote(d, id) {
-      return d.keys().hasAll(['paper', 'handle']) && d.keys().hasOnly(['paper', 'handle'])
-        && d.paper is string && d.paper.matches('^[A-Za-z0-9._-]{1,150}$')
-        && validHandle(d.handle)
-        && id == d.paper + '~' + d.handle;
+    // until the 15th of the next month; the monthly run lists the month on the 10th
+    function open(m) {
+      let y = int(m.split('-')[0]);
+      let n = int(m.split('-')[1]);
+      return request.time < (n == 12 ? timestamp.date(y + 1, 1, 15) : timestamp.date(y, n + 1, 15));
     }
     function validSubmission(d) {
-      return validContent(d) && d.uid == request.auth.uid && d.created == request.time && validHandle(d.name);
-    }
-    function validContent(d) {
-      return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name'])
-        && d.keys().hasOnly(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name', 'authors', 'abstract', 'date'])
+      return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'created'])
+        && d.keys().hasOnly(['journal', 'title', 'url', 'short_name', 'created', 'authors', 'abstract', 'date'])
         && (!('authors' in d) || (d.authors is list && d.authors.size() <= 300))
         && (!('abstract' in d) || (d.abstract is string && d.abstract.size() <= 10000))
         && (!('date' in d) || (d.date is string && d.date.matches('^[0-9]{4}(-[0-9]{2}){0,2}$')))

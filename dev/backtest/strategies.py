@@ -12,8 +12,8 @@ from sklearn.metrics import roc_auc_score
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC, LinearSVC
 
-D = Path(__file__).parents[3] / "handoff" / "data" / "bt"
-KEYS = Path(__file__).parents[3] / "handoff" / "llm-scoring-experiment" / "keys"
+D = Path(__file__).parents[2] / "handoff" / "data" / "bt"
+KEYS = Path(__file__).parents[2] / "handoff" / "llm-scoring-experiment" / "keys"
 MONTHS = [f"2026-{m:02d}" for m in range(3, 11)]
 keys = sys.argv[1:]
 df = pd.read_parquet(D / "texts.parquet")

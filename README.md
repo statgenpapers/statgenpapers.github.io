@@ -1,30 +1,40 @@
 # StatGenPapers
 
 <https://statgenpapers.github.io> lists each month's statistical genetics papers with a Score of at least 30%: the
-model's prediction that a paper is marked. Readers mark papers and add ones the model missed. It costs $0 and needs no
-monthly work.
+model's estimate of the chance that a paper is of interest. Readers mark the papers they are interested in (▲) and
+add papers the model missed. It costs $0 and needs no monthly work.
 
 ## How it works
 
 1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches last month's
-   ~2,000 candidates (`config/sources.toml`), refits the model, scores and writes `site/data/YYYY-MM.{json,tsv}`,
-   then deploys `site/`. Added papers show with a person icon once their month is listed.
+   ~2,000 candidates (`sources.toml`), refits the model, writes `site/data/YYYY-MM.json`, `data/counts.json` and
+   `data/model.json`, and deploys `site/`. Added papers show with a person icon once their month is listed.
 2. **Model** (`pipeline/train.py`): a `potion-base-32M` embedding of title and abstract plus the venue, through a
-   logistic regression on the pools of the 12 months before the list (weight halving every 6 months; marked papers
-   positive). Written to `model/weights.json`; pools are kept on the branch `training`.
-3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Marks and added papers live in Firestore, checked by
+   logistic regression on the pools of the 12 months before the list (weight halving every 6 months; papers of
+   interest positive). The pools are kept on the branch `training`.
+3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Interest and added papers live in Firestore, checked by
    `firebase/firestore.rules`; a browser signs in anonymously on its first write.
+
+| Firestore path | Content | Read by |
+|---|---|---|
+| `months/YYYY-MM` | `counts`: {paper id: number of handles interested} | Anyone |
+| `months/YYYY-MM/interests/{handle}` | The papers the handle is interested in and the ones it added | Its exact handle; never listed |
+| `months/YYYY-MM/submissions/{id}` | An added paper: journal, title, URL, short name, authors, abstract, date; no handle | Anyone |
+
+A write changes one paper's interest and its count together. Added papers can be changed until the 15th of the next
+month. The handle `admin` holds the cold start and is frozen.
 
 ## Common tasks
 
 1. **Run a month by hand:** `gh workflow run monthly.yml -R statgenpapers/statgenpapers.github.io -f month=2026-09`.
-   A rerun replaces the list and keeps the marks.
-2. **Change sources or the cutoff:** edit `config/sources.toml` and push.
-3. **Remove someone else's added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
-4. **Fill missing abstracts of added papers:** `uv run python dev/fill_abstracts.py --write`.
-5. **Cold start** (done 2026-11-11, needs the private `handoff/data/`): `dev/coldstart/rollforward.py 2026-01 2026-10` built
-   those months leak-free; `dev/lab_marks.py` wrote their marks as the handle `admin`
-   (its Firebase user is in `~/.config/statgenpapers/lab.json`, never committed).
+   A rerun replaces the list and keeps the interest.
+2. **Change sources or the cutoff:** edit `sources.toml` and push.
+3. **Remove an unwanted added paper:** delete it under `months/YYYY-MM/submissions` in the Firebase console.
+4. **Change the rules:** edit `firebase/firestore.rules`; after the checks below pass,
+   `cd firebase && npx firebase deploy --only firestore:rules --project statgenpapers`.
+5. **Cold start** (done 2026-11-11): the lists of 2026-01..10 were built leak-free from private data, and their
+   marks written as the handle `admin`. Its scripts are in the git history before v0.1; `dev/backtest/` keeps the
+   backtest behind the About page.
 
 ## Checks
 
@@ -33,17 +43,31 @@ uv run pytest                                      # pipeline
 cd firebase && npm test                            # security rules, in the emulator
 cd firebase && npx firebase emulators:exec --only firestore,auth --project demo-statgenpapers \
   "cd .. && uv run --with playwright python dev/site_check.py --emulator"   # two browsers, against emulators
+uv run --with playwright python dev/site_check.py  # the same, live, in the unlisted months 2099-01/02
 python3 -m http.server -d site 8000                # preview
 ```
+
+## Setup
+
+Done for the live site; recorded so it can be repeated.
+
+1. **GitHub:** Settings → Pages → Source: GitHub Actions. The workflow asks for its own write permission.
+2. **OpenAlex key:** the Actions secret `OPENALEX_API_KEY`; GitHub masks it in logs and withholds it from pull
+   requests of forks. Rotate with `gh secret set OPENALEX_API_KEY -R statgenpapers/statgenpapers.github.io`. For
+   local runs put it in `OPENALEX_API_KEY` or `~/.config/openalex/api_key` (`chmod 600`); never commit it. A month
+   costs about $0.001 of the free daily budget; the pipeline stops at `OPENALEX_MAX_USD` (default 0.5).
+3. **Firebase:** project `statgenpapers`, Spark plan (free, no card). Its web configuration is in `site/app.js`,
+   public by design. Authentication: Anonymous on, automatic clean-up off; authorized domain
+   `statgenpapers.github.io`. Firestore in production mode, with the rules deployed as above.
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `config/sources.toml` | Sources, junk filter, cutoff |
-| `pipeline/` | Monthly run: `fetch`, `dedupe`, `train`, `score`, `votes`, `output` |
-| `model/weights.json` | The latest model |
+| `sources.toml` | Sources, junk filter, cutoff |
+| `pipeline/` | Monthly run: `fetch`, `dedupe`, `train`, `score`, `firestore`, `output` |
+| `data/` | `model.json`, the latest model; `counts.json`, each month's interest counts at the last run |
 | `site/` | The website; `site/data/` has each month's list |
-| `data/votes/` | Monthly snapshots of marks (handles hashed) |
-| `firebase/` | Firestore rules and tests |
-| `dev/` | Local only: site check, admin marks, abstracts; `coldstart/`: the finished cold start and its backtest |
+| `firebase/` | Firestore rules and their tests |
+| `dev/` | Local only: `site_check.py`; `backtest/`, the numbers on the About page |
+| `tests/` | Pipeline tests |

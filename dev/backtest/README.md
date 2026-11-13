@@ -10,13 +10,13 @@ Run from the repository root:
 UV="uv run --no-project --python 3.12 --with torch --with sentence-transformers --with model2vec --with pandas --with pyarrow --with scikit-learn"
 export HF_HOME=$PWD/.cache/hf OMP_NUM_THREADS=4
 
-$UV python dev/coldstart/backtest/prep.py                 # 1. label the 12-month pool against the picks
-$UV python dev/coldstart/backtest/embed.py potion-32m     # 2. embed (seconds for static models; see MODELS in embed.py)
-$UV python dev/coldstart/backtest/backtest.py refs potion-32m   # 3. rolling backtest, ~10 s per model
-$UV python dev/coldstart/backtest/summary.py              # 4. tables, and site/data/backtest.json for the About page
+$UV python dev/backtest/prep.py                 # 1. label the 12-month pool against the picks
+$UV python dev/backtest/embed.py potion-32m     # 2. embed (seconds for static models; see MODELS in embed.py)
+$UV python dev/backtest/backtest.py refs potion-32m   # 3. rolling backtest, ~10 s per model
+$UV python dev/backtest/summary.py              # 4. tables, and site/data/backtest.json for the About page
 ```
 
-Larger models take 20–60+ minutes each on 16 CPU threads: `sbatch -J <key> dev/coldstart/backtest/embed.sbatch <key>`.
+Larger models take 20–60+ minutes each on 16 CPU threads: `sbatch -J <key> dev/backtest/embed.sbatch <key>`.
 
 ## Protocol
 
@@ -40,5 +40,5 @@ Larger models take 20–60+ minutes each on 16 CPU threads: `sbatch -J <key> dev
 | `strategies.py` | Alternative scorers (SVM, MLP, boosting, kNN, two-stage) on the same embeddings. |
 | `backtest.py` | Rolling evaluation of every scorer; writes `handoff/data/bt/results/<model>.csv`. |
 | `summary.py` | Prints the comparison tables and writes the aggregates to `site/data/backtest.json`. |
-| `../train.py` | Fits the production weights on all twelve months (`model/weights.json`). |
-| `../site_check.py` | Two-browser check of the live site; unrelated to the backtest. |
+| `added_weight.py` | Backtest of weighting added papers in training (`uv run --group backtest`). |
+| `LOG.md` | Dated results. Scripts it names that are gone are in the git history before v0.1. |

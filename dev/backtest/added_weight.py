@@ -1,9 +1,9 @@
-"""Should added papers weigh more in training? Leak-free backtest of 2026-01..10: uv run --group train python dev/coldstart/backtest/added_weight.py
+"""Should added papers weigh more in training? Leak-free backtest of 2026-01..10: uv run --group backtest python dev/backtest/added_weight.py
 
 An added paper is a pick the site did not show: here, a pick outside the top 25 of its own month under that month's
-leak-free model (how dev/coldstart/rollforward.py decided what admin added). Each model of month M trains as
-dev/coldstart/train.py does (12 months before M, 6-month half-life, picks of tabs before M), with the sample weight
-of added positives multiplied by k. Scored on every pick of tab M in M's pool: AUC, and picks in the top 25.
+leak-free model (how the cold start decided what admin added). Each model of month M trains as pipeline/train.py
+does (12 months before M, 6-month half-life, picks of tabs before M), with the sample weight of added positives
+multiplied by k. Scored on every pick of tab M in M's pool: AUC, and picks in the top 25.
 Picks in no pool (production adds them as extra positives) are left out: the local pool has no abstracts for them.
 Local only: reads handoff/data/bt/texts.parquet.
 """
@@ -15,12 +15,11 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
-ROOT = Path(__file__).parents[3]
+ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "dev" / "coldstart"))
 from pipeline.fetch import clean  # noqa: E402
 from pipeline.score import embed, load_model  # noqa: E402
-from recency import rows_and_weights  # noqa: E402
+from pipeline.train import HALF_LIFE, WINDOW, index  # noqa: E402
 
 MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928fbbd846f22f816360919f"}
 SHOWN, WEIGHTS = 25, [1, 1.5, 2, 3, 5]
@@ -32,8 +31,15 @@ X = np.hstack([embed(load_model(MODEL), pool.title.map(clean), pool.abstract.map
 months = sorted(set(month))
 
 
+def rows_and_weights(before):
+    """For a model of month `before`: the pool rows of the 12 months before it, weighted 0.5 ** (age / 6)."""
+    age = index(before) - np.array([index(m) for m in month])
+    rows = (age >= 1) & (age <= WINDOW)
+    return rows, 0.5 ** (age[rows] / HALF_LIFE)
+
+
 def fit(before, added=None, k=1):
-    rows, weight = rows_and_weights(month, before)
+    rows, weight = rows_and_weights(before)
     y = (tab != "") & (tab < before)
     if added is not None:
         weight = weight * np.where(y[rows] & added[rows], k, 1)

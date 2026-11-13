@@ -1,12 +1,11 @@
-"""Output records: Firestore paper ids, and rows of the table (Journal, Short Name, Title, URL)."""
+"""Output records: Firestore paper ids and short names."""
 import re
 
-TABLE_HEADER = ["Journal", "Short Name", "Title", "URL"]
 STOPWORDS = frozenset("a an and are as at by for from in into is of on or the to via with across between through using".split())
 
 
 def paper_id(doi):
-    """Firestore document id of a paper; the security rules allow only this alphabet, up to 150 characters."""
+    """A paper's id on the site and in Firestore (its key in a month's counts): the rules allow this alphabet, up to 150 characters."""
     return re.sub(r"[^A-Za-z0-9._-]", "_", doi)[:150]
 
 
@@ -24,6 +23,3 @@ def short_name(p):
     return "_".join([re.sub(r"[\W_]", "", p.journal), surname, p.date[:4],
                      "".join(w if w != w.lower() else w.capitalize() for w in words)])
 
-
-def table_row(p):
-    return [p.journal, short_name(p), p.title, p.url]

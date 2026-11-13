@@ -1,7 +1,15 @@
-// StatGenPapers: static list from data/*.json, live interest marks and reader-added papers from Firestore.
-import { firebaseConfig } from "./config.js";
+// StatGenPapers: static lists from data/*.json; live interest counts and reader-added papers from Firestore.
 
 const SDK = "https://www.gstatic.com/firebasejs/11.10.0";  // also preloaded in index.html: change both
+// The Firebase web configuration names the project and is public by design: firebase/firestore.rules guard the data.
+const firebaseConfig = {
+  apiKey: "AIzaSyBV6tGNqmlmI497h9BG6HMAOjBKI9C4vxA",
+  authDomain: "statgenpapers.firebaseapp.com",
+  projectId: "statgenpapers",
+  storageBucket: "statgenpapers.firebasestorage.app",
+  messagingSenderId: "435422427808",
+  appId: "1:435422427808:web:65f09eb499d2a23b0227c5",
+};
 const TABLE_HEADER = ["Journal", "Short Name", "Title", "URL"];
 const STOPWORDS = new Set("a an and are as at by for from in into is of on or the to via with across between through using".split(" "));
 const $ = (id) => document.getElementById(id);
@@ -10,18 +18,21 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const state = {
   months: [], month: null, data: null,
-  votes: new Map(),  // paper id -> Set of handles interested in it
-  subs: [],          // papers added by readers
-  uid: null,
-  handle: "",        // the reader's handle, lower case; "" when logged out
-  view: "list",      // "list" (a month), "user" or "interested" (pages of the logged-in handle)
-  waiting: new Set(),  // a month's first snapshots not yet in: "votes", "submissions"; saved marks wait for both
+  counts: new Map(),  // paper id -> handles interested in it
+  own: new Set(),     // papers the logged-in handle is interested in, this month
+  added: new Set(),   // papers the logged-in handle added to this month
+  subs: [],           // papers added to the month in progress, on its page; a listed month's come with its data file
+  handle: "",         // the reader's handle, lower case; "" when logged out
+  view: "list",       // "list" (a month), "user" or "interested" (pages of the logged-in handle)
+  waiting: new Set(),  // first snapshots not yet in: "counts", "own" (logged in), "subs" (the month in progress)
 };
 const rows = new Map();  // paper id -> <li>
-const voting = new Set();  // paper ids with a mark write in flight: a second click must wait for it
-let fb = null, db = null, signer = null, unsubscribe = [], offline = false;  // offline: Firebase failed to load
+const writing = new Set();  // paper ids with an interest write in flight: a second click must wait for it
+let fb = null, db = null, app = null, unsubscribe = [], stopOwn = null, offline = false;  // offline: Firebase failed to load
 let dbReady, afterLogin = null;  // afterLogin: the action that asked for a handle, run once one is given
-const UNAVAILABLE = "Marking and adding are unavailable right now; the list is still readable.";
+let ownArrived = Promise.resolve();  // settles once the logged-in handle's interest is in
+const UNAVAILABLE = "Live counts and adding papers are unavailable right now; the list is still readable.";
+const LIVE = { includeMetadataChanges: true };
 const connected = new Promise((resolve) => { dbReady = resolve; });  // settles once Firestore is set up, or failed
 
 // ---------------------------------------------------------------- helpers
@@ -72,7 +83,7 @@ function urlDoi(url) {
 const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
 // Sheet-style label Journal_Surname_Year_Keyword. Keep in step with short_name() in pipeline/output.py.
-export function shortName(journal, surname, year, title) {
+function shortName(journal, surname, year, title) {
   const t = title.replace(/['’]s\b|['’]/g, "");
   const colon = t.indexOf(":");
   const head = colon > 0 && t.slice(0, colon).trim().split(/\s+/).length <= 3 ? t.slice(0, colon) : t;
@@ -82,27 +93,38 @@ export function shortName(journal, surname, year, title) {
     .filter(Boolean).join("_");
 }
 
-// A handle is the reader's login: no password, so anyone who types it marks as its owner. Handles are
-// lower case, so one handle has one mark per paper on any device: months/{m}/votes/{paper}~{handle}.
+// A handle is the reader's login: no password, so anyone who types it acts as its owner. Handles are lower case, so
+// one handle has one interest per paper on any device. Its interest in a month is months/{m}/interests/{handle},
+// which only its exact handle reads; the month's counts are months/{m}.
 const HANDLE = /^[A-Za-z0-9_]{2,20}$/;
-const RESERVED = "admin";  // the cold start's handle: only dev/lab_marks.py writes as it, through the API
-const count = (id) => state.votes.get(id)?.size ?? 0;
-const mine = (id) => Boolean(state.handle) && (state.votes.get(id)?.has(state.handle) ?? false);
-const voteRef = (month, id, handle = state.handle) => fb.doc(db, "months", month, "votes", `${id}~${handle}`);
+const RESERVED = "admin";  // the cold start's handle, frozen by the rules
+const count = (id) => state.counts.get(id) ?? 0;
+const mine = (id) => state.own.has(id);
+const interestRef = (month, handle) => fb.doc(db, "months", month, "interests", handle);
+
+// A handle's interest in a paper, or none any more: its list and the paper's count change in one batch
+function setInterest(month, handle, id, on) {
+  const batch = fb.writeBatch(db);
+  batch.set(interestRef(month, handle), { papers: on ? fb.arrayUnion(id) : fb.arrayRemove(id), paper: id }, { merge: true });
+  batch.set(fb.doc(db, "months", month), { counts: { [id]: fb.increment(on ? 1 : -1) }, paper: id }, { merge: true });
+  return batch.commit();
+}
 
 // A preprint is a preprint: any preprint server is shown as "Preprint", by its name or its URL (10.1101: bioRxiv, medRxiv).
 const PREPRINT = /(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|authorea|qeios|10\.1101\/|10\.64898\/|10\.5281\//i;
 const shownJournal = (journal, url) => (PREPRINT.test(journal) || PREPRINT.test(url) ? "Preprint" : journal);
 
-// Listed papers and added papers in one shape: an added paper shows once the monthly run has scored it (data.added: id → score)
+// Listed papers and added papers in one shape. A listed month's added papers come with its data file, scored by its
+// run (data.added: id → Score); the month in progress shows the papers added so far, from Firestore.
 function items() {
-  const listed = state.data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = state.data?.added || {};
-  return [...listed, ...state.subs.filter((s) => (s.id in scored || state.data?.upcoming) && !dois.has(urlDoi(s.url)))
-    .map((s) => ({ ...s, journal: shownJournal(s.journal, s.url), authors: Array.isArray(s.authors) ? s.authors : [], added: true,
-      p_pick: scored[s.id] }))];
+  const data = state.data, listed = data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = data?.added || {};
+  const added = data?.upcoming ? state.subs
+    : Object.entries(data?.added_papers || {}).filter(([id]) => id in scored).map(([id, p]) => ({ ...p, id }));
+  return [...listed, ...added.filter((s) => !dois.has(urlDoi(s.url))).map(addedPaper).map((p) => ({ ...p, p_pick: scored[p.id] }))];
 }
+const addedPaper = (s) => ({ ...s, journal: shownJournal(s.journal, s.url), authors: Array.isArray(s.authors) ? s.authors : [], added: true });
 
-// By marks, then by Score (an added paper's too). Unscored added papers (the next month's page) go oldest first.
+// By interest, then by Score (an added paper's too). Unscored added papers (the next month's page) go oldest first.
 function visible() {
   const rank = (p) => p.p_pick ?? -(p.created ?? 0) / 1e15;
   return items().sort((a, b) => count(b.id) - count(a.id) || rank(b) - rank(a));
@@ -144,7 +166,7 @@ function showTip(anchor, text) {
 }
 
 function createRow(p) {
-  const month = state.month;  // a row belongs to one month: a late click never marks a paper of another
+  const month = state.month;  // a row belongs to one month: a late click never changes a paper of another
   const li = $("row").content.firstElementChild.cloneNode(true);
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
@@ -171,7 +193,7 @@ function createRow(p) {
     q(".details").hidden = !open;
     q(".toggle").setAttribute("aria-expanded", open);
   }));
-  q(".up").addEventListener("click", () => vote(p.id, month));  // no hover colour: grey or blue only
+  q(".up").addEventListener("click", () => toggleInterest(p.id, month));  // no hover colour: grey or blue only
   li.addEventListener("animationend", () => li.classList.remove("new"));
 
   const details = q(".details");
@@ -206,18 +228,19 @@ function updateRow(li, p) {
   li.dataset.count = n;
   q(".count").title = `${n} interested`;
   q(".up").setAttribute("aria-pressed", own);
-  q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
-  q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
-  li.paper = p;  // the latest copy: the saved one first shows without handles
+  q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to say you are interested";
+  // not before the counts and the handle's own interest are in: a click would toggle a guess
+  q(".up").disabled = !db || state.waiting.has("counts") || state.waiting.has("own");
+  li.paper = p;  // the latest copy, for edit and remove
   q(".own").hidden = !ownAdded(p);  // one's own added paper, until the run lists it: edit and remove
 }
 
-// A paper the logged-in handle added to the month in progress: it may remove it until the run lists it
-const ownAdded = (p) => p.added && !!state.handle && p.name === state.handle && upcoming();
+// A paper the logged-in handle added to the month in progress: it may edit or remove it until the run lists it
+const ownAdded = (p) => p.added && upcoming() && state.added.has(p.id);
 
-// The list: (1) shows at once, in the order last seen in this browser or else by score; (2) when marks
+// The list: (1) shows at once, in the order last seen in this browser or else by score; (2) when counts
 // arrive or change, re-sorts at once: passed rows ease aside, a paper whose count changed fades in at
-// its new place. README "How it works" says the same.
+// its new place.
 function render() {
   const list = $("list");
   if (state.view === "list" && !state.data) return renderBar();  // the list shows as soon as its file is in
@@ -302,48 +325,73 @@ async function loadMonth(month) {
   state.data = null;
   rows.clear();
   // Stale-while-revalidate: a month seen before shows at once in its last-seen order, and only changes
-  // move; a first visit shows the file's order at once, and the marks re-order it when they arrive.
+  // move; a first visit shows the file's order at once, and the counts re-order it when they arrive.
   const saved = readMarks(month);
-  state.votes = saved?.votes ?? new Map();
+  state.counts = saved?.counts ?? new Map();
+  state.own = saved?.own ?? new Set();
+  state.added = new Set();
   state.subs = saved?.subs ?? [];
-  state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
+  state.waiting = new Set(offline ? [] : ["counts", ...(state.handle ? ["own"] : []), ...(upcoming() ? ["subs"] : [])]);
   history.replaceState(null, "", `?month=${month}`);  // the latest month too: the address always names the month shown
   closeForm();  // the form shows only on the next month's page
   listen();
-  const data = month === addMonth() ? { papers: [], added: {}, upcoming: true } : await monthData(month);  // next month has no file yet
+  const data = upcoming() ? { papers: [], added: {}, upcoming: true } : await monthData(month);  // next month has no file yet
   if (state.month !== month) return;  // the reader moved on while this was loading
   state.data = data;
   $("journals").replaceChildren(...[...new Set(items().map((p) => p.journal))].sort().map((j) => Object.assign(el("option"), { value: j })));
   render();
 }
 
+// Without a connection Firestore answers from its empty cache: that answer would zero the counts and
+// overwrite the saved copy, so a month waits for the server's first answer.
+const fromServer = (name, snap) => !(snap.metadata.fromCache && state.waiting.has(name));
+
+// The month's counts (one document), the papers added to the month in progress (on its page only), and the
+// logged-in handle's interest
 function listen() {
   unsubscribe.forEach((stop) => stop());
   unsubscribe = [];
-  if (!db || !state.month || state.view !== "list") return;
-  const month = state.month, at = (name) => fb.collection(db, "months", month, name);
-  // Without a connection Firestore answers from its empty cache: that answer would zero the counts and
-  // overwrite the saved copy, so the month waits for the server's first answer.
-  const fromServer = (name, snap) => !(snap.metadata.fromCache && state.waiting.has(name));
-  const live = { includeMetadataChanges: true };
-  unsubscribe.push(fb.onSnapshot(at("votes"), live, (snap) => {
-    if (!fromServer("votes", snap)) return;
-    state.votes = new Map();
-    for (const d of snap.docs) {
-      const { paper, handle } = d.data();
-      if (!state.votes.has(paper)) state.votes.set(paper, new Set());
-      state.votes.get(paper).add(handle);
-    }
-    arrived("votes");
-  }, (e) => { console.warn("votes", e); arrived("votes"); toast(UNAVAILABLE); }));
-  unsubscribe.push(fb.onSnapshot(at("submissions"), live, (snap) => {
-    if (!fromServer("submissions", snap)) return;
-    state.subs = snap.docs.map((d) => {
-      const s = d.data({ serverTimestamps: "estimate" });
-      return { ...s, id: d.id, created: s.created?.toMillis() ?? Date.now() };
-    });
-    arrived("submissions");
-  }, (e) => { console.warn("submissions", e); arrived("submissions"); }));
+  if (!db || !state.month || state.view !== "list") return listenOwn();
+  const month = state.month;
+  unsubscribe.push(fb.onSnapshot(fb.doc(db, "months", month), LIVE, (snap) => {
+    if (!fromServer("counts", snap)) return;
+    state.counts = new Map(Object.entries(snap.get("counts") ?? {}));
+    arrived("counts");
+  }, (e) => { console.warn("counts", e); arrived("counts"); toast(UNAVAILABLE); }));
+  if (upcoming()) {
+    // at most 200, oldest first: a flood of added papers cannot make every visit read them all
+    const added = fb.query(fb.collection(db, "months", month, "submissions"), fb.orderBy("created"), fb.limit(200));
+    unsubscribe.push(fb.onSnapshot(added, LIVE, (snap) => {
+      if (!fromServer("subs", snap)) return;
+      state.subs = snap.docs.map((d) => {
+        const s = d.data({ serverTimestamps: "estimate" });
+        return { ...s, id: d.id, created: s.created?.toMillis() ?? Date.now() };
+      });
+      arrived("subs");
+    }, (e) => { console.warn("submissions", e); arrived("subs"); }));
+  }
+  listenOwn();
+}
+
+// The logged-in handle's interest in the month shown: the papers it is interested in and those it added
+function listenOwn() {
+  stopOwn?.();
+  stopOwn = null;
+  if (!db || !state.month || state.view !== "list" || !state.handle) {
+    state.waiting.delete("own");
+    ownArrived = Promise.resolve();
+    return;
+  }
+  let done;
+  ownArrived = new Promise((resolve) => { done = resolve; });
+  state.waiting.add("own");
+  stopOwn = fb.onSnapshot(interestRef(state.month, state.handle), LIVE, (snap) => {
+    if (!fromServer("own", snap)) return;
+    state.own = new Set(snap.get("papers") ?? []);
+    state.added = new Set(snap.get("added") ?? []);
+    arrived("own");
+    done();
+  }, (e) => { console.warn("interest", e); arrived("own"); done(); });
 }
 
 function arrived(name) {
@@ -352,28 +400,20 @@ function arrived(name) {
   render();
 }
 
-// The month's marks as last seen, in this browser only: counts and this handle's own marks, never other
-// handles; added papers without the adder's handle. Placeholder entries stand in for others' marks
-// until the first snapshot replaces them.
+// The month as last seen, in this browser only: its counts, the logged-in handle's own interest and, for the month
+// in progress, the papers added to it. The next visit shows them at once, until the live ones arrive.
 function saveMarks() {
-  if (state.waiting.size) return;  // not before both snapshots are in
-  const counts = Object.fromEntries([...state.votes].map(([id, handles]) => [id, handles.size]));
-  const own = [...state.votes].filter(([, handles]) => handles.has(state.handle)).map(([id]) => id);
-  const subs = state.subs.map(({ name, ...s }) => s);  // no reader's handle
-  try { localStorage.setItem(`marks:${state.month}`, JSON.stringify({ counts, own, handle: state.handle, subs })); } catch {}
+  if (state.waiting.size) return;  // not before every first snapshot is in
+  const saved = { counts: Object.fromEntries(state.counts), own: [...state.own], handle: state.handle, subs: upcoming() ? state.subs : [] };
+  try { localStorage.setItem(`marks:${state.month}`, JSON.stringify(saved)); } catch {}
 }
 
 function readMarks(month) {
   try {
     const saved = JSON.parse(localStorage.getItem(`marks:${month}`));
     if (!saved) return null;
-    const own = new Set(saved.handle === state.handle ? saved.own : []);
-    const votes = new Map(Object.entries(saved.counts).map(([id, n]) => {
-      const handles = new Set(own.has(id) ? [state.handle] : []);
-      while (handles.size < n) handles.add(`\u0000${handles.size}`);  // not a valid handle: never matches or deletes
-      return [id, handles];
-    }));
-    return { votes, subs: saved.subs };
+    return { counts: new Map(Object.entries(saved.counts ?? {})), own: new Set(saved.handle === state.handle ? saved.own : []),
+      subs: saved.subs ?? [] };
   } catch {
     return null;
   }
@@ -381,17 +421,17 @@ function readMarks(month) {
 
 async function connect() {
   try {
-    const [app, auth, firestore] = await Promise.all(["app", "auth", "firestore"].map((m) => import(`${SDK}/firebase-${m}.js`)));
-    fb = { ...auth, ...firestore };
-    const instance = app.initializeApp(firebaseConfig), user = fb.getAuth(instance);
-    signer = user;  // the Auth instance, for the sign-in on the first write
+    const [firebase, firestore] = await Promise.all(["app", "firestore"].map((m) => import(`${SDK}/firebase-${m}.js`)));
+    fb = firestore;
+    app = firebase.initializeApp(firebaseConfig);
     // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
-    // another browser's mark more than half a minute late after about 1 page load in 50.
-    db = fb.initializeFirestore(instance, { experimentalForceLongPolling: true });
+    // another browser's change more than half a minute late after about 1 page load in 50.
+    db = fb.initializeFirestore(app, { experimentalForceLongPolling: true });
     dbReady();
-    listen();  // marks are public: reading needs no sign-in
-    fb.onAuthStateChanged(user, (u) => { state.uid = u?.uid || null; render(); });
+    listen();  // counts are public: reading needs no sign-in
     render();  // the triangles work from here on
+    // a logged-in reader may soon write: Firebase Auth, which writing needs, is fetched now and loaded on the first write
+    if (state.handle) setTimeout(() => import(`${SDK}/firebase-auth.js`).catch(() => {}), 1000);
   } catch (e) {
     dbReady();
     offline = true;
@@ -404,20 +444,23 @@ async function connect() {
 
 // ---------------------------------------------------------------- writes
 
-// Writes need a signed-in browser. The anonymous sign-in happens on the first write, not on load, so a
-// reader who only reads never creates a Firebase user. Silent: no prompt; the handle, not this id, is what marks.
+// Writes need a signed-in browser. Firebase Auth loads, and signs in anonymously, on the first write, not on load, so
+// a reader who only reads never creates a Firebase user. Silent: no prompt; the handle, not this id, is what counts.
 async function signedIn() {
-  if (!signer) return toast("Still connecting; try again in a moment."), false;
-  await signer.authStateReady();
-  if (signer.currentUser) return true;
-  // Writes started together (a mark and an added paper, quick clicks) share one sign-in: one Firebase user.
-  signedIn.pending ??= fb.signInAnonymously(signer).finally(() => { signedIn.pending = null; });
+  if (!db) return toast("Still connecting; try again in a moment."), false;
+  // Writes started together (an interest and an added paper, quick clicks) share one sign-in: one Firebase user.
+  signedIn.done ??= (async () => {
+    const auth = await import(`${SDK}/firebase-auth.js`), user = auth.getAuth(app);
+    await user.authStateReady();
+    if (!user.currentUser) await auth.signInAnonymously(user);
+  })();
   try {
-    state.uid = (await signedIn.pending).user.uid;
+    await signedIn.done;
     return true;
   } catch (e) {
+    signedIn.done = null;  // the next write tries again
     console.warn(e);
-    toast("Marking and adding are unavailable right now; try again later.");
+    toast("Saving is unavailable right now; try again later.");
     return false;
   }
 }
@@ -431,39 +474,38 @@ function needHandle(action) {
   return true;
 }
 
-// Mark a paper of `month`, or take the mark back if this handle already gave one. After a login asked
-// for by the click, the paper is scrolled to and its triangle focused.
-async function vote(id, month) {
-  if (needHandle(() => vote(id, month).then(() => {
+// Interest in a paper of `month`, or none any more if this handle has it. After a login asked for by the
+// click, the paper is scrolled to and its triangle focused.
+async function toggleInterest(id, month) {
+  if (needHandle(() => toggleInterest(id, month).then(() => {
     const up = rows.get(id)?.querySelector(".up");
     up?.scrollIntoView({ block: "center" });
     up?.focus({ preventScroll: true });
   }))) return;
-  if (month !== state.month || voting.has(id)) return;
-  voting.add(id);
+  if (month !== state.month || writing.has(id)) return;
+  writing.add(id);
   let slow;
   try {
+    await ownArrived;  // after a login, its interest first: the click adds or removes as it should
     if (!(await signedIn()) || month !== state.month) return;
-    // the mark shows at once; if the server has not confirmed it in 3 s, say so
+    // the change shows at once; if the server has not confirmed it in 3 s, say so
     slow = setTimeout(() => toast("Not saved yet: waiting for the connection."), 3000);
-    const ref = voteRef(month, id), handle = state.handle;
-    if (!mine(id)) await fb.setDoc(ref, { paper: id, handle });
-    else {
-      await fb.deleteDoc(ref);
+    const handle = state.handle, on = !mine(id);
+    await setInterest(month, handle, id, on);
+    if (!on) {
       clearTimeout(slow);
-      toast("Unmarked.", () => fb.setDoc(ref, { paper: id, handle })
-        .catch((e) => { console.warn(e); toast("Could not restore the mark."); }));
+      toast("Interest removed.", () => setInterest(month, handle, id, true).catch((e) => { console.warn(e); toast("Could not undo."); }));
     }
   } catch (e) {
     console.warn(e);
-    toast("Your mark was not saved.");
+    toast("Not saved; please try again.");
   } finally {
     clearTimeout(slow);
-    voting.delete(id);
+    writing.delete(id);
   }
 }
 
-// Edit a paper this handle added: the add form, filled with it, saves over it (its marks stay)
+// Edit a paper this handle added: the add form, filled with it, saves over it (its interest stays)
 function editSubmission(p) {
   closeForm();
   form.editing = p.id;
@@ -479,15 +521,17 @@ function editSubmission(p) {
   field("title").focus({ preventScroll: true });
 }
 
-// Remove a paper this browser added, and its marks, which would otherwise be read on every visit.
+// Remove a paper this handle added: the paper, its count and its place in the handle's interest, in one batch
 async function removeSubmission(p) {
-  const month = state.month, handles = [...(state.votes.get(p.id) ?? [])].filter((h) => HANDLE.test(h));
+  const month = state.month, handle = state.handle;
   if (!confirm(`Remove "${p.title}" from the list?`)) return;
   if (!(await signedIn())) return;
   try {
-    // the paper first: if its marks then fail to go, nobody sees them
-    await fb.deleteDoc(fb.doc(db, "months", month, "submissions", p.id));
-    await Promise.all(handles.map((handle) => fb.deleteDoc(voteRef(month, p.id, handle))));
+    const batch = fb.writeBatch(db);
+    batch.delete(fb.doc(db, "months", month, "submissions", p.id));
+    batch.set(interestRef(month, handle), { papers: fb.arrayRemove(p.id), added: fb.arrayRemove(p.id), paper: p.id }, { merge: true });
+    batch.set(fb.doc(db, "months", month), { counts: { [p.id]: fb.deleteField() }, paper: p.id }, { merge: true });
+    await batch.commit();
   } catch (e) {
     console.warn(e);
     toast("Could not remove the paper.");
@@ -509,10 +553,18 @@ function setHandle(handle) {
   state.handle = handle;
   try { handle ? localStorage.setItem("handle", handle) : localStorage.removeItem("handle"); } catch {}
   if (!handle) forgetHandle();
+  ownChanged();
+}
+
+// Another handle, or none: the month shown waits for that handle's interest
+function ownChanged() {
+  state.own = new Set();
+  state.added = new Set();
+  listenOwn();
   render();
 }
 
-// After a logout, this browser keeps no trace of the handle: not in the login field, not in the saved marks.
+// After a logout, this browser keeps no trace of the handle: not in the login field, not in the saved copies.
 function forgetHandle() {
   $("login-handle").value = "";
   try {
@@ -530,12 +582,12 @@ function handleChanged(event) {
   state.handle = HANDLE.test(handle) ? handle : "";
   if (!state.handle) $("login-handle").value = "";
   if (state.view !== "list") go({});  // the handle's own pages close with it
-  else render();
+  else ownChanged();
 }
 
 function login(event) {
   event.preventDefault();
-  const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one Firestore query
+  const handle = $("login-handle").value.trim().toLowerCase();  // handles are lower case: one spelling, one document
   if (!HANDLE.test(handle) || handle === RESERVED) {
     $("login-note").textContent = handle === RESERVED ? "This handle is reserved." : "A handle is 2–20 letters, digits or _.";
     $("login-note").classList.add("error");
@@ -581,7 +633,7 @@ function togglePast(open = $("past").hidden) {
 // ---------------------------------------------------------------- pages of the logged-in handle
 
 // The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month (then named).
-// The handle pages open only for the handle logged in here: nobody browses another reader's marks.
+// The handle pages open only for the handle logged in here: nobody browses another reader's interest.
 function route() {
   const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
   if (own(q.get("user"))) return showUser();
@@ -597,29 +649,33 @@ function go(params) {
   return route();
 }
 
-// Every paper the logged-in handle is interested in, newest month first: [{ month, paper }].
-async function myMarks() {
+// Every paper the logged-in handle is interested in, newest month first: [{ month, paper }]. One read a month, of the
+// handle's interest; a month's data file only if the handle is interested in a paper of it.
+async function myInterest() {
   await connected;
   if (!db) throw new Error("Firestore is unavailable");
-  const handle = state.handle;
-  const months = await Promise.all([...state.months, addMonth()].map(async (m) => {  // with the papers added to the month in progress
-    // Only this handle's marks are read (a query costs one read per result, at least one); a month's data
-    // file only if it has a mark, and its added papers only if a marked paper is not in that file.
-    const marks = (await fb.getDocs(fb.query(fb.collection(db, "months", m, "votes"), fb.where("handle", "==", handle)))).docs.map((d) => d.data().paper);
-    if (!marks.length) return [];
-    const papers = new Map((await monthData(m)).papers.map((p) => [p.id, p]));
-    if (marks.some((id) => !papers.has(id))) {
-      for (const d of (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs) papers.set(d.id, { ...d.data(), id: d.id, added: true });
+  const handle = state.handle, next = addMonth();
+  const months = await Promise.all([...state.months, next].map(async (m) => {  // with the papers added to the month in progress
+    const ids = (await fb.getDoc(interestRef(m, handle))).get("papers") ?? [];
+    if (!ids.length) return [];
+    const papers = new Map();
+    if (m === next) {  // added papers, not yet listed: from Firestore
+      for (const d of await Promise.all(ids.map((id) => fb.getDoc(fb.doc(db, "months", m, "submissions", id))))) {
+        if (d.exists()) papers.set(d.id, addedPaper({ ...d.data(), id: d.id }));
+      }
+    } else {
+      const data = await monthData(m);
+      for (const p of data.papers) papers.set(p.id, p);
+      for (const [id, p] of Object.entries(data.added_papers || {})) papers.set(id, addedPaper({ ...p, id }));
     }
-    return marks.filter((id) => papers.has(id)).map((id) => ({ month: m, paper: papers.get(id) }));
+    return ids.filter((id) => papers.has(id)).map((id) => ({ month: m, paper: papers.get(id) }));
   }));
   return months.reverse().flat();
 }
 
 function showPage(view, ...content) {
   state.view = view;
-  unsubscribe.forEach((stop) => stop());
-  unsubscribe = [];
+  listen();  // a handle's page shows no counts: the month's listeners stop
   closeForm();
   $("listview").hidden = true;
   $("page").hidden = false;
@@ -641,16 +697,16 @@ async function showUser() {
   }
   showPage("user", table);
   try {
-    const marks = await myMarks();
+    const papers = await myInterest();
     if (state.view !== "user" || state.handle !== handle) return;
-    total.textContent = `${marks.length} paper${marks.length === 1 ? "" : "s"}`;
+    total.textContent = `${papers.length} paper${papers.length === 1 ? "" : "s"}`;
   } catch (e) {
     console.warn(e);
     total.replaceWith(el("span", "", "unavailable"));
   }
 }
 
-// The user page's form for a new handle: on save, the marks and added papers move to it
+// The user page's form for a new handle: on save, its interest and added papers move to it
 function handleForm(from, shown) {
   const form = el("form", "handle-form"), input = Object.assign(el("input"), { value: from, maxLength: 20, ariaLabel: "New handle" });
   const save = Object.assign(el("button", "", "save"), { type: "submit" }), cancel = Object.assign(el("button", "", "cancel"), { type: "button" });
@@ -668,13 +724,13 @@ function handleForm(from, shown) {
     if (problem) return (say.textContent = problem), say.classList.add("error");
     save.disabled = true;
     say.classList.remove("error");
-    say.textContent = "Moving your marks…";
+    say.textContent = "Changing your handle…";
     try {
       const moved = await changeHandle(from, to);
       if (moved === null) return (say.textContent = "Someone uses this handle already."), say.classList.add("error");
       setHandle(to);
       go({ user: to });
-      toast(`Your handle is now ${to}: ${moved} mark${moved === 1 ? "" : "s"} moved.`);
+      toast(`Your handle is now ${to}: ${moved} paper${moved === 1 ? "" : "s"} moved with it.`);
     } catch (e) {
       console.warn(e);
       say.textContent = "The handle was not changed. Please try again later.";
@@ -687,39 +743,28 @@ function handleForm(from, shown) {
   return form;
 }
 
-// Move a handle's marks (created under the new handle, deleted under the old) and rename its added papers, month by
-// month; null if the new handle has a mark or a paper already. A failure halfway can be retried: what moved is gone.
+// Move a handle's interest, month by month: a new document under the new handle, the old one deleted, in one batch;
+// null if the new handle has interest already. The number of papers moved, the ones it added included.
 async function changeHandle(from, to) {
   await connected;
   if (!db) throw new Error("Firestore is unavailable");
-  const months = [...state.months, addMonth()], col = (m, c) => fb.collection(db, "months", m, c);
-  const mine = (m, c, h) => fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", h)));
+  const months = [...state.months, addMonth()];
   // a change cut short (closed tab, lost connection) leaves the new handle in use; trying the same change again finishes it
   const pending = JSON.stringify({ from, to }), resuming = store("handleChange") === pending;
-  if (!resuming) {
-    const used = await Promise.all(months.flatMap((m) => ["votes", "submissions"].map((c) =>
-      fb.getDocs(fb.query(col(m, c), fb.where(c === "votes" ? "handle" : "name", "==", to), fb.limit(1))))));
-    if (used.some((snap) => !snap.empty)) return null;
-  }
+  if (!resuming && (await Promise.all(months.map((m) => fb.getDoc(interestRef(m, to))))).some((d) => d.exists())) return null;
   if (!(await signedIn())) throw new Error("not signed in");
   store("handleChange", pending);
-  let moved = 0;
-  for (const m of months) {
-    const [votes, subs] = await Promise.all([mine(m, "votes", from), mine(m, "submissions", from)]);
-    const ops = [
-      ...votes.docs.flatMap((d) => [(b) => b.set(voteRef(m, d.data().paper, to), { paper: d.data().paper, handle: to }),
-        (b) => b.delete(d.ref)]),
-      ...subs.docs.map((d) => (b) => b.update(d.ref, { name: to })),
-    ];
-    for (let i = 0; i < ops.length; i += 400) {  // a batch holds at most 500 writes; a mark's two stay in one batch
-      const batch = fb.writeBatch(db);
-      ops.slice(i, i + 400).forEach((op) => op(batch));
-      await batch.commit();
-    }
-    moved += votes.size;
-  }
+  const moved = await Promise.all(months.map(async (m) => {
+    const d = await fb.getDoc(interestRef(m, from));
+    if (!d.exists()) return 0;
+    const batch = fb.writeBatch(db);
+    batch.set(interestRef(m, to), d.data());
+    batch.delete(d.ref);
+    await batch.commit();
+    return (d.get("papers") ?? []).length;
+  }));
   store("handleChange", null);
-  return moved;
+  return moved.reduce((a, b) => a + b, 0);
 }
 
 // By month, newest first: each month's heading links to its list; "not interested" at each paper's right
@@ -727,9 +772,9 @@ async function showInterested() {
   const handle = state.handle, box = el("div", "marks");
   box.append(el("p", "empty", "Loading…"));
   showPage("interested", el("p", "page-head", "Papers you are interested in"), box);
-  let marks;
+  let papers;
   try {
-    marks = await myMarks();
+    papers = await myInterest();
   } catch (e) {
     console.warn(e);
     box.replaceChildren(el("p", "empty", "Unavailable right now; try again later."));
@@ -738,7 +783,7 @@ async function showInterested() {
   if (state.view !== "interested" || state.handle !== handle) return;
   const empty = el("p", "empty", "Nothing yet: click the triangle beside a paper.");
   const groups = new Map();  // not Map.groupBy: Safari before 17.4 lacks it
-  for (const m of marks) groups.set(m.month, [...(groups.get(m.month) ?? []), m]);
+  for (const m of papers) groups.set(m.month, [...(groups.get(m.month) ?? []), m]);
   // a month whose papers are all taken back hides; with none left, the page says so
   const sync = () => {
     for (const section of box.querySelectorAll("section")) section.hidden = [...section.querySelectorAll("li")].every((li) => li.hidden);
@@ -755,25 +800,24 @@ async function showInterested() {
       main.append(title, " ", el("span", "source", source(p)));
       const undo = Object.assign(el("a", "dashed unmark", "not interested"), { href: "#" });
       undo.addEventListener("click", link(async () => {
-        const ref = voteRef(month, p.id, handle);
         try {
           if (!(await signedIn())) return;
-          await fb.deleteDoc(ref);
+          await setInterest(month, handle, p.id, false);
           li.hidden = true;
           sync();
           toast("Removed.", async () => {
             try {
-              await fb.setDoc(ref, { paper: p.id, handle });
+              await setInterest(month, handle, p.id, true);
               li.hidden = false;
               sync();
             } catch (e) {
               console.warn(e);
-              toast("Could not restore the mark.");
+              toast("Could not undo.");
             }
           });
         } catch (e) {
           console.warn(e);
-          toast("Could not remove the mark.");
+          toast("Not saved; please try again.");
         }
       }));
       li.append(main, undo);
@@ -923,13 +967,13 @@ async function lookUp() {
 
 // Where this paper is already: on any month's list (its added papers included) or added to the month in progress,
 // matched by link, DOI or title (ignoring case and punctuation). null if nowhere; `here`: added to the month in progress.
-// Listed months come from their static files (data.added_papers): only the month in progress is read from Firestore.
+// Listed months come from their data files; the month in progress from the papers its page lists, under the form.
 async function findCopy({ url, doi, title }) {
-  const t = plainTitle(title), months = [...state.months].reverse(), next = addMonth();  // newest list first
+  const t = plainTitle(title), months = [...state.months].reverse();  // newest list first
   const same = (p) => (url && p.url === url) || (doi && (p.doi || urlDoi(p.url)) === doi) || (t && plainTitle(p.title) === t);
-  const added = async (m) => (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs
-    .filter((d) => d.id !== form.editing).map((d) => d.data());  // the paper being edited is not a copy of itself
-  if ((await added(next)).some(same)) return { here: true, message: `Someone has added this paper to ${monthName(next)} already: mark it below.` };
+  if (state.subs.some((s) => s.id !== form.editing && same(s))) {  // the paper being edited is not a copy of itself
+    return { here: true, message: `Someone has added this paper to ${monthName(addMonth())} already: it is listed below.` };
+  }
   const lists = await Promise.all(months.map(monthData));
   const i = months.findIndex((m, k) => lists[k].papers.some(same) || Object.values(lists[k].added_papers || {}).some(same));
   return i < 0 ? null : { message: `This paper is on the ${monthName(months[i])} list already.` };
@@ -971,7 +1015,7 @@ async function submitPaper(event) {
   if (!httpUrl(paper.url)) return note("Enter a DOI (10.…) or a link starting with http:// or https://.", true);
   // a link without a DOI (cell.com) whose DOI the lookup found is stored as a DOI link: the run and the duplicate check use it
   if (!urlDoi(paper.url) && form.lookup.doi && form.lookup.url === paper.url) paper.url = `https://doi.org/${form.lookup.doi}`;
-  const month = addMonth();
+  const month = addMonth(), handle = state.handle;
   try {
     const copy = await findCopy({ url: paper.url, doi: urlDoi(paper.url), title: paper.title });
     if (copy?.here) return note(copy.message, true);
@@ -983,12 +1027,14 @@ async function submitPaper(event) {
       closeForm();
       return toast("Saved.");
     }
-    const ref = await fb.addDoc(fb.collection(db, "months", month, "submissions"),
-      { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
+    // the paper, without the adder's handle, and the adder's interest in it with its count, in one batch
+    const ref = fb.doc(fb.collection(db, "months", month, "submissions")), batch = fb.writeBatch(db);
+    batch.set(ref, { ...paper, created: fb.serverTimestamp() });
+    batch.set(interestRef(month, handle), { papers: fb.arrayUnion(ref.id), added: fb.arrayUnion(ref.id), paper: ref.id }, { merge: true });
+    batch.set(fb.doc(db, "months", month), { counts: { [ref.id]: fb.increment(1) }, paper: ref.id }, { merge: true });
+    await batch.commit();
     closeForm();
     $("add-open").focus({ preventScroll: true });
-    // adding a paper marks it (not through vote(), which marks only the month shown); the mark shows on the handle's page
-    await fb.setDoc(voteRef(month, ref.id), { paper: ref.id, handle: state.handle });
     toast(`Added to ${monthName(month)}; it gets a Score on ${monthName(nextMonth(month))}/10.`);
   } catch (e) {
     console.warn(e);
@@ -1046,6 +1092,11 @@ async function copyTable() {
 
 async function init() {
   try { const saved = (localStorage.getItem("handle") || "").toLowerCase(); if (HANDLE.test(saved)) state.handle = saved; } catch {}
+  // The month index and the listed month the address names load together, not one after the other: a month before
+  // the current one has a list (or, before the 10th, is the month in progress, whose file then fails quietly).
+  const index = fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
+  const named = new URLSearchParams(location.search).get("month") ?? "";
+  if (/^20\d\d-(0[1-9]|1[0-2])$/.test(named) && named < new Date().toISOString().slice(0, 7)) monthData(named);
   connect();  // in parallel with the month index; listening starts once a month is shown
   $("copy").addEventListener("click", link(copyTable));
   $("download").addEventListener("click", link(downloadTable));
@@ -1107,8 +1158,7 @@ async function init() {
   field("url").addEventListener("change", () => { form.pending = lookUp(); });
   field("url").addEventListener("paste", () => setTimeout(() => { form.pending = lookUp(); }));  // a pasted URL is looked up at once
 
-  const index = await fetch("data/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { months: [] }), () => ({ months: [] }));
-  state.months = index.months;
+  state.months = (await index).months;
   if (!state.months.length) {
     $("list").replaceChildren(el("li", "empty", "No lists yet."));
     return;

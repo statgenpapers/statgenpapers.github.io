@@ -942,12 +942,12 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-]
-train = [
+backtest = [
     { name = "pandas" },
     { name = "pyarrow" },
+]
+dev = [
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -960,11 +960,11 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8" }]
-train = [
+backtest = [
     { name = "pandas", specifier = ">=2.2" },
     { name = "pyarrow", specifier = ">=17" },
 ]
+dev = [{ name = "pytest", specifier = ">=8" }]
 
 [[package]]
 name = "threadpoolctl"

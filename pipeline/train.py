@@ -1,13 +1,13 @@
-"""The monthly model: refitted before each list on the pools of the 12 months before it, from the marks on the site.
+"""The monthly model: refitted before each list on the pools of the 12 months before it, from the interest on the site.
 
-A pool paper marked on the site (on a list, or added and marked, in any month) is a positive; every other pool
-paper a negative, as if readers had looked through the whole pool. A marked added paper found in no stored pool is
-one more positive, in the month it was added to. Month M of a model for month L weighs 0.5 ** (age / 6), age = L - M
-in months, 1 to 12: the setting the leak-free backtest of 2026-01..10 chose (dev/coldstart/recency.py, dev/coldstart/train.py).
+A pool paper marked on the site (any handle interested in it, on a list or added, in any month) is a positive; every
+other pool paper a negative, as if readers had looked through the whole pool. A marked added paper found in no stored
+pool is one more positive, in the month it was added to. Month M of a model for month L weighs 0.5 ** (age / 6),
+age = L - M in months, 1 to 12: the setting the leak-free backtest of 2026-01..10 chose (dev/backtest/LOG.md).
 
 The Score is sigmoid(a + b·score). The model is fitted with balanced class weights, which ranks best but makes its own
 probability far too high, so a and b are refitted too, on the scores each stored month got from its own model (out of
-sample: before its marks), with the same months and weights. In the leak-free backtest this beat one unbalanced model
+sample: before its interest), with the same months and weights. In the leak-free backtest this beat one unbalanced model
 whose probability is the Score on both ranking (AUC 0.972 vs 0.969) and log loss (0.0331 vs 0.0337 at best).
 
 Each month's pool is stored in data/pools/YYYY-MM.npz: DOIs, plain titles, venue keys, the score its month's model
@@ -15,6 +15,7 @@ gave (for the calibration), embeddings as int8 (with a
 scale per dimension; the leak-free backtest of 2026-07..10 scored the same as with full precision) and how many papers
 each token of the embedding model's vocabulary appears in (for word analyses). No abstracts. The files
 live on the branch `training`, which keeps the last 12 months in one commit (.github/workflows/monthly.yml).
+The model is written to data/model.json.
 """
 from datetime import date
 
@@ -50,14 +51,15 @@ def load_pool(month):
         return {k: p[k] for k in p.files} | {"emb": p["emb"] * p["scale"].astype(float)}
 
 
-def marked_keys(listed, votes, submissions):
-    """DOIs and plain titles of every paper marked on the site: listed papers by id, added papers by submission id;
-    a mark on a paper no list has (any more: a month rebuilt) by its id, which `labels` matches to pool DOIs.
-    listed: {month: [paper]}; votes: {month: {paper id: marks}}; submissions: {month: {submission id: paper}}."""
+def marked_keys(listed, counts, submissions):
+    """DOIs and plain titles of every paper marked on the site (interest count above 0): listed papers by id, added
+    papers by submission id; interest in a paper no list has (any more: a month rebuilt, or the cold start's first
+    months) by its id, which `labels` matches to pool DOIs.
+    listed: {month: [paper]}; counts: {month: {paper id: count}}; submissions: {month: {submission id: paper}}."""
     keys = set()
-    for m, marks in votes.items():
+    for m, c in counts.items():
         ids, subs = {p["id"]: p for p in listed.get(m, [])}, submissions.get(m, {})
-        for pid in marks:
+        for pid in (pid for pid, n in c.items() if n > 0):
             if pid in ids:
                 keys |= {ids[pid]["doi"], plain_title(ids[pid]["title"])}
             elif pid in subs:
@@ -98,7 +100,7 @@ def fit(month, venue_names, keys, added=None, base=None):
             y.append(np.ones(len(emb), bool))
             w.append(np.full(len(emb), 0.5 ** ((index(month) - index(m)) / HALF_LIFE)))
     X, y, w = np.vstack(X), np.concatenate(y), np.concatenate(w)
-    if y.sum() < MIN_MARKED:  # too few marks to learn from: the caller keeps its weights
+    if y.sum() < MIN_MARKED:  # too few marked papers to learn from: the caller keeps its weights
         return None
     lr = LogisticRegression(C=1, class_weight="balanced", max_iter=300, tol=1e-3).fit(X, y, sample_weight=w)
     coef, k = lr.coef_[0], X.shape[1] - len(names)

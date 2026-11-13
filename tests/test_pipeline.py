@@ -2,10 +2,9 @@ import numpy as np
 
 from pipeline.dedupe import dedupe
 from pipeline.fetch import Paper, author_names, clean, url_doi
-from pipeline.output import paper_id, short_name, table_row
+from pipeline.output import paper_id, short_name
 from pipeline.score import linear, probability
-from pipeline import train
-from pipeline import votes as votes_module
+from pipeline import firestore, train
 
 
 def paper(doi, title, type="published", journal="Nat Genet", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
@@ -39,13 +38,12 @@ def test_paper_id_uses_the_firestore_alphabet():
     assert len(paper_id("10.1/" + "x" * 300)) == 150
 
 
-def test_short_name_and_table_row():
+def test_short_name():
     assert short_name(paper("10.1/a", "Fine-mapping of rare variants in a biobank")) == "NatGenet_Smith_2026_FineMappingRareVariants"
     assert short_name(paper("10.1/b", "SuSiE-x: a method for the cross-ancestry case", journal="bioRxiv",
                             authors=["J. van der Müller-O'Neil"])) == "bioRxiv_MüllerONeil_2026_SuSiEX"
     assert short_name(paper("10.1/c", "Alzheimer’s disease genetics", authors=[])) == "NatGenet_NA_2026_AlzheimerDiseaseGenetics"
-    assert table_row(paper("10.1/d", "A cell atlas", journal="Am J Hum Genet")) == [
-        "Am J Hum Genet", "AmJHumGenet_Smith_2026_CellAtlas", "A cell atlas", "https://doi.org/10.1/d"]
+    assert short_name(paper("10.1/d", "A cell atlas", journal="Am J Hum Genet")) == "AmJHumGenet_Smith_2026_CellAtlas"
 
 
 def test_clean_and_url_doi():
@@ -65,11 +63,11 @@ def test_score_from_a_weights_file():
     np.testing.assert_allclose(linear(weights, emb, ["NG", "PNAS", "NG"]), [1.5, -1.0, -1.5])
 
 
-def test_marks_on_lists_and_added_papers_are_the_labels():
+def test_interest_in_listed_and_added_papers_is_the_labels():
     listed = {"2026-01": [{"id": "a", "doi": "10.1/a", "title": "Listed A"}, {"id": "b", "doi": "10.1/b", "title": "Listed B"}]}
-    votes = {"2026-01": {"a": {"h": 1}}, "2026-02": {"s1": {"h": 1}}}
+    counts = {"2026-01": {"a": 2, "b": 0}, "2026-02": {"s1": 1, "s2": 0}, "2025-12": {"10.1_old": 1}}
     subs = {"2026-02": {"s1": {"url": "https://example.org/x", "title": "An Added Paper!"}, "s2": {"url": "https://doi.org/10.1/c", "title": "Unmarked"}}}
-    assert train.marked_keys(listed, votes, subs) == {"10.1/a", "listed a", "an added paper"}
+    assert train.marked_keys(listed, counts, subs) == {"10.1/a", "listed a", "an added paper", "10.1_old"}
 
 
 def test_monthly_fit_learns_marks_weighting_recent_months_more(tmp_path, monkeypatch):
@@ -99,12 +97,22 @@ def test_pick_chance_is_calibrated_and_monotone():
     assert 0 < p[0] < p[1] < p[2] < 1
 
 
-def test_read_votes_counts_one_upvote_per_handle_and_hashes_handles(monkeypatch):
-    docs = {"p1~alice": {"paper": {"stringValue": "p1"}, "handle": {"stringValue": "Alice"}},
-            "p1~bob": {"paper": {"stringValue": "p1"}, "handle": {"stringValue": "bob"}},
-            "p2~alice": {"paper": {"stringValue": "p2"}, "handle": {"stringValue": "alice"}}}
-    monkeypatch.setattr(votes_module, "documents", lambda project, path: docs if path == "months/2026-10/votes" else {})
-    out = votes_module.read_votes("proj", "2026-10")
-    assert {k: len(v) for k, v in out.items()} == {"p1": 2, "p2": 1}
-    assert set(out["p1"].values()) == {1} and out["p2"].keys() <= out["p1"].keys()  # the same handle, whatever its case
-    assert not any("alice" in h or "bob" in h for v in out.values() for h in v)
+def test_reads_counts_and_added_papers_through_the_rest_api(monkeypatch):
+    month = {"fields": {"counts": {"mapValue": {"fields": {"p1": {"integerValue": "2"}, "p2": {"integerValue": "0"}}}},
+                        "paper": {"stringValue": "p1"}}}
+    subs = {"documents": [{"name": "projects/p/databases/(default)/documents/months/2026-10/submissions/s1", "fields": {
+        "title": {"stringValue": "T"}, "url": {"stringValue": "https://doi.org/10.1/x"}, "journal": {"stringValue": "PNAS"},
+        "short_name": {"stringValue": "PNAS_B_2026_T"}, "authors": {"arrayValue": {"values": [{"stringValue": "A. B"}]}},
+        "created": {"timestampValue": "2026-10-01T00:00:00Z"}}}]}
+    response = lambda data: type("R", (), {"json": lambda self: data})()
+
+    def request(method, url, missing_ok=False, **kw):
+        if url.endswith("/months/2026-09"):
+            assert missing_ok
+            return None  # no document: nobody has been interested in a paper of the month
+        return response(month if url.endswith("/months/2026-10") else subs)
+    monkeypatch.setattr(firestore, "request", request)
+    assert firestore.read_counts("p", "2026-10") == {"p1": 2, "p2": 0}
+    assert firestore.read_counts("p", "2026-09") == {}
+    assert firestore.read_submissions("p", "2026-10") == {"s1": {"title": "T", "url": "https://doi.org/10.1/x", "journal": "PNAS",
+                                                                 "short_name": "PNAS_B_2026_T", "authors": ["A. B"], "abstract": "", "date": ""}}

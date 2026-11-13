@@ -87,7 +87,7 @@ button:disabled { opacity: .4; cursor: default; }
 #listview:has(#list:empty) { min-height: 100vh; }  /* the footer stays put while the list loads; a short list then pulls it up */
 .pick-head { display: flex; justify-content: space-between; margin: .9rem 0 0; }
 .pick-head, .page-head { color: var(--muted); font-size: var(--fs-title); }
-.title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the vote column (1.8rem) plus the gap (.3rem) */
+.title-head { display: flex; align-items: center; gap: .45rem; padding-left: 2.1rem; }  /* the interest column (1.8rem) plus the gap (.3rem) */
 .title-head .icon { display: flex; padding: .5rem .35rem; margin: -.2rem; color: var(--muted); }  /* copy and download: as muted as the heading, a larger hit area */
 #score-help { color: inherit; }
 .title-head .icon:hover, #score-help:hover { color: var(--text); }
@@ -97,7 +97,7 @@ button:disabled { opacity: .4; cursor: default; }
 .paper.new { animation: flash 1.8s ease-out; }
 @keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
-.vote { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
+.interest { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
 .up { position: relative; border: 0; background: none; padding: .3rem 0 0; color: var(--muted); line-height: 0; }
 .up::after { content: ""; position: absolute; inset: -.5rem -1.6rem -.9rem -.5rem; }  /* a finger-sized hit area over the count */
 .up:active:not(:disabled), .up[aria-pressed="true"] { color: var(--accent); }
@@ -132,7 +132,7 @@ button:disabled { opacity: .4; cursor: default; }
 .details .authors { color: var(--muted); font-size: var(--fs-small); }
 .pick { position: relative; display: flex; align-items: baseline; color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
 
-/* the user and interested pages: no vote column, so everything starts at the bar's left edge, as on About */
+/* the user and interested pages: no interest column, so everything starts at the bar's left edge, as on About */
 .page { margin-top: .9rem; }
 .page-head { margin: 0; }
 .month-head { margin: .9rem 0 0; font-size: var(--fs-body); font-weight: 600; }
@@ -176,7 +176,7 @@ footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-t
 .prose code { font-family: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .05em .3em; }
 .prose .caption { color: var(--muted); font-size: var(--fs-meta); }
 
-/* Wide screens: the vote column hangs in the left margin, so "Papers of …", the titles and the bar's rule share one left edge */
+/* Wide screens: the interest column hangs in the left margin, so "Papers of …", the titles and the bar's rule share one left edge */
 @media (min-width: 60rem) {  /* the 54rem column plus room for the 2.1rem hang on each side */
   .title-head { padding-left: 0; }
   .paper { margin-left: -2.1rem; }

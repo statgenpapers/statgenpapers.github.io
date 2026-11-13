@@ -7,11 +7,11 @@
 <meta name="description" content="A monthly shortlist of statistical genetics papers, ranked live by readers' interest.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cpath%20d='M2.5%201.5h22.5l4.5%204.5v24.5H2.5z'%20fill='%23fff'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cpath%20d='M25.0%201.5V6.0H29.5'%20fill='%23c9d6f7'%20stroke='%2310204f'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3Cg%20font-family='Arial,Helvetica,sans-serif'%20font-weight='700'%20font-size='12'%20fill='%2310204f'%20text-anchor='middle'%3E%3Ctext%20x='16.0'%20y='16.2'%3EStat%3C/text%3E%3Ctext%20x='16.0'%20y='27.2'%3EGen%3C/text%3E%3C/g%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
-<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js" crossorigin>
-<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js" crossorigin>
-<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js" crossorigin>
+<!-- live counts: Firebase loads alongside, after the list's own files (Firebase Auth only on the first write) -->
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js" crossorigin fetchpriority="low">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js" crossorigin fetchpriority="low">
 <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
-<!-- Cloudflare Web Analytics: cookieless visitor counts --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2f572e8072ac49a997d373c97ba73871"}'></script>
+<!-- Cloudflare Web Analytics: cookieless visitor counts --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" fetchpriority="low" data-cf-beacon='{"token": "2f572e8072ac49a997d373c97ba73871"}'></script>
 </head>
 <body>
 <header class="bar">
@@ -26,7 +26,7 @@
     <label>handle <input id="login-handle" type="text" required minlength="2" maxlength="20" pattern="[A-Za-z0-9_]{2,20}" autocapitalize="none" spellcheck="false" autocomplete="nickname"></label>
     <span class="actions"><button type="submit">login</button> <button type="button" id="login-cancel">cancel</button></span>
     <p id="login-note" class="hint" role="status"></p>
-    <p class="hint">Pick a handle; no password needed (choose one you'll remember and others won't use; anyone who types it can mark as you).</p>
+    <p class="hint">Pick a handle; no password needed (choose one you'll remember and others won't use; anyone who types it can act as you).</p>
   </form>
 
   <form id="add" class="panel" hidden autocomplete="off">
@@ -62,7 +62,7 @@
 
 <template id="row">
   <li class="paper">
-    <span class="vote"><button class="up" aria-label="Interested" aria-pressed="false"><svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z" fill="currentColor"/></svg></button><span class="count"></span></span>
+    <span class="interest"><button class="up" aria-label="Interested" aria-pressed="false"><svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z" fill="currentColor"/></svg></button><span class="count"></span></span>
     <div class="main">
       <a class="title" target="_blank" rel="noopener noreferrer"></a> <span class="source"></span>
       <div class="sub"><span class="meta"></span><a href="#" class="toggle dashed" aria-expanded="false">details</a></div>

@@ -9,12 +9,11 @@ import time
 from collections import Counter
 from dataclasses import dataclass, replace
 from pathlib import Path
-from types import SimpleNamespace
 
 import requests
 
 session = requests.Session()
-session.headers["User-Agent"] = "monthly-papers/0.1"
+session.headers["User-Agent"] = "statgenpapers/0.1"
 n_requests = 0
 openalex_usd = 0.0
 OPENALEX_MAX_USD = float(os.environ.get("OPENALEX_MAX_USD", 0.5))  # stop a run before it spends half the keyed $1/day budget
@@ -45,8 +44,8 @@ def warn(msg):
     print(f"::warning::{msg}" if os.environ.get("GITHUB_ACTIONS") else f"WARNING: {msg}", file=sys.stderr, flush=True)
 
 
-def request(method, url, tries=5, **kw):
-    """HTTP request with retries on network errors, 429 and 5xx; exits on failure."""
+def request(method, url, tries=5, missing_ok=False, **kw):
+    """HTTP request with retries on network errors, 429 and 5xx; exits on failure. With missing_ok, a 404 gives None."""
     global n_requests
     err = ""
     for attempt in range(tries):
@@ -58,6 +57,8 @@ def request(method, url, tries=5, **kw):
         else:
             if r.status_code == 200:
                 return r
+            if r.status_code == 404 and missing_ok:
+                return None
             err = f"HTTP {r.status_code}: {r.text[:300]}"
             if r.status_code in (400, 401, 403, 404, 414):
                 break
@@ -100,45 +101,7 @@ def url_doi(url):
     return norm_doi(re.sub(r"(\.full\.pdf\+html|\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|/full|/abstract)$", "", doi))
 
 
-def lookup(url, params=None):
-    """JSON of a GET that may fail (after request()'s retries): None on a miss or error. Cached like `cached`."""
-    try:
-        return json.loads(cached(url, params))
-    except (SystemExit, ValueError):  # request() exits on a failure it cannot retry, such as a 404
-        return None
-
-
 plain_title = lambda t: re.sub(r"[^a-z0-9]+", " ", (t or "").lower()).strip()
-
-
-def find_doi(url, title=""):
-    """A paper's DOI, "" if none is found. In order: the DOI in its URL; a bioRxiv or medRxiv id; an Elsevier PII (cell.com and
-    ScienceDirect links), which Crossref keeps as an alternative id; its exact title in OpenAlex, a journal's
-    record before a repository's; its exact title in Crossref."""
-    if doi := url_doi(url):
-        return doi
-    if m := re.search(r"/(S\d{4}-?\d{3}[\dX](?:\(\d\d\)|\d\d)\d{5}-?[\dX])(?:[/?#]|$)", url, re.I):  # any cell.com or ScienceDirect path
-        found = lookup("https://api.crossref.org/works", {"filter": f"alternative-id:{re.sub(r'[^0-9XS]', '', m.group(1).upper())}",
-                                                         "rows": 1, "select": "DOI"})
-        if items := (found or {}).get("message", {}).get("items"):
-            return norm_doi(items[0]["DOI"])
-    if m := re.search(r"(?:bio|med)rxiv\.org/.*?(\d{4}\.\d\d\.\d\d\.\d{6,8})", url):  # an "early" or PDF link: the id without its DOI prefix
-        for prefix in ("10.64898", "10.1101"):  # the prefix bioRxiv and medRxiv use since 2025, and before
-            if lookup(f"https://api.crossref.org/works/{prefix}/{m.group(1)}"):
-                return f"{prefix}/{m.group(1)}"
-    if not (want := plain_title(title)):
-        return ""
-    found = lookup("https://api.openalex.org/works", {"filter": f"title.search:{re.sub(r'[,:|]', ' ', title)}",
-                                                     "select": "doi,display_name,primary_location", "per-page": 10, "api_key": openalex_key()})
-    same = [w for w in (found or {}).get("results", []) if w.get("doi") and plain_title(w["display_name"]) == want]
-    journal = [w for w in same if ((w.get("primary_location") or {}).get("source") or {}).get("type") == "journal"]
-    if journal or same:
-        return norm_doi((journal or same)[0]["doi"])
-    found = lookup("https://api.crossref.org/works", {"query.bibliographic": title, "rows": 5, "select": "DOI,title"})
-    for item in (found or {}).get("message", {}).get("items", []):
-        if plain_title((item.get("title") or [""])[0]) == want:
-            return norm_doi(item["DOI"])
-    return ""
 
 
 def clean(text):
@@ -154,7 +117,7 @@ def openalex_key():
     """OPENALEX_API_KEY, else ~/.config/openalex/api_key."""
     path = Path.home() / ".config" / "openalex" / "api_key"
     key = os.environ.get("OPENALEX_API_KEY") or (path.read_text().strip() if path.exists() else "")
-    return key or sys.exit("no OpenAlex API key: set OPENALEX_API_KEY (see docs/setup.md)")
+    return key or sys.exit("no OpenAlex API key: set OPENALEX_API_KEY (see README.md)")
 
 
 def author_names(authorships):
@@ -272,26 +235,6 @@ def fill_abstracts(papers):
                 chunk[norm_doi(doi.group(1))].abstract = clean(" ".join(
                     re.sub(r"<[^>]+>", "", a) for a in re.findall(r"<AbstractText[^>]*>(.*?)</AbstractText>", article, re.S)))
         time.sleep(0.4)  # NCBI allows 3 requests a second without a key
-
-
-def abstract_elsewhere(doi):
-    """The abstract of a paper OpenAlex has none for: PubMed, then Europe PMC, then the publisher's page (its
-    citation_abstract or dc.description; never og:description, a teaser); "" if none has it."""
-    paper = SimpleNamespace(doi=norm_doi(doi), abstract="")
-    fill_abstracts([paper])
-    if paper.abstract:
-        return paper.abstract
-    try:
-        found = session.get("https://www.ebi.ac.uk/europepmc/webservices/rest/search", timeout=30, params={
-            "query": f'DOI:"{paper.doi}"', "resultType": "core", "format": "json", "pageSize": 1}).json()
-        text = (found.get("resultList", {}).get("result") or [{}])[0].get("abstractText", "")
-        if not text:
-            page = session.get(f"https://doi.org/{paper.doi}", timeout=30).text
-            meta = re.search(r'<meta name="(?:citation_abstract|dc\.description)" content="([^"]{100,})"', page)
-            text = html.unescape(meta.group(1)) if meta else ""
-    except (requests.RequestException, ValueError):
-        return ""
-    return clean(text)
 
 
 def nature_type(doi):
