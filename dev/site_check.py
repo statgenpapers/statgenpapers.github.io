@@ -200,6 +200,10 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         c.context.close()
 
     row(a, 3).locator(".up").click()
+    offered = seen(count(b, 3), "1") is not None and seen(a.locator("#toast .undo"), "undo") is not None
+    a.click("#toast .undo")
+    check("taking a mark back offers undo, which restores it", offered and seen(count(b, 3), "2") is not None and pressed(a, 3))
+    row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
     check("a voter can take the upvote back", seen(count(b, 3), "0") is not None and seen(count(a, 4), "0") is not None

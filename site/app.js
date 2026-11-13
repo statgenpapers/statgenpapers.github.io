@@ -437,8 +437,14 @@ async function vote(id, month) {
     if (!(await signedIn()) || month !== state.month) return;
     // the mark shows at once; if the server has not confirmed it in 3 s, say so
     slow = setTimeout(() => toast("Not saved yet: waiting for the connection."), 3000);
-    if (mine(id)) await fb.deleteDoc(voteRef(month, id));
-    else await fb.setDoc(voteRef(month, id), { paper: id, handle: state.handle });
+    const ref = voteRef(month, id), handle = state.handle;
+    if (!mine(id)) await fb.setDoc(ref, { paper: id, handle });
+    else {
+      await fb.deleteDoc(ref);
+      clearTimeout(slow);
+      toast("Unmarked.", () => fb.setDoc(ref, { paper: id, handle })
+        .catch((e) => { console.warn(e); toast("Could not restore the mark."); }));
+    }
   } catch (e) {
     console.warn(e);
     toast("Your mark was not saved.");
