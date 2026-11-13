@@ -35,8 +35,8 @@
     <label>title <input id="add-title" type="text" required maxlength="400"></label>
     <label>journal <input id="add-journal" type="text" required maxlength="60" placeholder="Nat Genet, Preprint, …" list="journals"></label>
     <label>authors <input id="add-authors" type="text" maxlength="20000" placeholder="optional; pasting from a PDF is fine"></label>
-    <label>date <input id="add-date" type="text" maxlength="10" spellcheck="false" placeholder="optional; 2026-11-05, or 2026-11"
-      pattern="\d{4}([\-/]\d{1,2}){0,2}" title="year-month-day, e.g. 2026-11-05; or year-month, or year"></label>
+    <label>date <input id="add-date" type="text" maxlength="10" spellcheck="false" placeholder="optional; 2026/11/05, or 2026/11"
+      pattern="\d{4}([\-/]\d{1,2}){0,2}" title="year/month/day, e.g. 2026/11/05; or year/month, or year"></label>
     <label>abstract <textarea id="add-abstract" rows="3" required maxlength="10000" placeholder="the Score reads it; pasting from a PDF is fine"></textarea></label>
     <datalist id="journals"></datalist>
     <div class="actions"><button type="submit">add</button> <button type="button" id="add-cancel">clear</button> <span id="add-warn" class="hint error" role="status"></span></div>

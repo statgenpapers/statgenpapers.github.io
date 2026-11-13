@@ -220,8 +220,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.locator("#add-url").blur()
         expect(a.locator("#add-authors")).not_to_have_value("", timeout=15000)  # filled from Crossref
         check("the link fills the form from its DOI", a.input_value("#add-journal") == "Nature" and "Karczewski" in a.input_value("#add-authors")
-              and a.input_value("#add-date") == "2020-05-27")
-        a.fill("#add-date", "2020/5/28")  # a date typed over the found one, the way the site writes dates
+              and a.input_value("#add-date") == "2020/05/27")
+        a.fill("#add-date", "2020/5/28")  # a date typed over the found one, the month and day without their 0
         check("the abstract box grows to show the filled abstract",
               a.evaluate("() => { const b = document.getElementById('add-abstract'); return b.value.length > 300 && b.offsetHeight > 150 }"))
         a.click("#add button[type=submit]")
@@ -303,8 +303,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
             check("before the run, only its handle sees Remove", False)
         added(a).locator(".edit-own").click()
         filled = a.input_value("#add-title") == "The mutational constraint spectrum quantified from variation in 141,456 humans" \
-            and a.input_value("#add-date") == "2020-05-28" and a.inner_text("#add button[type=submit]") == "save"
-        a.fill("#add-date", "2020-06")
+            and a.input_value("#add-date") == "2020/05/28" and a.inner_text("#add button[type=submit]") == "save"
+        a.fill("#add-date", "2020/06")
         a.click("#add button[type=submit]")
         check("its handle can edit it, from the form filled with it; the edit shows everywhere",
               filled and seen(added(b).locator(".source"), "(Nature, 2020/06)") is not None

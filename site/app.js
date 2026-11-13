@@ -468,7 +468,7 @@ function editSubmission(p) {
   closeForm();
   form.editing = p.id;
   form.lookup = { doi: urlDoi(p.url) };  // no lookup unless the link changes
-  const values = { url: p.url, title: p.title, journal: p.journal, authors: (p.authors || []).join(", "), date: p.date, abstract: p.abstract };
+  const values = { url: p.url, title: p.title, journal: p.journal, authors: (p.authors || []).join(", "), date: p.date?.replaceAll("-", "/"), abstract: p.abstract };
   for (const [name, value] of Object.entries(values)) field(name).value = value || "";
   resetAnyway();
   fitAbstract();
@@ -791,7 +791,7 @@ function formShortName(journal, title) {
   return shortName(journal, form.lookup.surname || typed, formDate().slice(0, 4) || String(new Date().getFullYear()), title).slice(0, 150);
 }
 
-// The date field as stored: "2026/11/5" -> "2026-11-05"; "" if empty
+// The date field, shown as the site writes dates (2026/11/05), as stored: "2026/11/5" -> "2026-11-05"; "" if empty
 const formDate = () => field("date").value.trim().split(/[-/]/).filter(Boolean).map((n, i) => (i ? n.padStart(2, "0") : n)).join("-");
 
 // What is known about a DOI, in one shape, or null: Crossref has journals, bioRxiv and medRxiv; DataCite has
@@ -898,7 +898,7 @@ async function lookUp() {
   if (!m.abstract) m.abstract = tidyAbstract((await openAlexAbstract(doi)) || (await europePmcAbstract(doi)));
   if (form.lookup.doi !== doi) return;
   form.lookup = { doi, url, surname: m.surname };
-  for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["date", m.date], ["abstract", m.abstract]]) {
+  for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["date", m.date.replaceAll("-", "/")], ["abstract", m.abstract]]) {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
   fitAbstract();
