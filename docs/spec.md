@@ -1,4 +1,4 @@
-# StatGen Papers
+# StatGenPapers
 
 ## Purpose
 

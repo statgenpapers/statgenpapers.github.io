@@ -1,4 +1,4 @@
-// StatGen Papers: static list from data/*.json, live interest marks and reader-added papers from Firestore.
+// StatGenPapers: static list from data/*.json, live interest marks and reader-added papers from Firestore.
 import { firebaseConfig } from "./config.js";
 
 const SDK = "https://www.gstatic.com/firebasejs/11.10.0";  // also preloaded in index.html: change both
@@ -276,8 +276,8 @@ function renderBar() {
   $("login-open").textContent = state.handle ? "logout" : "login";
   syncExpanded();
   syncAccountSep();
-  document.title = { list: upcoming() ? "Next month · StatGen Papers" : listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGen Papers` : "StatGen Papers",
-    user: "Your handle · StatGen Papers", interested: "Interested · StatGen Papers" }[state.view];
+  document.title = { list: upcoming() ? "Next month · StatGenPapers" : listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGenPapers` : "StatGenPapers",
+    user: "Your handle · StatGenPapers", interested: "Interested · StatGenPapers" }[state.view];
 }
 
 // When the account block wraps onto two lines, the "|" after "interested" ends a line: hide it.

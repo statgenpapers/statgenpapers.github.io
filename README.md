@@ -1,4 +1,4 @@
-# StatGen Papers
+# StatGenPapers
 
 <https://statgenpapers.github.io> lists each month's statistical genetics papers with a Score of at least 30%: the
 model's prediction that a paper is marked. Readers mark papers and add ones the model missed. It costs $0 and needs no

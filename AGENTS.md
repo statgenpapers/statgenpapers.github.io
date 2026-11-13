@@ -1,4 +1,4 @@
-# StatGen Papers
+# StatGenPapers
 
 Read `README.md` and `docs/PLAN.md` before changing anything.
 
