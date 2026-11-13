@@ -54,7 +54,12 @@ const nextMonth = (m) => { const [y, n] = m.split("-").map(Number); return n ===
 const addMonth = () => (state.months.length ? nextMonth(state.months.at(-1)) : null);  // null until the month index is in
 const upcoming = () => state.view === "list" && Boolean(state.month) && state.month === addMonth();  // the "add to next month" page: its form and the papers added so far
 const httpUrl = (url) => (/^https?:\/\/\S+$/.test(url) ? url : null);
-const stripTags = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+// Crossref (JATS) and Europe PMC markup as plain text: an exponent after "10" kept as ⁻¹⁶, citation superscripts
+// ("inference<sup>1,2</sup>.") dropped, then the other tags dropped and entities (&lt;) decoded
+const SUP = (tag) => new RegExp(`\\s*<(?:jats:)?sup>\\s*(${tag})\\s*</(?:jats:)?sup>`, "g");
+const stripTags = (s) => new DOMParser().parseFromString(s
+  .replace(new RegExp(`\\b10${SUP("[-−–]?\\d{1,3}").source}`, "g"), (_, e) => `10${sup(e)}`)
+  .replace(SUP("[\\d,–-]+"), ""), "text/html").body.textContent.replace(/\s+/g, " ").trim();
 const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
 
 // DOI shown in a paper URL, without a preprint version, a page suffix or trailing punctuation; "" if none.
@@ -805,7 +810,7 @@ async function metadata(doi) {
     return {
       title: stripTags(w.title?.[0] || ""), surname: w.author?.[0]?.family, date: date(w.issued?.["date-parts"]?.[0] ?? []),
       authors: (w.author || []).map((x) => [x.given, x.family].filter(Boolean).join(" ") || x.name).filter(Boolean),
-      abstract: stripTags(w.abstract || "").replace(/^abstract\s*/i, ""),
+      abstract: tidyAbstract(stripTags(w.abstract || "")),
       journal: w.type === "posted-content" || PREPRINT.test(doi) ? "Preprint"
         : abbreviate(w["container-title"]?.[0]) || w["short-container-title"]?.[0] || w["container-title"]?.[0] || "",
     };
@@ -872,7 +877,7 @@ async function lookUp() {
   if (!m) {
     return note("Nothing found for this DOI: type the title, journal and abstract.");
   }
-  if (!m.abstract) m.abstract = (await openAlexAbstract(doi)) || (await europePmcAbstract(doi));
+  if (!m.abstract) m.abstract = tidyAbstract((await openAlexAbstract(doi)) || (await europePmcAbstract(doi)));
   if (form.lookup.doi !== doi) return;
   form.lookup = { doi, url, surname: m.surname };
   for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["date", m.date], ["abstract", m.abstract]]) {
