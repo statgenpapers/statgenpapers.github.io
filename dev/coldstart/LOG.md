@@ -53,3 +53,20 @@ BERT models not timed directly, whose Slurm run times match bge-base.
 
 Conclusion: the best transformer finds 6 more picks of 210 than potion, none more on the held-out
 month, at about 1/1,000 of the speed. potion-32M stays; it is also the fastest model tested.
+
+## Weighting added papers (2026-11-13)
+
+`backtest/added_weight.py`: added papers (picks outside their month's top 25) weighted k times in training,
+leak-free, 2026-01..10 (239 picks; 271 of the 486 pool picks were added).
+
+| k | Mean AUC | AUC, unshown picks | Top 25 (of 239) |
+|---|---|---|---|
+| **1 (in use)** | 0.971 | 0.949 | 110 |
+| 1.5 | 0.971 | 0.948 | 109 |
+| 2 | 0.972 | 0.950 | 110 |
+| 3 | 0.972 | 0.951 | 113 |
+| 5 | 0.972 | 0.949 | 111 |
+
+Conclusion: no weight helps beyond noise (3 picks in 10 months at best, months mixed); added papers stay at
+weight 1. Of the 199 papers added 2026-01..10, 32 are in no stored pool: 23 preprints (9 bioRxiv
+bioinformatics, the rest spread over 8 categories), 5 PNAS, 2 Science, 1 JACC, 1 Nat Genet.
