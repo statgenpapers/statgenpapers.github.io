@@ -39,7 +39,7 @@
       pattern="\d{4}([\-/]\d{1,2}){0,2}" title="year-month-day, e.g. 2026-11-05; or year-month, or year"></label>
     <label>abstract <textarea id="add-abstract" rows="3" required maxlength="10000" placeholder="the Score reads it; pasting from a PDF is fine"></textarea></label>
     <datalist id="journals"></datalist>
-    <div class="actions"><button type="submit">add</button> <button type="button" id="add-cancel">clear</button></div>
+    <div class="actions"><button type="submit">add</button> <button type="button" id="add-cancel">clear</button> <span id="add-warn" class="hint error" role="status"></span></div>
   </form>
 
   <section id="page" class="page" hidden></section>

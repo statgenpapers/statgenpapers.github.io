@@ -905,6 +905,7 @@ async function findCopy({ url, doi, title }) {
 function resetAnyway() {
   form.anyway = null;
   $("add").querySelector("button[type=submit]").textContent = "add";
+  $("add-warn").textContent = "";
 }
 
 // The abstract box grows with its text, filled, pasted or typed, up to 60% of the screen; then it scrolls
@@ -914,11 +915,12 @@ function fitAbstract() {
   if (box.value) box.style.height = `${Math.min(box.scrollHeight + box.offsetHeight - box.clientHeight, innerHeight * 0.6)}px`;
 }
 
-// A paper on an earlier list may still be added: the first "add" warns, a second one adds it
+// A paper on an earlier list may still be added: the first "add" warns, next to the button, and a second one adds it
 function warnOnce(message) {
   form.anyway = message;
   $("add").querySelector("button[type=submit]").textContent = "add anyway";
-  note(`${message} Add it anyway?`, true);
+  $("add-warn").textContent = message;
+  if ($("add-note").textContent.includes(message)) note("Filled from the DOI.");  // said once, by the button
 }
 
 async function submitPaper(event) {

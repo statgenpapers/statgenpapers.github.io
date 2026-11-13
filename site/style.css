@@ -71,7 +71,7 @@ button:disabled { opacity: .4; cursor: default; }
 #add label { display: grid; grid-template-columns: 6.5rem minmax(0, 40rem); align-items: baseline; }
 #add input, #add textarea { width: 100%; resize: vertical; }
 #add textarea { line-height: 1.45; }
-.actions { display: flex; gap: .6rem; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
 #login-handle, .handle-form input { width: 12rem; }
 #add > .hint, #add > div { margin-left: calc(6.5rem + .6rem); }  /* under the fields, not the labels */
 .hint { color: var(--muted); font-size: var(--fs-small); }
