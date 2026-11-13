@@ -163,8 +163,8 @@ function createRow(p) {
     q(".pick").title = `Scored when the ${monthName(state.month)} list comes out, on ${monthName(nextMonth(state.month))}/10`;
   } else if (p.p_pick != null) {
     q(".pct").textContent = `${Math.round(100 * p.p_pick)}%`;
-    q(".pick").title = p.added ? "Added manually, not by the model; the model's prediction of how likely it is to be marked"
-      : `The model's prediction of how likely this paper is to be marked (raw score ${p.score.toFixed(2)})`;
+    q(".pick").title = p.added ? "Added manually, not by the model; the model's prediction of how likely it is of interest"
+      : `The model's prediction of how likely this paper is of interest (raw score ${p.score.toFixed(2)})`;
   }
   q(".toggle").addEventListener("click", link(() => {
     const open = q(".details").hidden;
