@@ -757,7 +757,7 @@ const field = (name) => $(`add-${name}`);
 
 // The line under the DOI field: how the lookup went, or else what the field does
 function note(message, error = false) {
-  $("add-note").textContent = message || "Paste the DOI first: title, journal, authors and abstract fill in from it.";
+  $("add-note").textContent = message || "Paste the DOI first: title, journal, authors, date and abstract fill in from it.";
   $("add-note").classList.toggle("error", error);
 }
 
@@ -765,8 +765,11 @@ function note(message, error = false) {
 // from the authors typed or pasted ("Žiga Avsec, …" -> "Avsec"), "NA" if neither
 function formShortName(journal, title) {
   const typed = field("authors").value.split(",")[0].trim().split(/\s+/).at(-1) || undefined;
-  return shortName(journal, form.lookup.surname || typed, form.lookup.year || String(new Date().getFullYear()), title).slice(0, 150);
+  return shortName(journal, form.lookup.surname || typed, formDate().slice(0, 4) || String(new Date().getFullYear()), title).slice(0, 150);
 }
+
+// The date field as stored: "2026/11/5" -> "2026-11-05"; "" if empty
+const formDate = () => field("date").value.trim().split(/[-/]/).filter(Boolean).map((n, i) => (i ? n.padStart(2, "0") : n)).join("-");
 
 // What is known about a DOI, in one shape, or null: Crossref has journals, bioRxiv and medRxiv; DataCite has
 // Zenodo and arXiv. Each answers in well under a second; after 8 s a lookup gives up.
@@ -871,8 +874,8 @@ async function lookUp() {
   }
   if (!m.abstract) m.abstract = (await openAlexAbstract(doi)) || (await europePmcAbstract(doi));
   if (form.lookup.doi !== doi) return;
-  form.lookup = { doi, url, surname: m.surname, year: m.date.slice(0, 4), date: m.date };
-  for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["abstract", m.abstract]]) {
+  form.lookup = { doi, url, surname: m.surname };
+  for (const [name, value] of [["title", m.title], ["journal", m.journal], ["authors", m.authors.join(", ")], ["date", m.date], ["abstract", m.abstract]]) {
     if (!field(name).value.trim() && value) field(name).value = value;
   }
   fitAbstract();
@@ -921,7 +924,7 @@ async function submitPaper(event) {
   // optional: authors, abstract and date, so an added paper shows like the others
   const authors = field("authors").value.split(/\s*[,;]\s*/).filter(Boolean).slice(0, 300), abstract = field("abstract").value.trim();
   Object.assign(paper, authors.length ? { authors } : {}, abstract ? { abstract: abstract.slice(0, 10000) } : {},
-    form.lookup.date && form.lookup.doi === urlDoi(paper.url) ? { date: form.lookup.date } : {});
+    formDate() ? { date: formDate() } : {});
   if (needHandle(() => { $("add").hidden = false; $("add").requestSubmit(); })) return;  // the form keeps its fields while the login shows
   if (!httpUrl(paper.url)) return note("Enter a DOI (10.…) or a link starting with http:// or https://.", true);
   // a link without a DOI (cell.com) whose DOI the lookup found is stored as a DOI link: the run and the duplicate check use it
@@ -947,7 +950,6 @@ async function submitPaper(event) {
 
 function closeForm() {
   $("add").hidden = !upcoming();
-  if (addMonth()) $("add-when").textContent = `Papers added here join the ${monthName(addMonth())} list, scored like the others, when it comes out on ${monthName(nextMonth(addMonth()))}/10.`;
   $("add").reset();
   form.lookup = {};
   resetAnyway();

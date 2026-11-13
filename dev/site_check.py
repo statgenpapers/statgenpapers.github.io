@@ -219,7 +219,9 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         a.fill("#add-url", ADD_URL)
         a.locator("#add-url").blur()
         expect(a.locator("#add-authors")).not_to_have_value("", timeout=15000)  # filled from Crossref
-        check("the link fills the form from its DOI", a.input_value("#add-journal") == "Nature" and "Karczewski" in a.input_value("#add-authors"))
+        check("the link fills the form from its DOI", a.input_value("#add-journal") == "Nature" and "Karczewski" in a.input_value("#add-authors")
+              and a.input_value("#add-date") == "2020-05-27")
+        a.fill("#add-date", "2020/5/28")  # a date typed over the found one, the way the site writes dates
         check("the abstract box grows to show the filled abstract",
               a.evaluate("() => { const b = document.getElementById('add-abstract'); return b.value.length > 300 && b.offsetHeight > 150 }"))
         a.click("#add button[type=submit]")
@@ -264,6 +266,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         sid = docs["documents"][0]["name"].rsplit("/", 1)[1]
         check("the short name is made on submit from journal, first author, year and title",
               docs["documents"][0]["fields"]["short_name"]["stringValue"] == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
+        check("a typed date is stored as year-month-day", docs["documents"][0]["fields"]["date"]["stringValue"] == "2020-05-28")
         (Path(tmp) / "data" / "2020-02.json").write_text(json.dumps({"month": "2020-02", "pool": 99, "papers": PAPERS[3:], "added": {sid: 0.42}}))
         (Path(tmp) / "data" / "index.json").write_text(json.dumps({"months": [MONTH, "2020-02"]}))
         os.utime(Path(tmp) / "data" / "index.json", (time.time() + 2,) * 2)  # the server dates files to the second: no stale 304
