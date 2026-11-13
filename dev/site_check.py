@@ -215,7 +215,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
           listed and gone and seen(count(b, 3), "2") is not None and mark.is_visible())
     a.locator(".month-head a").click()
     expect(a.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=15000)
-    check("and a month's heading opens its list", a.evaluate("location.search") == "" and pressed(a, 3))
+    check("and a month's heading opens its list", a.evaluate("location.search") == f"?month={MONTH}" and pressed(a, 3))
     row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()

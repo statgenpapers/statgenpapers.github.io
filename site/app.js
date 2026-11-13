@@ -307,7 +307,7 @@ async function loadMonth(month) {
   state.votes = saved?.votes ?? new Map();
   state.subs = saved?.subs ?? [];
   state.waiting = new Set(offline ? [] : ["votes", "submissions"]);
-  history.replaceState(null, "", month === state.months.at(-1) ? location.pathname : `?month=${month}`);
+  history.replaceState(null, "", `?month=${month}`);  // the latest month too: the address always names the month shown
   closeForm();  // the form shows only on the next month's page
   listen();
   const data = month === addMonth() ? { papers: [], added: {}, upcoming: true } : await monthData(month);  // next month has no file yet
@@ -580,7 +580,7 @@ function togglePast(open = $("past").hidden) {
 
 // ---------------------------------------------------------------- pages of the logged-in handle
 
-// The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month.
+// The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month (then named).
 // The handle pages open only for the handle logged in here: nobody browses another reader's marks.
 function route() {
   const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
