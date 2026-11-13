@@ -181,7 +181,8 @@ function createRow(p) {
 
 // OpenAlex abstracts lose their markup: "5×10<sup>−8</sup>)" arrives as "5x10 -8 )". Restore the exponent
 // after "5x10" (signed or after a space) or after "= 10 " (signed only, so "n = 105" and "> 100,000" stay),
-// drop the spaces inside brackets and before punctuation, and drop a leading "Abstract".
+// drop citation numbers left before punctuation ("inference 1,2 ." -> "inference."), the spaces inside brackets
+// and before punctuation, and a leading "Abstract".
 // No lookbehind: Safari before 16.4 cannot parse it.
 const SUPERSCRIPT = Object.fromEntries([..."0123456789-−–"].map((c, i) => [c, "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁻⁻"[i]]));
 const sup = (e) => [...e].map((c) => SUPERSCRIPT[c]).join("");
@@ -189,6 +190,7 @@ function tidyAbstract(text) {
   return text.replace(/^abstract[\s:.]+(?=[A-Z])/i, "")
     .replace(/(\d ?[x×] ?10)(?: ?([-−–]\d{1,3})| (\d{1,3}))(?![\d.,]?\d)/g, (_, base, e1, e2) => base + sup(e1 ?? e2))
     .replace(/([=<>≤≥] ?10) ([-−–]\d{1,3})(?![\d.,]?\d)/g, (_, base, e) => base + sup(e))
+    .replace(/([a-z]) \d{1,3}(?:[,–-]\d{1,3})* (?=[.,;])/g, "$1")
     .replace(/\( /g, "(").replace(/ ([),;.])(?=[\s),;.]|$)/g, "$1");
 }
 
