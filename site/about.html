@@ -15,7 +15,7 @@
 
 <main class="prose">
 <h2>About StatGen Papers</h2>
-<p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will mark, out of
+<p>Each month, StatGen Papers lists the statistical genetics papers that a model predicts readers will find of interest, out of
 about 2,000 new papers in journals and preprints. Anyone can add a paper the model missed; it shows a person icon.
 The code is in the <a href="https://github.com/statgenpapers/statgenpapers.github.io">public repository</a>.</p>
 
@@ -31,20 +31,20 @@ The code is in the <a href="https://github.com/statgenpapers/statgenpapers.githu
 <p>A month's list is built on the 10th of the next month.</p>
 
 <h2>What's the score?</h2>
-<p>The model's estimate of the chance that a paper is marked; every paper at 30% or more is listed. Tested on
+<p>The model's estimate of the chance that a paper is of interest; every paper at 30% or more is listed. Tested on
 <span data-v="n_months">8</span> past months (March to October 2026), each scored by a model trained only on the
 months before it:</p>
 <ol>
-  <li>Papers at about 50% were marked about half the time.</li>
-  <li>A marked paper outranks an unmarked one <span data-v="auc_pct">96%</span> of the time (AUC); the top 25 hold
-  <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> marked papers. About one marked paper
+  <li>Papers at about 50% were of interest about half the time.</li>
+  <li>A paper of interest outranks one that is not <span data-v="auc_pct">96%</span> of the time (AUC); the top 25 hold
+  <span data-v="scorers.0.top25">90</span> of the <span data-v="picks">210</span> papers of interest. About one paper of interest
   in ten comes from a source that is not scanned; adding papers fills that gap.</li>
   <li>It comes close to Claude Haiku grading each paper: <span data-v="haiku.rows.1.top25">38</span> against
-  <span data-v="haiku.rows.0.top25">43</span> marked papers in the top 25 (August to October), at no cost.</li>
-  <li>The 30% cutoff listed 14 to 36 papers a month and caught 107 of 258 marked papers; a fixed 24 a month caught 95.</li>
+  <span data-v="haiku.rows.0.top25">43</span> papers of interest in the top 25 (August to October), at no cost.</li>
+  <li>The 30% cutoff listed 14 to 36 papers a month and caught 107 of 258 papers of interest; a fixed 24 a month caught 95.</li>
 </ol>
 <table id="scorers">
-  <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Marked papers in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
+  <thead><tr><th>Scorer</th><th class="num">Mean AUC</th><th class="num">Papers of interest in top 25 (of <span data-v="picks">210</span>)</th></tr></thead>
   <tbody></tbody>
 </table>
 <p class="caption">Backtest code: <code>dev/coldstart/backtest/</code>. Numbers generated <span data-v="generated"></span>.</p>
@@ -54,9 +54,9 @@ months before it:</p>
   <li>The title and abstract become a vector of 512 numbers from a small embedding model,
   <a href="https://huggingface.co/minishlab/potion-base-32M">potion-base-32M</a>.</li>
   <li>A logistic regression on the vector and the journal gives a raw score, calibrated into the Score.</li>
-  <li>The model is refitted before each list on the candidates of the 12 months before it: marked papers are
+  <li>The model is refitted before each list on the candidates of the 12 months before it: papers of interest are
   positives, the rest negatives, and a month's weight halves every 6 months.</li>
-  <li>Marks re-order the list at once but do not change the Score; the next month's model learns from them.</li>
+  <li>Interest (▲) re-orders the list at once but does not change the Score; the next month's model learns from it.</li>
 </ol>
 
 <h2>How do I give feedback?</h2>

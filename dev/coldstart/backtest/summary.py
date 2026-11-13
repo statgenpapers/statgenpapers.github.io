@@ -57,7 +57,7 @@ out = {
         ("static-retrieval-mrl + venue one-hot", "static-retrieval", VENUE),
         ("TF-IDF words + venue one-hot (not an embedding)", "refs", "ref|tfidf-lr+venue1hot"),
         ("potion-32M, text only", "potion-32m", "ta|lr-C1"),
-        ("potion-32M, similarity to centroid of picks", "potion-32m", "ta|centroid"),
+        ("potion-32M, similarity to the mean of papers of interest", "potion-32m", "ta|centroid"),
         ("Venue only", "refs", "ref|venue-only-lr"),
     ]],
     "haiku": {"months": [x["month"] for x in haiku],

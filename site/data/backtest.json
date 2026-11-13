@@ -149,7 +149,7 @@
    ]
   },
   {
-   "label": "potion-32M, similarity to centroid of picks",
+   "label": "potion-32M, similarity to the mean of papers of interest",
    "chosen": false,
    "auc": 0.847,
    "top25": 33,
