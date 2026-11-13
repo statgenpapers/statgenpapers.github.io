@@ -203,6 +203,19 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     offered = seen(count(b, 3), "1") is not None and seen(a.locator("#toast .undo"), "undo") is not None
     a.click("#toast .undo")
     check("taking a mark back offers undo, which restores it", offered and seen(count(b, 3), "2") is not None and pressed(a, 3))
+    a.goto(f"{url}?interested=sitecheck_a")
+    mark = a.locator(".marks li", has_text="Test paper 3")
+    listed = seen(a.locator(".marks .month-head"), "2020/01") is not None and seen(mark.locator(".unmark"), "not interested") is not None
+    if shots := os.environ.get("SITE_CHECK_SHOTS"):
+        a.locator("#page").screenshot(path=f"{shots}/interested.png")
+    mark.locator(".unmark").click()
+    gone = seen(count(b, 3), "1") is not None and a.locator(".marks section").first.is_hidden() and a.locator(".marks .empty").is_visible()
+    a.click("#toast .undo")
+    check("the interested page lists marks by month, each with not interested and undo",
+          listed and gone and seen(count(b, 3), "2") is not None and mark.is_visible())
+    a.locator(".month-head a").click()
+    expect(a.locator("li.paper .up:not([disabled])")).to_have_count(4, timeout=15000)
+    check("and a month's heading opens its list", a.evaluate("location.search") == "" and pressed(a, 3))
     row(a, 3).locator(".up").click()
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()

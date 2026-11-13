@@ -722,55 +722,69 @@ async function changeHandle(from, to) {
   return moved;
 }
 
+// By month, newest first: each month's heading links to its list; "not interested" at each paper's right
 async function showInterested() {
-  const handle = state.handle, list = el("ol", "list marks");
-  list.append(el("li", "empty", "Loading…"));
-  showPage("interested", el("p", "page-head", "Papers you are interested in"), list);
+  const handle = state.handle, box = el("div", "marks");
+  box.append(el("p", "empty", "Loading…"));
+  showPage("interested", el("p", "page-head", "Papers you are interested in"), box);
   let marks;
   try {
     marks = await myMarks();
   } catch (e) {
     console.warn(e);
-    list.replaceChildren(el("li", "empty", "Unavailable right now; try again later."));
+    box.replaceChildren(el("p", "empty", "Unavailable right now; try again later."));
     return;
   }
   if (state.view !== "interested" || state.handle !== handle) return;
-  const empty = el("li", "empty", "Nothing yet: click the triangle beside a paper.");
-  const syncEmpty = () => { empty.remove(); if ([...list.children].every((li) => li.hidden)) list.append(empty); };
-  list.replaceChildren(...marks.map(({ month, paper: p }) => {
-    const li = el("li", "mark"), title = el("a", "title", p.title), url = httpUrl(p.url);
-    if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
-    const monthLink = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });
-    monthLink.addEventListener("click", link(() => go({ month })));
-    const undo = Object.assign(el("a", "dashed", "not interested"), { href: "#" });
-    undo.addEventListener("click", link(async () => {
-      const ref = voteRef(month, p.id, handle);
-      try {
-        if (!(await signedIn())) return;
-        await fb.deleteDoc(ref);
-        li.hidden = true;
-        syncEmpty();
-        toast("Removed.", async () => {
-          try {
-            await fb.setDoc(ref, { paper: p.id, handle });
-            li.hidden = false;
-            syncEmpty();
-          } catch (e) {
-            console.warn(e);
-            toast("Could not restore the mark.");
-          }
-        });
-      } catch (e) {
-        console.warn(e);
-        toast("Could not remove the mark.");
-      }
+  const empty = el("p", "empty", "Nothing yet: click the triangle beside a paper.");
+  const groups = new Map();  // not Map.groupBy: Safari before 17.4 lacks it
+  for (const m of marks) groups.set(m.month, [...(groups.get(m.month) ?? []), m]);
+  // a month whose papers are all taken back hides; with none left, the page says so
+  const sync = () => {
+    for (const section of box.querySelectorAll("section")) section.hidden = [...section.querySelectorAll("li")].every((li) => li.hidden);
+    empty.remove();
+    if ([...box.querySelectorAll("section")].every((s) => s.hidden)) box.append(empty);
+  };
+  box.replaceChildren(...[...groups].map(([month, items]) => {
+    const head = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });
+    head.addEventListener("click", link(() => go({ month })));
+    const list = el("ol", "list");
+    list.append(...items.map(({ paper: p }) => {
+      const li = el("li", "mark"), main = el("div", "main"), title = el("a", "title", p.title), url = httpUrl(p.url);
+      if (url) Object.assign(title, { href: url, target: "_blank", rel: "noopener noreferrer" });
+      main.append(title, " ", el("span", "source", source(p)));
+      const undo = Object.assign(el("a", "dashed unmark", "not interested"), { href: "#" });
+      undo.addEventListener("click", link(async () => {
+        const ref = voteRef(month, p.id, handle);
+        try {
+          if (!(await signedIn())) return;
+          await fb.deleteDoc(ref);
+          li.hidden = true;
+          sync();
+          toast("Removed.", async () => {
+            try {
+              await fb.setDoc(ref, { paper: p.id, handle });
+              li.hidden = false;
+              sync();
+            } catch (e) {
+              console.warn(e);
+              toast("Could not restore the mark.");
+            }
+          });
+        } catch (e) {
+          console.warn(e);
+          toast("Could not remove the mark.");
+        }
+      }));
+      li.append(main, undo);
+      return li;
     }));
-    const sub = el("div", "sub");
-    sub.append(monthLink, " · ", undo);
-    li.append(title, " ", el("span", "source", source(p)), sub);
-    return li;
+    const section = el("section");
+    section.append(el("h2", "month-head"), list);
+    section.firstChild.append(head);
+    return section;
   }));
-  syncEmpty();
+  sync();
 }
 
 // ---------------------------------------------------------------- add a paper
