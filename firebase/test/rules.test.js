@@ -2,7 +2,7 @@
 import { test, before, after, beforeEach } from "node:test";
 import { readFileSync } from "node:fs";
 import { initializeTestEnvironment, assertFails, assertSucceeds } from "@firebase/rules-unit-testing";
-import { collection, doc, getDoc, getDocs, query, where, setDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where, setDoc, updateDoc, deleteDoc, deleteField, serverTimestamp } from "firebase/firestore";
 
 let env;
 const M = "months/2026-10", P = "10.1038_s41588-026-00001-1";
@@ -103,11 +103,22 @@ test("cannot submit under a malformed month or id", async () => {
   await assertFails(submit("bob", {}, "months/junk/submissions/abc"));
   await assertFails(submit("bob", {}, `${M}/submissions/10.1038_x`));
 });
-test("nobody can edit a submission, but for its handle", async () => {
+test("a submission's content can be edited, still valid; never its uid, created, or content and handle together", async () => {
   await assertSucceeds(submit("bob"));
+  await assertSucceeds(updateDoc(doc(db("alice"), SUB), { title: "Changed", date: "2026-10-05", abstract: "We show." }));
+  await assertSucceeds(updateDoc(doc(db("bob"), SUB), { date: deleteField() }));
+  await assertFails(updateDoc(doc(db(null), SUB), { title: "Changed again" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { title: "" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { date: "October" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { url: "javascript:alert(1)" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed twice", name: "robert" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { uid: "alice" }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { created: new Date(0) }));
+  await assertFails(updateDoc(doc(db("bob"), SUB), { score: 99 }));
+  await assertFails(submit("bob", { title: "Changed" }));  // a set over it is an update of uid and created
+  await env.clearFirestore();
+  await assertSucceeds(submit("Yo7cchMxl7X4zHq5vOE9VmS2dOp1", { name: "admin" }));
   await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed" }));
-  await assertFails(updateDoc(doc(db("bob"), SUB), { title: "Changed", name: "robert" }));
-  await assertFails(submit("bob", { title: "Changed" }));
 });
 test("a changed handle renames its added papers: to a valid handle, signed in, never to or from admin", async () => {
   await assertSucceeds(submit("bob"));

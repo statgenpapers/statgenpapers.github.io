@@ -156,6 +156,7 @@ function createRow(p) {
   q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
   q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added by a reader, not chosen by the model."));
+  q(".edit-own").addEventListener("click", link(() => editSubmission(li.paper)));
   q(".remove-own").addEventListener("click", link(() => removeSubmission(li.paper)));
   if (p.added && p.p_pick == null) {  // next month's page: scored by its run
     q(".pct").textContent = "–";
@@ -208,7 +209,7 @@ function updateRow(li, p) {
   q(".up").title = state.handle ? (own ? "Not interested any more" : "Interested") : "Log in with a handle to mark papers you are interested in";
   q(".up").disabled = !db || state.waiting.has("votes");  // not before this month's marks are in: a click would toggle a guess
   li.paper = p;  // the latest copy: the saved one first shows without handles
-  q(".remove-own").hidden = !ownAdded(p);  // one's own added paper, until the run lists it
+  q(".own").hidden = !ownAdded(p);  // one's own added paper, until the run lists it: edit and remove
 }
 
 // A paper the logged-in handle added to the month in progress: it may remove it until the run lists it
@@ -222,7 +223,8 @@ function render() {
   if (state.view === "list" && !state.data) return renderBar();  // the list shows as soon as its file is in
   const before = new Map([...list.children].map((li) => [li, li.getBoundingClientRect().top]));
   const nodes = visible().map((p) => {
-    if (!rows.has(p.id)) rows.set(p.id, createRow(p));
+    const content = JSON.stringify([p.title, p.url, p.journal, p.date, p.authors, p.abstract]);  // an added paper can be edited
+    if (rows.get(p.id)?.content !== content) rows.set(p.id, Object.assign(createRow(p), { content }));
     updateRow(rows.get(p.id), p);
     return rows.get(p.id);
   });
@@ -459,6 +461,22 @@ async function vote(id, month) {
     clearTimeout(slow);
     voting.delete(id);
   }
+}
+
+// Edit a paper this handle added: the add form, filled with it, saves over it (its marks stay)
+function editSubmission(p) {
+  closeForm();
+  form.editing = p.id;
+  form.lookup = { doi: urlDoi(p.url) };  // no lookup unless the link changes
+  const values = { url: p.url, title: p.title, journal: p.journal, authors: (p.authors || []).join(", "), date: p.date, abstract: p.abstract };
+  for (const [name, value] of Object.entries(values)) field(name).value = value || "";
+  resetAnyway();
+  fitAbstract();
+  note("Editing the paper you added.");
+  $("login").hidden = true;
+  $("add").hidden = false;
+  $("add").scrollIntoView({ block: "nearest" });
+  field("title").focus({ preventScroll: true });
 }
 
 // Remove a paper this browser added, and its marks, which would otherwise be read on every visit.
@@ -895,16 +913,19 @@ async function lookUp() {
 async function findCopy({ url, doi, title }) {
   const t = plainTitle(title), months = [...state.months].reverse(), next = addMonth();  // newest list first
   const same = (p) => (url && p.url === url) || (doi && (p.doi || urlDoi(p.url)) === doi) || (t && plainTitle(p.title) === t);
-  const added = async (m) => (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs.map((d) => d.data());
+  const added = async (m) => (await fb.getDocs(fb.collection(db, "months", m, "submissions"))).docs
+    .filter((d) => d.id !== form.editing).map((d) => d.data());  // the paper being edited is not a copy of itself
   if ((await added(next)).some(same)) return { here: true, message: `Someone has added this paper to ${monthName(next)} already: mark it below.` };
   const lists = await Promise.all(months.map(monthData));
   const i = months.findIndex((m, k) => lists[k].papers.some(same) || Object.values(lists[k].added_papers || {}).some(same));
   return i < 0 ? null : { message: `This paper is on the ${monthName(months[i])} list already.` };
 }
 
+const submitLabel = () => (form.editing ? "save" : "add");
 function resetAnyway() {
   form.anyway = null;
-  $("add").querySelector("button[type=submit]").textContent = "add";
+  $("add").querySelector("button[type=submit]").textContent = submitLabel();
+  $("add-cancel").textContent = form.editing ? "cancel" : "clear";
   $("add-warn").textContent = "";
 }
 
@@ -918,7 +939,7 @@ function fitAbstract() {
 // A paper on an earlier list may still be added: the first "add" warns, next to the button, and a second one adds it
 function warnOnce(message) {
   form.anyway = message;
-  $("add").querySelector("button[type=submit]").textContent = "add anyway";
+  $("add").querySelector("button[type=submit]").textContent = `${submitLabel()} anyway`;
   $("add-warn").textContent = message;
   if ($("add-note").textContent.includes(message)) note("Filled from the DOI.");  // said once, by the button
 }
@@ -942,6 +963,12 @@ async function submitPaper(event) {
     if (copy?.here) return note(copy.message, true);
     if (copy && form.anyway !== copy.message) return warnOnce(copy.message);
     if (!(await signedIn())) return;
+    if (form.editing) {  // a field left empty is removed from the paper
+      await fb.updateDoc(fb.doc(db, "months", month, "submissions", form.editing),
+        { authors: fb.deleteField(), abstract: fb.deleteField(), date: fb.deleteField(), ...paper });
+      closeForm();
+      return toast("Saved.");
+    }
     const ref = await fb.addDoc(fb.collection(db, "months", month, "submissions"),
       { ...paper, uid: state.uid, created: fb.serverTimestamp(), name: state.handle });
     closeForm();
@@ -951,7 +978,7 @@ async function submitPaper(event) {
     toast(`Added to ${monthName(month)}; it gets a Score on ${monthName(nextMonth(month))}/10.`);
   } catch (e) {
     console.warn(e);
-    note("The paper was not added. Please try again later.", true);
+    note(`The paper was not ${form.editing ? "saved" : "added"}. Please try again later.`, true);
   }
 }
 
@@ -959,6 +986,7 @@ function closeForm() {
   $("add").hidden = !upcoming();
   $("add").reset();
   form.lookup = {};
+  form.editing = null;
   resetAnyway();
   fitAbstract();
   note("");

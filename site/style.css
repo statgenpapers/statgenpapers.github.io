@@ -116,8 +116,10 @@ button:disabled { opacity: .4; cursor: default; }
 .pick .pct { margin-left: auto; }
 .pick .added-icon::after { content: ""; position: absolute; inset: -.6rem; }
 .tip { position: absolute; top: calc(100% + .35rem); right: 0; z-index: 5; padding: .3rem .55rem; white-space: nowrap; color: var(--body); }
-/* the submitter's own added paper: "Remove" in the Score column, centred on the row, until the run lists it */
-.paper .remove-own { grid-column: 3; grid-row: 1; align-self: center; justify-self: end; padding: .4rem 0; color: var(--muted); font-size: var(--fs-body); }
+/* the submitter's own added paper: "edit" and "remove" in the Score column, centred on the row, until the run lists it */
+.paper .own { grid-column: 3; grid-row: 1; align-self: center; justify-self: end; display: flex; gap: .8rem; white-space: nowrap; }
+.paper .own a { padding: .4rem 0; color: var(--muted); font-size: var(--fs-body); }
+.paper .edit-own:hover, .paper .edit-own:focus-visible { color: var(--text); }
 .paper .remove-own:hover, .paper .remove-own:focus-visible { color: var(--error); }
 /* the "add to next month" page: no Scores before the run (the column holds Remove) */
 #listview.upcoming .pick, #listview.upcoming .pick-head .menu { display: none; }

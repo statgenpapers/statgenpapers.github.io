@@ -10,9 +10,10 @@ rules_version = '2';
 //
 // Papers added by visitors: months/{YYYY-MM}/submissions/{id}
 //   { journal, title, url, short_name, uid, created, name: "<handle>", and optionally authors: [..], abstract, date }
-// A signed-in browser may add a paper under its own uid; only its `name` can change after, when its handle is
-// changed (the site moves the handle's marks too). Like an upvote, any signed-in browser may delete a reader's
-// paper or rename its handle: the site offers removal to the paper's handle only, until the monthly run lists it.
+// A signed-in browser may add a paper under its own uid. After, its `name` can change when its handle is changed
+// (the site moves the handle's marks too), and its content (journal, title, url, short_name, authors, abstract, date)
+// can be edited; uid and created never change. Like an upvote, any signed-in browser may delete, edit or rename a
+// reader's paper: the site offers edit and removal to the paper's handle only, until the monthly run lists it.
 // Upvotes of an added paper are votes like any other, with the submission id.
 //
 // The handle "admin" is reserved: its marks and added papers are the cold start (dev/lab_marks.py), written,
@@ -39,11 +40,14 @@ service cloud.firestore {
         && mayUse(request.resource.data.name);
       // like a mark: any signed-in browser (a handle has no password); the site offers it to the paper's handle only
       allow delete: if request.auth != null && mayUse(resource.data.name);
-      // a handle changed: only the name, to another valid handle; admin neither gives nor takes one
-      allow update: if request.auth != null
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
-        && validHandle(request.resource.data.name)
-        && mayUse(resource.data.name) && mayUse(request.resource.data.name);
+      // a handle changed: only the name, to another valid handle; admin neither gives nor takes one.
+      // Or an edit: only the content, still valid.
+      allow update: if request.auth != null && mayUse(resource.data.name) && (
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
+          && validHandle(request.resource.data.name) && mayUse(request.resource.data.name))
+        || (request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['journal', 'title', 'url', 'short_name', 'authors', 'abstract', 'date'])
+          && validContent(request.resource.data)));
     }
     function mayUse(h) {
       return h != 'admin' || request.auth.uid == 'Yo7cchMxl7X4zHq5vOE9VmS2dOp1';  // the lab's user: ~/.config/statgenpapers/lab.json
@@ -58,18 +62,18 @@ service cloud.firestore {
         && id == d.paper + '~' + d.handle;
     }
     function validSubmission(d) {
+      return validContent(d) && d.uid == request.auth.uid && d.created == request.time && validHandle(d.name);
+    }
+    function validContent(d) {
       return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name'])
         && d.keys().hasOnly(['journal', 'title', 'url', 'short_name', 'uid', 'created', 'name', 'authors', 'abstract', 'date'])
         && (!('authors' in d) || (d.authors is list && d.authors.size() <= 300))
         && (!('abstract' in d) || (d.abstract is string && d.abstract.size() <= 10000))
         && (!('date' in d) || (d.date is string && d.date.matches('^[0-9]{4}(-[0-9]{2}){0,2}$')))
-        && d.uid == request.auth.uid
-        && d.created == request.time
         && d.journal is string && d.journal.size() >= 1 && d.journal.size() <= 60
         && d.title is string && d.title.size() >= 1 && d.title.size() <= 400
         && d.url is string && d.url.size() <= 500 && d.url.matches('^https?://[^ ]+$')
-        && d.short_name is string && d.short_name.size() >= 1 && d.short_name.size() <= 150
-        && validHandle(d.name);
+        && d.short_name is string && d.short_name.size() >= 1 && d.short_name.size() <= 150;
     }
   }
 }
