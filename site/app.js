@@ -536,7 +536,7 @@ function toggleScoreNote(open = $("score-note").hidden) {
   $("score-help").setAttribute("aria-expanded", open);
 }
 
-// "past": a drop-down of all months under the link; it covers the page instead of moving it.
+// "past": a drop-down of all months under the link, 6 a column; it covers the page instead of moving it.
 function togglePast(open = $("past").hidden) {
   const past = $("past");
   if (!state.months.length) open = false;  // nothing to list yet
