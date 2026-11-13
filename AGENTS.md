@@ -19,7 +19,7 @@ Read `README.md` and `docs/PLAN.md` before changing anything.
 2. After tests pass, commit, push and watch the Pages deploy for each change; the owner reviews the live site.
 3. The site never shows a handle to other readers; only counts.
 4. Handles are trusted: no password, and nobody is assumed to log in as another's handle. A handle may take back
-   its marks, and remove the papers it added until the monthly run lists them (the rules cannot check a handle,
+   its marks, and edit or remove the papers it added until the monthly run lists them (the rules cannot check a handle,
    so any signed-in browser may; the site offers it to the handle only).
 5. A preprint is a preprint: bioRxiv, medRxiv, Zenodo and other servers are one kind of source, not different venues.
 6. Short, plain text everywhere: About is an FAQ; docs stay brief.
