@@ -769,9 +769,9 @@ async function changeHandle(from, to) {
 
 // By month, newest first: each month's heading links to its list; "not interested" at each paper's right
 async function showInterested() {
-  const handle = state.handle, box = el("div", "marks");
+  const handle = state.handle, box = el("div", "marks"), heading = el("p", "page-head", "Papers you are interested in:");
   box.append(el("p", "empty", "Loading…"));
-  showPage("interested", el("p", "page-head", "Papers you are interested in"), box);
+  showPage("interested", heading, box);
   let papers;
   try {
     papers = await myInterest();
@@ -784,11 +784,13 @@ async function showInterested() {
   const empty = el("p", "empty", "Nothing yet: click the triangle beside a paper.");
   const groups = new Map();  // not Map.groupBy: Safari before 17.4 lacks it
   for (const m of papers) groups.set(m.month, [...(groups.get(m.month) ?? []), m]);
-  // a month whose papers are all taken back hides; with none left, the page says so
+  // a month whose papers are all taken back hides; with none left, the page says so. The heading counts the papers.
   const sync = () => {
     for (const section of box.querySelectorAll("section")) section.hidden = [...section.querySelectorAll("li")].every((li) => li.hidden);
     empty.remove();
     if ([...box.querySelectorAll("section")].every((s) => s.hidden)) box.append(empty);
+    const n = box.querySelectorAll("li.mark:not([hidden])").length;
+    heading.textContent = `${n} paper${n === 1 ? "" : "s"} you are interested in:`;
   };
   box.replaceChildren(...[...groups].map(([month, items]) => {
     const head = Object.assign(el("a", "", monthName(month)), { href: `?month=${month}` });

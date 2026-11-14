@@ -59,6 +59,8 @@ Done for the live site; recorded so it can be repeated.
 3. **Firebase:** project `statgenpapers`, Spark plan (free, no card). Its web configuration is in `site/app.js`,
    public by design. Authentication: Anonymous on, automatic clean-up off; authorized domain
    `statgenpapers.github.io`. Firestore in production mode, with the rules deployed as above.
+4. **API key** (Google Cloud console → Credentials → Browser key): websites `https://statgenpapers.github.io/*` and
+   `http://127.0.0.1:8731/*` (the site check) only, so logging in fails elsewhere, such as in the preview.
 
 ## Layout
 
@@ -71,3 +73,8 @@ Done for the live site; recorded so it can be repeated.
 | `firebase/` | Firestore rules and their tests |
 | `dev/` | Local only: `site_check.py`; `backtest/`, the numbers on the About page |
 | `tests/` | Pipeline tests |
+
+## License
+
+The code is under the MIT license (`LICENSE`). The papers' titles, authors and abstracts in `site/data/` remain their
+publishers' and authors'.
