@@ -83,7 +83,7 @@ function urlDoi(url) {
 }
 const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
-// Sheet-style label Journal_Surname_Year_Keyword. Keep in step with short_name() in pipeline/output.py.
+// Sheet-style label Journal_Surname_Year_Keyword. Keep in step with short_name() in monthly/output.py.
 function shortName(journal, surname, year, title) {
   const t = title.replace(/['’]s\b|['’]/g, "");
   const colon = t.indexOf(":");

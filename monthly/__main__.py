@@ -1,4 +1,4 @@
-"""Build the monthly shortlists: python -m pipeline [--month YYYY-MM].
+"""Build the monthly shortlists: python -m monthly [--month YYYY-MM].
 
 Without --month: every month after the latest list through the previous calendar month, oldest first. That is one
 month, or none if it is listed already, unless a run was missed: the workflow runs on the 10th to the 14th."""

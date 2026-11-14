@@ -6,11 +6,11 @@ add papers the model missed. It costs $0 and needs no monthly work.
 
 ## How it works
 
-1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches last month's
+1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m monthly`: it fetches last month's
    ~2,000 candidates (`sources.toml`), refits the model, writes `site/data/YYYY-MM.json`, `data/counts.json` and
    `data/model.json`, and deploys `site/`. Added papers show with a person icon once their month is listed. The 11th
    to 14th retry a failed run; a source with no papers stops a run instead of shipping a list without it.
-2. **Model** (`pipeline/train.py`): a `potion-base-32M` embedding of title and abstract plus the venue, through a
+2. **Model** (`monthly/train.py`): a `potion-base-32M` embedding of title and abstract plus the venue, through a
    logistic regression on the pools of the 12 months before the list (weight halving every 6 months; papers of
    interest positive). The pools are kept on the branch `training`.
 3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Interest and added papers live in Firestore, checked by
@@ -40,7 +40,7 @@ month. The handle `admin` holds the cold start and is frozen.
 ## Checks
 
 ```bash
-uv run pytest                                      # pipeline
+uv run pytest                                      # the monthly run
 cd firebase && npm test                            # security rules, in the emulator
 cd firebase && npx firebase emulators:exec --only firestore,auth --project demo-statgenpapers \
   "cd .. && uv run --with playwright python dev/site_check.py --emulator"   # two browsers, against emulators
@@ -56,7 +56,7 @@ Done for the live site; recorded so it can be repeated.
 2. **OpenAlex key:** the Actions secret `OPENALEX_API_KEY`; GitHub masks it in logs and withholds it from pull
    requests of forks. Rotate with `gh secret set OPENALEX_API_KEY -R statgenpapers/statgenpapers.github.io`. For
    local runs put it in `OPENALEX_API_KEY` or `~/.config/openalex/api_key` (`chmod 600`); never commit it. A month
-   costs about $0.001 of the free daily budget; the pipeline stops at `OPENALEX_MAX_USD` (default 0.5).
+   costs about $0.001 of the free daily budget; the run stops at `OPENALEX_MAX_USD` (default 0.5).
 3. **Firebase:** project `statgenpapers`, Spark plan (free, no card). Its web configuration is in `site/app.js`,
    public by design. Authentication: Anonymous on, automatic clean-up off; authorized domain
    `statgenpapers.github.io`. Firestore in production mode, with the rules deployed as above.
@@ -68,7 +68,7 @@ Done for the live site; recorded so it can be repeated.
 | Path | What |
 |---|---|
 | `sources.toml` | Sources, junk filter, cutoff |
-| `pipeline/` | Monthly run: `fetch`, `dedupe`, `train`, `score`, `firestore`, `output` |
+| `monthly/` | Monthly run: `fetch`, `dedupe`, `train`, `score`, `firestore`, `output` |
 | `data/` | `model.json`, the latest model; `counts.json`, each month's interest counts at the last run |
 | `site/` | The website; `site/data/` has each month's list |
 | `firebase/` | Firestore rules and their tests |

@@ -26,7 +26,7 @@ function interest(uid, handle, p, on, { m = M, step = on ? 1 : -1, list = true, 
   if (counts) batch.set(monthRef(d, m), { counts: { [p]: increment(step) }, paper: p }, { merge: true });
   return batch.commit();
 }
-const paper = (extra = {}) => ({ journal: "PNAS", title: "A paper the pipeline missed", url: "https://doi.org/10.1073/pnas.1",
+const paper = (extra = {}) => ({ journal: "PNAS", title: "A paper the model missed", url: "https://doi.org/10.1073/pnas.1",
   short_name: "PNAS_Smith_2026_PaperPipelineMissed", created: serverTimestamp(), ...extra });
 // Add a paper: the paper, the adder's interest in it and its count, in one batch
 function addPaper(uid, handle, { m = OPEN, id = SID, extra = {}, list = true } = {}) {

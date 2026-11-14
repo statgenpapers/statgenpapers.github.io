@@ -1,7 +1,7 @@
 """Should added papers weigh more in training? Leak-free backtest of 2026-01..10: uv run --group backtest python dev/backtest/added_weight.py
 
 An added paper is a pick the site did not show: here, a pick outside the top 25 of its own month under that month's
-leak-free model (how the cold start decided what admin added). Each model of month M trains as pipeline/train.py
+leak-free model (how the cold start decided what admin added). Each model of month M trains as monthly/train.py
 does (12 months before M, 6-month half-life, picks of tabs before M), with the sample weight of added positives
 multiplied by k. Scored on every pick of tab M in M's pool: AUC, and picks in the top 25.
 Picks in no pool (production adds them as extra positives) are left out: the local pool has no abstracts for them.
@@ -17,9 +17,9 @@ from sklearn.metrics import roc_auc_score
 
 ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
-from pipeline.fetch import clean  # noqa: E402
-from pipeline.score import embed, load_model  # noqa: E402
-from pipeline.train import HALF_LIFE, WINDOW, index  # noqa: E402
+from monthly.fetch import clean  # noqa: E402
+from monthly.score import embed, load_model  # noqa: E402
+from monthly.train import HALF_LIFE, WINDOW, index  # noqa: E402
 
 MODEL = {"model": "minishlab/potion-base-32M", "revision": "1e5a03f8eeb2c98b928fbbd846f22f816360919f"}
 SHOWN, WEIGHTS = 25, [1, 1.5, 2, 3, 5]

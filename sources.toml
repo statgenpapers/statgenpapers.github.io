@@ -6,7 +6,7 @@
 # month caught 95; 25% listed 220 and caught 116.
 min_pick_chance = 0.30
 
-# The Firebase project whose interest counts and added papers label the monthly model (pipeline/train.py)
+# The Firebase project whose interest counts and added papers label the monthly model (monthly/train.py)
 firestore_project = "statgenpapers"
 
 # OpenAlex work types kept from journals.

@@ -18,8 +18,8 @@ norm_title = lambda t: re.sub(r"[^a-z0-9]", "", t.lower())
 
 picks = pd.read_csv(D / "sheet-picks.csv", dtype=str).fillna("")
 picks["nt"] = picks.title.map(norm_title)
-# every pool file: pool-2025-11_2026-10.jsonl.gz and the months 2025-01..10, fetched by the pipeline's former --pool-only
-# (with equal weights they made the 2026 lists worse; with the 6-month half-life of pipeline/train.py they make them better)
+# every pool file: pool-2025-11_2026-10.jsonl.gz and the months 2025-01..10, fetched by the monthly run's former --pool-only
+# (with equal weights they made the 2026 lists worse; with the 6-month half-life of monthly/train.py they make them better)
 pool = pd.DataFrame([json.loads(l) for f in sorted(D.glob("pool-*.jsonl.gz")) for l in gzip.open(f, "rt")]).drop_duplicates("doi")
 # production source list only (the pool file also holds sources dropped earlier)
 pool = pool[pool.journal.isin(["Nature", "NG", "NatCommun", "NRG", "NatMed", "NatHumBehav", "Science", "SciTranslMed", "Cell", "CG", "AJHG"])

@@ -27,12 +27,14 @@ Read `README.md` before changing anything.
 ## Terminology
 
 - *Pool:* a month's ~2,000 candidates after the junk filter and dedupe.
+- *Monthly run:* `python -m monthly` (`monthly/`), started by `.github/workflows/monthly.yml` on the 10th; builds last
+  month's list.
 - *Cold start:* the marks of 2025-11 to 2026-10, the first months the model learns from; on the site as the interest of
   `admin`, which the rules freeze (the login refuses it). The site and docs have no concept of a lab or picks.
 - *Shortlist:* the papers of a month's pool that the site lists.
 - *Venue:* internal key of a journal (`NG`) or `Preprint` for every preprint; never shown.
 - *Journal:* the abbreviation shown (`Nat Genet`, `bioRxiv`).
-- *Model:* refitted by each monthly run (`pipeline/train.py`) on the pools of the 12 months before the list, weight
+- *Model:* refitted by each monthly run (`monthly/train.py`) on the pools of the 12 months before the list, weight
   halving every 6 months; marked papers are positives, all other pool papers negatives (as if readers read the whole
   pool). Written to `data/model.json`, with the calibration (a, b), refitted on the stored out-of-sample scores.
 - *Training branch:* `training`, the stored pools (int8 embeddings, no abstracts) of the last 12 months, one commit.

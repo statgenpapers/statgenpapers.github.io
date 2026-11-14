@@ -61,7 +61,7 @@ jobs:
         run: |
           uv sync --locked
           uv run pytest -q
-          uv run python -m pipeline ${MONTH:+--month "$MONTH"}
+          uv run python -m monthly ${MONTH:+--month "$MONTH"}
       - name: Commit the lists, the interest counts and the model
         if: github.event_name != 'push'
         env:

@@ -1,4 +1,4 @@
-"""Scorer: static text embedding plus venue, and the month's linear weights (pipeline/train.py)."""
+"""Scorer: static text embedding plus venue, and the month's linear weights (monthly/train.py)."""
 import numpy as np
 from scipy.special import expit
 
@@ -25,5 +25,5 @@ def linear(w, emb, venues):
 
 
 def probability(w, score):
-    """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b refitted each month (pipeline/train.py)."""
+    """The Score: calibrated chance that the paper gets marked, sigmoid(a + b·score), a and b refitted each month (monthly/train.py)."""
     return expit(w["calibration"]["a"] + w["calibration"]["b"] * np.asarray(score))

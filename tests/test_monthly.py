@@ -1,10 +1,10 @@
 import numpy as np
 
-from pipeline.dedupe import dedupe
-from pipeline.fetch import Paper, author_names, clean, url_doi
-from pipeline.output import paper_id, short_name
-from pipeline.score import linear, probability
-from pipeline import firestore, train
+from monthly.dedupe import dedupe
+from monthly.fetch import Paper, author_names, clean, url_doi
+from monthly.output import paper_id, short_name
+from monthly.score import linear, probability
+from monthly import firestore, train
 
 
 def paper(doi, title, type="published", journal="Nat Genet", published_doi="", authors=("Ada B. Smith", "Li Wei"), date="2026-10-07"):
@@ -122,7 +122,7 @@ def test_reads_counts_and_added_papers_through_the_rest_api(monkeypatch):
 
 def test_months_to_build():
     from datetime import date
-    from pipeline.__main__ import months_to_build
+    from monthly.__main__ import months_to_build
     assert months_to_build(["2026-09", "2026-10"], date(2026, 11, 13)) == []  # listed already
     assert months_to_build(["2026-10"], date(2026, 12, 10)) == ["2026-11"]
     assert months_to_build(["2026-10"], date(2027, 1, 12)) == ["2026-11", "2026-12"]  # a missed month first
@@ -132,8 +132,8 @@ def test_months_to_build():
 def test_added_venue_and_junk_titles():
     import re
     import tomllib
-    from pipeline import ROOT
-    from pipeline.__main__ import added_venue
+    from monthly import ROOT
+    from monthly.__main__ import added_venue
     cfg = tomllib.loads((ROOT / "sources.toml").read_text())
     paper = lambda journal, url="https://doi.org/10.1/x": {"journal": journal, "url": url}
     assert [added_venue(cfg, paper(j)) for j in ["Nat Genet", "Nature Genetics", "nature genetics ", "bioRxiv", "Preprint", "J Unknown"]] \
@@ -147,7 +147,7 @@ def test_added_venue_and_junk_titles():
 
 def test_read_submissions_keeps_the_oldest_well_formed():
     from unittest import mock
-    import pipeline.firestore as firestore
+    import monthly.firestore as firestore
     docs = {"b": {"title": "T2", "url": "https://x/2", "journal": "Nature", "short_name": "s", "created": "2026-11-02T00:00:00Z",
                   "authors": ["A", 3, "B" * 500]},
             "a": {"title": "T1", "url": "https://x/1", "journal": "Nature", "short_name": "s", "created": "2026-11-01T00:00:00Z",
