@@ -39,6 +39,8 @@ SITE = ROOT / "site"
 MONTH, NEXT = "2099-01", "2099-02"  # a listed month and the month in progress, far from real ones
 EMULATOR = "--emulator" in sys.argv
 PORT = 8731  # fixed: a browser profile keeps its sign-in per origin
+REST = ("http://127.0.0.1:8085/v1/projects/demo-statgenpapers" if EMULATOR  # Firestore's REST API, for what the server has
+        else "https://firestore.googleapis.com/v1/projects/statgenpapers") + "/databases/(default)/documents"
 PAPERS = [{"id": f"sitecheck-{i}", "doi": f"10.0000/sitecheck-{i}", "url": f"https://example.org/paper-{i}",
            "title": f"Test paper {i}", "authors": [f"Author {k}" for k in range(1, 2 * i)], "date": f"2020-01-0{i}",
            "venue": "Preprint" if i == 2 else "NG", "venue_name": "bioRxiv · genetics" if i == 2 else "Nature Genetics",
@@ -58,20 +60,29 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 
-def check(label, ok):
+def check(label, ok, why=None):
+    """PASS or FAIL; a failure also prints `why()`, the state it found."""
     global failed
     failed |= not ok
     print("PASS" if ok else "FAIL", label, flush=True)
+    if not ok and why:
+        try:
+            print("    ", why(), flush=True)
+        except Exception as e:  # the check goes on
+            print("    ", repr(e), flush=True)
 
 
-def seen(locator, text, timeout=15):
-    """Seconds until `locator` shows `text`, or None."""
+def seen(locator, text, timeout=45):
+    """Seconds until `locator` shows `text`, or None. The other browser's change usually shows within a second, but
+    Firestore's long-polling now and then holds it until its waiting request ends, after 15 to 45 s: noted, not failed."""
     t0 = time.time()
     try:
         expect(locator).to_have_text(text, timeout=timeout * 1000)
-        return time.time() - t0
     except AssertionError:
         return None
+    if (dt := time.time() - t0) > 5:
+        print(f"NOTE {text!r} showed after {dt:.0f} s", flush=True)
+    return dt
 
 
 with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
@@ -124,6 +135,13 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         return False
     count = lambda page, n: row(page, n).locator(".count")  # the number beside the triangle
     pressed = lambda page, n: row(page, n).locator(".up").get_attribute("aria-pressed") == "true"
+
+    def state():
+        """The month's counts on the server, and both browsers' order, counts, own interest and toast"""
+        counts = json.load(urllib.request.urlopen(f"{REST}/months/{MONTH}"))["fields"]["counts"]["mapValue"].get("fields", {})
+        return "; ".join([f"server counts {({k[-1]: v['integerValue'] for k, v in sorted(counts.items())})}"] + [
+            f"{name}: order {''.join(order(page))}, counts {page.locator('li.paper .count').all_inner_texts()}, "
+            f"pressed {[n for n in '1234' if pressed(page, n)]}, toast {page.inner_text('#toast')!r}" for name, page in (("a", a), ("b", b))])
     check("both browsers list the month and can say they are interested after logging in", order(a) == order(b) == list("1234") and not prompts)
 
     b.evaluate("() => { window.moves = 0; const animate = Element.prototype.animate;"
@@ -234,7 +252,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     row(b, 3).locator(".up").click()
     row(b, 4).locator(".up").click()
     check("interest can be taken back", seen(count(b, 3), "0") is not None and seen(count(a, 4), "0") is not None
-          and not pressed(a, 3) and settles(a, "1234") and settles(b, "1234"))
+          and not pressed(a, 3) and settles(a, "1234") and settles(b, "1234"), state)
 
     # Adding a paper
     a.click("#add-open")
@@ -282,9 +300,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     a.click("#add-cancel")
 
     # the run for 2099-02: it lists the month, with the added paper scored and stored in its data file
-    base = "http://127.0.0.1:8085" if EMULATOR else "https://firestore.googleapis.com"
-    project = "demo-statgenpapers" if EMULATOR else "statgenpapers"
-    docs = json.load(urllib.request.urlopen(f"{base}/v1/projects/{project}/databases/(default)/documents/months/{NEXT}/submissions"))
+    docs = json.load(urllib.request.urlopen(f"{REST}/months/{NEXT}/submissions"))
     sid, fields = docs["documents"][0]["name"].rsplit("/", 1)[1], docs["documents"][0]["fields"]
     check("the short name is made on submit from journal, first author, year and title",
           fields["short_name"]["stringValue"] == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
@@ -332,9 +348,12 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
         and a.input_value("#add-date") == "2020/05/28" and a.inner_text("#add button[type=submit]") == "save"
     a.fill("#add-date", "2020/06")
     a.click("#add button[type=submit]")
+    shown = seen(added(b).locator(".source"), "(Nature, 2020/06)")
+    reset = seen(a.locator("#add button[type=submit]"), "add")  # after its own save is confirmed, which may come after b sees it
     check("its handle can edit it, from the form filled with it; the edit shows everywhere",
-          filled and seen(added(b).locator(".source"), "(Nature, 2020/06)") is not None
-          and a.inner_text("#add button[type=submit]") == "add" and a.input_value("#add-title") == "")
+          filled and shown is not None and reset is not None and a.input_value("#add-title") == "",
+          lambda: f"filled {filled}, b shows {added(b).locator('.source').all_inner_texts()}, a's button {a.inner_text('#add button[type=submit]')!r}, "
+                  f"title {a.input_value('#add-title')!r}, toast {a.inner_text('#toast')!r}")
     n = len(prompts)
     added(a).locator(".remove-own").click()
     try:

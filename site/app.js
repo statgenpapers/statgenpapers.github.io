@@ -299,8 +299,8 @@ function holdWhilePressed() {
       setTimeout(render);
     }
   };
-  addEventListener("pointerup", release, true);
-  addEventListener("pointercancel", release, true);
+  // a right-click's menu may take the release: it ends the press too
+  for (const type of ["pointerup", "pointercancel", "contextmenu"]) addEventListener(type, release, true);
 }
 
 function renderBar() {
@@ -448,7 +448,8 @@ async function connect() {
     fb = firestore;
     app = firebase.initializeApp(firebaseConfig);
     // Long-polling, not the default streaming with proxy auto-detection: in tests the default showed
-    // another browser's change more than half a minute late after about 1 page load in 50.
+    // another browser's change more than half a minute late after about 1 page load in 50. Long-polling, more
+    // rarely, holds one until its waiting request ends, after 15 to 45 s (a shorter timeoutSeconds is ignored).
     db = fb.initializeFirestore(app, { experimentalForceLongPolling: true });
     dbReady();
     listen();  // counts are public: reading needs no sign-in
