@@ -24,6 +24,8 @@ button, input, textarea { font: inherit; color: inherit; }
 input, textarea { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .4rem; }
 button { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .2rem .7rem; cursor: pointer; }
 form button:hover:not(:disabled) { background: var(--subtle); }
+form button[type="submit"] { border-color: var(--accent); color: var(--accent); }  /* the form's main action: login, add, save */
+form button[type="submit"]:hover:not(:disabled) { background: var(--accent-soft); }
 button:disabled { opacity: .4; cursor: default; }
 ::placeholder { color: var(--muted); opacity: 1; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
