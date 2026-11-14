@@ -4,7 +4,7 @@
   --shadow: 0 4px 16px rgba(0, 0, 0, .12);
   --radius: 4px;
   --fs-small: 12px; --fs-meta: 13px; --fs-body: 14px; --fs-title: 15px;  /* type scale of the list: 12 / 13 / 14 (body) / 15 (titles); About adds 16 and 19 */
-  --font: Arial, Helvetica, sans-serif;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;  /* the device's own font: San Francisco, Segoe UI, Roboto */
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
