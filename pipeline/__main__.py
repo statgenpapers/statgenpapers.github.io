@@ -1,4 +1,7 @@
-"""Build one month's shortlist: python -m pipeline [--month YYYY-MM] (default: the previous calendar month)."""
+"""Build the monthly shortlists: python -m pipeline [--month YYYY-MM].
+
+Without --month: every month after the latest list through the previous calendar month, oldest first. That is one
+month, or none if it is listed already, unless a run was missed: the workflow runs on the 10th to the 14th."""
 import argparse
 import calendar
 import json
@@ -16,7 +19,7 @@ from .fetch import fetch_pool, full_authors, url_doi
 from .firestore import FIELDS, read_counts, read_submissions
 from .output import paper_id, short_name
 from .score import embed, linear, load_model, probability
-from .train import POOLS, fit, marked_keys, save_pool
+from .train import POOLS, fit, index, marked_keys, month_at, save_pool
 
 DATA, MODEL, COUNTS = ROOT / "site" / "data", ROOT / "data" / "model.json", ROOT / "data" / "counts.json"
 
@@ -31,28 +34,56 @@ def added_papers(submissions):
     return {sid: {k: s[k] for k in FIELDS if s.get(k)} for sid, s in submissions.items()}
 
 
+# A preprint is a preprint, by the journal typed or by its link: as PREPRINT in site/app.js
+PREPRINT = re.compile(r"(bio|med|chem|psy|eco|soc)rxiv|arxiv|zenodo|preprint|research ?square|ssrn|osf\.io|authorea|qeios"
+                      r"|10\.1101/|10\.64898/|10\.5281/", re.I)
+
+
+def added_venue(cfg, s):
+    """An added paper's venue key: Preprint, or the journal typed, by its abbreviation or full name; "" if unknown."""
+    if PREPRINT.search(s["journal"]) or PREPRINT.search(s["url"]):
+        return "Preprint"
+    return {name.lower(): j["key"] for j in cfg["journals"] for name in (j["abbr"], j["name"])}.get(s["journal"].strip().lower(), "")
+
+
 def score_added(weights, model, cfg, submissions):
-    """{submission id: pick chance} of added papers, scored as pool papers are; the venue from the journal shown."""
+    """{submission id: pick chance} of added papers, scored as pool papers are."""
     if not submissions:
         return {}
-    key = {j["abbr"]: j["key"] for j in cfg["journals"]}
     subs = list(submissions.values())
     emb = embed(model, [s["title"] for s in subs], [s["abstract"] for s in subs])
-    venues = ["Preprint" if s["journal"] == "Preprint" else key.get(s["journal"], "") for s in subs]
+    venues = [added_venue(cfg, s) for s in subs]
     score = linear(weights, emb, venues)
     return {sid: round(float(p), 3) for sid, p in zip(submissions, probability(weights, score))}
 
 
+def months_to_build(listed, today):
+    """The months after the latest list through the previous calendar month, oldest first."""
+    last = (today.replace(day=1) - timedelta(days=1)).strftime("%Y-%m")
+    if not listed:
+        return [last]
+    return [month_at(i) for i in range(index(max(listed)) + 1, index(last) + 1)]
+
+
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--month", default=(date.today().replace(day=1) - timedelta(days=1)).strftime("%Y-%m"))
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--month", help="one month, YYYY-MM, even if listed already (a rerun replaces its list)")
     month = ap.parse_args().month
-    if not re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", month):
+    if month and not re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", month):
         ap.error("--month must look like 2026-10")
+    months = [month] if month else months_to_build([p.stem for p in DATA.glob("20??-??.json")], date.today())
+    if not months:
+        print("every month through the previous one is listed: nothing to build")
+    for m in months:
+        build(m)
+
+
+def build(month):
     year, mon = map(int, month.split("-"))
-    start, end = date(year, mon, 1), min(date(year, mon, calendar.monthrange(year, mon)[1]), date.today())
+    last = date(year, mon, calendar.monthrange(year, mon)[1])
+    start, end = date(year, mon, 1), min(last, date.today())
     if start > end:
-        ap.error(f"{month} has not started")
+        sys.exit(f"{month} has not started")
     cfg = tomllib.loads((ROOT / "sources.toml").read_text())
     weights = json.loads(MODEL.read_text())  # last month's model: its embedding model and calibration are kept
     listed = {p.stem: json.loads(p.read_text())["papers"] for p in sorted(DATA.glob("20??-??.json"))}
@@ -71,7 +102,7 @@ def main():
           f"{len(submitted)} submitted DOIs", flush=True)
 
     print(f"pool: {start} to {end}", flush=True)
-    pool = fetch_pool(cfg, start.isoformat(), end.isoformat())
+    pool = fetch_pool(cfg, start.isoformat(), end.isoformat(), complete=end == last)
     # Added papers stay in the pool, the model's training data, and are left off the list below: they show as added papers
     papers = dedupe(pool, {p["doi"] for m, ps in listed.items() if m != month for p in ps})
     papers.sort(key=lambda p: p.doi)
@@ -114,7 +145,7 @@ def main():
                                          "papers": out, "added": score_added(weights, model, cfg, added.get(month, {})),
                                          "added_papers": added_papers(added.get(month, {}))})
     write_json(DATA / "index.json", {"months": sorted(listed.keys() | {month})})
-    print(f"\nshortlist: {len(out)} papers, scores {out[-1]['score']} to {out[0]['score']}", flush=True)
+    print(f"\n{month} shortlist: {len(out)} papers" + (f", scores {out[-1]['score']} to {out[0]['score']}" if out else ""), flush=True)
     for p in out:
         print(f"  {p['p_pick']:.0%}  {p['journal']}  {p['title']}")
 

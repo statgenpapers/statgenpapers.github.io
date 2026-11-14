@@ -134,6 +134,8 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("the other browser re-orders the list, animated", order(b)[0] == "3" and b.evaluate("window.moves") > 0)
     check("one's own interest is highlighted (blue), for that handle only", pressed(a, 3) and not pressed(b, 3))
     check("there is no downvote", a.locator("li.paper button:not(.added-icon, .remove-own)").count() == 4)
+    describes = row(a, 3).locator(".up").get_attribute("aria-describedby")
+    check("a triangle names its paper to screen readers", describes and a.locator(f"#{describes}").inner_text() == "Test paper 3")
     row(b, 3).locator(".toggle").click()
     check("the abstract opens without its heading, and no handle shows",
           row(b, 3).locator(".details p").first.inner_text() == "Body of abstract 3." and "sitecheck" not in b.inner_text("#list"))
@@ -162,6 +164,11 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
           count(offline, 3).inner_text() == "2" and offline.locator("li.paper .up:not([disabled])").count() == 0
           and offline.evaluate(f"JSON.parse(localStorage.getItem('marks:{MONTH}')).counts")["sitecheck-3"] == 2)
     offline.close()
+    broken = a.context.new_page()  # a month file that does not load is not "no list"
+    broken.route(f"**/data/{MONTH}.json", lambda route: route.abort())
+    broken.goto(url)
+    check("a list that fails to load says so", seen(broken.locator("#list .empty"), "The list did not load; check the connection and reload.") is not None)
+    broken.close()
 
     if EMULATOR:  # a fresh browser: a new anonymous user, free on the emulator
         c = pw.chromium.launch_persistent_context(Path(tmp) / "profile-c").pages[0]
@@ -239,11 +246,11 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     a.fill("#add-date", "2020/5/28")  # a date typed over the found one, the month and day without their 0
     check("the abstract box grows to show the filled abstract",
           a.evaluate("() => { const b = document.getElementById('add-abstract'); return b.value.length > 300 && b.offsetHeight > 150 }"))
-    a.click("#add button[type=submit]")
+    a.dblclick("#add button[type=submit]")  # a double click adds it once
     added = lambda page: page.locator("li.paper", has_text="mutational constraint spectrum")
-    check("a paper is added to the month in progress, and not shown before its run scores it",
+    check("a paper is added to the month in progress, once, and not shown before its run scores it",
           seen(a.locator("#toast"), "Added to 2099/02; it gets a Score on 2099/03/10.") is not None
-          and added(b).count() == 0)
+          and added(b).count() == 0 and (a.wait_for_timeout(3000) or added(a).count() == 1))
     check("the add page lists it, unscored, under its form",
           a.inner_text("#list-month") == "Added to 2099/02 so far (Score will be provided when the list is published)"
           and added(a).locator(".pick").is_hidden() and a.locator("#score-help").is_hidden()

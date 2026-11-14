@@ -54,6 +54,8 @@ def test_clean_and_url_doi():
     assert url_doi("https://www.medrxiv.org/content/10.1101/2026.01.02.26300001v1.full.pdf+html") == "10.1101/2026.01.02.26300001"
     assert url_doi("https://doi.org/10.1016/j.ajhg.2026.01.001.") == "10.1016/j.ajhg.2026.01.001"
     assert url_doi("https://arxiv.org/abs/2601.01234v2") == "10.48550/arxiv.2601.01234"
+    assert url_doi("https://www.science.org/doi/10.1126/science.adv0235") == "10.1126/science.adv0235"  # a DOI's own v
+    assert url_doi("https://doi.org/10.1126/SCITRANSLMED.ADV1234") == "10.1126/scitranslmed.adv1234"
 
 
 def test_score_from_a_weights_file():
@@ -116,3 +118,43 @@ def test_reads_counts_and_added_papers_through_the_rest_api(monkeypatch):
     assert firestore.read_counts("p", "2026-09") == {}
     assert firestore.read_submissions("p", "2026-10") == {"s1": {"title": "T", "url": "https://doi.org/10.1/x", "journal": "PNAS",
                                                                  "short_name": "PNAS_B_2026_T", "authors": ["A. B"], "abstract": "", "date": ""}}
+
+
+def test_months_to_build():
+    from datetime import date
+    from pipeline.__main__ import months_to_build
+    assert months_to_build(["2026-09", "2026-10"], date(2026, 11, 13)) == []  # listed already
+    assert months_to_build(["2026-10"], date(2026, 12, 10)) == ["2026-11"]
+    assert months_to_build(["2026-10"], date(2027, 1, 12)) == ["2026-11", "2026-12"]  # a missed month first
+    assert months_to_build([], date(2026, 12, 10)) == ["2026-11"]
+
+
+def test_added_venue_and_junk_titles():
+    import re
+    import tomllib
+    from pipeline import ROOT
+    from pipeline.__main__ import added_venue
+    cfg = tomllib.loads((ROOT / "sources.toml").read_text())
+    paper = lambda journal, url="https://doi.org/10.1/x": {"journal": journal, "url": url}
+    assert [added_venue(cfg, paper(j)) for j in ["Nat Genet", "Nature Genetics", "nature genetics ", "bioRxiv", "Preprint", "J Unknown"]] \
+        == ["NG", "NG", "NG", "Preprint", "Preprint", ""]
+    assert added_venue(cfg, paper("Other", "https://www.medrxiv.org/content/10.1101/2026.01.02.26300001v1")) == "Preprint"
+    junk = re.compile(rf"(?:{'|'.join(cfg['junk_title'])})\b", re.I)
+    assert [bool(junk.match(t)) for t in ["Correction to: X", "Correction: X", "Correction", "Author Correction: X",
+                                          "Correction for population stratification in GWAS", "Corrections of bias"]] \
+        == [True, True, True, True, False, False]
+
+
+def test_read_submissions_keeps_the_oldest_well_formed():
+    from unittest import mock
+    import pipeline.firestore as firestore
+    docs = {"b": {"title": "T2", "url": "https://x/2", "journal": "Nature", "short_name": "s", "created": "2026-11-02T00:00:00Z",
+                  "authors": ["A", 3, "B" * 500]},
+            "a": {"title": "T1", "url": "https://x/1", "journal": "Nature", "short_name": "s", "created": "2026-11-01T00:00:00Z",
+                  "abstract": "x" * 20000},
+            "c": {"title": "", "url": "https://x/3", "created": "2026-11-03T00:00:00Z"}}
+    with mock.patch.object(firestore, "documents", return_value=docs):
+        out = firestore.read_submissions("project", "2026-11")
+    assert list(out) == ["a", "b"] and len(out["a"]["abstract"]) == 10000 and out["b"]["authors"] == ["A", "B" * 200]
+    with mock.patch.object(firestore, "documents", return_value={str(i): docs["a"] for i in range(250)}), mock.patch("builtins.print"):
+        assert len(firestore.read_submissions("project", "2026-11")) == firestore.LIMIT

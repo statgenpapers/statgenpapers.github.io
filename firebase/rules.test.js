@@ -129,6 +129,10 @@ test("a changed handle: its interest moves to a new document", async () => {
   await assertSucceeds(batch.commit());
   await assertSucceeds(interest("uid-a", "alicia", P, false));
 });
+test("a handle's lists are bounded in size", async () => {  // the rules cannot check each element: join bounds them all
+  await assertFails(setDoc(interestRef(db("uid-b"), "carol"), { papers: ["x".repeat(151001)], added: [] }));
+  await assertFails(setDoc(interestRef(db("uid-b"), "carol"), { papers: [], added: ["x".repeat(4101)] }));
+});
 test("a handle's interest cannot be written over another's", async () => {
   await assertSucceeds(interest("uid-b", "bob", Q, true));
   await assertFails(setDoc(interestRef(db("uid-a"), "bob"), { papers: [P], added: [] }));
@@ -155,7 +159,8 @@ test("anyone reads and lists added papers without signing in", async () => {
 });
 test("an added paper names no reader, and is checked", async () => {
   for (const extra of [{ name: "bob" }, { uid: "uid-b" }, { score: 99 }, { url: "javascript:alert(1)" }, { title: "" },
-    { title: "x".repeat(401) }, { authors: "A. Smith" }, { abstract: "x".repeat(10001) }, { date: "October" }, { created: new Date(0) }]) {
+    { title: "x".repeat(401) }, { authors: "A. Smith" }, { authors: ["x".repeat(10001)] },
+    { abstract: "x".repeat(10001) }, { date: "October" }, { created: new Date(0) }]) {
     await assertFails(addPaper("uid-b", "bob", { extra }));
   }
   await assertFails(setDoc(subRef(db("uid-b")), { journal: "PNAS", title: "t", url: "https://x.org", created: serverTimestamp() }));

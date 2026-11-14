@@ -8,7 +8,8 @@ add papers the model missed. It costs $0 and needs no monthly work.
 
 1. **Monthly run.** On the 10th, `.github/workflows/monthly.yml` runs `python -m pipeline`: it fetches last month's
    ~2,000 candidates (`sources.toml`), refits the model, writes `site/data/YYYY-MM.json`, `data/counts.json` and
-   `data/model.json`, and deploys `site/`. Added papers show with a person icon once their month is listed.
+   `data/model.json`, and deploys `site/`. Added papers show with a person icon once their month is listed. The 11th
+   to 14th retry a failed run; a source with no papers stops a run instead of shipping a list without it.
 2. **Model** (`pipeline/train.py`): a `potion-base-32M` embedding of title and abstract plus the venue, through a
    logistic regression on the pools of the 12 months before the list (weight halving every 6 months; papers of
    interest positive). The pools are kept on the branch `training`.

@@ -84,7 +84,7 @@ def cached(url, params=None, data=None):
 
 def norm_doi(doi):
     doi = re.sub(r"^https?://(dx\.)?doi\.org/", "", doi.strip(), flags=re.I).lower()
-    return re.sub(r"v\d+$", "", doi)  # drop preprint version suffix
+    return re.sub(r"(?<![a-z])v\d+$", "", doi)  # drop a preprint version (…592000v2), not a DOI's own v (science.adv0235)
 
 
 def url_doi(url):
@@ -211,7 +211,10 @@ def fetch_preprints(cfg, start, end):
                         published_doi="" if published.upper() == "NA" else norm_doi(published),
                     )
                 cursor += len(batch)
-                if not batch or cursor >= int(data["messages"][0].get("total", 0)):
+                total = int(data["messages"][0].get("total", 0))
+                if not batch and cursor < total:  # a page cut short: the rest of the category would be missing
+                    sys.exit(f"{src['server']}/{category}: an empty page at {cursor} of {total}; try again later")
+                if not batch or cursor >= total:
                     break
             print(f"  {src['server']}/{category}: {cursor} versions", flush=True)
     return [p for _, p in latest.values()]
@@ -254,12 +257,18 @@ def nature_type(doi):
     return kind
 
 
-def fetch_pool(cfg, start, end):
-    """The month's candidates from every configured source, junk removed, abstracts filled."""
+def fetch_pool(cfg, start, end, complete=False):
+    """The month's candidates from every configured source, junk removed, abstracts filled. For a complete month, a
+    source with no papers stops the run (a failed or changed API would otherwise ship a list without it, and train the
+    next 12 models without it), unless sources.toml says it may be empty."""
     papers = fetch_journals(cfg, start, end) + fetch_preprints(cfg, start, end)
     total, sources = Counter(p.venue for p in papers), Counter(p.venue_name for p in papers)
-    for source in [j["name"] for j in cfg["journals"]] + [f"{s['name']} · {c}" for s in cfg["preprints"] for c in s["categories"]]:
-        if not sources[source]:  # a silent API change would otherwise shrink the list
+    expected = [(j["name"], j.get("may_be_empty", False)) for j in cfg["journals"]]
+    expected += [(f"{s['name']} · {c}", False) for s in cfg["preprints"] for c in s["categories"]]
+    for source, may_be_empty in expected:
+        if not sources[source]:
+            if complete and not may_be_empty:
+                sys.exit(f"no papers from {source} between {start} and {end}; try again later, or mark it may_be_empty")
             warn(f"no papers from {source} between {start} and {end}")
     junk_title = re.compile(rf"(?:{'|'.join(cfg['junk_title'])})\b", re.I)
     junk_doi = re.compile("|".join(cfg["junk_doi"]))

@@ -73,12 +73,13 @@ const stripTags = (s) => new DOMParser().parseFromString(s
   .replace(SUP("[\\d,–-]+"), ""), "text/html").body.textContent.replace(/\s+/g, " ").trim();
 const source = (p) => `(${[p.journal, p.date?.replaceAll("-", "/")].filter(Boolean).join(", ")})`;  // dates as months are written: 2026/10/05
 
-// DOI shown in a paper URL, without a preprint version, a page suffix or trailing punctuation; "" if none.
+// DOI shown in a paper URL, without a preprint version (…592000v2, not science.adv0235), a page suffix or trailing
+// punctuation; "" if none.
 // nature.com/articles/X is the paper with DOI 10.1038/X.
 function urlDoi(url) {
   const nature = url.match(/nature\.com\/articles\/([^\s?#/]+)/i), arxiv = url.match(/arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})/i);
   const doi = nature ? `10.1038/${nature[1]}` : arxiv ? `10.48550/arxiv.${arxiv[1]}` : url.match(/10\.\d{4,9}\/[^\s?#]+/)?.[0];
-  return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf\+html|\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/v\d+$/, "").toLowerCase() : "";
+  return doi ? doi.replace(/[.,;)\]]+$/, "").replace(/(\.full\.pdf\+html|\.full\.pdf|\.full-text|\.full|\.abstract|\.pdf|\/full|\/abstract)$/, "").replace(/([^a-z])v\d+$/i, "$1").toLowerCase() : "";
 }
 const plainTitle = (t) => (t || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
@@ -142,7 +143,7 @@ const monthFiles = new Map();
 function monthData(m) {
   if (!monthFiles.has(m)) {
     monthFiles.set(m, fetch(`data/${m}.json`, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
-      .catch((e) => { console.warn(e); monthFiles.delete(m); return { papers: [] }; }));  // a failed fetch is tried again next time
+      .catch((e) => { console.warn(e); monthFiles.delete(m); return { papers: [], failed: true }; }));  // tried again next time
   }
   return monthFiles.get(m);
 }
@@ -171,6 +172,8 @@ function createRow(p) {
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
   q(".title").textContent = p.title;
+  q(".title").id = `title-${p.id}`;
+  q(".up").setAttribute("aria-describedby", q(".title").id);  // "Interested, toggle button" names its paper
   url ? (q(".title").href = url) : q(".title").removeAttribute("href");
   q(".source").textContent = source(p);
   q(".source").title = p.type === "preprint" || p.added ? "" : p.venue_name || "";  // a journal's full name; preprints stay "Preprint"
@@ -194,7 +197,6 @@ function createRow(p) {
     q(".toggle").setAttribute("aria-expanded", open);
   }));
   q(".up").addEventListener("click", () => toggleInterest(p.id, month));  // no hover colour: grey or blue only
-  li.addEventListener("animationend", () => li.classList.remove("new"));
 
   const details = q(".details");
   q(".toggle").hidden = p.added && !p.abstract && a.length <= 4;  // an added paper may have no abstract or authors
@@ -256,8 +258,12 @@ function render() {
   if (!nodes.length) {
     list.replaceChildren(el("li", "empty", upcoming()
       ? `Nothing added yet. Papers added now join the ${monthName(state.month)} list on ${monthName(nextMonth(state.month))}/10.`
-      : "No list for this month yet."));
+      : state.data?.failed ? "The list did not load; check the connection and reload." : "No list for this month yet."));
   } else if (!sameRows || reorder) {
+    if (pressing) {  // the re-sort waits for the release: see holdWhilePressed
+      heldRender = true;
+      return renderBar();
+    }
     const focused = document.activeElement;
     list.replaceChildren(...nodes);
     if (focused && list.contains(focused)) {
@@ -278,6 +284,23 @@ function render() {
   }
   for (const li of nodes) li.dataset.placed = li.dataset.count;  // the count each row had when the order was last applied
   renderBar();
+}
+
+// A click is a press and a release on one element: a re-sort between them (another reader's interest arriving) takes the
+// pressed row out of the page, and the browser drops the click. While a pointer is down on the list, rows change in
+// place and the re-sort waits; it runs after the release's click.
+let pressing = false, heldRender = false;
+function holdWhilePressed() {
+  $("list").addEventListener("pointerdown", () => { pressing = true; });
+  const release = () => {
+    pressing = false;
+    if (heldRender) {
+      heldRender = false;
+      setTimeout(render);
+    }
+  };
+  addEventListener("pointerup", release, true);
+  addEventListener("pointercancel", release, true);
 }
 
 function renderBar() {
@@ -856,17 +879,19 @@ const formDate = () => field("date").value.trim().split(/[-/]/).filter(Boolean).
 
 // What is known about a DOI, in one shape, or null: Crossref has journals, bioRxiv and medRxiv; DataCite has
 // Zenodo and arXiv. Each answers in well under a second; after 8 s a lookup gives up.
-// The journals the run reads, by full name, as the site shows them: keep in step with config/sources.toml
+// The journals the run reads, by full name, as the site shows them: keep in step with sources.toml
 const ABBR = { "nature": "Nature", "nature genetics": "Nat Genet", "nature communications": "Nat Commun",
   "nature reviews genetics": "Nat Rev Genet", "nature medicine": "Nat Med", "nature human behaviour": "Nat Hum Behav",
   "science": "Science", "science translational medicine": "Sci Transl Med", "cell": "Cell", "cell genomics": "Cell Genom",
   "american journal of human genetics": "Am J Hum Genet" };
 const abbreviate = (name) => ABBR[(name || "").toLowerCase().replace(/^the /, "")];
 
+// JSON from a lookup service, or null if it fails or takes more than 8 s
+const getJson = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+
 // An abstract from OpenAlex, which has many that Crossref lacks (Elsevier's): its word index put back in order
 async function openAlexAbstract(doi) {
-  const index = await fetch(`https://api.openalex.org/works/doi:${encodeURIComponent(doi)}?select=abstract_inverted_index`,
-    { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null).then((w) => w?.abstract_inverted_index);
+  const index = (await getJson(`https://api.openalex.org/works/doi:${encodeURIComponent(doi)}?select=abstract_inverted_index`))?.abstract_inverted_index;
   if (!index) return "";
   const words = [];
   for (const [word, places] of Object.entries(index)) for (const i of places) words[i] = word;
@@ -876,12 +901,12 @@ async function openAlexAbstract(doi) {
 // PubMed's abstract through Europe PMC (PubMed itself refuses browser requests), where OpenAlex has none
 async function europePmcAbstract(doi) {
   const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(`DOI:"${doi}"`)}&resultType=core&format=json&pageSize=1`;
-  const r = await fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null);
+  const r = await getJson(url);
   return stripTags(r?.resultList?.result?.[0]?.abstractText || "").replace(/\s+/g, " ").trim();
 }
 
 async function metadata(doi) {
-  const get = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const get = getJson;
   const date = (parts) => parts.filter(Boolean).map((n, i) => (i ? String(n).padStart(2, "0") : n)).join("-");
   const w = (await get(`https://api.crossref.org/works/${encodeURIComponent(doi)}`))?.message;
   if (w) {
@@ -909,7 +934,7 @@ async function metadata(doi) {
 // an Elsevier PII, which Crossref keeps, without punctuation, as an alternative id; a bioRxiv or medRxiv "early" or
 // PDF link has the id without its DOI prefix (10.64898 since 2025, 10.1101 before).
 function piiDoi(url) {
-  const get = (u) => fetch(u, { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null), () => null);
+  const get = getJson;
   const rxiv = url.match(/(?:bio|med)rxiv\.org\/.*?(\d{4}\.\d\d\.\d\d\.\d{6,8})/i)?.[1];
   if (rxiv) {
     return (async () => {
@@ -1006,6 +1031,19 @@ function warnOnce(message) {
 
 async function submitPaper(event) {
   event.preventDefault();
+  if (form.busy) return;  // one at a time: a second click or Enter while the first is saving would add the paper twice
+  const button = $("add").querySelector("button[type=submit]"), label = button.textContent;
+  form.busy = button.disabled = true;
+  button.textContent = form.editing ? "saving…" : "adding…";
+  try {
+    await addPaper();
+  } finally {
+    form.busy = button.disabled = false;
+    if (button.textContent.endsWith("…")) button.textContent = label;  // unless a reset or a warning has relabelled it
+  }
+}
+
+async function addPaper() {
   await form.pending;  // leaving the URL field for "add" starts a lookup: let it fill the form first
   const paper = { journal: field("journal").value.trim(), title: field("title").value.trim(), url: linkValue() };
   paper.short_name = formShortName(paper.journal, paper.title);
@@ -1165,6 +1203,7 @@ async function init() {
     $("list").replaceChildren(el("li", "empty", "No lists yet."));
     return;
   }
+  holdWhilePressed();
   addEventListener("popstate", route);
   addEventListener("storage", handleChanged);
   addEventListener("resize", syncAccountSep, { passive: true });

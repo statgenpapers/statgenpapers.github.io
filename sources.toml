@@ -14,7 +14,7 @@ work_types = ["article", "review", "letter", "preprint"]
 
 # Papers are dropped when the title starts with one of these (regular expressions, case-insensitive) ...
 junk_title = [
-  "author correction", "publisher correction", "correction", "erratum", "retraction",
+  "author correction", "publisher correction", 'correction(?=\s*(:|to\b|$))', "erratum", "retraction",
   "expression of concern", "this month in", "in this issue", "news", "editorial", "reply to",
 ]
 # ... or the DOI matches one of these. 10.1038/d… is Nature-family news, comment and careers.
@@ -49,6 +49,7 @@ key = "NRG"
 name = "Nature Reviews Genetics"
 abbr = "Nat Rev Genet"
 issn = "1471-0056"
+may_be_empty = true  # 2 to 18 papers a month: a month without any does not stop the run
 
 [[journals]]
 key = "NatMed"

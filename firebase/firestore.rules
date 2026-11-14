@@ -55,8 +55,8 @@ service cloud.firestore {
     function mayWrite(h) { return h.matches('^[a-z0-9_]{2,20}$') && h != 'admin'; }
     function validInterest(d) {
       return d.keys().hasOnly(['papers', 'added', 'paper'])
-        && d.get('papers', []) is list && d.get('papers', []).size() <= 1000
-        && d.get('added', []) is list && d.get('added', []).size() <= 100
+        && d.get('papers', []) is list && d.get('papers', []).size() <= 1000 && d.get('papers', []).join(',').size() <= 151000
+        && d.get('added', []) is list && d.get('added', []).size() <= 100 && d.get('added', []).join(',').size() <= 4100
         && (!('paper' in d) || validPaper(d.paper));
     }
     // One paper more or fewer, its count moved in the same batch; or a paper the handle added, created or removed with it
@@ -97,7 +97,7 @@ service cloud.firestore {
     function validSubmission(d) {
       return d.keys().hasAll(['journal', 'title', 'url', 'short_name', 'created'])
         && d.keys().hasOnly(['journal', 'title', 'url', 'short_name', 'created', 'authors', 'abstract', 'date'])
-        && (!('authors' in d) || (d.authors is list && d.authors.size() <= 300))
+        && (!('authors' in d) || (d.authors is list && d.authors.size() <= 300 && d.authors.join(', ').size() <= 10000))
         && (!('abstract' in d) || (d.abstract is string && d.abstract.size() <= 10000))
         && (!('date' in d) || (d.date is string && d.date.matches('^[0-9]{4}(-[0-9]{2}){0,2}$')))
         && d.journal is string && d.journal.size() >= 1 && d.journal.size() <= 60

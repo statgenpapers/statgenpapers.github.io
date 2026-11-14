@@ -94,13 +94,15 @@ button:disabled { opacity: .4; cursor: default; }
 .list { list-style: none; margin: .2rem 0 0; padding: 0; }
 .paper .main, .marks .main { max-width: 44rem; overflow-wrap: anywhere; }  /* a long URL-like title wraps instead of widening the page */  /* titles and abstracts: about 85–95 characters a line at most */
 .paper { display: grid; grid-template-columns: 1.8rem minmax(0, 1fr) 4.2rem; column-gap: .3rem; padding: .35rem 0 .45rem; align-items: first baseline; }  /* triangle, count and Score sit on the title's first line */
-.paper.new { animation: flash 1.8s ease-out; }
-@keyframes flash { from { background: var(--accent-soft); } }
 .empty { padding: 2rem 0; color: var(--muted); }
 .interest { display: flex; align-items: baseline; gap: .2rem; }  /* fixed-width column: a growing count moves nothing */
 .up { position: relative; border: 0; background: none; padding: .3rem 0 0; color: var(--muted); line-height: 0; }
 .up::after { content: ""; position: absolute; inset: -.5rem -1.6rem -.9rem -.5rem; }  /* a finger-sized hit area over the count */
 .up:active:not(:disabled), .up[aria-pressed="true"] { color: var(--accent); }
+/* not only colour: an outline until the reader is interested, then filled */
+.up svg { overflow: visible; }
+.up path { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; }
+.up[aria-pressed="true"] path { fill: currentColor; }
 .count { color: var(--muted); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
 .up[aria-pressed="true"] + .count { color: var(--accent); }
 .title { color: var(--text); font-size: var(--fs-title); }  /* a paper title: one step above the body text */

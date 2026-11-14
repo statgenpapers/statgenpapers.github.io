@@ -1,11 +1,13 @@
 name: Monthly list and deploy
 
-# Scheduled and manual runs build a month's list, commit it, and deploy the site.
+# Scheduled and manual runs build the lists, commit them, store the pools and deploy the site.
 # A push that touches site/ only deploys. A commit made here with GITHUB_TOKEN does not
 # start another run, which is why the deploy is part of this workflow.
 on:
   schedule:
-    - cron: "23 9 10 * *"  # the 10th of each month, 09:23 UTC: the list for the previous month
+    # 09:23 UTC on the 10th: the list for the previous month. The 11th to 14th retry a failed or dropped run (each
+    # builds every month after the latest list, so nothing once it is in) and redeploy.
+    - cron: "23 9 10-14 * *"
   workflow_dispatch:
     inputs:
       month:
@@ -51,7 +53,7 @@ jobs:
         with:
           path: ~/.cache/huggingface
           key: embedding-model-potion-base-32M-1e5a03f8  # the model and revision pinned in data/model.json
-      - name: Build the list
+      - name: Build the lists
         if: github.event_name != 'push'
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
@@ -60,7 +62,7 @@ jobs:
           uv sync --locked
           uv run pytest -q
           uv run python -m pipeline ${MONTH:+--month "$MONTH"}
-      - name: Commit the list, the interest counts and the model
+      - name: Commit the lists, the interest counts and the model
         if: github.event_name != 'push'
         env:
           MONTH: ${{ inputs.month }}
@@ -69,9 +71,26 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data data/counts.json data/model.json
-          git diff --cached --quiet || git commit -m "List for ${MONTH:-$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)}"
+          built=$(git diff --cached --name-only --diff-filter=A -- 'site/data/20*.json' | xargs -rn1 basename | sed 's/\.json$//' | xargs)
+          git diff --cached --quiet || git commit -m "List for ${built:-$MONTH}"
           git log --oneline -1 && git show --stat HEAD | tail -n 5
           [ "$DRY_RUN" = true ] || { git pull --rebase && git push; }
+      # before the deploy: a failed deploy must not lose a pool, which only the run of its month stores
+      - name: Keep the last 12 months of pools on the branch training, in one commit
+        if: github.event_name != 'push'
+        working-directory: data/pools
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          ls 20??-??.npz | sort | head -n -12 | xargs -r rm -f
+          [ -n "$(git status --porcelain)" ] || { echo "no new pools"; exit 0; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q --orphan latest
+          git add -A
+          git commit -q -m "Pools of $(ls 20??-??.npz | head -1 | cut -c1-7) to $(ls 20??-??.npz | tail -1 | cut -c1-7)"
+          git show --stat HEAD | tail -n 15
+          [ "$DRY_RUN" = true ] || git push -q -f origin latest:training
       - uses: actions/configure-pages@v6
         if: inputs.dry_run != true
       - uses: actions/upload-pages-artifact@v5
@@ -81,18 +100,3 @@ jobs:
       - id: deployment
         if: inputs.dry_run != true
         uses: actions/deploy-pages@v5
-      # after the deploy: a failure here leaves the list published; the next run stores this month's pool again
-      - name: Keep the last 12 months of pools on the branch training, in one commit
-        if: github.event_name != 'push'
-        working-directory: data/pools
-        env:
-          DRY_RUN: ${{ inputs.dry_run }}
-        run: |
-          ls 20??-??.npz | sort | head -n -12 | xargs -r rm -f
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -q --orphan latest
-          git add -A
-          git commit -q -m "Pools of $(ls 20??-??.npz | head -1 | cut -c1-7) to $(ls 20??-??.npz | tail -1 | cut -c1-7)"
-          git show --stat HEAD | tail -n 15
-          [ "$DRY_RUN" = true ] || git push -q -f origin latest:training
