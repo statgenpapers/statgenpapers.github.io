@@ -256,7 +256,12 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
 
     # Adding a paper
     a.click("#add-open")
-    a.fill("#add-url", ADD_URL)
+    a.fill("#add-url", "https://www.nature.com/articles/s41588-026-02798-2?utm_source=list&mc_cid=x")  # issued: only 2026-11
+    a.locator("#add-url").blur()
+    expect(a.locator("#add-authors")).not_to_have_value("", timeout=15000)
+    check("the date found has its day, from the online date if the issue date has none", a.input_value("#add-date") == "2026/11/06")
+    a.click("#add-cancel")
+    a.fill("#add-url", ADD_URL + "?utm_source=newsletter&mc_eid=x#abstract")
     a.locator("#add-url").blur()
     expect(a.locator("#add-authors")).not_to_have_value("", timeout=15000)  # filled from Crossref
     check("the link fills the form from its DOI", a.input_value("#add-journal") == "Nature" and "Karczewski" in a.input_value("#add-authors")
@@ -305,6 +310,7 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
     check("the short name is made on submit from journal, first author, year and title",
           fields["short_name"]["stringValue"] == "Nature_Karczewski_2020_MutationalConstraintSpectrumQuantified")
     check("a typed date is stored as year-month-day", fields["date"]["stringValue"] == "2020-05-28")
+    check("a link is stored without its tracking", fields["url"]["stringValue"] == ADD_URL)
     check("an added paper names no reader", not {"name", "handle", "uid"} & fields.keys())
     record = {k: fields[k]["stringValue"] for k in ("journal", "title", "url", "short_name", "abstract", "date")}
     record["authors"] = [v["stringValue"] for v in fields["authors"]["arrayValue"]["values"]]

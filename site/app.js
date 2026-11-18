@@ -911,8 +911,10 @@ async function metadata(doi) {
   const date = (parts) => parts.filter(Boolean).map((n, i) => (i ? String(n).padStart(2, "0") : n)).join("-");
   const w = (await get(`https://api.crossref.org/works/${encodeURIComponent(doi)}`))?.message;
   if (w) {
+    const dates = ["issued", "published-online", "posted", "published-print"].map((k) => w[k]?.["date-parts"]?.[0] ?? []);
     return {
-      title: stripTags(w.title?.[0] || ""), surname: w.author?.[0]?.family, date: date(w.issued?.["date-parts"]?.[0] ?? []),
+      // issued may hold only the month of the print issue (Nat Genet: 2026-11) while online has the day
+      title: stripTags(w.title?.[0] || ""), surname: w.author?.[0]?.family, date: date(dates.find((d) => d.length === 3 && d.every(Boolean)) ?? dates[0]),
       authors: (w.author || []).map((x) => [x.given, x.family].filter(Boolean).join(" ") || x.name).filter(Boolean),
       abstract: tidyAbstract(stripTags(w.abstract || "")),
       journal: w.type === "posted-content" || PREPRINT.test(doi) ? "Preprint"
@@ -924,7 +926,8 @@ async function metadata(doi) {
   const publisher = a.publisher?.name ?? a.publisher ?? "";
   return {
     title: a.titles?.[0]?.title || "", surname: a.creators?.[0]?.familyName || a.creators?.[0]?.name?.split(",")[0],
-    date: String(a.publicationYear || ""),
+    date: ["Issued", "Available", "Submitted"].map((t) => a.dates?.find((d) => d.dateType === t)?.date?.slice(0, 10))
+      .find((d) => /^\d{4}-\d\d-\d\d$/.test(d || "")) || String(a.publicationYear || ""),  // arXiv: Issued 2024, Submitted the day
     authors: (a.creators || []).map((c) => [c.givenName, c.familyName].filter(Boolean).join(" ") || c.name).filter(Boolean),
     abstract: stripTags(a.descriptions?.find((d) => d.descriptionType === "Abstract")?.description || ""),
     journal: a.types?.resourceTypeGeneral === "Preprint" || PREPRINT.test(`${publisher} ${doi}`) ? "Preprint" : a.container?.title || publisher,
@@ -963,8 +966,18 @@ const PASTED = {
 
 // On a pasted or changed URL: fill the empty fields from the DOI's record, and say how it went. Whatever is
 // filled can be edited; nothing found leaves the form to be typed by hand.
-// The DOI field as a URL: a bare DOI becomes its doi.org link
-const linkValue = () => field("url").value.trim().replace(/^(?:doi:\s*)?(10\.\d{4,9}\/\S+)$/i, "https://doi.org/$1");
+// The DOI field as a URL: a bare DOI becomes its doi.org link; a link copied from an email or a feed loses its
+// tracking (?utm_source=…&mc_cid=…, #…), and a bioRxiv or medRxiv PDF or full text becomes its abstract page
+const TRACKING = /^(utm_|mc_|_hs|mkt_tok$|fbclid$|gclid$|cmpid$)/i;
+function linkValue() {
+  const value = field("url").value.trim().replace(/^(?:doi:\s*)?(10\.\d{4,9}\/\S+)$/i, "https://doi.org/$1");
+  let u;
+  try { u = new URL(httpUrl(value)); } catch { return value; }
+  for (const key of [...u.searchParams.keys()].filter((k) => TRACKING.test(k))) u.searchParams.delete(key);
+  u.hash = "";
+  if (/(^|\.)(bio|med)rxiv\.org$/i.test(u.hostname)) u.pathname = u.pathname.replace(/\.full(\.pdf)?(\+html)?$/i, "");
+  return u.href;
+}
 
 async function lookUp() {
   const url = linkValue(), pii = !urlDoi(url) && piiDoi(url);
