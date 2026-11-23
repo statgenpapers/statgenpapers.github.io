@@ -23,7 +23,7 @@ const state = {
   added: new Set(),   // papers the logged-in handle added to this month
   subs: [],           // papers added to the month in progress, on its page; a listed month's come with its data file
   handle: "",         // the reader's handle, lower case; "" when logged out
-  view: "list",       // "list" (a month), "user" or "interested" (pages of the logged-in handle)
+  view: "list",       // "list" (a month), "search", or "user" or "interested" (pages of the logged-in handle)
   waiting: new Set(),  // first snapshots not yet in: "counts", "own" (logged in), "subs" (the month in progress)
 };
 const rows = new Map();  // paper id -> <li>
@@ -117,8 +117,8 @@ const shownJournal = (journal, url) => (PREPRINT.test(journal) || PREPRINT.test(
 
 // Listed papers and added papers in one shape. A listed month's added papers come with its data file, scored by its
 // run (data.added: id → Score); the month in progress shows the papers added so far, from Firestore.
-function items() {
-  const data = state.data, listed = data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = data?.added || {};
+function items(data = state.data) {
+  const listed = data?.papers || [], dois = new Set(listed.map((p) => p.doi)), scored = data?.added || {};
   const added = data?.upcoming ? state.subs
     : Object.entries(data?.added_papers || {}).filter(([id]) => id in scored).map(([id, p]) => ({ ...p, id }));
   return [...listed, ...added.filter((s) => !dois.has(urlDoi(s.url))).map(addedPaper).map((p) => ({ ...p, p_pick: scored[p.id] }))];
@@ -166,8 +166,7 @@ function showTip(anchor, text) {
   setTimeout(close, 3000);
 }
 
-function createRow(p) {
-  const month = state.month;  // a row belongs to one month: a late click never changes a paper of another
+function createRow(p, month = state.month) {  // a row belongs to one month: a late click never changes a paper of another
   const li = $("row").content.firstElementChild.cloneNode(true);
   const q = (sel) => li.querySelector(sel);
   const url = httpUrl(p.url);
@@ -178,7 +177,7 @@ function createRow(p) {
   q(".source").textContent = source(p);
   q(".source").title = p.type === "preprint" || p.added ? "" : p.venue_name || "";  // a journal's full name; preprints stay "Preprint"
   const a = p.authors || [], cut = a.length === 100;  // a preprint source may cut the list at 100 authors
-  q(".meta").textContent = a.length <= 4 ? a.join(", ") : `${a.slice(0, 2).join(", ")}, …${cut ? "" : `, ${a.slice(-2).join(", ")}`}`;  // first two … last two
+  q(".meta").textContent = authorLine(a);
   q(".added-icon").hidden = !p.added;  // an added paper: a person-plus icon at the Score column's left edge
   q(".added-icon").addEventListener("click", (event) => showTip(event.currentTarget, "Added manually, not by the model."));
   q(".edit-own").addEventListener("click", link(() => editSubmission(li.paper)));
@@ -207,6 +206,13 @@ function createRow(p) {
     if (a.length > 4) details.append(el("p", "authors", `Authors: ${names.join(", ")}`));
   }
   return li;
+}
+
+// Up to four authors, else the first two … the last two (a list cut at 100 ends at "…"); `named` adds authors from the
+// middle, each between "…": "A, B, …, M, …, Y, Z"
+function authorLine(a, named = []) {
+  if (a.length <= 4) return a.join(", ");
+  return [...a.slice(0, 2), "…", ...named.flatMap((name) => [name, "…"]), ...(a.length === 100 ? [] : a.slice(-2))].join(", ");
 }
 
 // OpenAlex abstracts lose their markup: "5×10<sup>−8</sup>)" arrives as "5x10 -8 )". Restore the exponent
@@ -323,7 +329,7 @@ function renderBar() {
   syncExpanded();
   syncAccountSep();
   document.title = { list: upcoming() ? "Next month · StatGenPapers" : listed && state.month !== state.months.at(-1) ? `${monthName(state.month)} · StatGenPapers` : "StatGenPapers",
-    user: "Your handle · StatGenPapers", interested: "Interested · StatGenPapers" }[state.view];
+    search: "Search · StatGenPapers", user: "Your handle · StatGenPapers", interested: "Interested · StatGenPapers" }[state.view];
 }
 
 // When the account block wraps onto two lines, the "|" after "interested" ends a line: hide it.
@@ -344,6 +350,7 @@ async function loadMonth(month) {
   state.view = "list";
   $("listview").hidden = false;
   $("page").hidden = true;
+  $("page").replaceChildren();  // a page left keeps nothing: search results would repeat the list's rows
   state.month = month;
   state.data = null;
   rows.clear();
@@ -654,12 +661,184 @@ function togglePast(open = $("past").hidden) {
   $("past-open").setAttribute("aria-expanded", open);
 }
 
+// ---------------------------------------------------------------- search
+
+// Search every listed month in the browser. The month files load once, on the first focus of the box (about 100 KB a
+// month), and each paper's text is folded once (lower case, no accents: "meniere" finds "Ménière"). A paper matches when
+// every word of the query is in its title, authors, journal, short name, DOI or abstract; a pasted link searches by its
+// DOI. Papers with every word starting a word of the title or authors come first, then by Score. Interest shows as counts
+// only (one read a month): marking stays on the lists.
+const fold = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+const queryWords = (query) => [...new Set(fold(query).split(/\s+/).filter(Boolean).map((w) => urlDoi(w) || w))];
+const SEARCH_ROWS = 50;  // shown at first, so that typing stays quick on a slow phone; "show all" shows the rest
+const search = { papers: null, failed: false, counts: null, loadingCounts: null, pushed: false, frame: 0, timer: 0, all: false };
+
+function loadSearch() {
+  search.papers ??= Promise.all(state.months.map(monthData)).then((files) => {
+    search.failed = files.some((f) => f.failed);
+    if (search.failed) search.papers = null;  // tried again on the next search
+    return files.flatMap((data, i) => items(data).map((p) => ({ p, month: state.months[i],
+      head: fold(`${p.title} ${(p.authors || []).join(" ")}`),
+      rest: fold(`${p.journal} ${p.venue_name || ""} ${p.short_name || ""} ${p.doi || urlDoi(p.url || "")} ${p.abstract || ""}`) })));
+  });
+  search.loadingCounts ??= connected.then(() => db && Promise.all(state.months.map((m) => fb.getDoc(fb.doc(db, "months", m)))))
+    .then((docs) => {
+      if (!docs) return;
+      search.counts = new Map(docs.map((d) => [d.id, d.get("counts") ?? {}]));
+      if (state.view === "search") showSearch($("search").value);
+    }, (e) => { console.warn("search counts", e); search.loadingCounts = null; });
+  return search.papers;
+}
+
+// Typing: the results follow at the next frame. The first change adds a history entry; later ones update it, at most every
+// 300 ms (Safari refuses more than 100 address changes in 30 s).
+function searchInput() {
+  const query = $("search").value;
+  if (!state.months.length) return;  // the month index is not in yet
+  if (!query.trim()) return clearSearch(false);
+  search.all = false;
+  cancelAnimationFrame(search.frame);
+  search.frame = requestAnimationFrame(() => showSearch(query));
+  clearTimeout(search.timer);
+  const address = `?${new URLSearchParams({ q: query })}`;
+  if (state.view === "search" || search.pushed) search.timer = setTimeout(() => history.replaceState(null, "", address), 300);
+  else {
+    history.pushState(null, "", address);
+    search.pushed = true;
+  }
+}
+
+// Back to the list the search started from: Back, if the search added the history entry; else that list by address
+function clearSearch(focus = true) {
+  $("search").value = "";
+  cancelAnimationFrame(search.frame);
+  clearTimeout(search.timer);
+  if (focus) $("search").focus({ preventScroll: true });
+  if (state.view !== "search") return;
+  if (search.pushed) return history.back();  // popstate routes to the list
+  history.replaceState(null, "", state.month ? `?month=${state.month}` : "./");
+  route();
+}
+
+// Where `word` occurs in the folded `text`: where it starts a word, if it does anywhere ("nat" in "Nature", not in
+// "Jonathan"; `start`), else everywhere ("qtl" in "eQTL")
+function find(text, word) {
+  const at = [];
+  for (let i = text.indexOf(word); i >= 0; i = text.indexOf(word, i + 1)) at.push(i);
+  const starts = at.filter((i) => i === 0 || !/[\p{L}\p{N}]/u.test(text[i - 1]));
+  return starts.length ? { at: starts, start: true } : { at, start: false };
+}
+
+// `text` with each word of the query marked, whatever its case or accents: found in the folded text, mapped back
+function highlight(text, words) {
+  let folded = text.toLowerCase(), from = null;  // from: folded index -> index in text, if the text is not ASCII
+  if (/[^\x00-\x7f]/.test(text)) {
+    folded = "";
+    from = [];
+    for (let i = 0; i < text.length; i++) {
+      const f = fold(text[i]);
+      folded += f;
+      for (let k = 0; k < f.length; k++) from.push(i);
+    }
+  }
+  const to = (i) => (from ? from[i] : i);
+  const ranges = words.flatMap((w) => find(folded, w).at.map((i) => [to(i), to(i + w.length - 1) + 1])).sort((a, b) => a[0] - b[0]);
+  const marked = [];  // ranges merged where they overlap
+  for (const [s, e] of ranges) {
+    if (marked.length && s <= marked.at(-1)[1]) marked.at(-1)[1] = Math.max(marked.at(-1)[1], e);
+    else marked.push([s, e]);
+  }
+  const nodes = [];
+  let pos = 0;
+  for (const [s, e] of marked) {
+    nodes.push(text.slice(pos, s), el("mark", "", text.slice(s, e)));
+    pos = e;
+  }
+  nodes.push(text.slice(pos));
+  return nodes.filter((n) => n !== "");
+}
+
+// A line of the abstract around the first word of the query that is not in the title or authors, or "". The abstract is
+// tidied and folded once, when first needed.
+function excerpt(paper, words) {
+  const word = words.find((w) => !paper.head.includes(w));
+  if (!word) return "";
+  paper.abstract ??= tidyAbstract(paper.p.abstract || "");
+  paper.abstractFolded ??= fold(paper.abstract);
+  const text = paper.abstract, at = find(paper.abstractFolded, word).at[0];
+  if (at === undefined) return "";
+  const start = at > 70 ? text.indexOf(" ", at - 70) + 1 : 0, end = text.indexOf(" ", at + 110);
+  return `${start ? "…" : ""}${text.slice(start, end < 0 ? undefined : end)}${end < 0 ? "" : "…"}`;
+}
+
+// A list row with the words marked (an author who matches is named even from the middle of a long list), the month's list
+// linked, and the interest count without its button
+function searchRow(paper, words) {
+  const { p, month } = paper, li = createRow(p, month), q = (sel) => li.querySelector(sel);
+  const a = p.authors || [], middle = a.length > 4 ? a.slice(2, a.length === 100 ? undefined : -2) : [];
+  const named = middle.filter((name) => words.some((w) => find(fold(name), w).start)).slice(0, 2);
+  const up = q(".up"), n = search.counts?.get(month)?.[p.id] ?? 0;
+  up.replaceWith(Object.assign(el("span", "up static"), { innerHTML: up.innerHTML }));
+  if (search.counts) Object.assign(q(".count"), { textContent: n, title: `${n} interested` });
+  q(".title").removeAttribute("id");  // the month's list, hidden, keeps the ids
+  q(".title").replaceChildren(...highlight(p.title, words));
+  q(".source").replaceChildren(...highlight(q(".source").textContent, words));
+  q(".meta").replaceChildren(...highlight(authorLine(a, named), words));
+  const list = Object.assign(el("a", "", `${monthName(month)} list`), { href: `?month=${month}` });
+  list.addEventListener("click", link(() => go({ month })));
+  q(".sub").prepend(list, " · ");
+  const line = excerpt(paper, words);
+  if (line) {
+    const div = el("div", "excerpt");
+    div.append(...highlight(line, words));
+    q(".sub").after(div);
+  }
+  return li;
+}
+
+async function showSearch(query) {
+  if (state.view !== "search") showPage("search", el("p", "page-head search-head", "Searching…"));
+  const words = queryWords(query), papers = await loadSearch();
+  if (state.view !== "search" || $("search").value !== query) return;  // the reader typed on, or left
+  const matches = papers.filter((x) => words.every((w) => x.head.includes(w) || x.rest.includes(w)))
+    .map((x) => [words.every((w) => find(x.head, w).start), x])  // [first?, paper]
+    .sort(([af, a], [bf, b]) => bf - af || (b.p.p_pick ?? 0) - (a.p.p_pick ?? 0) || b.month.localeCompare(a.month))
+    .map(([, x]) => x);
+  const n = matches.length, head = el("p", "page-head search-head", n
+    ? `${n} paper${n === 1 ? "" : "s"} matching “${query.trim()}”` : `No papers matching “${query.trim()}”`);
+  const clear = Object.assign(el("a", "dashed", "clear"), { href: "#" });
+  clear.addEventListener("click", link(() => clearSearch()));
+  head.append(clear);
+  const content = [head];
+  if (search.failed) content.push(el("p", "search-head hint error", "Some months did not load; try again later."));
+  if (!n) content.push(el("p", "search-head hint", "Search looks in the titles, authors, journals, DOIs and abstracts of every month's list."));
+  const list = el("ol", "list");
+  list.append(...(search.all ? matches : matches.slice(0, SEARCH_ROWS)).map((x) => searchRow(x, words)));
+  content.push(list);
+  if (n > list.children.length) {
+    const all = Object.assign(el("a", "dashed", `show all ${n}`), { href: "#" }), more = el("p", "search-head");
+    all.addEventListener("click", link(() => { search.all = true; showSearch(query); }));
+    more.append(all);
+    content.push(more);
+  }
+  $("page").replaceChildren(...content);
+}
+
 // ---------------------------------------------------------------- pages of the logged-in handle
 
-// The URL says what to show: ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month (then named).
+// The URL says what to show: ?q=words, ?user=h, ?interested=h, ?month=YYYY-MM, or nothing for the latest month (then named).
 // The handle pages open only for the handle logged in here: nobody browses another reader's interest.
 function route() {
   const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
+  const query = q.get("q") ?? "";
+  if (query.trim()) {
+    if ($("search").value !== query) $("search").value = query;
+    return showSearch(query);
+  }
+  $("search").value = "";
+  search.pushed = false;
+  search.loadingCounts = null;  // the next search reads the counts afresh: the reader may have marked papers since
+  clearTimeout(search.timer);  // a late address update of a search left
   if (own(q.get("user"))) return showUser();
   if (own(q.get("interested"))) return showInterested();
   return loadMonth(state.months.includes(month) || month === addMonth() ? month : state.months.at(-1));
@@ -1166,7 +1345,7 @@ async function init() {
   $("login-open").addEventListener("click", link(() => {
     if (!state.handle) return openPanel("login");
     setHandle("");
-    if (state.view !== "list") go({});  // the handle's own pages close with it
+    if (state.view === "user" || state.view === "interested") go({});  // the handle's own pages close with it
   }));
   $("login-cancel").addEventListener("click", closeLogin);
   $("login").addEventListener("submit", login);
@@ -1175,6 +1354,12 @@ async function init() {
   $("interested-open").addEventListener("click", link(() => go({ interested: state.handle })));
   $("latest").addEventListener("click", link(() => go({})));
   $("score-help").addEventListener("click", link(() => toggleScoreNote()));
+  $("search").addEventListener("focus", () => state.months.length && loadSearch());  // the month files load while the reader types
+  $("search").addEventListener("input", searchInput);
+  $("search").addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && $("search").value) { e.preventDefault(); clearSearch(); }
+    if (e.key === "Enter") $("search").blur();  // a phone's keyboard closes; the results stay
+  });
   // a click outside a pop-up, or Escape, closes it
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".links .menu")) togglePast(false);
@@ -1189,6 +1374,11 @@ async function init() {
         close(false);
         if (inside) $(opener).focus();
       }
+    }
+    // "/" goes to the search box, as on many sites
+    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.matches?.("input, textarea")) {
+      e.preventDefault();
+      $("search").focus();
     }
     // links that act like buttons (href="#") answer Space as buttons do
     if (e.key === " " && e.target.matches?.('a[href="#"]')) { e.preventDefault(); e.target.click(); }
@@ -1221,6 +1411,9 @@ async function init() {
   addEventListener("popstate", route);
   addEventListener("storage", handleChanged);
   addEventListener("resize", syncAccountSep, { passive: true });
+  // the "|" before the search box hides while the box is on the next line: a narrow phone, or the box in use there
+  new ResizeObserver(() => $("search-sep").classList.toggle("wrapped",
+    $("search").getBoundingClientRect().top >= $("search-sep").getBoundingClientRect().bottom)).observe($("search").closest("nav"));
   await route();
 }
 

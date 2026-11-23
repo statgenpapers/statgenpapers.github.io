@@ -173,6 +173,16 @@ with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
           rows[0] == ["Journal", "Short Name", "Title", "URL"] and rows[1] == ["Nat Genet", "NatGenet_Tester_2020_TestPaper3", "Test paper 3", "https://example.org/paper-3"]
           and rows[4][0] == "bioRxiv" and len(rows) == 5)
 
+    a.fill("#search", "biorxiv")  # the journal of one paper
+    try:
+        expect(a.locator("#page li.paper .title")).to_have_text(["Test paper 2"], timeout=15000)
+        a.fill("#search", "")
+        expect(a.locator("#listview li.paper")).to_have_count(4, timeout=15000)
+        searched = a.url.endswith(f"?month={MONTH}")
+    except AssertionError:
+        searched = False
+    check("search finds a listed paper by its journal, and clearing it shows the list again", searched, lambda: a.url)
+
     # Without a connection Firestore answers from its empty cache: the saved counts must stay, and the triangles wait.
     offline = b.context.new_page()
     offline.route("**/google.firestore.v1.Firestore/**", lambda route: route.abort())

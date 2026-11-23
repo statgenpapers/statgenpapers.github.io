@@ -14,7 +14,8 @@ add papers the model missed. It costs $0 and needs no monthly work.
    logistic regression on the pools of the 12 months before the list (weight halving every 6 months; papers of
    interest positive). The pools are kept on the branch `training`.
 3. **Site.** Plain HTML, CSS and JavaScript in `site/`. Interest and added papers live in Firestore, checked by
-   `firebase/firestore.rules`; a browser signs in anonymously on its first write.
+   `firebase/firestore.rules`; a browser signs in anonymously on its first write. Search runs in the browser over
+   every month's file, with one read of `months/YYYY-MM` a month for the counts.
 
 | Firestore path | Content | Read by |
 |---|---|---|
