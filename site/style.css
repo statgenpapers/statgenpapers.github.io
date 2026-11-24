@@ -50,16 +50,16 @@ button:disabled { opacity: .4; cursor: default; }
 #me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
 .menu { position: relative; }
-/* search: after the links, a blue icon that opens, when clicked, into a field underlined in blue and as wide as its text
-   ("search" until one types; --text-width, from fitSearch), the text on the links' baseline and at their size */
+/* search: after the links, a blue icon that opens, when clicked, into a field underlined in blue, 10rem long and longer as a
+   query outgrows it (--text-width, from fitSearch), the text on the links' baseline and at their size */
 .search { position: relative; display: inline-flex; align-items: center; vertical-align: baseline; }
 .search svg { position: absolute; left: .1rem; width: 15px; height: 15px; color: var(--accent); pointer-events: none; }
 .search input { --fit: calc(var(--text-width, 3.5em) + 1.5rem + 3px);  /* the text, the padding, and 3px for the caret */
-  width: var(--fit); max-width: 20rem; padding: 0 .2rem 0 1.3rem; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0;
+  width: var(--fit); min-width: 10rem; max-width: 20rem; padding: 0 .2rem 0 1.3rem; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0;
   background: none; appearance: none; font-size: inherit; line-height: 1.2; }
 .search input:focus-visible { outline: none; }  /* the thin underline is its one edge */
 /* its clear button (Chrome and Safari draw one): a thin blue ×, right after the text, shown whenever there is text (Chrome
-   shows its own only on hover or focus); none while empty, so the field can be as wide as "search" */
+   shows its own only on hover or focus); none while empty */
 .search input::-webkit-search-cancel-button { appearance: none; width: .75em; height: .75em; margin-left: .3em; opacity: 1; pointer-events: auto;
   cursor: pointer; background: var(--accent);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 3l10 10M13 3 3 13' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
@@ -67,7 +67,7 @@ button:disabled { opacity: .4; cursor: default; }
 @supports selector(::-webkit-search-cancel-button) {
   .search input:not(:placeholder-shown) { width: calc(var(--fit) + 1.05em); }  /* and room for the × */
 }
-.search input:placeholder-shown:not(:focus) { width: 1.4rem; padding-right: 0; border-color: transparent; cursor: pointer; }  /* closed: the icon */
+.search input:placeholder-shown:not(:focus) { width: 1.4rem; min-width: 0; padding-right: 0; border-color: transparent; cursor: pointer; }  /* closed: the icon */
 .search input:placeholder-shown:not(:focus)::placeholder { color: transparent; }
 #search-sep.wrapped { visibility: hidden; }  /* the field wrapped onto the next line: no "|" ends the line */
 .bar .current, .popover a.current, footer [aria-current] { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
@@ -158,7 +158,6 @@ button:disabled { opacity: .4; cursor: default; }
 
 /* search results: the list's rows, with no button in the interest column and a line of the abstract where it matched */
 .search-head { padding-left: 2.1rem; }  /* over the titles, as "Papers of …" */
-.search-head a { margin-left: .6em; font-size: var(--fs-meta); }
 .paper .up.static, .paper .up.static:active { display: inline-block; color: var(--muted); cursor: default; }
 .paper .excerpt { margin-top: .15rem; color: var(--body); font-size: var(--fs-meta); }
 .paper mark { background: color-mix(in srgb, #f5d000 35%, transparent); color: inherit; border-radius: 2px; }

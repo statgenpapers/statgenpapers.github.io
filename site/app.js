@@ -673,8 +673,8 @@ const queryWords = (query) => [...new Set(fold(query).split(/\s+/).filter(Boolea
 const SEARCH_ROWS = 50;  // shown at first, so that typing stays quick on a slow phone; "show all" shows the rest
 const search = { papers: null, failed: false, counts: null, loadingCounts: null, pushed: false, frame: 0, timer: 0, all: false };
 
-// The open field is as wide as its text, "search" until one types: its underline grows with the query. In em, so the width
-// follows the font size of a phone or a wider screen.
+// The open field grows with a query longer than its 10rem: its text is measured, in em, so the width follows the font size of
+// a phone or a wider screen.
 const ruler = document.createElement("canvas").getContext("2d");
 function fitSearch() {
   const box = $("search"), style = getComputedStyle(box);
@@ -822,9 +822,6 @@ async function showSearch(query) {
     .map(([, x]) => x);
   const n = matches.length, head = el("p", "page-head search-head", n
     ? `${n} paper${n === 1 ? "" : "s"} matching “${query.trim()}”` : `No papers matching “${query.trim()}”`);
-  const clear = Object.assign(el("a", "dashed", "clear"), { href: "#" });
-  clear.addEventListener("click", link(() => clearSearch()));
-  head.append(clear);
   const content = [head];
   if (search.failed) content.push(el("p", "search-head hint error", "Some months did not load; try again later."));
   if (!n) content.push(el("p", "search-head hint", "Search looks in the titles, authors, journals, DOIs and abstracts of every month's list."));
