@@ -673,6 +673,21 @@ const queryWords = (query) => [...new Set(fold(query).split(/\s+/).filter(Boolea
 const SEARCH_ROWS = 50;  // shown at first, so that typing stays quick on a slow phone; "show all" shows the rest
 const search = { papers: null, failed: false, counts: null, loadingCounts: null, pushed: false, frame: 0, timer: 0, all: false };
 
+// The open field is as wide as its text, "search" until one types: its underline grows with the query. In em, so the width
+// follows the font size of a phone or a wider screen.
+const ruler = document.createElement("canvas").getContext("2d");
+function fitSearch() {
+  const box = $("search"), style = getComputedStyle(box);
+  ruler.font = `${style.fontSize} ${style.fontFamily}`;
+  box.style.setProperty("--text-width", `${ruler.measureText(box.value || box.placeholder).width / parseFloat(style.fontSize)}em`);
+}
+
+// The field's text when the page sets it (an address, a search cleared) rather than the reader typing it
+function setSearchText(text) {
+  $("search").value = text;
+  fitSearch();
+}
+
 function loadSearch() {
   search.papers ??= Promise.all(state.months.map(monthData)).then((files) => {
     search.failed = files.some((f) => f.failed);
@@ -693,6 +708,7 @@ function loadSearch() {
 // Typing: the results follow at the next frame. The first change adds a history entry; later ones update it, at most every
 // 300 ms (Safari refuses more than 100 address changes in 30 s).
 function searchInput() {
+  fitSearch();
   const query = $("search").value;
   if (!state.months.length) return;  // the month index is not in yet
   if (!query.trim()) return clearSearch(false);
@@ -710,7 +726,7 @@ function searchInput() {
 
 // Back to the list the search started from: Back, if the search added the history entry; else that list by address
 function clearSearch(focus = true) {
-  $("search").value = "";
+  setSearchText("");
   cancelAnimationFrame(search.frame);
   clearTimeout(search.timer);
   if (focus) $("search").focus({ preventScroll: true });
@@ -832,10 +848,10 @@ function route() {
   const q = new URLSearchParams(location.search), month = q.get("month"), own = (h) => h && state.handle && h.toLowerCase() === state.handle;
   const query = q.get("q") ?? "";
   if (query.trim()) {
-    if ($("search").value !== query) $("search").value = query;
+    if ($("search").value !== query) setSearchText(query);
     return showSearch(query);
   }
-  $("search").value = "";
+  setSearchText("");
   search.pushed = false;
   search.loadingCounts = null;  // the next search reads the counts afresh: the reader may have marked papers since
   clearTimeout(search.timer);  // a late address update of a search left

@@ -50,17 +50,26 @@ button:disabled { opacity: .4; cursor: default; }
 #me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
 .menu { position: relative; }
-/* search: after the links, a blue icon that opens, when clicked, into a field underlined in blue, its text on the links'
-   baseline and at their size */
+/* search: after the links, a blue icon that opens, when clicked, into a field underlined in blue and as wide as its text
+   ("search" until one types; --text-width, from fitSearch), the text on the links' baseline and at their size */
 .search { position: relative; display: inline-flex; align-items: center; vertical-align: baseline; }
 .search svg { position: absolute; left: .1rem; width: 15px; height: 15px; color: var(--accent); pointer-events: none; }
-.search input { width: 16rem; padding: 0 .2rem 0 1.3rem; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0; background: none;
-  font-size: inherit; line-height: 1.2; transition: width .2s cubic-bezier(.2, 0, 0, 1); }
-.search input:focus-visible { outline: none; box-shadow: 0 1px 0 var(--accent); }  /* in use: one edge, the underline doubled */
+.search input { --fit: calc(var(--text-width, 3.5em) + 1.5rem + 3px);  /* the text, the padding, and 3px for the caret */
+  width: var(--fit); max-width: 20rem; padding: 0 .2rem 0 1.3rem; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0;
+  background: none; appearance: none; font-size: inherit; line-height: 1.2; }
+.search input:focus-visible { outline: none; }  /* the thin underline is its one edge */
+/* its clear button (Chrome and Safari draw one): a thin blue ×, right after the text, shown whenever there is text (Chrome
+   shows its own only on hover or focus); none while empty, so the field can be as wide as "search" */
+.search input::-webkit-search-cancel-button { appearance: none; width: .75em; height: .75em; margin-left: .3em; opacity: 1; pointer-events: auto;
+  cursor: pointer; background: var(--accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 3l10 10M13 3 3 13' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.search input:placeholder-shown::-webkit-search-cancel-button { display: none; }
+@supports selector(::-webkit-search-cancel-button) {
+  .search input:not(:placeholder-shown) { width: calc(var(--fit) + 1.05em); }  /* and room for the × */
+}
 .search input:placeholder-shown:not(:focus) { width: 1.4rem; padding-right: 0; border-color: transparent; cursor: pointer; }  /* closed: the icon */
 .search input:placeholder-shown:not(:focus)::placeholder { color: transparent; }
 #search-sep.wrapped { visibility: hidden; }  /* the field wrapped onto the next line: no "|" ends the line */
-@media (prefers-reduced-motion: reduce) { .search input { transition: none; } }
 .bar .current, .popover a.current, footer [aria-current] { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
 
 /* overlays: one family (surface, 1px border, radius); a shadow only on what floats */
@@ -183,7 +192,7 @@ footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-t
   .links { flex-basis: 100%; }
   /* open, the field takes a line of its own */
   .search:focus-within, .search:has(input:not(:placeholder-shown)) { display: flex; margin-top: .3rem; }
-  .search:focus-within input, .search input:not(:placeholder-shown) { width: 100%; }
+  .search:focus-within input, .search input:not(:placeholder-shown) { max-width: 100%; }
 }
 
 /* About page */
