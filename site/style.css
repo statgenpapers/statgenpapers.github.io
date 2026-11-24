@@ -50,13 +50,16 @@ button:disabled { opacity: .4; cursor: default; }
 #me.current { color: var(--accent-strong); }
 .bar nav > a, .menu > a, .account a, footer a { padding: .5rem 0; }  /* taller tap targets; nothing moves */
 .menu { position: relative; }
-/* search: after the links, a box as wide as its placeholder ("search", 6ch), wider while in use */
-.search { position: relative; display: inline-flex; align-items: center; vertical-align: middle; }
-.search svg { position: absolute; left: .45rem; color: var(--muted); pointer-events: none; }
-.search input { width: calc(6ch + 2rem); padding: .15rem .4rem .15rem 1.55rem; font-size: var(--fs-meta); transition: width .2s cubic-bezier(.2, 0, 0, 1); }
-.search input:focus, .search input:not(:placeholder-shown) { width: 16rem; }
-.search input:placeholder-shown::-webkit-search-cancel-button { display: none; }  /* Chrome keeps room for its clear button even when empty */
-#search-sep.wrapped { visibility: hidden; }  /* the box wrapped onto the next line: no "|" ends the line */
+/* search: after the links, a blue icon that opens, when clicked, into a field underlined in blue, its text on the links'
+   baseline and at their size */
+.search { position: relative; display: inline-flex; align-items: center; vertical-align: baseline; }
+.search svg { position: absolute; left: .1rem; width: 15px; height: 15px; color: var(--accent); pointer-events: none; }
+.search input { width: 16rem; padding: 0 .2rem 0 1.3rem; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0; background: none;
+  font-size: inherit; line-height: 1.2; transition: width .2s cubic-bezier(.2, 0, 0, 1); }
+.search input:focus-visible { outline: none; box-shadow: 0 1px 0 var(--accent); }  /* in use: one edge, the underline doubled */
+.search input:placeholder-shown:not(:focus) { width: 1.4rem; padding-right: 0; border-color: transparent; cursor: pointer; }  /* closed: the icon */
+.search input:placeholder-shown:not(:focus)::placeholder { color: transparent; }
+#search-sep.wrapped { visibility: hidden; }  /* the field wrapped onto the next line: no "|" ends the line */
 @media (prefers-reduced-motion: reduce) { .search input { transition: none; } }
 .bar .current, .popover a.current, footer [aria-current] { color: var(--accent-strong); }  /* the page shown: a darker blue, no width change */
 
@@ -174,11 +177,11 @@ footer { margin-top: .6rem; padding-top: .8rem; padding-bottom: 2.5rem; border-t
   #add label { grid-template-columns: 1fr; gap: .2rem; }
   #add > .hint, #add > div { margin-left: 0; }
   input, textarea, form button, .search input { font-size: 16px; }  /* iOS zooms into smaller inputs */
-  /* the account beside the name; the links and the search box on the second row */
+  /* the account beside the name; the links and the search icon on the second row */
   .brand { flex-basis: auto; order: -2; }
   .account { order: -1; }
   .links { flex-basis: 100%; }
-  /* in use, the box takes a line of its own */
+  /* open, the field takes a line of its own */
   .search:focus-within, .search:has(input:not(:placeholder-shown)) { display: flex; margin-top: .3rem; }
   .search:focus-within input, .search input:not(:placeholder-shown) { width: 100%; }
 }

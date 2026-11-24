@@ -663,7 +663,7 @@ function togglePast(open = $("past").hidden) {
 
 // ---------------------------------------------------------------- search
 
-// Search every listed month in the browser. The month files load once, on the first focus of the box (about 100 KB a
+// Search every listed month in the browser. The month files load once, when the field first opens (about 100 KB a
 // month), and each paper's text is folded once (lower case, no accents: "meniere" finds "Ménière"). A paper matches when
 // every word of the query is in its title, authors, journal, short name, DOI or abstract; a pasted link searches by its
 // DOI. Papers with every word starting a word of the title or authors come first, then by Score. Interest shows as counts
@@ -1357,7 +1357,10 @@ async function init() {
   $("search").addEventListener("focus", () => state.months.length && loadSearch());  // the month files load while the reader types
   $("search").addEventListener("input", searchInput);
   $("search").addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && $("search").value) { e.preventDefault(); clearSearch(); }
+    if (e.key === "Escape") {  // clears the search, then closes the field
+      e.preventDefault();
+      $("search").value ? clearSearch() : $("search").blur();
+    }
     if (e.key === "Enter") $("search").blur();  // a phone's keyboard closes; the results stay
   });
   // a click outside a pop-up, or Escape, closes it
@@ -1375,7 +1378,7 @@ async function init() {
         if (inside) $(opener).focus();
       }
     }
-    // "/" goes to the search box, as on many sites
+    // "/" opens the search field, as on many sites
     if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.matches?.("input, textarea")) {
       e.preventDefault();
       $("search").focus();
@@ -1411,7 +1414,7 @@ async function init() {
   addEventListener("popstate", route);
   addEventListener("storage", handleChanged);
   addEventListener("resize", syncAccountSep, { passive: true });
-  // the "|" before the search box hides while the box is on the next line: a narrow phone, or the box in use there
+  // the "|" before the search field hides while the field is on the next line: open, on a phone
   new ResizeObserver(() => $("search-sep").classList.toggle("wrapped",
     $("search").getBoundingClientRect().top >= $("search-sep").getBoundingClientRect().bottom)).observe($("search").closest("nav"));
   await route();
